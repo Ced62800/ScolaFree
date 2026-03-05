@@ -2,9 +2,9 @@
 
 import { supabase } from "@/supabaseClient";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function Connexion() {
+function ConnexionForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [form, setForm] = useState({ email: "", password: "" });
@@ -49,7 +49,6 @@ export default function Connexion() {
       .single();
 
     console.log("ROLE:", profile?.role);
-
     router.push("/");
   };
 
@@ -102,5 +101,13 @@ export default function Connexion() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function Connexion() {
+  return (
+    <Suspense>
+      <ConnexionForm />
+    </Suspense>
   );
 }
