@@ -3,7 +3,6 @@
 import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
 export default function Home() {
   const [prenom, setPrenom] = useState("");
   const [role, setRole] = useState("");
