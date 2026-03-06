@@ -888,18 +888,31 @@ body:has(.admin-page) footer {
 .welcome-banner {
   position: fixed;
   top: 70px;
-  right: 24px;
+  right: 8px;
+  left: 8px;
   z-index: 99;
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
   background: rgba(46, 196, 182, 0.15);
   border: 1px solid rgba(46, 196, 182, 0.3);
-  border-radius: 100px;
-  padding: 8px 20px;
-  font-size: 0.9rem;
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
   color: var(--teal);
   font-weight: 600;
   animation: fadeUp 0.4s ease both;
+}
+
+@media (min-width: 600px) {
+  .welcome-banner {
+    left: auto;
+    right: 24px;
+    border-radius: 100px;
+    flex-wrap: nowrap;
+  }
 }
 
 /* ── BOUTON ADMIN ── */
