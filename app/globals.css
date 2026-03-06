@@ -409,6 +409,15 @@ footer {
   .logo-row {
     display: none;
   }
+  .hero {
+    padding-bottom: 120px;
+  }
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  footer {
+    position: relative;
+  }
   .nav-links {
     display: none;
   }
