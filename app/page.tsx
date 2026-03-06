@@ -108,7 +108,9 @@ export default function Home() {
             <a href="/inscription" className="btn-primary">
               Inscription →
             </a>
-            <button className="btn-secondary">Découvrir les cours</button>
+            <a href="/cours/francais/primaire" className="btn-secondary">
+              Découvrir les cours
+            </a>
           </div>
         </div>
 
