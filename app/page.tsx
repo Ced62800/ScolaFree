@@ -50,22 +50,25 @@ export default function Home() {
               Connexion
             </a>
           )}
+          {prenom && (
+            <>
+              <span
+                style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem" }}
+              >
+                👋 {prenom}
+              </span>
+              {role === "admin" && (
+                <a href="/admin" className="admin-btn-link">
+                  ⚙️ Admin
+                </a>
+              )}
+              <button className="logout-btn-link" onClick={handleLogout}>
+                🚪 Déconnexion
+              </button>
+            </>
+          )}
         </div>
       </nav>
-
-      {prenom && (
-        <div className="welcome-banner">
-          👋 Bienvenue <strong>{prenom}</strong> !
-          {role === "admin" && (
-            <a href="/admin" className="admin-btn-link">
-              ⚙️ Admin
-            </a>
-          )}
-          <button className="logout-btn-link" onClick={handleLogout}>
-            🚪 Déconnexion
-          </button>
-        </div>
-      )}
 
       <section className="hero">
         <div className="blob blob-1"></div>
