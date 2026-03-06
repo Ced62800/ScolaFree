@@ -51,8 +51,9 @@ nav {
   font-size: 1.4rem;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0;
   white-space: nowrap;
+  letter-spacing: -0.5px;
 }
 .nav-logo span {
   color: var(--teal);
