@@ -3,9 +3,11 @@
 import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
 export default function Home() {
   const [prenom, setPrenom] = useState("");
   const [role, setRole] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function Home() {
     await supabase.auth.signOut();
     setPrenom("");
     setRole("");
+    setMenuOpen(false);
     router.refresh();
   };
 
@@ -41,6 +44,8 @@ export default function Home() {
         <div className="nav-logo">
           🎓 Scola<span>Free</span>
         </div>
+
+        {/* Menu desktop */}
         <div className="nav-links">
           <a href="#">Matières</a>
           <a href="#">Niveaux</a>
@@ -68,7 +73,56 @@ export default function Home() {
             </>
           )}
         </div>
+
+        {/* Bouton hamburger mobile */}
+        <button
+          className="hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
       </nav>
+
+      {/* Menu mobile overlay */}
+      {menuOpen && (
+        <div className="mobile-menu">
+          <a href="#" onClick={() => setMenuOpen(false)}>
+            Matières
+          </a>
+          <a href="#" onClick={() => setMenuOpen(false)}>
+            Niveaux
+          </a>
+          <a href="#" onClick={() => setMenuOpen(false)}>
+            À propos
+          </a>
+          <a href="/cours/francais/primaire" onClick={() => setMenuOpen(false)}>
+            Découvrir les cours
+          </a>
+          {!prenom && (
+            <a href="/connexion" className="mobile-menu-connexion">
+              Connexion
+            </a>
+          )}
+          {prenom && (
+            <>
+              <span className="mobile-menu-user">👋 Bonjour {prenom} !</span>
+              {role === "admin" && (
+                <a
+                  href="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className="mobile-menu-admin"
+                >
+                  ⚙️ Admin
+                </a>
+              )}
+              <button onClick={handleLogout} className="mobile-menu-logout">
+                🚪 Déconnexion
+              </button>
+            </>
+          )}
+        </div>
+      )}
 
       <section className="hero">
         <div className="blob blob-1"></div>
@@ -155,8 +209,7 @@ export default function Home() {
           <a href="#">Contact</a>
         </div>
         <div className="footer-copy">
-          © 2025 ScolaFree — [Structure juridique à compléter] — Tous droits
-          réservés
+          © 2025 ScolaFree — Tous droits réservés
         </div>
       </footer>
     </>
