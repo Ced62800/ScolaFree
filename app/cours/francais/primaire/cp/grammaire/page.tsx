@@ -1,7 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+function shuffleArray<T>(array: T[]): T[] {
+  return [...array].sort(() => Math.random() - 0.5);
+}
 
 const lecon = {
   titre: "Le nom",
@@ -76,6 +80,11 @@ export default function GrammaireCPNom() {
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
 
+  const shuffledOptions = useMemo(
+    () => shuffleArray(questions[qIndex].options),
+    [qIndex],
+  );
+
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -93,6 +102,14 @@ export default function GrammaireCPNom() {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
+  };
+
+  const handleRecommencer = () => {
+    setEtape("lecon");
+    setQIndex(0);
+    setSelected(null);
+    setScore(0);
+    setBonnes([]);
   };
 
   return (
@@ -158,7 +175,7 @@ export default function GrammaireCPNom() {
         <div className="qcm-wrapper">
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
-            {questions[qIndex].options.map((opt) => {
+            {shuffledOptions.map((opt) => {
               let className = "qcm-option";
               if (selected) {
                 if (opt === questions[qIndex].reponse) className += " correct";
@@ -226,16 +243,7 @@ export default function GrammaireCPNom() {
                 : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
-            <button
-              className="lecon-btn-outline"
-              onClick={() => {
-                setEtape("lecon");
-                setQIndex(0);
-                setSelected(null);
-                setScore(0);
-                setBonnes([]);
-              }}
-            >
+            <button className="lecon-btn-outline" onClick={handleRecommencer}>
               🔄 Recommencer
             </button>
             <button
