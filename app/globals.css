@@ -406,6 +406,9 @@ footer {
   nav {
     padding: 16px 24px;
   }
+  .logo-row {
+    display: none;
+  }
   .nav-links {
     display: none;
   }
