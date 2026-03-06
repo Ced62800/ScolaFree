@@ -1,99 +1,252 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const classes = [
+const lecon = {
+  titre: "Le nom",
+  intro:
+    "Un nom est un mot qui désigne une personne, un animal, une chose ou une idée.",
+  points: [
+    {
+      titre: "Le nom propre",
+      texte:
+        "Un nom propre désigne une personne ou un lieu particulier. Il commence toujours par une majuscule.",
+      exemple: "Marie, Paris, la France",
+    },
+    {
+      titre: "Le nom commun",
+      texte:
+        "Un nom commun désigne n'importe quelle personne, chose ou animal de la même espèce.",
+      exemple: "une fille, une ville, un chat",
+    },
+    {
+      titre: "Comment reconnaître un nom ?",
+      texte: 'On peut mettre "un", "une", "le", "la" devant un nom commun.',
+      exemple: "un chien, une maison, le soleil",
+    },
+  ],
+};
+
+const questions = [
   {
-    id: "cp",
-    label: "CP",
-    full: "Cours Préparatoire",
-    age: "6-7 ans",
-    color: "#4f8ef7",
-    emoji: "🌱",
-    nb: 4,
+    id: 1,
+    question: "Quel mot est un nom commun ?",
+    options: ["Paris", "chat", "Marie", "France"],
+    reponse: "chat",
+    explication:
+      '"chat" est un nom commun car il désigne n\'importe quel chat.',
   },
   {
-    id: "ce1",
-    label: "CE1",
-    full: "Cours Élémentaire 1",
-    age: "7-8 ans",
-    color: "#2ec4b6",
-    emoji: "🌿",
-    nb: 4,
+    id: 2,
+    question: "Quel mot est un nom propre ?",
+    options: ["maison", "voiture", "Lyon", "arbre"],
+    reponse: "Lyon",
+    explication:
+      "\"Lyon\" est un nom propre car c'est le nom d'une ville particulière.",
   },
   {
-    id: "ce2",
-    label: "CE2",
-    full: "Cours Élémentaire 2",
-    age: "8-9 ans",
-    color: "#ffd166",
-    emoji: "🌳",
-    nb: 4,
+    id: 3,
+    question: 'Complète : On peut mettre "une" devant un ...',
+    options: ["verbe", "adjectif", "nom commun", "nom propre"],
+    reponse: "nom commun",
+    explication: 'On met "un", "une", "le", "la" devant un nom commun.',
   },
   {
-    id: "cm1",
-    label: "CM1",
-    full: "Cours Moyen 1",
-    age: "9-10 ans",
-    color: "#ff6b6b",
-    emoji: "⭐",
-    nb: 4,
+    id: 4,
+    question: "Parmi ces mots, lequel est un nom ?",
+    options: ["courir", "beau", "soleil", "vite"],
+    reponse: "soleil",
+    explication: '"soleil" est un nom commun.',
   },
   {
-    id: "cm2",
-    label: "CM2",
-    full: "Cours Moyen 2",
-    age: "10-11 ans",
-    color: "#a78bfa",
-    emoji: "🚀",
-    nb: 4,
+    id: 5,
+    question: "Comment s'écrit toujours un nom propre ?",
+    options: ["En minuscule", "Avec une majuscule", "En italique", "En gras"],
+    reponse: "Avec une majuscule",
+    explication: "Un nom propre commence toujours par une majuscule.",
   },
 ];
 
-export default function FrancaisPrimaire() {
+export default function GrammaireCPNom() {
   const router = useRouter();
+  const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
+  const [qIndex, setQIndex] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [score, setScore] = useState(0);
+  const [bonnes, setBonnes] = useState<boolean[]>([]);
+
+  const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  const handleReponse = (option: string) => {
+    if (selected) return;
+    setSelected(option);
+    const correct = option === questions[qIndex].reponse;
+    if (correct) setScore((s) => s + 1);
+    setBonnes((b) => [...b, correct]);
+  };
+
+  const handleSuivant = () => {
+    if (qIndex + 1 >= questions.length) {
+      setEtape("fini");
+    } else {
+      setQIndex((i) => i + 1);
+      setSelected(null);
+    }
+  };
 
   return (
     <div className="cours-page">
-      {/* Header */}
       <div className="cours-header">
-        <button className="cours-back" onClick={() => router.push("/")}>
+        <button
+          className="cours-back"
+          onClick={() => router.push("/cours/francais/primaire/cp")}
+        >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Primaire</span>
+          <span>CP</span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Grammaire</span>
         </div>
       </div>
 
-      {/* Hero */}
-      <div className="cours-hero">
-        <div className="cours-hero-icon">📖</div>
-        <h1 className="cours-hero-title">Français — Primaire</h1>
-        <p className="cours-hero-desc">
-          Sélectionne ta classe pour accéder aux leçons et exercices
-        </p>
-      </div>
-
-      {/* Grille des classes */}
-      <div className="classes-grid">
-        {classes.map((c) => (
-          <div
-            key={c.id}
-            className="classe-card"
-            onClick={() => router.push(`/cours/francais/primaire/${c.id}`)}
-            style={{ "--card-color": c.color } as React.CSSProperties}
-          >
-            <div className="classe-emoji">{c.emoji}</div>
-            <div className="classe-label">{c.label}</div>
-            <div className="classe-full">{c.full}</div>
-            <div className="classe-age">{c.age}</div>
-            <div className="classe-nb">{c.nb} thèmes</div>
-            <div className="classe-arrow">→</div>
+      {etape === "qcm" && (
+        <div className="progression-wrapper">
+          <div className="progression-info">
+            <span>
+              Question {qIndex + 1} / {questions.length}
+            </span>
+            <span>
+              {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}
+            </span>
           </div>
-        ))}
-      </div>
+          <div className="progression-bar">
+            <div
+              className="progression-fill"
+              style={{ width: `${progression}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
+
+      {etape === "lecon" && (
+        <div className="lecon-wrapper">
+          <div className="lecon-badge">📝 Grammaire · CP</div>
+          <h1 className="lecon-titre">{lecon.titre}</h1>
+          <p className="lecon-intro">{lecon.intro}</p>
+          <div className="lecon-points">
+            {lecon.points.map((p, i) => (
+              <div key={i} className="lecon-point">
+                <div className="lecon-point-titre">{p.titre}</div>
+                <div className="lecon-point-texte">{p.texte}</div>
+                <div className="lecon-point-exemple">
+                  <span className="exemple-label">Exemples :</span> {p.exemple}
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="lecon-btn" onClick={() => setEtape("qcm")}>
+            Je suis prêt(e) — Passer aux exercices →
+          </button>
+        </div>
+      )}
+
+      {etape === "qcm" && (
+        <div className="qcm-wrapper">
+          <div className="qcm-question">{questions[qIndex].question}</div>
+          <div className="qcm-options">
+            {questions[qIndex].options.map((opt) => {
+              let className = "qcm-option";
+              if (selected) {
+                if (opt === questions[qIndex].reponse) className += " correct";
+                else if (opt === selected) className += " incorrect";
+                else className += " disabled";
+              }
+              return (
+                <button
+                  key={opt}
+                  className={className}
+                  onClick={() => handleReponse(opt)}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+          {selected && (
+            <div
+              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
+            >
+              <div className="feedback-icon">
+                {selected === questions[qIndex].reponse ? "✅" : "❌"}
+              </div>
+              <div className="feedback-texte">
+                <strong>
+                  {selected === questions[qIndex].reponse
+                    ? "Bravo !"
+                    : "Pas tout à fait..."}
+                </strong>
+                <p>{questions[qIndex].explication}</p>
+              </div>
+            </div>
+          )}
+          {selected && (
+            <button className="lecon-btn" onClick={handleSuivant}>
+              {qIndex + 1 >= questions.length
+                ? "Voir mon résultat →"
+                : "Question suivante →"}
+            </button>
+          )}
+        </div>
+      )}
+
+      {etape === "fini" && (
+        <div className="resultat-wrapper">
+          <div className="resultat-icon">
+            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+          </div>
+          <h2 className="resultat-titre">
+            {score === questions.length
+              ? "Parfait !"
+              : score >= 3
+                ? "Bien joué !"
+                : "Continue comme ça !"}
+          </h2>
+          <div className="resultat-score">
+            {score} / {questions.length}
+          </div>
+          <p className="resultat-desc">
+            {score === questions.length
+              ? "Tu as tout bon ! Tu maîtrises parfaitement le nom."
+              : score >= 3
+                ? "Tu as bien compris l'essentiel."
+                : "Relis la leçon et réessaie !"}
+          </p>
+          <div className="resultat-actions">
+            <button
+              className="lecon-btn-outline"
+              onClick={() => {
+                setEtape("lecon");
+                setQIndex(0);
+                setSelected(null);
+                setScore(0);
+                setBonnes([]);
+              }}
+            >
+              🔄 Recommencer
+            </button>
+            <button
+              className="lecon-btn"
+              onClick={() => router.push("/cours/francais/primaire/cp")}
+            >
+              Retour aux thèmes →
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
