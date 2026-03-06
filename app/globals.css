@@ -410,21 +410,23 @@ footer {
     display: none;
   }
   .hero {
-    padding-bottom: 120px;
+    height: auto;
+    min-height: 100vh;
+    padding-top: 80px;
+    padding-bottom: 60px;
   }
   .stats {
+    display: grid;
     grid-template-columns: 1fr 1fr;
   }
   footer {
     position: relative;
-  }
-  .nav-links {
-    display: none;
-  }
-  footer {
     padding: 10px 20px;
     justify-content: center;
     text-align: center;
+  }
+  .nav-links {
+    display: none !important;
   }
   .footer-copy {
     display: none;
