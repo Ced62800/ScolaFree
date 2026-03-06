@@ -19,6 +19,7 @@ export default function Admin() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [adminName, setAdminName] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     checkAdminAndLoad();
@@ -60,6 +61,7 @@ export default function Admin() {
       profiles.map((p) => (p.id === userId ? { ...p, role: newRole } : p)),
     );
   };
+
   const handleNiveauChange = async (userId: string, newNiveau: string) => {
     await supabase
       .from("profiles")
@@ -69,6 +71,7 @@ export default function Admin() {
       profiles.map((p) => (p.id === userId ? { ...p, niveau: newNiveau } : p)),
     );
   };
+
   const handleDelete = async (userId: string) => {
     if (!confirm("Supprimer cet utilisateur ?")) return;
     await supabase.from("profiles").delete().eq("id", userId);
@@ -97,7 +100,20 @@ export default function Admin() {
 
   return (
     <div className="admin-page">
-      <aside className="admin-sidebar">
+      {/* Overlay mobile */}
+      {sidebarOpen && (
+        <div className="admin-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      {/* Bouton hamburger mobile */}
+      <button
+        className="admin-hamburger"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        {sidebarOpen ? "✕" : "☰"}
+      </button>
+
+      <aside className={`admin-sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="admin-brand">
           🎓 Scola<span>Free</span>
         </div>
@@ -109,16 +125,32 @@ export default function Admin() {
           </div>
         </div>
         <nav className="admin-nav">
-          <a href="#" className="admin-nav-item active">
+          <a
+            href="#"
+            className="admin-nav-item active"
+            onClick={() => setSidebarOpen(false)}
+          >
             👥 Utilisateurs
           </a>
-          <a href="#" className="admin-nav-item">
+          <a
+            href="#"
+            className="admin-nav-item"
+            onClick={() => setSidebarOpen(false)}
+          >
             📚 Cours
           </a>
-          <a href="#" className="admin-nav-item">
+          <a
+            href="#"
+            className="admin-nav-item"
+            onClick={() => setSidebarOpen(false)}
+          >
             📊 Statistiques
           </a>
-          <a href="#" className="admin-nav-item">
+          <a
+            href="#"
+            className="admin-nav-item"
+            onClick={() => setSidebarOpen(false)}
+          >
             ⚙️ Paramètres
           </a>
         </nav>
@@ -134,7 +166,7 @@ export default function Admin() {
             <p>Bienvenue, {adminName} 👋</p>
           </div>
           <a href="/" className="back-home-btn">
-            🏠 Retour page d'accueil
+            🏠 Accueil
           </a>
         </div>
 
@@ -162,6 +194,55 @@ export default function Admin() {
             <h2>👥 Tous les utilisateurs</h2>
             <span className="admin-count">{stats.total} inscrits</span>
           </div>
+
+          {/* Cartes mobile */}
+          <div className="admin-cards-mobile">
+            {profiles.map((p) => (
+              <div key={p.id} className="admin-user-card">
+                <div className="admin-user-card-header">
+                  <div className="admin-user-card-name">
+                    {p.prenom} {p.nom}
+                  </div>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(p.id)}
+                  >
+                    🗑️
+                  </button>
+                </div>
+                <div className="admin-user-card-email">{p.email}</div>
+                <div className="admin-user-card-row">
+                  <label>Niveau</label>
+                  <select
+                    className="role-select"
+                    value={p.niveau}
+                    onChange={(e) => handleNiveauChange(p.id, e.target.value)}
+                  >
+                    <option value="primaire">Primaire</option>
+                    <option value="college">Collège</option>
+                    <option value="lycee">Lycée</option>
+                  </select>
+                </div>
+                <div className="admin-user-card-row">
+                  <label>Rôle</label>
+                  <select
+                    className="role-select"
+                    value={p.role}
+                    onChange={(e) => handleRoleChange(p.id, e.target.value)}
+                  >
+                    <option value="user">Utilisateur</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div className="admin-user-card-date">
+                  Inscrit le{" "}
+                  {new Date(p.created_at).toLocaleDateString("fr-FR")}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tableau desktop */}
           <table className="admin-table">
             <thead>
               <tr>

@@ -1551,3 +1551,104 @@ body:has(.admin-page) footer {
     display: flex;
   }
 }
+/* ── ADMIN MOBILE ── */
+.admin-hamburger {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  background: rgba(46, 196, 182, 0.15);
+  border: 1px solid var(--teal);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.admin-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 150;
+}
+.admin-cards-mobile {
+  display: none;
+}
+.admin-user-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.admin-user-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.admin-user-card-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+}
+.admin-user-card-email {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+.admin-user-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.admin-user-card-row label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+.admin-user-card-date {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+  margin-top: 8px;
+}
+
+@media (max-width: 700px) {
+  .admin-hamburger {
+    display: block;
+  }
+  .admin-overlay {
+    display: block;
+  }
+  .admin-sidebar {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    height: 100vh;
+    z-index: 160;
+    transition: left 0.3s ease;
+  }
+  .admin-sidebar.open {
+    left: 0;
+  }
+  .admin-main {
+    margin-left: 0 !important;
+    padding: 16px;
+    padding-top: 60px;
+  }
+  .admin-table {
+    display: none;
+  }
+  .admin-cards-mobile {
+    display: block;
+  }
+  .admin-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .admin-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
