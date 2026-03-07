@@ -10,65 +10,131 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Le nom",
   intro:
-    "Un nom est un mot qui désigne une personne, un animal, une chose ou une idée.",
+    "Le nom est un mot qui désigne une personne, un animal, une chose ou une idée. C'est un mot très important dans la phrase !",
   points: [
-    {
-      titre: "Le nom propre",
-      texte:
-        "Un nom propre désigne une personne ou un lieu particulier. Il commence toujours par une majuscule.",
-      exemple: "Marie, Paris, la France",
-    },
     {
       titre: "Le nom commun",
       texte:
-        "Un nom commun désigne n'importe quelle personne, chose ou animal de la même espèce.",
-      exemple: "une fille, une ville, un chat",
+        "Le nom commun désigne une chose, un animal ou une personne en général. Il commence par une minuscule.",
+      exemple: "chat · maison · enfant · fleur",
     },
     {
-      titre: "Comment reconnaître un nom ?",
-      texte: 'On peut mettre "un", "une", "le", "la" devant un nom commun.',
-      exemple: "un chien, une maison, le soleil",
+      titre: "Le nom propre",
+      texte:
+        "Le nom propre désigne une personne, un lieu ou un pays en particulier. Il commence toujours par une majuscule.",
+      exemple: "Emma · Paris · France · Léo",
+    },
+    {
+      titre: "Le genre du nom",
+      texte:
+        "Un nom peut être masculin ou féminin. On utilise 'un' ou 'le' pour les noms masculins, 'une' ou 'la' pour les noms féminins.",
+      exemple:
+        "un chat (masculin) · une chatte (féminin) · le garçon · la fille",
     },
   ],
 };
 
 const questions = [
+  // Faciles
   {
     id: 1,
     question: "Quel mot est un nom commun ?",
-    options: ["Paris", "chat", "Marie", "France"],
+    options: ["chat", "Emma", "Paris", "courir"],
     reponse: "chat",
     explication:
-      '"chat" est un nom commun car il désigne n\'importe quel chat.',
+      "'chat' est un nom commun car il désigne un animal en général.",
+    niveau: "facile",
   },
   {
     id: 2,
     question: "Quel mot est un nom propre ?",
-    options: ["maison", "voiture", "Lyon", "arbre"],
-    reponse: "Lyon",
+    options: ["maison", "fleur", "Paris", "chien"],
+    reponse: "Paris",
     explication:
-      "\"Lyon\" est un nom propre car c'est le nom d'une ville particulière.",
+      "'Paris' est un nom propre car il désigne une ville particulière et prend une majuscule.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: 'Complète : On peut mettre "une" devant un ...',
-    options: ["verbe", "adjectif", "nom commun", "nom propre"],
-    reponse: "nom commun",
-    explication: 'On met "un", "une", "le", "la" devant un nom commun.',
+    question: "Quel déterminant va avec un nom féminin ?",
+    options: ["un", "le", "une", "mon"],
+    reponse: "une",
+    explication:
+      "'une' s'utilise avec les noms féminins : une fleur, une maison.",
+    niveau: "facile",
   },
+  // Moyens
   {
     id: 4,
-    question: "Parmi ces mots, lequel est un nom ?",
-    options: ["courir", "beau", "soleil", "vite"],
-    reponse: "soleil",
-    explication: '"soleil" est un nom commun.',
+    question: "Dans 'Le chien de Léo aboie', combien y a-t-il de noms ?",
+    options: ["1", "2", "3", "4"],
+    reponse: "2",
+    explication: "Il y a 2 noms : 'chien' (nom commun) et 'Léo' (nom propre).",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Comment s'écrit toujours un nom propre ?",
-    options: ["En minuscule", "Avec une majuscule", "En italique", "En gras"],
-    reponse: "Avec une majuscule",
-    explication: "Un nom propre commence toujours par une majuscule.",
+    question: "Quel mot N'est PAS un nom ?",
+    options: ["maison", "courir", "chat", "fleur"],
+    reponse: "courir",
+    explication: "'courir' est un verbe, pas un nom.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quel est le genre du nom 'maison' ?",
+    options: ["masculin", "féminin", "neutre", "on ne sait pas"],
+    reponse: "féminin",
+    explication: "'maison' est féminin : on dit 'la maison', 'une maison'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Lequel de ces noms propres est mal écrit ?",
+    options: ["France", "emma", "Paris", "Léo"],
+    reponse: "emma",
+    explication:
+      "'emma' est mal écrit car un nom propre commence toujours par une majuscule : Emma.",
+    niveau: "moyen",
+  },
+  // Difficiles
+  {
+    id: 8,
+    question:
+      "Dans 'La petite fille mange une pomme', combien y a-t-il de noms communs ?",
+    options: ["1", "2", "3", "4"],
+    reponse: "2",
+    explication:
+      "Il y a 2 noms communs : 'fille' et 'pomme'. 'petite' est un adjectif.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Quel groupe contient uniquement des noms communs ?",
+    options: [
+      "chat, Emma, maison",
+      "chien, fleur, table",
+      "Paris, Lucas, France",
+      "petit, grand, beau",
+    ],
+    reponse: "chien, fleur, table",
+    explication: "'chien', 'fleur' et 'table' sont tous des noms communs.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question:
+      "Dans 'Lucas joue avec son ami Paul', quels sont les noms propres ?",
+    options: [
+      "Lucas seulement",
+      "Paul seulement",
+      "Lucas et Paul",
+      "ami et Lucas",
+    ],
+    reponse: "Lucas et Paul",
+    explication:
+      "'Lucas' et 'Paul' sont des noms propres car ce sont des prénoms qui commencent par une majuscule.",
+    niveau: "difficile",
   },
 ];
 
@@ -112,6 +178,12 @@ export default function GrammaireCPNom() {
     setBonnes([]);
   };
 
+  const niveauLabel = (niveau: string) => {
+    if (niveau === "facile") return "🟢 Facile";
+    if (niveau === "moyen") return "🟡 Moyen";
+    return "🔴 Difficile";
+  };
+
   return (
     <div className="cours-page">
       <div className="cours-header">
@@ -145,6 +217,9 @@ export default function GrammaireCPNom() {
               className="progression-fill"
               style={{ width: `${progression}%` }}
             ></div>
+          </div>
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
           </div>
         </div>
       )}
@@ -223,24 +298,28 @@ export default function GrammaireCPNom() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises parfaitement le nom."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement le nom !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

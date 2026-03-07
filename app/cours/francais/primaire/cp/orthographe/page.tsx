@@ -34,12 +34,14 @@ const lecon = {
 };
 
 const questions = [
+  // Faciles
   {
     id: 1,
     question: "Quel mot contient le son [a] ?",
     options: ["lit", "bus", "chat", "sol"],
     reponse: "chat",
     explication: "'chat' contient le son [a] : ch-a-t.",
+    niveau: "facile",
   },
   {
     id: 2,
@@ -47,6 +49,7 @@ const questions = [
     options: ["pain", "bateau", "ami", "lit"],
     reponse: "bateau",
     explication: "'bateau' contient le son [o] écrit 'eau'.",
+    niveau: "facile",
   },
   {
     id: 3,
@@ -54,13 +57,16 @@ const questions = [
     options: ["c", "h", "a", "t"],
     reponse: "t",
     explication: "Dans 'chat', le 't' final ne se prononce pas.",
+    niveau: "facile",
   },
+  // Moyens
   {
     id: 4,
     question: "Comment s'écrit le son [o] dans 'chapeau' ?",
     options: ["o", "au", "eau", "a"],
     reponse: "eau",
     explication: "Dans 'chapeau', le son [o] s'écrit 'eau'.",
+    niveau: "moyen",
   },
   {
     id: 5,
@@ -68,6 +74,54 @@ const questions = [
     options: ["b", "r", "a", "s"],
     reponse: "s",
     explication: "Dans 'bras', le 's' final ne se prononce pas.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quel mot contient le son [o] écrit 'au' ?",
+    options: ["bateau", "chapeau", "chaud", "chat"],
+    reponse: "chaud",
+    explication: "Dans 'chaud', le son [o] s'écrit 'au'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Combien de lettres muettes y a-t-il dans 'petit' ?",
+    options: ["0", "1", "2", "3"],
+    reponse: "1",
+    explication: "Dans 'petit', le 't' final est muet.",
+    niveau: "moyen",
+  },
+  // Difficiles
+  {
+    id: 8,
+    question: "Quel mot contient le son [a] écrit deux fois ?",
+    options: ["bateau", "papa", "chat", "ami"],
+    reponse: "papa",
+    explication: "'papa' contient deux fois le son [a] : p-a-p-a.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Dans 'gros', quelle lettre est muette ?",
+    options: ["g", "r", "o", "s"],
+    reponse: "s",
+    explication: "Dans 'gros', le 's' final ne se prononce pas.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Quel groupe de mots contient uniquement le son [o] ?",
+    options: [
+      "bateau, chaud, gros",
+      "ami, papa, chat",
+      "lit, bus, sol",
+      "pain, bras, petit",
+    ],
+    reponse: "bateau, chaud, gros",
+    explication:
+      "'bateau' (eau), 'chaud' (au) et 'gros' (o) contiennent tous le son [o].",
+    niveau: "difficile",
   },
 ];
 
@@ -111,6 +165,12 @@ export default function OrthographeCPSons() {
     setBonnes([]);
   };
 
+  const niveauLabel = (niveau: string) => {
+    if (niveau === "facile") return "🟢 Facile";
+    if (niveau === "moyen") return "🟡 Moyen";
+    return "🔴 Difficile";
+  };
+
   return (
     <div className="cours-page">
       <div className="cours-header">
@@ -144,6 +204,9 @@ export default function OrthographeCPSons() {
               className="progression-fill"
               style={{ width: `${progression}%` }}
             ></div>
+          </div>
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
           </div>
         </div>
       )}
@@ -222,24 +285,28 @@ export default function OrthographeCPSons() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les sons et les lettres."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les sons et les lettres !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

@@ -10,63 +10,130 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Le verbe être au présent",
   intro:
-    "Le verbe 'être' est un verbe très important. On l'utilise tout le temps ! Apprenons à le conjuguer au présent.",
+    "Le verbe 'être' est l'un des verbes les plus utilisés en français. Apprenons à le conjuguer au présent !",
   points: [
     {
       titre: "La conjugaison du verbe être",
-      texte: "Voici comment on conjugue le verbe être au présent :",
-      exemple:
-        "Je suis · Tu es · Il/Elle est · Nous sommes · Vous êtes · Ils/Elles sont",
-    },
-    {
-      titre: "À quoi ça sert ?",
       texte:
-        "On utilise le verbe être pour décrire quelqu'un ou quelque chose.",
-      exemple: "Je suis content. · Tu es gentil. · Elle est grande.",
+        "Le verbe être change selon la personne. Il faut apprendre toutes les formes par cœur.",
+      exemple:
+        "je suis · tu es · il/elle est · nous sommes · vous êtes · ils/elles sont",
     },
     {
-      titre: "Comment reconnaître le verbe être ?",
-      texte: "Le verbe être change de forme selon la personne qui parle.",
-      exemple: "Je suis → Tu es → Il est",
+      titre: "Utilisation du verbe être",
+      texte:
+        "Le verbe être sert à décrire une personne, un animal ou une chose. Il relie le sujet à un attribut.",
+      exemple: "Je suis content. · Le chat est noir. · Nous sommes à l'école.",
+    },
+    {
+      titre: "La négation avec être",
+      texte:
+        "Pour mettre le verbe être à la forme négative, on encadre le verbe avec 'ne...pas'.",
+      exemple:
+        "Je ne suis pas triste. · Il n'est pas grand. · Nous ne sommes pas en retard.",
     },
   ],
 };
 
 const questions = [
+  // Faciles
   {
     id: 1,
-    question: "Complète : Je ___ content.",
-    options: ["es", "est", "suis", "sommes"],
+    question: "Complète : 'Je ___ content.'",
+    options: ["es", "suis", "est", "sommes"],
     reponse: "suis",
-    explication: "Avec 'je', on dit 'je suis'.",
+    explication: "Avec 'je', le verbe être se conjugue 'suis' : je suis.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète : Tu ___ mon ami.",
-    options: ["suis", "est", "êtes", "es"],
+    question: "Complète : 'Tu ___ mon ami.'",
+    options: ["suis", "est", "es", "sont"],
     reponse: "es",
-    explication: "Avec 'tu', on dit 'tu es'.",
+    explication: "Avec 'tu', le verbe être se conjugue 'es' : tu es.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : Il ___ grand.",
-    options: ["est", "es", "suis", "sont"],
+    question: "Complète : 'Il ___ grand.'",
+    options: ["es", "suis", "sont", "est"],
     reponse: "est",
-    explication: "Avec 'il', on dit 'il est'.",
+    explication: "Avec 'il', le verbe être se conjugue 'est' : il est.",
+    niveau: "facile",
   },
+  // Moyens
   {
     id: 4,
-    question: "Complète : Nous ___ à l'école.",
+    question: "Complète : 'Nous ___ à l'école.'",
     options: ["êtes", "sont", "sommes", "suis"],
     reponse: "sommes",
-    explication: "Avec 'nous', on dit 'nous sommes'.",
+    explication:
+      "Avec 'nous', le verbe être se conjugue 'sommes' : nous sommes.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Complète : Ils ___ fatigués.",
-    options: ["est", "sommes", "êtes", "sont"],
+    question: "Complète : 'Vous ___ en retard.'",
+    options: ["sommes", "sont", "êtes", "est"],
+    reponse: "êtes",
+    explication: "Avec 'vous', le verbe être se conjugue 'êtes' : vous êtes.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Complète : 'Ils ___ fatigués.'",
+    options: ["est", "êtes", "sommes", "sont"],
     reponse: "sont",
-    explication: "Avec 'ils', on dit 'ils sont'.",
+    explication: "Avec 'ils', le verbe être se conjugue 'sont' : ils sont.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quelle phrase est correcte ?",
+    options: [
+      "Je est heureux.",
+      "Tu suis gentil.",
+      "Elle est belle.",
+      "Nous êtes ici.",
+    ],
+    reponse: "Elle est belle.",
+    explication: "'Elle est belle' est correct : avec 'elle' on utilise 'est'.",
+    niveau: "moyen",
+  },
+  // Difficiles
+  {
+    id: 8,
+    question: "Mets à la forme négative : 'Je suis triste.'",
+    options: [
+      "Je suis pas triste.",
+      "Je ne suis pas triste.",
+      "Je ne pas suis triste.",
+      "Je suis ne triste pas.",
+    ],
+    reponse: "Je ne suis pas triste.",
+    explication: "La négation encadre le verbe : 'Je ne suis pas triste.'",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Complète : 'Emma et Léo ___ dans le jardin.'",
+    options: ["est", "êtes", "sommes", "sont"],
+    reponse: "sont",
+    explication: "'Emma et Léo' = ils → le verbe être se conjugue 'sont'.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Laquelle de ces phrases contient une erreur ?",
+    options: [
+      "Je suis à la maison.",
+      "Tu es mon ami.",
+      "Nous sommes contents.",
+      "Ils est partis.",
+    ],
+    reponse: "Ils est partis.",
+    explication: "Avec 'ils', on dit 'sont' et non 'est' : 'Ils sont partis.'",
+    niveau: "difficile",
   },
 ];
 
@@ -110,6 +177,12 @@ export default function ConjugaisonCPEtre() {
     setBonnes([]);
   };
 
+  const niveauLabel = (niveau: string) => {
+    if (niveau === "facile") return "🟢 Facile";
+    if (niveau === "moyen") return "🟡 Moyen";
+    return "🔴 Difficile";
+  };
+
   return (
     <div className="cours-page">
       <div className="cours-header">
@@ -143,6 +216,9 @@ export default function ConjugaisonCPEtre() {
               className="progression-fill"
               style={{ width: `${progression}%` }}
             ></div>
+          </div>
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
           </div>
         </div>
       )}
@@ -221,24 +297,28 @@ export default function ConjugaisonCPEtre() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises le verbe être au présent."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement le verbe être !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

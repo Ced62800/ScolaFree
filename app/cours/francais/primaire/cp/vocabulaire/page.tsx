@@ -34,12 +34,14 @@ const lecon = {
 };
 
 const questions = [
+  // Faciles
   {
     id: 1,
     question: "Quel est le contraire de 'grand' ?",
     options: ["beau", "petit", "rapide", "chaud"],
     reponse: "petit",
     explication: "Le contraire de 'grand' est 'petit'.",
+    niveau: "facile",
   },
   {
     id: 2,
@@ -47,6 +49,7 @@ const questions = [
     options: ["triste", "fatigué", "heureux", "fâché"],
     reponse: "heureux",
     explication: "'content' et 'heureux' veulent dire la même chose.",
+    niveau: "facile",
   },
   {
     id: 3,
@@ -54,7 +57,9 @@ const questions = [
     options: ["grand", "froid", "beau", "lent"],
     reponse: "froid",
     explication: "Le contraire de 'chaud' est 'froid'.",
+    niveau: "facile",
   },
+  // Moyens
   {
     id: 4,
     question: "Quel mot appartient à la famille de 'fleur' ?",
@@ -62,6 +67,7 @@ const questions = [
     reponse: "fleuriste",
     explication:
       "'fleuriste' appartient à la famille de 'fleur' car il vient du même mot.",
+    niveau: "moyen",
   },
   {
     id: 5,
@@ -69,6 +75,63 @@ const questions = [
     options: ["lent", "vite", "grand", "fort"],
     reponse: "vite",
     explication: "'rapide' et 'vite' veulent dire la même chose.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quel est le contraire de 'jour' ?",
+    options: ["matin", "soir", "nuit", "midi"],
+    reponse: "nuit",
+    explication: "Le contraire de 'jour' est 'nuit'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quel mot appartient à la famille de 'chat' ?",
+    options: ["chaton", "chien", "lapin", "oiseau"],
+    reponse: "chaton",
+    explication:
+      "'chaton' appartient à la famille de 'chat' car il contient la même racine.",
+    niveau: "moyen",
+  },
+  // Difficiles
+  {
+    id: 8,
+    question: "Quel groupe contient uniquement des synonymes ?",
+    options: [
+      "content / triste",
+      "beau / joli",
+      "grand / petit",
+      "chaud / froid",
+    ],
+    reponse: "beau / joli",
+    explication:
+      "'beau' et 'joli' sont synonymes car ils veulent dire la même chose.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Quel groupe contient uniquement des contraires ?",
+    options: [
+      "content / heureux",
+      "rapide / vite",
+      "jour / nuit",
+      "beau / joli",
+    ],
+    reponse: "jour / nuit",
+    explication:
+      "'jour' et 'nuit' sont des contraires car ils ont des sens opposés.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question:
+      "Parmi ces mots, lequel N'appartient PAS à la famille de 'maison' ?",
+    options: ["maisonnette", "maisonner", "maisonnée", "maçon"],
+    reponse: "maçon",
+    explication:
+      "'maçon' ne vient pas de 'maison'. Les autres mots (maisonnette, maisonnée) partagent la même racine.",
+    niveau: "difficile",
   },
 ];
 
@@ -112,6 +175,12 @@ export default function VocabulaireCPMots() {
     setBonnes([]);
   };
 
+  const niveauLabel = (niveau: string) => {
+    if (niveau === "facile") return "🟢 Facile";
+    if (niveau === "moyen") return "🟡 Moyen";
+    return "🔴 Difficile";
+  };
+
   return (
     <div className="cours-page">
       <div className="cours-header">
@@ -145,6 +214,9 @@ export default function VocabulaireCPMots() {
               className="progression-fill"
               style={{ width: `${progression}%` }}
             ></div>
+          </div>
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
           </div>
         </div>
       )}
@@ -223,24 +295,28 @@ export default function VocabulaireCPMots() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les mots et leurs sens."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les mots et leurs sens !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

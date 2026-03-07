@@ -1652,3 +1652,134 @@ body:has(.admin-page) footer {
     grid-template-columns: 1fr 1fr;
   }
 }
+/* ========== NIVEAU LABEL ========== */
+.niveau-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* ========== BILAN FINAL ========== */
+.bilan-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.bilan-info-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.bilan-score-info {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #aaa;
+  margin-bottom: 24px;
+}
+
+.bilan-score-info strong {
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.bilan-detail {
+  width: 100%;
+  max-width: 480px;
+  margin: 24px auto;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 20px 24px;
+}
+
+.bilan-detail-titre {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #fff;
+  text-align: center;
+}
+
+.bilan-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bilan-detail-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-width: 140px;
+  color: #ddd;
+}
+
+.bilan-detail-bar-wrapper {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.bilan-detail-bar {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.6s ease;
+}
+
+.bilan-detail-score {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ========== BOUTON BILAN SUR PAGE CLASSE ========== */
+.bilan-btn-wrapper {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.bilan-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #ffd166, #ff6b6b);
+  color: #1a1a2e;
+  font-weight: 800;
+  font-size: 1.1rem;
+  padding: 16px 32px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(255, 209, 102, 0.3);
+}
+
+.bilan-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 209, 102, 0.5);
+}
+
+@media (max-width: 700px) {
+  .bilan-info-grid {
+    grid-template-columns: 1fr;
+  }
+  .bilan-detail-label {
+    min-width: 110px;
+    font-size: 0.82rem;
+  }
+}
