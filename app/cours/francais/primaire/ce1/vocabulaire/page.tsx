@@ -10,25 +10,27 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Les préfixes et les suffixes",
   intro:
-    "Les préfixes et les suffixes sont des petits morceaux de mots qu'on ajoute pour créer de nouveaux mots. C'est très utile pour comprendre et mémoriser le vocabulaire !",
+    "On peut créer de nouveaux mots en ajoutant des éléments au début (préfixe) ou à la fin (suffixe) d'un mot. C'est très utile pour comprendre le sens des mots nouveaux !",
   points: [
     {
-      titre: "Le préfixe",
+      titre: "Les préfixes",
       texte:
-        "Un préfixe s'ajoute au début d'un mot pour changer son sens. Par exemple 'in-' ou 'im-' veut dire 'pas'.",
-      exemple: "possible → impossible · connu → inconnu · utile → inutile",
+        "Un préfixe se place AVANT le mot. Il change son sens. 'in-', 'im-', 'dé-', 're-' sont des préfixes courants.",
+      exemple: "possible → impossible · faire → défaire · venir → revenir",
     },
     {
-      titre: "Le suffixe",
+      titre: "Les suffixes",
       texte:
-        "Un suffixe s'ajoute à la fin d'un mot pour créer un nouveau mot. Par exemple '-eur' désigne souvent une personne qui fait quelque chose.",
-      exemple: "chanter → chanteur · danser → danseur · lire → lecteur",
+        "Un suffixe se place APRÈS le mot. Il change la nature ou le sens du mot. '-eur', '-tion', '-ette' sont des suffixes courants.",
+      exemple:
+        "chanter → chanteur · jardiner → jardinier · maison → maisonnette",
     },
     {
-      titre: "Les familles de mots",
+      titre: "Reconnaître le sens",
       texte:
-        "Des mots qui partagent la même racine forment une famille. Reconnaître la racine aide à comprendre le sens.",
-      exemple: "terre → enterrer · territoire · terrestre",
+        "En reconnaissant les préfixes et suffixes, on peut deviner le sens d'un mot inconnu !",
+      exemple:
+        "in- = contraire → injuste = pas juste · re- = à nouveau → relire = lire à nouveau",
     },
   ],
 };
@@ -36,46 +38,114 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Que veut dire le préfixe 'in-' dans 'inconnu' ?",
-    options: ["très", "pas", "encore", "avec"],
-    reponse: "pas",
-    explication: "Le préfixe 'in-' signifie 'pas' : inconnu = pas connu.",
+    question: "Quel est le préfixe dans 'impossible' ?",
+    options: ["im", "possible", "ible", "po"],
+    reponse: "im",
+    explication:
+      "'im-' est le préfixe — il signifie 'pas' : impossible = pas possible.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Quel mot est formé avec le suffixe '-eur' ?",
-    options: ["maison", "chanteur", "petit", "arbre"],
-    reponse: "chanteur",
-    explication:
-      "'chanteur' est formé de 'chanter' + '-eur', qui désigne la personne qui chante.",
+    question: "Que signifie le préfixe 're-' dans 'relire' ?",
+    options: ["avant", "à nouveau", "contraire", "après"],
+    reponse: "à nouveau",
+    explication: "'re-' signifie 'à nouveau' : relire = lire à nouveau.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Quel mot appartient à la famille de 'terre' ?",
-    options: ["mer", "ciel", "terrestre", "montagne"],
-    reponse: "terrestre",
-    explication:
-      "'terrestre' appartient à la famille de 'terre' car il contient la racine 'terr-'.",
+    question: "Quel mot contient un suffixe qui indique un métier ?",
+    options: ["maisonnette", "impossible", "boulanger", "refaire"],
+    reponse: "boulanger",
+    explication: "'-er' dans 'boulanger' indique un métier.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est le contraire de 'utile' avec un préfixe ?",
-    options: ["très utile", "inutile", "utiles", "utiliser"],
-    reponse: "inutile",
+    question: "Que signifie 'défaire' ?",
+    options: [
+      "faire à nouveau",
+      "faire avant",
+      "faire le contraire de faire",
+      "bien faire",
+    ],
+    reponse: "faire le contraire de faire",
     explication:
-      "On ajoute le préfixe 'in-' devant 'utile' pour former 'inutile' qui veut dire 'pas utile'.",
+      "'dé-' indique le contraire : défaire = faire le contraire de faire.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Quel suffixe permet de former le mot 'danseur' ?",
-    options: ["-age", "-eur", "-ment", "-tion"],
-    reponse: "-eur",
+    question:
+      "Quel préfixe peut-on ajouter à 'heureux' pour former son contraire ?",
+    options: ["re-", "dé-", "in-", "sur-"],
+    reponse: "in-",
     explication:
-      "'danseur' = 'danser' + '-eur'. Le suffixe '-eur' désigne la personne qui danse.",
+      "'in-' + 'heureux' = 'inheureux' (malheureux). 'in-' indique le contraire.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quel est le suffixe dans 'chanteur' ?",
+    options: ["chan", "chant", "eur", "teur"],
+    reponse: "eur",
+    explication:
+      "'-eur' est le suffixe — il indique la personne qui fait l'action.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Que signifie 'maisonnette' ?",
+    options: [
+      "grande maison",
+      "petite maison",
+      "belle maison",
+      "vieille maison",
+    ],
+    reponse: "petite maison",
+    explication: "Le suffixe '-ette' indique quelque chose de petit.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Quel mot est formé avec le préfixe 're-' ?",
+    options: ["renard", "repas", "recommencer", "requin"],
+    reponse: "recommencer",
+    explication: "'re-' + 'commencer' = recommencer (commencer à nouveau).",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question:
+      "Quel suffixe transforme un verbe en nom de métier ? 'jardiner → jardin___'",
+    options: ["-ier", "-tion", "-ette", "-eur"],
+    reponse: "-ier",
+    explication: "'-ier' transforme 'jardiner' en 'jardinier' (métier).",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Que signifie 'prévisible' ? (pré- = avant, -ible = possible)",
+    options: [
+      "pas possible à voir",
+      "possible à voir à l'avance",
+      "très visible",
+      "déjà vu",
+    ],
+    reponse: "possible à voir à l'avance",
+    explication: "'pré-' = avant + 'visible' = possible à voir à l'avance.",
+    niveau: "difficile",
   },
 ];
 
-export default function VocabulaireCE1Prefixes() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function VocabulaireCE1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -87,7 +157,6 @@ export default function VocabulaireCE1Prefixes() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -99,9 +168,8 @@ export default function VocabulaireCE1Prefixes() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -176,6 +244,9 @@ export default function VocabulaireCE1Prefixes() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -226,24 +297,28 @@ export default function VocabulaireCE1Prefixes() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les préfixes et les suffixes."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les préfixes et suffixes !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

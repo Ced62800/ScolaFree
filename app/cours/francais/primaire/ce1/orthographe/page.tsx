@@ -10,25 +10,25 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Les accords dans le groupe nominal",
   intro:
-    "En français, les mots d'un groupe nominal doivent s'accorder entre eux. Cela veut dire qu'ils changent selon le genre (masculin/féminin) et le nombre (singulier/pluriel).",
+    "Dans un groupe nominal, le déterminant et l'adjectif s'accordent avec le nom. Si le nom est féminin, tout devient féminin. Si le nom est pluriel, tout devient pluriel !",
   points: [
     {
-      titre: "Le masculin et le féminin",
+      titre: "L'accord en genre",
       texte:
-        "Les noms et les adjectifs peuvent être masculins ou féminins. On ajoute souvent un 'e' pour former le féminin.",
-      exemple: "un chat → une chatte · un petit garçon → une petite fille",
+        "Un nom masculin → déterminant et adjectif masculins. Un nom féminin → déterminant et adjectif féminins.",
+      exemple: "un petit chat · une petite chatte",
     },
     {
-      titre: "Le singulier et le pluriel",
+      titre: "L'accord en nombre",
       texte:
-        "On ajoute généralement un 's' à la fin du mot pour former le pluriel.",
-      exemple: "un chien → des chiens · une fleur → des fleurs",
+        "Un nom singulier → déterminant et adjectif singuliers. Un nom pluriel → déterminant et adjectif pluriels (on ajoute -s).",
+      exemple: "le grand arbre · les grands arbres",
     },
     {
-      titre: "Le déterminant s'accorde aussi",
-      texte:
-        "Le déterminant (un, une, le, la, les) s'accorde toujours avec le nom.",
-      exemple: "le garçon → les garçons · la fille → les filles",
+      titre: "Les deux accords ensemble",
+      texte: "On peut avoir un accord en genre ET en nombre en même temps.",
+      exemple:
+        "un beau jardin · une belle fleur · de beaux jardins · de belles fleurs",
     },
   ],
 };
@@ -36,54 +36,135 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel est le féminin de 'un petit chat' ?",
+    question: "Quel groupe nominal est correct ?",
     options: [
-      "un petite chatte",
-      "une petit chatte",
-      "une petite chatte",
+      "un petite chat",
+      "une petit chat",
+      "un petit chat",
       "une petite chat",
     ],
-    reponse: "une petite chatte",
-    explication:
-      "Au féminin : 'une' remplace 'un', et on ajoute 'e' à 'petit' et 'chat'.",
+    reponse: "un petit chat",
+    explication: "'chat' est masculin → 'un' et 'petit' sont masculins.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Quel est le pluriel de 'une fleur' ?",
-    options: ["un fleurs", "une fleurs", "des fleur", "des fleurs"],
-    reponse: "des fleurs",
-    explication: "Au pluriel : 'une' devient 'des' et on ajoute 's' à 'fleur'.",
+    question: "Quel groupe nominal est correct ?",
+    options: [
+      "une grande maison",
+      "un grande maison",
+      "une grand maison",
+      "un grand maison",
+    ],
+    reponse: "une grande maison",
+    explication: "'maison' est féminin → 'une' et 'grande' sont féminins.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Quel déterminant convient ? '___ garçons jouent.'",
-    options: ["Le", "La", "Les", "Un"],
-    reponse: "Les",
-    explication: "'garçons' est au pluriel donc on utilise 'Les'.",
+    question: "Mets au pluriel : 'un beau livre'",
+    options: [
+      "un beaux livres",
+      "des beau livres",
+      "de beaux livres",
+      "des beaux livre",
+    ],
+    reponse: "de beaux livres",
+    explication: "Au pluriel masculin : 'de beaux livres'.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est le pluriel de 'le beau chien' ?",
-    options: [
-      "les beau chiens",
-      "les beaux chien",
-      "les beaux chiens",
-      "des beau chiens",
-    ],
-    reponse: "les beaux chiens",
-    explication:
-      "Au pluriel : 'le' devient 'les', 'beau' devient 'beaux' et 'chien' devient 'chiens'.",
+    question: "Quel adjectif convient ? 'une fleur ___'",
+    options: ["rouge", "rouges", "rougé", "rougée"],
+    reponse: "rouge",
+    explication: "'rouge' ne change pas au féminin singulier.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Quel mot est au féminin ?",
-    options: ["le cheval", "un garçon", "une fille", "le chat"],
-    reponse: "une fille",
-    explication: "'une fille' est au féminin car il est précédé de 'une'.",
+    question: "Mets au féminin : 'un chat noir'",
+    options: [
+      "une chat noire",
+      "une chatte noire",
+      "un chatte noir",
+      "une chatte noir",
+    ],
+    reponse: "une chatte noire",
+    explication:
+      "Au féminin : 'une chatte noire' — le déterminant et l'adjectif s'accordent.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quel groupe nominal est au pluriel ?",
+    options: [
+      "le petit garçon",
+      "une belle fleur",
+      "les petits garçons",
+      "un grand arbre",
+    ],
+    reponse: "les petits garçons",
+    explication:
+      "'les petits garçons' est au pluriel — déterminant et adjectif ont le -s.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Complète : 'des ___ filles'",
+    options: ["beau", "belle", "belles", "beaux"],
+    reponse: "belles",
+    explication: "'filles' est féminin pluriel → 'belles'.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Quel groupe nominal est correct ?",
+    options: [
+      "les petites chiens",
+      "les petit chiens",
+      "les petits chiens",
+      "les petits chien",
+    ],
+    reponse: "les petits chiens",
+    explication: "'chiens' est masculin pluriel → 'les petits chiens'.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Mets au féminin pluriel : 'un vieux monsieur'",
+    options: [
+      "une vieilles dames",
+      "de vieilles dames",
+      "des vielle dames",
+      "une vielle dame",
+    ],
+    reponse: "de vieilles dames",
+    explication: "Au féminin pluriel : 'de vieilles dames'.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Quel groupe nominal contient une erreur d'accord ?",
+    options: [
+      "une belle maison",
+      "les grands arbres",
+      "un petite garçon",
+      "de jolies fleurs",
+    ],
+    reponse: "un petite garçon",
+    explication: "'garçon' est masculin → il faut 'un petit garçon'.",
+    niveau: "difficile",
   },
 ];
 
-export default function OrthographeCE1Accords() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function OrthographeCE1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -95,7 +176,6 @@ export default function OrthographeCE1Accords() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -107,9 +187,8 @@ export default function OrthographeCE1Accords() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -184,6 +263,9 @@ export default function OrthographeCE1Accords() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -234,24 +316,28 @@ export default function OrthographeCE1Accords() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les accords dans le groupe nominal."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les accords !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

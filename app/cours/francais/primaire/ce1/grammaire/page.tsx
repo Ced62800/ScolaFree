@@ -10,24 +10,25 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Le verbe",
   intro:
-    "Le verbe est un mot qui exprime une action ou un état. C'est le mot le plus important de la phrase !",
+    "Le verbe est le mot le plus important de la phrase. Il indique ce que fait ou ce qu'est le sujet. Sans verbe, pas de phrase !",
   points: [
     {
       titre: "Qu'est-ce qu'un verbe ?",
-      texte: "Un verbe exprime ce que fait ou ce qu'est le sujet de la phrase.",
-      exemple: "Le chien court. · Emma mange. · Le ciel est bleu.",
+      texte:
+        "Le verbe exprime une action ou un état. Il change selon la personne et le temps.",
+      exemple: "Le chien court. · Emma mange. · Je suis content.",
     },
     {
       titre: "Comment reconnaître un verbe ?",
       texte:
-        "Le verbe change selon le temps et la personne. On peut le faire précéder de 'il' ou 'elle'.",
-      exemple: "il court · elle mange · il est",
+        "On peut mettre 'ne... pas' autour du verbe. Si ça marche, c'est un verbe !",
+      exemple: "Le chien ne court pas. · Emma ne mange pas.",
     },
     {
-      titre: "L'infinitif du verbe",
+      titre: "Le verbe change avec le sujet",
       texte:
-        "L'infinitif est la forme de base du verbe, celle qu'on trouve dans le dictionnaire. Il se termine souvent par -er, -ir ou -re.",
-      exemple: "courir · manger · être · avoir",
+        "Le verbe s'accorde avec son sujet. Il change de forme selon qui fait l'action.",
+      exemple: "Je mange · Tu manges · Il mange · Nous mangeons",
     },
   ],
 };
@@ -35,44 +36,103 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel mot est un verbe dans cette phrase : 'Le chat dort.'",
-    options: ["Le", "chat", "dort", "."],
+    question:
+      "Quel mot est un verbe dans cette phrase : 'Le chat dort sur le canapé' ?",
+    options: ["chat", "dort", "canapé", "le"],
     reponse: "dort",
-    explication: "'dort' est le verbe car il exprime l'action du chat.",
+    explication: "'dort' est le verbe — il indique ce que fait le chat.",
+    niveau: "facile",
   },
   {
     id: 2,
     question: "Quel mot est un verbe ?",
     options: ["maison", "courir", "beau", "table"],
     reponse: "courir",
-    explication: "'courir' est un verbe à l'infinitif.",
+    explication: "'courir' est un verbe — il exprime une action.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question:
-      "Quelle est la terminaison la plus courante des verbes à l'infinitif ?",
-    options: ["-age", "-eur", "-er", "-ment"],
-    reponse: "-er",
+    question: "Dans 'Les enfants jouent au parc', quel est le verbe ?",
+    options: ["enfants", "parc", "jouent", "les"],
+    reponse: "jouent",
     explication:
-      "La plupart des verbes français se terminent par -er à l'infinitif.",
+      "'jouent' est le verbe — les enfants ne jouent pas → ça marche !",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel verbe correspond à l'action de manger ?",
-    options: ["mangeur", "manger", "mangeable", "mangeoire"],
-    reponse: "manger",
-    explication: "'manger' est le verbe à l'infinitif.",
+    question: "Quelle phrase contient un verbe d'état ?",
+    options: [
+      "Le chien court.",
+      "Emma chante.",
+      "Paul est grand.",
+      "Léa mange.",
+    ],
+    reponse: "Paul est grand.",
+    explication: "'est' est un verbe d'état — il indique comment est Paul.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Dans 'Emma chante une chanson', quel est le verbe ?",
-    options: ["Emma", "chante", "une", "chanson"],
-    reponse: "chante",
-    explication: "'chante' est le verbe car il exprime l'action d'Emma.",
+    question: "Quel est le verbe dans : 'Ma mère prépare un gâteau' ?",
+    options: ["mère", "gâteau", "prépare", "ma"],
+    reponse: "prépare",
+    explication:
+      "'prépare' est le verbe — ma mère ne prépare pas → ça marche !",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Combien y a-t-il de verbes dans : 'Je mange et je bois' ?",
+    options: ["1", "2", "3", "0"],
+    reponse: "2",
+    explication: "Il y a 2 verbes : 'mange' et 'bois'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quel mot N'est PAS un verbe ?",
+    options: ["chanter", "dormir", "rapide", "manger"],
+    reponse: "rapide",
+    explication: "'rapide' est un adjectif, pas un verbe.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question:
+      "Dans 'Les oiseaux chantent le matin', le verbe est accordé avec quel sujet ?",
+    options: ["le matin", "les oiseaux", "chantent", "matin"],
+    reponse: "les oiseaux",
+    explication: "'chantent' est accordé avec 'les oiseaux' (pluriel).",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question:
+      "Quelle est la bonne conjugaison ? 'Les enfants ___ dans la cour.'",
+    options: ["joue", "jouons", "jouent", "jouez"],
+    reponse: "jouent",
+    explication: "Avec 'les enfants' (ils), on dit 'jouent'.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Quel verbe complète correctement : 'Nous ___ nos devoirs.' ?",
+    options: ["fait", "fais", "faites", "faisons"],
+    reponse: "faisons",
+    explication: "Avec 'nous', on dit 'faisons'.",
+    niveau: "difficile",
   },
 ];
 
-export default function GrammaireCE1Verbe() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function GrammaireCE1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -84,7 +144,6 @@ export default function GrammaireCE1Verbe() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -96,9 +155,8 @@ export default function GrammaireCE1Verbe() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -173,6 +231,9 @@ export default function GrammaireCE1Verbe() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -223,24 +284,28 @@ export default function GrammaireCE1Verbe() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises parfaitement le verbe."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement le verbe !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

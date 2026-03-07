@@ -10,25 +10,25 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Le présent et le futur",
   intro:
-    "En français, on peut parler de ce qui se passe maintenant (présent) ou de ce qui va se passer plus tard (futur). Apprenons à conjuguer les verbes !",
+    "On peut parler de ce qui se passe maintenant (présent) ou de ce qui va se passer plus tard (futur). Apprends à reconnaître et utiliser ces deux temps !",
   points: [
     {
       titre: "Le présent",
       texte:
-        "Le présent exprime une action qui se passe maintenant ou une vérité générale.",
-      exemple: "Je mange une pomme. · Le soleil brille. · Tu joues au ballon.",
+        "On utilise le présent pour parler de ce qui se passe maintenant ou de ce qu'on fait habituellement.",
+      exemple: "Je mange une pomme. · Il joue au foot tous les jours.",
     },
     {
-      titre: "Le futur",
+      titre: "Le futur simple",
       texte:
-        "Le futur exprime une action qui va se passer plus tard. Les verbes en -er se terminent par -erai, -eras, -era, -erons, -erez, -eront.",
-      exemple: "Je mangerai. · Tu joueras. · Il chantera. · Nous danserons.",
+        "On utilise le futur pour parler de ce qui va se passer. On ajoute les terminaisons -rai, -ras, -ra, -rons, -rez, -ront.",
+      exemple: "Je mangerai. · Tu joueras. · Il viendra.",
     },
     {
-      titre: "Comment distinguer présent et futur ?",
+      titre: "Les indicateurs de temps",
       texte:
-        "On peut utiliser des mots indicateurs : 'maintenant', 'aujourd'hui' pour le présent, 'demain', 'bientôt' pour le futur.",
-      exemple: "Aujourd'hui je joue. · Demain je jouerai.",
+        "Des mots nous aident à reconnaître le temps : 'demain', 'bientôt' = futur. 'maintenant', 'aujourd'hui' = présent.",
+      exemple: "Demain, je partirai. · Aujourd'hui, je joue.",
     },
   ],
 };
@@ -36,43 +36,105 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel verbe est au présent ?",
-    options: ["je chanterai", "tu joueras", "il mange", "nous danserons"],
-    reponse: "il mange",
-    explication: "'il mange' est au présent. Les autres verbes sont au futur.",
+    question: "Quel temps est utilisé : 'Je mange une pomme' ?",
+    options: ["passé", "présent", "futur", "on ne sait pas"],
+    reponse: "présent",
+    explication: "'mange' est au présent — l'action se passe maintenant.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Quel verbe est au futur ?",
-    options: ["je cours", "tu manges", "il chante", "nous jouerons"],
-    reponse: "nous jouerons",
+    question: "Quel temps est utilisé : 'Demain, il pleuvra' ?",
+    options: ["passé", "présent", "futur", "on ne sait pas"],
+    reponse: "futur",
     explication:
-      "'nous jouerons' est au futur car il se termine par -ons après le radical.",
+      "'pleuvra' est au futur — 'demain' indique que c'est dans le futur.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : Demain, je ___ au parc. (jouer)",
-    options: ["joue", "jouais", "jouerai", "jouons"],
-    reponse: "jouerai",
-    explication: "Avec 'demain', on utilise le futur : 'je jouerai'.",
+    question: "Complète au présent : 'Tu ___ au foot.' (jouer)",
+    options: ["joueras", "joues", "joua", "jouez"],
+    reponse: "joues",
+    explication: "Au présent avec 'tu', on dit 'joues'.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel mot indique que l'action se passe maintenant ?",
-    options: ["demain", "bientôt", "après", "aujourd'hui"],
-    reponse: "aujourd'hui",
-    explication: "'aujourd'hui' indique le présent.",
+    question: "Complète au futur : 'Je ___ mes devoirs ce soir.' (faire)",
+    options: ["fais", "faisais", "ferai", "fait"],
+    reponse: "ferai",
+    explication: "Au futur avec 'je', on dit 'ferai'.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Complète : Aujourd'hui, tu ___ une chanson. (chanter)",
-    options: ["chanteras", "chantes", "chanterai", "chanterez"],
-    reponse: "chantes",
-    explication: "Avec 'aujourd'hui', on utilise le présent : 'tu chantes'.",
+    question: "Quel mot indique le futur ?",
+    options: ["hier", "maintenant", "demain", "aujourd'hui"],
+    reponse: "demain",
+    explication: "'demain' indique que l'action se passera dans le futur.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Complète au futur : 'Nous ___ à la mer cet été.' (aller)",
+    options: ["allons", "irons", "allions", "allez"],
+    reponse: "irons",
+    explication: "Au futur avec 'nous', le verbe 'aller' devient 'irons'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quelle phrase est au présent ?",
+    options: [
+      "Il chantera demain.",
+      "Nous partirons bientôt.",
+      "Elle lit un livre.",
+      "Tu viendras.",
+    ],
+    reponse: "Elle lit un livre.",
+    explication: "'lit' est au présent — l'action se passe maintenant.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Complète au futur : 'Ils ___ le match.' (gagner)",
+    options: ["gagnent", "gagnaient", "gagneront", "gagnez"],
+    reponse: "gagneront",
+    explication: "Au futur avec 'ils', on ajoute -ront : 'gagneront'.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Quelle phrase est au futur ?",
+    options: [
+      "Je mange ma soupe.",
+      "Tu finis tes devoirs.",
+      "Elle dormira bientôt.",
+      "Nous jouons dehors.",
+    ],
+    reponse: "Elle dormira bientôt.",
+    explication:
+      "'dormira' est au futur — 'bientôt' confirme que c'est dans le futur.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Complète correctement : 'Vous ___ vos amis samedi.' (voir)",
+    options: ["voyez", "verrez", "voyiez", "voir"],
+    reponse: "verrez",
+    explication: "Au futur avec 'vous', le verbe 'voir' devient 'verrez'.",
+    niveau: "difficile",
   },
 ];
 
-export default function ConjugaisonCE1PresentFutur() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function ConjugaisonCE1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -84,7 +146,6 @@ export default function ConjugaisonCE1PresentFutur() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -96,9 +157,8 @@ export default function ConjugaisonCE1PresentFutur() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -173,6 +233,9 @@ export default function ConjugaisonCE1PresentFutur() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -223,24 +286,28 @@ export default function ConjugaisonCE1PresentFutur() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises le présent et le futur."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement le présent et le futur !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
