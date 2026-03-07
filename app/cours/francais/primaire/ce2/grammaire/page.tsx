@@ -10,26 +10,27 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Le sujet et le verbe",
   intro:
-    "Dans une phrase, le sujet et le verbe sont les deux éléments les plus importants. Le sujet dit de qui ou de quoi on parle, et le verbe dit ce que fait le sujet.",
+    "Dans une phrase, le sujet indique de qui ou de quoi on parle. Le verbe indique ce que fait ou ce qu'est le sujet. Ils sont toujours liés !",
   points: [
     {
-      titre: "Le sujet",
+      titre: "Trouver le sujet",
       texte:
-        "Le sujet est le mot ou groupe de mots qui fait l'action. Pour le trouver, on pose la question 'Qui est-ce qui ?' ou 'Qu'est-ce qui ?'",
-      exemple: "Le chien court. → Qui court ? → Le chien (sujet)",
-    },
-    {
-      titre: "Le verbe",
-      texte:
-        "Le verbe exprime l'action faite par le sujet. Il s'accorde toujours avec le sujet.",
-      exemple: "Le chat dort. · Les chats dorment. · Tu joues.",
+        "Pour trouver le sujet, on pose la question 'Qui est-ce qui ?' ou 'Qu'est-ce qui ?' avant le verbe.",
+      exemple:
+        "Le chien court. → Qui est-ce qui court ? → Le chien est le sujet.",
     },
     {
       titre: "L'accord sujet-verbe",
       texte:
-        "Le verbe change selon le sujet. Si le sujet est au pluriel, le verbe est au pluriel aussi.",
+        "Le verbe s'accorde toujours avec son sujet. Si le sujet est au pluriel, le verbe est au pluriel.",
+      exemple: "Le chien court. · Les chiens courent.",
+    },
+    {
+      titre: "Le sujet peut être éloigné du verbe",
+      texte:
+        "Attention ! Le sujet n'est pas toujours juste avant le verbe. Il peut en être séparé.",
       exemple:
-        "Le chien mange. → Les chiens mangent. · Il court. → Ils courent.",
+        "Les enfants, ce matin, jouent dans la cour. → sujet = les enfants",
     },
   ],
 };
@@ -37,45 +38,107 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel est le sujet dans 'Le chat dort sur le canapé' ?",
-    options: ["dort", "le canapé", "Le chat", "sur"],
+    question: "Quel est le sujet dans : 'Le chat dort sur le canapé' ?",
+    options: ["dort", "canapé", "Le chat", "sur"],
     reponse: "Le chat",
-    explication:
-      "Pour trouver le sujet, on demande 'Qui est-ce qui dort ?' → Le chat.",
+    explication: "Qui est-ce qui dort ? → Le chat. C'est le sujet.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Quel est le verbe dans 'Emma mange une pomme' ?",
-    options: ["Emma", "mange", "une", "pomme"],
-    reponse: "mange",
-    explication: "'mange' est le verbe car il exprime l'action d'Emma.",
+    question: "Quel est le sujet dans : 'Les oiseaux chantent le matin' ?",
+    options: ["chantent", "le matin", "Les oiseaux", "matin"],
+    reponse: "Les oiseaux",
+    explication: "Qui est-ce qui chantent ? → Les oiseaux.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète avec le bon verbe : 'Les élèves ___ en classe.'",
-    options: ["travaille", "travailles", "travaillent", "travailler"],
-    reponse: "travaillent",
+    question: "Quelle phrase est correcte ?",
+    options: [
+      "Les enfants joue.",
+      "Les enfants jouent.",
+      "Les enfant jouent.",
+      "Les enfants joues.",
+    ],
+    reponse: "Les enfants jouent.",
     explication:
-      "'Les élèves' est au pluriel donc le verbe prend la terminaison '-ent'.",
+      "Avec 'les enfants' (pluriel), le verbe prend un -nt : jouent.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est le sujet dans 'Aujourd'hui, il pleut.' ?",
-    options: ["Aujourd'hui", "il", "pleut", "pas de sujet"],
-    reponse: "il",
-    explication: "'il' est le sujet du verbe 'pleut'.",
+    question: "Quel est le sujet dans : 'Ce matin, Marie mange une pomme' ?",
+    options: ["Ce matin", "mange", "une pomme", "Marie"],
+    reponse: "Marie",
+    explication:
+      "Qui est-ce qui mange ? → Marie. 'Ce matin' indique le moment.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Complète : 'Le soleil ___ dans le ciel.' (briller)",
-    options: ["brillent", "brilles", "brille", "brillez"],
-    reponse: "brille",
-    explication:
-      "'Le soleil' est singulier donc le verbe est 'brille' (sans -nt).",
+    question: "Complète avec le bon verbe : 'Mon frère ___ au foot.'",
+    options: ["jouent", "jouez", "joue", "jouons"],
+    reponse: "joue",
+    explication: "'Mon frère' est singulier → on dit 'joue'.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Complète avec le bon verbe : 'Mes amis et moi ___ au parc.'",
+    options: ["va", "allons", "allez", "vont"],
+    reponse: "allons",
+    explication: "'Mes amis et moi' = nous → on dit 'allons'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question:
+      "Quel est le sujet dans : 'Dans la forêt, les renards chassent la nuit' ?",
+    options: ["Dans la forêt", "la nuit", "chassent", "les renards"],
+    reponse: "les renards",
+    explication: "Qui est-ce qui chassent ? → les renards.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Quelle phrase contient une erreur d'accord sujet-verbe ?",
+    options: [
+      "Les élèves travaillent.",
+      "Le professeur explique.",
+      "Les chiens aboie.",
+      "Nous chantons.",
+    ],
+    reponse: "Les chiens aboie.",
+    explication: "'Les chiens' est pluriel → il faut 'aboient'.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Complète : 'La maîtresse et les élèves ___ la leçon.'",
+    options: ["prépare", "prépares", "préparent", "préparez"],
+    reponse: "préparent",
+    explication: "Deux sujets = pluriel → 'préparent'.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question:
+      "Quel est le sujet dans : 'Tous les jours, ma mère prépare le dîner' ?",
+    options: ["Tous les jours", "le dîner", "prépare", "ma mère"],
+    reponse: "ma mère",
+    explication: "Qui est-ce qui prépare ? → ma mère.",
+    niveau: "difficile",
   },
 ];
 
-export default function GrammaireCE2SujetVerbe() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function GrammaireCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -87,7 +150,6 @@ export default function GrammaireCE2SujetVerbe() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -99,9 +161,8 @@ export default function GrammaireCE2SujetVerbe() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -176,6 +237,9 @@ export default function GrammaireCE2SujetVerbe() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -226,24 +290,28 @@ export default function GrammaireCE2SujetVerbe() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises le sujet et le verbe."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement le sujet et le verbe !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

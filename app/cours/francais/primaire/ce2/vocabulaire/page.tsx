@@ -8,27 +8,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le sens propre et le sens figuré",
+  titre: "Les synonymes et les antonymes",
   intro:
-    "Un mot peut avoir plusieurs sens. Le sens propre est le sens concret et habituel du mot. Le sens figuré est un sens imagé, plus poétique ou expressif.",
+    "Les synonymes sont des mots qui ont le même sens. Les antonymes sont des mots qui ont le sens contraire. Les connaître enrichit ton vocabulaire !",
   points: [
     {
-      titre: "Le sens propre",
+      titre: "Les synonymes",
       texte:
-        "Le sens propre est le sens premier, concret et littéral d'un mot.",
-      exemple: "Il a un cœur. (sens propre = l'organe du corps)",
+        "Des synonymes sont des mots différents qui ont un sens proche ou identique. On peut les utiliser à la place l'un de l'autre.",
+      exemple: "content = heureux = joyeux · beau = joli · rapide = vite",
     },
     {
-      titre: "Le sens figuré",
+      titre: "Les antonymes",
       texte:
-        "Le sens figuré est un sens imagé qu'on donne à un mot pour exprimer une idée autrement.",
-      exemple: "Il a un grand cœur. (sens figuré = il est généreux)",
+        "Les antonymes sont des mots de sens contraire. On peut souvent former un antonyme avec un préfixe comme 'in-', 'dé-', 'im-'.",
+      exemple: "grand ≠ petit · chaud ≠ froid · possible ≠ impossible",
     },
     {
-      titre: "D'autres exemples",
-      texte: "De nombreux mots courants ont un sens propre et un sens figuré.",
+      titre: "Utiliser synonymes et antonymes",
+      texte:
+        "Utiliser des synonymes évite les répétitions. Utiliser des antonymes permet de comparer ou de contraster.",
       exemple:
-        "une dent de la scie (propre) / avoir les dents longues (figuré = être ambitieux)",
+        "Au lieu de 'il est beau et beau', on dit 'il est beau et élégant'.",
     },
   ],
 };
@@ -36,70 +37,96 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question:
-      "Dans 'Il pleut des cordes', quel est le sens de cette expression ?",
-    options: [
-      "Il tombe de vraies cordes",
-      "Il pleut très fort",
-      "Les cordes sont mouillées",
-      "Il fait beau",
-    ],
-    reponse: "Il pleut très fort",
+    question: "Quel est le synonyme de 'content' ?",
+    options: ["triste", "heureux", "fatigué", "fâché"],
+    reponse: "heureux",
     explication:
-      "'Il pleut des cordes' est une expression au sens figuré qui signifie qu'il pleut très fort.",
+      "'heureux' et 'content' ont le même sens — ce sont des synonymes.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question:
-      "Dans 'Le chat a des dents pointues', 'dents' est utilisé au sens...",
-    options: ["figuré", "propre", "contraire", "synonyme"],
-    reponse: "propre",
-    explication:
-      "Ici 'dents' désigne les vraies dents du chat, c'est le sens propre.",
+    question: "Quel est l'antonyme de 'grand' ?",
+    options: ["énorme", "long", "petit", "haut"],
+    reponse: "petit",
+    explication: "'petit' est le contraire de 'grand' — c'est un antonyme.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question:
-      "Dans 'Emma a le cœur sur la main', que veut dire cette expression ?",
-    options: [
-      "Elle tient son cœur",
-      "Elle est très généreuse",
-      "Elle a mal à la main",
-      "Elle est triste",
-    ],
-    reponse: "Elle est très généreuse",
-    explication:
-      "'Avoir le cœur sur la main' au sens figuré signifie être très généreux.",
+    question: "Quel mot est un synonyme de 'rapide' ?",
+    options: ["lent", "vite", "calme", "lourd"],
+    reponse: "vite",
+    explication: "'vite' et 'rapide' ont le même sens.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Dans 'Il a avalé sa langue', quel est le sens figuré ?",
-    options: [
-      "Il a mangé sa langue",
-      "Il ne parle plus",
-      "Il a faim",
-      "Il est malade",
-    ],
-    reponse: "Il ne parle plus",
-    explication:
-      "'Avoir avalé sa langue' au sens figuré signifie qu'on ne parle plus, on est silencieux.",
+    question: "Quel est l'antonyme de 'chaud' ?",
+    options: ["tiède", "brûlant", "froid", "doux"],
+    reponse: "froid",
+    explication: "'froid' est le contraire de 'chaud'.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Quel exemple utilise 'tête' au sens figuré ?",
-    options: [
-      "J'ai mal à la tête",
-      "La tête du clou",
-      "Il est en tête de la classe",
-      "Elle secoue la tête",
-    ],
-    reponse: "Il est en tête de la classe",
-    explication:
-      "'En tête de la classe' signifie premier de la classe, c'est un sens figuré.",
+    question: "Quel mot est un synonyme de 'beau' ?",
+    options: ["laid", "joli", "vieux", "petit"],
+    reponse: "joli",
+    explication: "'joli' et 'beau' ont un sens proche — ce sont des synonymes.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quel est l'antonyme de 'commencer' ?",
+    options: ["continuer", "reprendre", "finir", "avancer"],
+    reponse: "finir",
+    explication: "'finir' est le contraire de 'commencer'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Parmi ces mots, lequel est un synonyme de 'fatigué' ?",
+    options: ["reposé", "énergique", "épuisé", "actif"],
+    reponse: "épuisé",
+    explication: "'épuisé' et 'fatigué' ont le même sens.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Quel est l'antonyme de 'possible' ?",
+    options: ["difficile", "impossible", "facile", "probable"],
+    reponse: "impossible",
+    explication: "Le préfixe 'im-' forme le contraire : possible → impossible.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question:
+      "Quel synonyme remplace le mieux 'regarder' dans : 'Il regarde le tableau' ?",
+    options: ["touche", "observe", "entend", "ignore"],
+    reponse: "observe",
+    explication: "'observer' est un synonyme de 'regarder' avec attention.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question:
+      "Quel antonyme complète : 'Ce travail est facile pour lui, mais ___ pour moi' ?",
+    options: ["simple", "agréable", "difficile", "rapide"],
+    reponse: "difficile",
+    explication: "'difficile' est l'antonyme de 'facile'.",
+    niveau: "difficile",
   },
 ];
 
-export default function VocabulaireCE2SensPropre() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function VocabulaireCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -111,7 +138,6 @@ export default function VocabulaireCE2SensPropre() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -123,9 +149,8 @@ export default function VocabulaireCE2SensPropre() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -200,6 +225,9 @@ export default function VocabulaireCE2SensPropre() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -250,24 +278,28 @@ export default function VocabulaireCE2SensPropre() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises le sens propre et le sens figuré."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement synonymes et antonymes !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

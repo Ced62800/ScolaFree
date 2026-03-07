@@ -8,28 +8,27 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le passé composé",
+  titre: "Le présent, l'imparfait et le futur",
   intro:
-    "Le passé composé sert à parler d'une action qui s'est passée et qui est terminée. On le forme avec l'auxiliaire 'avoir' ou 'être' et le participe passé du verbe.",
+    "En CE2, tu apprends à utiliser trois temps : le présent (maintenant), l'imparfait (avant, habitude) et le futur (après). Chaque temps a ses propres terminaisons !",
   points: [
     {
-      titre: "Formation avec 'avoir'",
+      titre: "Le présent",
       texte:
-        "La plupart des verbes utilisent l'auxiliaire 'avoir' au présent + le participe passé.",
-      exemple: "j'ai mangé · tu as joué · il a couru · nous avons chanté",
+        "On utilise le présent pour ce qui se passe maintenant ou habituellement.",
+      exemple: "Je mange. · Nous jouons. · Ils finissent.",
     },
     {
-      titre: "Formation avec 'être'",
+      titre: "L'imparfait",
       texte:
-        "Certains verbes utilisent l'auxiliaire 'être' : aller, venir, partir, arriver, tomber...",
-      exemple:
-        "je suis allé(e) · tu es venu(e) · il est parti · elle est arrivée",
+        "On utilise l'imparfait pour parler d'une habitude dans le passé ou d'une action qui durait. Terminaisons : -ais, -ais, -ait, -ions, -iez, -aient.",
+      exemple: "Je mangeais. · Nous jouions. · Ils finissaient.",
     },
     {
-      titre: "Le participe passé",
+      titre: "Le futur simple",
       texte:
-        "Pour les verbes en -er, le participe passé se termine par -é. Pour les verbes en -ir, il se termine souvent par -i.",
-      exemple: "manger → mangé · jouer → joué · finir → fini · partir → parti",
+        "On utilise le futur pour parler de ce qui se passera. Terminaisons : -rai, -ras, -ra, -rons, -rez, -ront.",
+      exemple: "Je mangerai. · Nous jouerons. · Ils finiront.",
     },
   ],
 };
@@ -37,47 +36,108 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel verbe est au passé composé ?",
-    options: ["je mange", "je mangerai", "j'ai mangé", "je mangeais"],
-    reponse: "j'ai mangé",
+    question:
+      "Quel temps est utilisé : 'Quand j'étais petit, je jouais au ballon' ?",
+    options: ["présent", "imparfait", "futur", "passé composé"],
+    reponse: "imparfait",
     explication:
-      "'j'ai mangé' est au passé composé : auxiliaire 'avoir' + participe passé 'mangé'.",
+      "'jouais' est à l'imparfait — c'était une habitude dans le passé.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Quel est le participe passé de 'jouer' ?",
-    options: ["joue", "jouait", "jouera", "joué"],
-    reponse: "joué",
-    explication:
-      "Le participe passé de 'jouer' est 'joué' (verbe en -er → participe en -é).",
+    question:
+      "Complète à l'imparfait : 'Nous ___ au parc tous les dimanches.' (aller)",
+    options: ["allons", "irons", "allions", "allez"],
+    reponse: "allions",
+    explication: "À l'imparfait avec 'nous', on dit 'allions'.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : 'Hier, Emma ___ à l'école.' (aller)",
-    options: ["a allé", "est allée", "va", "allait"],
-    reponse: "est allée",
+    question: "Quel temps est utilisé : 'Demain, nous partirons en vacances' ?",
+    options: ["présent", "imparfait", "futur", "passé"],
+    reponse: "futur",
     explication:
-      "'aller' se conjugue avec 'être' au passé composé : 'est allée'.",
+      "'partirons' est au futur — 'demain' indique que c'est à venir.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel auxiliaire utilise-t-on pour 'partir' au passé composé ?",
-    options: ["avoir", "être", "aller", "faire"],
-    reponse: "être",
-    explication:
-      "'partir' est un verbe qui se conjugue avec 'être' : 'il est parti'.",
+    question: "Complète à l'imparfait : 'Il ___ très fort.' (pleuvoir)",
+    options: ["pleut", "pleuvra", "pleuvait", "pleuvoir"],
+    reponse: "pleuvait",
+    explication: "À l'imparfait, 'pleuvoir' devient 'pleuvait'.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Complète : 'Nous ___ une belle chanson.' (chanter)",
-    options: ["avons chanté", "sommes chanté", "ont chanté", "avez chanté"],
-    reponse: "avons chanté",
+    question: "Quelle phrase est à l'imparfait ?",
+    options: [
+      "Je mange ma soupe.",
+      "Je mangerai ma soupe.",
+      "Je mangeais ma soupe.",
+      "Je mangerais ma soupe.",
+    ],
+    reponse: "Je mangeais ma soupe.",
+    explication: "'mangeais' est à l'imparfait — terminaison -ais.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Complète au futur : 'Vous ___ vos amis ce week-end.' (voir)",
+    options: ["voyez", "verrez", "voyiez", "voir"],
+    reponse: "verrez",
+    explication: "Au futur avec 'vous', 'voir' devient 'verrez'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Complète à l'imparfait : 'Les enfants ___ souvent.' (rire)",
+    options: ["rient", "riront", "riaient", "riez"],
+    reponse: "riaient",
+    explication: "À l'imparfait avec 'ils', on dit 'riaient'.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Quelle terminaison correspond à l'imparfait avec 'tu' ?",
+    options: ["-ras", "-ais", "-es", "-as"],
+    reponse: "-ais",
+    explication: "À l'imparfait avec 'tu', la terminaison est toujours -ais.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Complète : 'Autrefois, les gens ___ sans électricité.' (vivre)",
+    options: ["vivent", "vivront", "vivaient", "vivez"],
+    reponse: "vivaient",
     explication:
-      "'chanter' utilise l'auxiliaire 'avoir' : 'nous avons chanté'.",
+      "'Autrefois' indique une habitude dans le passé → imparfait : 'vivaient'.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Quelle phrase utilise correctement les trois temps ?",
+    options: [
+      "Hier je mangeais, aujourd'hui je mange, demain je mangerai.",
+      "Hier je mange, aujourd'hui je mangeais, demain je mangerai.",
+      "Hier je mangerai, aujourd'hui je mangeais, demain je mange.",
+      "Hier je mange, aujourd'hui je mangerai, demain je mangeais.",
+    ],
+    reponse: "Hier je mangeais, aujourd'hui je mange, demain je mangerai.",
+    explication: "Hier = imparfait, aujourd'hui = présent, demain = futur.",
+    niveau: "difficile",
   },
 ];
 
-export default function ConjugaisonCE2PasseCompose() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function ConjugaisonCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -89,7 +149,6 @@ export default function ConjugaisonCE2PasseCompose() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -101,9 +160,8 @@ export default function ConjugaisonCE2PasseCompose() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -178,6 +236,9 @@ export default function ConjugaisonCE2PasseCompose() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -228,24 +289,28 @@ export default function ConjugaisonCE2PasseCompose() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises le passé composé."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les trois temps !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

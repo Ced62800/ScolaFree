@@ -8,28 +8,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les homophones : a / à et on / ont",
+  titre: "Les homophones : a/à, est/et, on/ont",
   intro:
-    "Les homophones sont des mots qui se prononcent de la même façon mais qui s'écrivent différemment et n'ont pas le même sens. Apprenons à les distinguer !",
+    "Certains mots se prononcent pareil mais s'écrivent différemment. Ce sont des homophones. En CE2, tu apprends à distinguer a/à, est/et, on/ont.",
   points: [
     {
       titre: "a / à",
       texte:
-        "'a' est le verbe avoir (on peut le remplacer par 'avait'). 'à' est une préposition (on ne peut pas le remplacer par 'avait').",
+        "'a' est le verbe avoir (on peut le remplacer par 'avait'). 'à' est une préposition (indique le lieu, le temps).",
       exemple:
-        "Il a faim. → Il avait faim. ✅ · Il va à l'école. → Il va avait l'école. ❌",
+        "Il a faim. → Il avait faim ✅ · Il va à l'école. → Il va avait l'école ❌",
+    },
+    {
+      titre: "est / et",
+      texte:
+        "'est' est le verbe être (on peut le remplacer par 'était'). 'et' est une conjonction qui relie deux éléments.",
+      exemple:
+        "Elle est belle. → Elle était belle ✅ · Le chat et le chien jouent.",
     },
     {
       titre: "on / ont",
       texte:
-        "'on' est un pronom (on peut le remplacer par 'il'). 'ont' est le verbe avoir (on peut le remplacer par 'avaient').",
-      exemple: "On joue. → Il joue. ✅ · Ils ont joué. → Ils avaient joué. ✅",
-    },
-    {
-      titre: "L'astuce",
-      texte:
-        "Pour ne pas se tromper, essaie de remplacer le mot par 'avait' ou 'avaient'. Si ça marche, c'est le verbe avoir. Sinon, c'est la préposition ou le pronom.",
-      exemple: "Il a un chien. → Il avait un chien. ✅ donc 'a' = verbe avoir",
+        "'on' est un pronom sujet (= il/elle). 'ont' est le verbe avoir au pluriel (ils ont — on peut le remplacer par 'avaient').",
+      exemple: "On mange. · Ils ont mangé. → Ils avaient mangé ✅",
     },
   ],
 };
@@ -37,47 +38,106 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète : 'Le chat ___ faim.'",
-    options: ["à", "a", "on", "ont"],
+    question: "Complète : 'Il ___ très faim ce soir.'",
+    options: ["à", "a", "est", "et"],
     reponse: "a",
-    explication:
-      "On peut remplacer par 'avait' : 'Le chat avait faim.' → c'est le verbe avoir.",
+    explication: "'a' = verbe avoir (on peut dire 'il avait très faim').",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète : 'Il va ___ l'école.'",
-    options: ["a", "à", "on", "ont"],
+    question: "Complète : 'Elle va ___ l'école.'",
+    options: ["a", "à", "est", "et"],
     reponse: "à",
-    explication:
-      "On ne peut pas remplacer par 'avait' → c'est la préposition 'à'.",
+    explication: "'à' indique le lieu — on ne peut pas dire 'avait l'école'.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : '___ mange une pomme.'",
-    options: ["à", "a", "on", "ont"],
-    reponse: "on",
+    question: "Complète : 'Le chat ___ le chien jouent ensemble.'",
+    options: ["est", "et", "a", "à"],
+    reponse: "et",
     explication:
-      "'on' est un pronom : 'Il mange une pomme.' → c'est le pronom 'on'.",
+      "'et' relie deux mots — on ne peut pas le remplacer par 'était'.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète : 'Ils ___ terminé leurs devoirs.'",
-    options: ["on", "ont", "a", "à"],
-    reponse: "ont",
+    question: "Complète : 'Elle ___ très gentille.'",
+    options: ["et", "est", "a", "à"],
+    reponse: "est",
     explication:
-      "On peut remplacer par 'avaient' : 'Ils avaient terminé' → c'est le verbe avoir 'ont'.",
+      "'est' = verbe être (on peut dire 'elle était très gentille').",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Complète : 'Emma ___ un beau livre.'",
-    options: ["à", "ont", "on", "a"],
+    question: "Complète : 'Les élèves ___ bien travaillé aujourd'hui.'",
+    options: ["on", "ont", "sont", "a"],
+    reponse: "ont",
+    explication: "'ont' = verbe avoir au pluriel (ils avaient bien travaillé).",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Complète : '___ mange des crêpes le dimanche.'",
+    options: ["Ont", "On", "Son", "Ont"],
+    reponse: "On",
+    explication: "'On' est un pronom sujet (= il/elle).",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quelle phrase est correcte ?",
+    options: [
+      "Il à un vélo rouge.",
+      "Il a un vélo rouge.",
+      "Il est un vélo rouge.",
+      "Il et un vélo rouge.",
+    ],
+    reponse: "Il a un vélo rouge.",
+    explication: "'a' = verbe avoir (il avait un vélo rouge ✅).",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Complète : 'Papa ___ préparé un bon repas.'",
+    options: ["à", "a", "est", "et"],
     reponse: "a",
+    explication: "'a' = verbe avoir (papa avait préparé ✅).",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Complète : 'Les enfants ___ joué toute la journée.'",
+    options: ["on", "ont", "son", "sont"],
+    reponse: "ont",
+    explication: "'ont' = verbe avoir au pluriel (ils avaient joué ✅).",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Quelle phrase contient une erreur ?",
+    options: [
+      "Elle a mangé.",
+      "Il est grand et fort.",
+      "On à froid.",
+      "Ils ont chaud.",
+    ],
+    reponse: "On à froid.",
     explication:
-      "On peut remplacer par 'avait' : 'Emma avait un beau livre.' → c'est le verbe avoir.",
+      "Il faut 'a' (verbe avoir) et non 'à' (préposition) : 'On a froid'.",
+    niveau: "difficile",
   },
 ];
 
-export default function OrthographeCE2Homophones() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function OrthographeCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -89,7 +149,6 @@ export default function OrthographeCE2Homophones() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -101,9 +160,8 @@ export default function OrthographeCE2Homophones() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -178,6 +236,9 @@ export default function OrthographeCE2Homophones() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -228,24 +289,28 @@ export default function OrthographeCE2Homophones() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les homophones a/à et on/ont."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les homophones !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
