@@ -10,26 +10,28 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Les niveaux de langue",
   intro:
-    "En français, on ne parle pas de la même façon avec ses amis, ses parents ou son professeur. Il existe trois niveaux de langue : familier, courant et soutenu.",
+    "On ne parle pas de la même façon selon les situations. Il existe trois niveaux de langue : familier, courant et soutenu. Savoir les reconnaître est essentiel pour bien communiquer !",
   points: [
     {
       titre: "Le niveau familier",
       texte:
-        "Le niveau familier s'utilise avec des amis ou en famille. Il peut contenir des mots d'argot ou des expressions raccourcies.",
-      exemple: "C'est trop cool ! · T'as vu ça ? · Je me casse.",
+        "On l'utilise avec ses amis ou sa famille. Il peut contenir des mots d'argot ou des expressions informelles. Il est à éviter à l'écrit scolaire.",
+      exemple:
+        "C'est trop cool ! · J'ai rien compris. · Il est chelou ce truc.",
     },
     {
       titre: "Le niveau courant",
       texte:
-        "Le niveau courant est le plus utilisé au quotidien, à l'école, au travail. Il est neutre et correct.",
-      exemple: "C'est très bien. · As-tu vu cela ? · Je m'en vais.",
+        "C'est le niveau standard, utilisé dans la vie quotidienne, à l'école et au travail. Il est neutre et compréhensible par tous.",
+      exemple:
+        "C'est très bien ! · Je n'ai pas compris. · Cet objet est bizarre.",
     },
     {
       titre: "Le niveau soutenu",
       texte:
-        "Le niveau soutenu s'utilise dans les textes littéraires, les discours officiels. Il est plus élaboré et recherché.",
+        "On l'utilise à l'écrit soigné, dans les discours officiels ou la littérature. Il emploie un vocabulaire riche et des tournures élaborées.",
       exemple:
-        "C'est fort agréable. · Avez-vous remarqué ceci ? · Je prends congé.",
+        "C'est remarquable ! · Je n'ai point saisi. · Cet objet m'est inconnu.",
     },
   ],
 };
@@ -37,62 +39,127 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quelle phrase est au niveau familier ?",
-    options: ["Je m'en vais.", "Je prends congé.", "Je me casse.", "Je pars."],
-    reponse: "Je me casse.",
+    question: "Quel niveau de langue est 'C'est trop cool !' ?",
+    options: ["soutenu", "courant", "familier", "littéraire"],
+    reponse: "familier",
     explication:
-      "'Je me casse' est une expression familière qui signifie 'je pars'.",
+      "'trop cool' est une expression familière — on l'utilise avec ses amis.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Quelle phrase est au niveau soutenu ?",
+    question: "Quel est le niveau courant de 'J'ai rien mangé' ?",
     options: [
-      "C'est trop bien !",
-      "C'est bien.",
-      "C'est fort agréable.",
-      "C'est cool.",
+      "J'ai tout mangé.",
+      "Je n'ai rien mangé.",
+      "Je n'ai point mangé.",
+      "Je n'ai guère mangé.",
     ],
-    reponse: "C'est fort agréable.",
+    reponse: "Je n'ai rien mangé.",
     explication:
-      "'C'est fort agréable' est une formulation soutenue et élaborée.",
+      "'Je n'ai rien mangé' est le niveau courant — avec la négation complète.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Avec ton professeur, quel niveau de langue utilises-tu ?",
-    options: ["Familier", "Courant", "Soutenu", "N'importe lequel"],
-    reponse: "Courant",
+    question:
+      "Quel niveau de langue convient le mieux pour une rédaction scolaire ?",
+    options: ["familier", "courant", "argotique", "vulgaire"],
+    reponse: "courant",
     explication:
-      "À l'école, on utilise principalement le niveau courant, parfois soutenu dans les rédactions.",
+      "Pour une rédaction scolaire, on utilise le niveau courant (ou soutenu).",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est l'équivalent courant de 'J'ai la dalle' ?",
+    question: "Quel est le niveau soutenu de 'Je suis content' ?",
     options: [
-      "Je suis affamé.",
-      "J'ai faim.",
-      "Je souffre de la faim.",
-      "Je mange.",
+      "Je suis trop content.",
+      "Je suis heureux.",
+      "Je suis ravi.",
+      "Je suis hyper content.",
     ],
-    reponse: "J'ai faim.",
+    reponse: "Je suis ravi.",
     explication:
-      "'J'ai la dalle' est familier. L'équivalent courant est 'J'ai faim'.",
+      "'ravi' est un mot soutenu, plus élaboré que 'content' ou 'heureux'.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Dans quel contexte utilise-t-on le niveau soutenu ?",
+    question: "Quel mot appartient au niveau familier ?",
+    options: ["domicile", "maison", "baraque", "demeure"],
+    reponse: "baraque",
+    explication: "'baraque' est un mot familier pour dire 'maison'.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quel mot appartient au niveau soutenu ?",
+    options: ["bagnole", "voiture", "véhicule", "caisse"],
+    reponse: "véhicule",
+    explication: "'véhicule' est un mot soutenu — plus formel que 'voiture'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Remplace 'bosser' (familier) par son équivalent courant :",
+    options: ["travailler", "œuvrer", "boulonner", "glander"],
+    reponse: "travailler",
+    explication: "'travailler' est le niveau courant de 'bosser' (familier).",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Dans quelle situation utilise-t-on le niveau soutenu ?",
     options: [
-      "Avec ses amis",
-      "Dans un texto",
-      "Dans un discours officiel",
-      "En récréation",
+      "Avec ses amis.",
+      "Dans un texto.",
+      "Dans un discours officiel.",
+      "En jouant.",
     ],
-    reponse: "Dans un discours officiel",
+    reponse: "Dans un discours officiel.",
     explication:
-      "Le niveau soutenu s'utilise dans les discours officiels, les textes littéraires.",
+      "Le niveau soutenu est utilisé dans les situations formelles et officielles.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Quelle phrase est au niveau soutenu ?",
+    options: [
+      "C'est super beau !",
+      "C'est beau.",
+      "C'est magnifique.",
+      "C'est trop beau !",
+    ],
+    reponse: "C'est magnifique.",
+    explication:
+      "'magnifique' est un adjectif soutenu, plus élaboré que 'beau'.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question:
+      "Classe ces mots du plus familier au plus soutenu : 'demeure / baraque / maison'",
+    options: [
+      "baraque → maison → demeure",
+      "maison → baraque → demeure",
+      "demeure → maison → baraque",
+      "baraque → demeure → maison",
+    ],
+    reponse: "baraque → maison → demeure",
+    explication:
+      "'baraque' (familier) → 'maison' (courant) → 'demeure' (soutenu).",
+    niveau: "difficile",
   },
 ];
 
-export default function VocabulaireCM1NiveauxLangue() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function VocabulaireCM1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -104,7 +171,6 @@ export default function VocabulaireCM1NiveauxLangue() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -116,9 +182,8 @@ export default function VocabulaireCM1NiveauxLangue() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -193,6 +258,9 @@ export default function VocabulaireCM1NiveauxLangue() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -243,24 +311,28 @@ export default function VocabulaireCM1NiveauxLangue() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les niveaux de langue."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les niveaux de langue !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

@@ -8,30 +8,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les homophones : est/et, son/sont, ou/où",
+  titre: "Les homophones : ces/ses, son/sont, ou/où",
   intro:
-    "Les homophones sont des mots qui se prononcent pareil mais s'écrivent différemment. Apprenons à ne plus les confondre !",
+    "Ces mots se prononcent pareil mais s'écrivent différemment selon leur rôle dans la phrase. Une astuce : essaie de les remplacer par un autre mot pour trouver lequel utiliser !",
   points: [
     {
-      titre: "est / et",
+      titre: "ces / ses",
       texte:
-        "'est' est le verbe être (remplaçable par 'était'). 'et' est une conjonction de coordination (remplaçable par 'et puis').",
+        "'ses' est un déterminant possessif (= les siens). On peut le remplacer par 'mes' ou 'tes'. 'ces' est un déterminant démonstratif (= ceux-là). On peut le remplacer par 'ce' + nom.",
       exemple:
-        "Il est grand. → Il était grand. ✅ · Il mange et dort. → Il mange et puis dort. ✅",
+        "Il range ses affaires. → ses = les siennes ✅ · Ces fleurs sont belles. → ces fleurs-là ✅",
     },
     {
       titre: "son / sont",
       texte:
-        "'son' est un déterminant possessif (remplaçable par 'mon'). 'sont' est le verbe être au pluriel (remplaçable par 'étaient').",
+        "'son' est un déterminant possessif (= le sien). On peut le remplacer par 'mon' ou 'ton'. 'sont' est le verbe être au pluriel (ils sont). On peut le remplacer par 'étaient'.",
       exemple:
-        "Son chat est mignon. → Mon chat. ✅ · Ils sont partis. → Ils étaient partis. ✅",
+        "Il prend son vélo. → son = le sien ✅ · Ils sont fatigués. → ils étaient fatigués ✅",
     },
     {
       titre: "ou / où",
       texte:
-        "'ou' exprime un choix (remplaçable par 'ou bien'). 'où' indique un lieu ou pose une question (non remplaçable par 'ou bien').",
+        "'ou' est une conjonction qui exprime un choix (= ou bien). 'où' est un adverbe qui indique le lieu ou le temps. On peut remplacer 'ou' par 'ou bien'.",
       exemple:
-        "Tu veux du lait ou du jus ? → ou bien ✅ · Où es-tu ? → ou bien es-tu ? ❌",
+        "Tu veux du thé ou du café ? → ou bien ✅ · La ville où j'habite est belle.",
     },
   ],
 };
@@ -39,47 +39,107 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète : 'Le ciel ___ bleu aujourd'hui.'",
-    options: ["et", "est", "son", "sont"],
-    reponse: "est",
-    explication:
-      "On peut remplacer par 'était' : 'Le ciel était bleu' → c'est le verbe être 'est'.",
+    question: "Complète : 'Il range ___ affaires.'",
+    options: ["ces", "ses", "son", "sont"],
+    reponse: "ses",
+    explication: "'ses' = les siennes. On peut dire 'mes affaires' → ses ✅",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète : 'Il mange une pomme ___ une poire.'",
-    options: ["est", "et", "ou", "où"],
-    reponse: "et",
+    question: "Complète : 'Les enfants ___ fatigués après la récréation.'",
+    options: ["son", "sont", "ses", "ces"],
+    reponse: "sont",
     explication:
-      "On peut remplacer par 'et puis' : 'une pomme et puis une poire' → c'est la conjonction 'et'.",
+      "'sont' = verbe être. On peut dire 'étaient fatigués' → sont ✅",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : 'Les enfants ___ dans la cour.'",
-    options: ["son", "sont", "est", "et"],
-    reponse: "sont",
-    explication:
-      "On peut remplacer par 'étaient' : 'Les enfants étaient dans la cour' → c'est le verbe 'sont'.",
+    question: "Complète : 'Tu veux du pain ___ des gâteaux ?'",
+    options: ["où", "ou", "son", "sont"],
+    reponse: "ou",
+    explication: "'ou' exprime un choix. On peut dire 'ou bien des gâteaux' ✅",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète : '___ habites-tu ?'",
-    options: ["Ou", "Où", "Son", "Est"],
-    reponse: "Où",
-    explication:
-      "'Où' indique un lieu dans une question. On ne peut pas remplacer par 'ou bien'.",
+    question: "Complète : '___ livres sont très intéressants.'",
+    options: ["Ses", "Son", "Ces", "Sont"],
+    reponse: "Ces",
+    explication: "'Ces' = ces livres-là. C'est un déterminant démonstratif ✅",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Complète : 'Tu veux du thé ___ du café ?'",
-    options: ["où", "est", "ou", "sont"],
-    reponse: "ou",
+    question: "Complète : 'La ville ___ je vis est magnifique.'",
+    options: ["ou", "où", "son", "sont"],
+    reponse: "où",
     explication:
-      "On peut remplacer par 'ou bien' : 'du thé ou bien du café' → c'est la conjonction 'ou'.",
+      "'où' indique le lieu. On ne peut pas dire 'ou bien je vis' ✅",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Complète : 'Il a perdu ___ cahier.'",
+    options: ["ses", "ces", "son", "sont"],
+    reponse: "son",
+    explication: "'son' = le sien. On peut dire 'mon cahier' → son ✅",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quelle phrase est correcte ?",
+    options: [
+      "Ces chaussures sont à moi.",
+      "Ses chaussures sont à moi.",
+      "Ces chaussures son à moi.",
+      "Ses chaussures son à moi.",
+    ],
+    reponse: "Ces chaussures sont à moi.",
+    explication: "'Ces' = celles-là + 'sont' = verbe être (étaient) ✅",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Complète : 'Je ne sais pas ___ il est parti.'",
+    options: ["ou", "où", "son", "sont"],
+    reponse: "où",
+    explication:
+      "'où' indique le lieu — on ne peut pas dire 'ou bien il est parti'.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Quelle phrase contient une erreur ?",
+    options: [
+      "Ces enfants sont sages.",
+      "Il aime son chien.",
+      "Ses amis où gentils.",
+      "Tu viens ou tu restes ?",
+    ],
+    reponse: "Ses amis où gentils.",
+    explication:
+      "Il faut 'sont' (verbe être) et non 'où' : 'Ses amis sont gentils'.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Complète : '___ parents ___ très fiers de lui.'",
+    options: ["Ses / sont", "Ces / son", "Son / sont", "Ses / son"],
+    reponse: "Ses / sont",
+    explication: "'Ses' = les siens + 'sont' = verbe être ✅",
+    niveau: "difficile",
   },
 ];
 
-export default function OrthographeCM1Homophones() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function OrthographeCM1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -91,7 +151,6 @@ export default function OrthographeCM1Homophones() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -103,9 +162,8 @@ export default function OrthographeCM1Homophones() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -180,6 +238,9 @@ export default function OrthographeCM1Homophones() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -230,24 +291,28 @@ export default function OrthographeCM1Homophones() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les homophones."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les homophones !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

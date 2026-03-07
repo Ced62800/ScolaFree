@@ -8,29 +8,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "L'imparfait",
+  titre: "Le passé composé",
   intro:
-    "L'imparfait est un temps du passé qui exprime une action qui durait ou se répétait dans le passé. Il se termine par -ais, -ais, -ait, -ions, -iez, -aient.",
+    "Le passé composé sert à exprimer une action terminée dans le passé. On le forme avec l'auxiliaire 'avoir' ou 'être' au présent + le participe passé du verbe.",
   points: [
     {
-      titre: "Quand utilise-t-on l'imparfait ?",
+      titre: "Formation avec 'avoir'",
       texte:
-        "On utilise l'imparfait pour décrire une situation passée, une habitude dans le passé, ou une action qui durait.",
-      exemple:
-        "Quand j'étais petit, je jouais au ballon. · Il faisait beau ce jour-là.",
+        "La plupart des verbes utilisent 'avoir' comme auxiliaire. Le participe passé ne s'accorde pas avec le sujet.",
+      exemple: "J'ai mangé. · Tu as couru. · Il a fini. · Nous avons joué.",
     },
     {
-      titre: "Les terminaisons de l'imparfait",
+      titre: "Formation avec 'être'",
       texte:
-        "Toutes les personnes ont des terminaisons régulières à l'imparfait.",
+        "Les verbes de mouvement et les verbes pronominaux utilisent 'être'. Le participe passé s'accorde avec le sujet.",
       exemple:
-        "je chantais · tu chantais · il chantait · nous chantions · vous chantiez · ils chantaient",
+        "Je suis allé(e). · Elle est partie. · Ils sont arrivés. · Nous nous sommes levés.",
     },
     {
-      titre: "L'imparfait du verbe être et avoir",
+      titre: "Passé composé vs imparfait",
       texte:
-        "Les verbes être et avoir ont des radicaux irréguliers mais les mêmes terminaisons.",
-      exemple: "j'étais · tu étais · il était · j'avais · tu avais · il avait",
+        "Le passé composé exprime une action ponctuelle et terminée. L'imparfait exprime une habitude ou une action qui durait.",
+      exemple:
+        "Hier, j'ai mangé une pizza. (ponctuel) · Avant, je mangeais des pizzas. (habitude)",
     },
   ],
 };
@@ -38,44 +38,112 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel verbe est à l'imparfait ?",
-    options: ["je chante", "je chanterai", "je chantais", "j'ai chanté"],
-    reponse: "je chantais",
-    explication: "'je chantais' est à l'imparfait car il se termine par -ais.",
+    question:
+      "Quel auxiliaire utilise-t-on pour former le passé composé de 'manger' ?",
+    options: ["être", "avoir", "aller", "faire"],
+    reponse: "avoir",
+    explication:
+      "'manger' se conjugue avec 'avoir' au passé composé : j'ai mangé.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Quelle est la terminaison de l'imparfait pour 'ils' ?",
-    options: ["-ent", "-ont", "-aient", "-aient"],
-    reponse: "-aient",
-    explication: "À l'imparfait, 'ils/elles' se termine toujours par -aient.",
+    question: "Complète au passé composé : 'Elle ___ à l'école.' (aller)",
+    options: ["a allé", "est allée", "a allée", "est allé"],
+    reponse: "est allée",
+    explication: "'aller' se conjugue avec 'être'. Sujet féminin → 'allée'.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : 'Quand il était petit, il ___ au foot.' (jouer)",
-    options: ["joue", "jouera", "a joué", "jouait"],
-    reponse: "jouait",
-    explication:
-      "L'imparfait s'utilise pour une habitude dans le passé : 'jouait'.",
+    question: "Quel est le participe passé de 'finir' ?",
+    options: ["finit", "fini", "finir", "finissant"],
+    reponse: "fini",
+    explication: "Le participe passé de 'finir' est 'fini'.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est l'imparfait de 'être' à la 1ère personne ?",
-    options: ["je suis", "j'étais", "je serai", "j'ai été"],
-    reponse: "j'étais",
-    explication: "L'imparfait du verbe être à la 1ère personne est 'j'étais'.",
+    question: "Complète au passé composé : 'Nous ___ nos devoirs.' (faire)",
+    options: ["avons fait", "sommes fait", "avons fais", "avons faits"],
+    reponse: "avons fait",
+    explication: "'faire' se conjugue avec 'avoir' : nous avons fait.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Complète : 'Nous ___ souvent à la mer.' (aller)",
-    options: ["allons", "irons", "sommes allés", "allions"],
-    reponse: "allions",
+    question: "Quelle phrase est au passé composé ?",
+    options: ["Je mangeais.", "Je mangerai.", "J'ai mangé.", "Je mange."],
+    reponse: "J'ai mangé.",
     explication:
-      "À l'imparfait, 'nous' prend la terminaison -ions : 'nous allions'.",
+      "'J'ai mangé' = auxiliaire avoir + participe passé → passé composé.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Complète : 'Les élèves ___ bien travaillé.' (passé composé)",
+    options: ["ont", "sont", "avaient", "étaient"],
+    reponse: "ont",
+    explication:
+      "'travailler' se conjugue avec 'avoir' : les élèves ont travaillé.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question:
+      "Quelle phrase utilise correctement le passé composé avec 'être' ?",
+    options: [
+      "Elle a partie.",
+      "Elle est parti.",
+      "Elle est partie.",
+      "Elle a partis.",
+    ],
+    reponse: "Elle est partie.",
+    explication:
+      "'partir' utilise 'être'. Sujet féminin → participe passé accordé : 'partie'.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Quelle est la différence entre 'Il mangeait' et 'Il a mangé' ?",
+    options: [
+      "Aucune différence.",
+      "'mangeait' = habitude passée, 'a mangé' = action terminée.",
+      "'mangeait' = action terminée, 'a mangé' = habitude.",
+      "Les deux sont au futur.",
+    ],
+    reponse: "'mangeait' = habitude passée, 'a mangé' = action terminée.",
+    explication:
+      "L'imparfait exprime une habitude, le passé composé une action ponctuelle terminée.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question:
+      "Complète : 'Mes parents ___ en France.' (naître — passé composé)",
+    options: ["ont né", "sont nés", "ont nés", "sont né"],
+    reponse: "sont nés",
+    explication: "'naître' utilise 'être'. Sujet masculin pluriel → 'nés'.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Quel verbe se conjugue avec 'être' au passé composé ?",
+    options: ["manger", "finir", "partir", "chanter"],
+    reponse: "partir",
+    explication:
+      "'partir' est un verbe de mouvement qui se conjugue avec 'être'.",
+    niveau: "difficile",
   },
 ];
 
-export default function ConjugaisonCM1Imparfait() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function ConjugaisonCM1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -87,7 +155,6 @@ export default function ConjugaisonCM1Imparfait() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -99,9 +166,8 @@ export default function ConjugaisonCM1Imparfait() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -176,6 +242,9 @@ export default function ConjugaisonCM1Imparfait() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -226,24 +295,28 @@ export default function ConjugaisonCM1Imparfait() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises l'imparfait."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement le passé composé !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

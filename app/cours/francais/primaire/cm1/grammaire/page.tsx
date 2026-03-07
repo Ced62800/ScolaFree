@@ -8,27 +8,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les compléments du verbe",
+  titre: "Les classes de mots",
   intro:
-    "Dans une phrase, le verbe peut être accompagné de compléments qui donnent des informations supplémentaires. Il existe deux grands types : le COD et le COI.",
+    "En français, chaque mot appartient à une classe grammaticale. Reconnaître la classe d'un mot permet de mieux comprendre la phrase et de mieux l'écrire !",
   points: [
     {
-      titre: "Le COD (Complément d'Objet Direct)",
+      titre: "Le nom, le déterminant et l'adjectif",
       texte:
-        "Le COD répond à la question 'qui ?' ou 'quoi ?' posée directement après le verbe, sans préposition.",
-      exemple: "Emma mange une pomme. → mange quoi ? → une pomme (COD)",
+        "Le nom désigne une personne, un animal ou une chose. Le déterminant accompagne le nom (le, la, un, une, mon...). L'adjectif qualifie le nom.",
+      exemple:
+        "le petit chien → 'chien' = nom, 'le' = déterminant, 'petit' = adjectif",
     },
     {
-      titre: "Le COI (Complément d'Objet Indirect)",
+      titre: "Le verbe et le pronom",
       texte:
-        "Le COI répond à la question 'à qui ?', 'à quoi ?', 'de qui ?' posée après le verbe, avec une préposition.",
-      exemple: "Il parle à son ami. → parle à qui ? → à son ami (COI)",
+        "Le verbe exprime une action ou un état. Le pronom remplace un nom déjà mentionné (je, tu, il, elle, nous, vous, ils, elles, le, la, lui...).",
+      exemple: "Emma chante. → Elle chante. ('Elle' remplace 'Emma')",
     },
     {
-      titre: "Le complément circonstanciel",
+      titre: "Les mots invariables",
       texte:
-        "Le complément circonstanciel indique les circonstances de l'action : lieu, temps, manière. On peut le supprimer sans changer le sens principal.",
-      exemple: "Il joue dans le jardin. (lieu) · Il joue le soir. (temps)",
+        "Certains mots ne changent jamais : les prépositions (à, de, dans, sur...) et les conjonctions (et, mais, ou, donc, car...).",
+      exemple: "Le chat est sur le tapis. · Je veux du pain et du lait.",
     },
   ],
 };
@@ -36,49 +37,99 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Dans 'Lucas lit un livre', quel est le COD ?",
-    options: ["Lucas", "lit", "un livre", "pas de COD"],
-    reponse: "un livre",
-    explication: "On pose la question 'lit quoi ?' → un livre. C'est le COD.",
+    question: "Quelle est la classe du mot 'chien' dans 'Le chien court' ?",
+    options: ["verbe", "adjectif", "nom", "déterminant"],
+    reponse: "nom",
+    explication: "'chien' est un nom — il désigne un animal.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Dans 'Elle parle à sa mère', quel est le COI ?",
-    options: ["Elle", "parle", "sa mère", "à sa mère"],
-    reponse: "à sa mère",
-    explication:
-      "On pose la question 'parle à qui ?' → à sa mère. C'est le COI (avec préposition 'à').",
+    question: "Quelle est la classe du mot 'court' dans 'Le chien court' ?",
+    options: ["nom", "adjectif", "déterminant", "verbe"],
+    reponse: "verbe",
+    explication: "'court' est un verbe — il exprime l'action du chien.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question:
-      "Dans 'Il joue dans le parc le soir', quel est le complément de temps ?",
-    options: ["Il", "joue", "dans le parc", "le soir"],
-    reponse: "le soir",
-    explication:
-      "'le soir' indique quand il joue, c'est un complément circonstanciel de temps.",
+    question: "Quelle est la classe du mot 'le' dans 'Le chien court' ?",
+    options: ["nom", "déterminant", "adjectif", "pronom"],
+    reponse: "déterminant",
+    explication: "'le' est un déterminant — il accompagne le nom 'chien'.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question:
-      "Dans 'Emma mange une pomme', quel type de complément est 'une pomme' ?",
-    options: ["COI", "COD", "complément de lieu", "sujet"],
-    reponse: "COD",
-    explication:
-      "'une pomme' répond à 'mange quoi ?' sans préposition → c'est un COD.",
+    question: "Quelle est la classe du mot 'grand' dans 'un grand arbre' ?",
+    options: ["nom", "verbe", "adjectif", "déterminant"],
+    reponse: "adjectif",
+    explication: "'grand' est un adjectif — il qualifie le nom 'arbre'.",
+    niveau: "moyen",
   },
   {
     id: 5,
+    question: "Dans 'Elle chante', quel est le pronom ?",
+    options: ["chante", "Elle", "chant", "e"],
+    reponse: "Elle",
+    explication: "'Elle' est un pronom personnel — il remplace un nom.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quel mot est un déterminant ?",
+    options: ["mange", "beau", "mon", "vite"],
+    reponse: "mon",
+    explication: "'mon' est un déterminant possessif — il accompagne un nom.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
     question:
-      "Quel complément peut-on supprimer sans changer le sens principal ?",
-    options: ["Le COD", "Le COI", "Le sujet", "Le complément circonstanciel"],
-    reponse: "Le complément circonstanciel",
+      "Quelle est la classe du mot 'sur' dans 'Le livre est sur la table' ?",
+    options: ["nom", "verbe", "adjectif", "préposition"],
+    reponse: "préposition",
     explication:
-      "Le complément circonstanciel (lieu, temps, manière) peut être supprimé sans changer le sens essentiel de la phrase.",
+      "'sur' est une préposition — c'est un mot invariable qui indique le lieu.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question:
+      "Dans 'Les belles fleurs parfument le jardin', combien y a-t-il d'adjectifs ?",
+    options: ["0", "1", "2", "3"],
+    reponse: "1",
+    explication: "Il y a 1 adjectif : 'belles' — il qualifie 'fleurs'.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question:
+      "Quelle est la classe du mot 'mais' dans 'Je veux partir mais il pleut' ?",
+    options: ["préposition", "adjectif", "conjonction", "pronom"],
+    reponse: "conjonction",
+    explication:
+      "'mais' est une conjonction de coordination — elle relie deux propositions.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Dans 'Paul les voit tous les jours', quel mot est un pronom ?",
+    options: ["Paul", "les", "jours", "tous"],
+    reponse: "les",
+    explication:
+      "'les' est un pronom personnel complément — il remplace des personnes ou des choses.",
+    niveau: "difficile",
   },
 ];
 
-export default function GrammaireCM1Complements() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function GrammaireCM1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -90,7 +141,6 @@ export default function GrammaireCM1Complements() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -102,9 +152,8 @@ export default function GrammaireCM1Complements() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -179,6 +228,9 @@ export default function GrammaireCM1Complements() {
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -229,24 +281,28 @@ export default function GrammaireCM1Complements() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les compléments du verbe."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les classes de mots !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
