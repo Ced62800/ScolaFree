@@ -1498,6 +1498,9 @@ body:has(.admin-page) footer {
   padding: 20px 24px;
   gap: 4px;
 }
+.mobile-menu.mobile-menu-open {
+  display: flex;
+}
 .mobile-menu a,
 .mobile-menu button {
   display: block;

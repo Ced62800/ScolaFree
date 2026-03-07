@@ -45,7 +45,6 @@ export default function Home() {
           🎓 Scola<span>Free</span>
         </div>
 
-        {/* Menu desktop */}
         <div className="nav-links">
           <a href="#">Matières</a>
           <a href="#">Niveaux</a>
@@ -74,7 +73,6 @@ export default function Home() {
           )}
         </div>
 
-        {/* Bouton hamburger mobile */}
         <button
           className="hamburger"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -84,45 +82,42 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* Menu mobile overlay */}
-      {menuOpen && (
-        <div className="mobile-menu">
-          <a href="#" onClick={() => setMenuOpen(false)}>
-            Matières
+      <div className={`mobile-menu${menuOpen ? " mobile-menu-open" : ""}`}>
+        <a href="#" onClick={() => setMenuOpen(false)}>
+          Matières
+        </a>
+        <a href="#" onClick={() => setMenuOpen(false)}>
+          Niveaux
+        </a>
+        <a href="#" onClick={() => setMenuOpen(false)}>
+          À propos
+        </a>
+        <a href="/cours/francais/primaire" onClick={() => setMenuOpen(false)}>
+          Découvrir les cours
+        </a>
+        {!prenom && (
+          <a href="/connexion" className="mobile-menu-connexion">
+            Connexion
           </a>
-          <a href="#" onClick={() => setMenuOpen(false)}>
-            Niveaux
-          </a>
-          <a href="#" onClick={() => setMenuOpen(false)}>
-            À propos
-          </a>
-          <a href="/cours/francais/primaire" onClick={() => setMenuOpen(false)}>
-            Découvrir les cours
-          </a>
-          {!prenom && (
-            <a href="/connexion" className="mobile-menu-connexion">
-              Connexion
-            </a>
-          )}
-          {prenom && (
-            <>
-              <span className="mobile-menu-user">👋 Bonjour {prenom} !</span>
-              {role === "admin" && (
-                <a
-                  href="/admin"
-                  onClick={() => setMenuOpen(false)}
-                  className="mobile-menu-admin"
-                >
-                  ⚙️ Admin
-                </a>
-              )}
-              <button onClick={handleLogout} className="mobile-menu-logout">
-                🚪 Déconnexion
-              </button>
-            </>
-          )}
-        </div>
-      )}
+        )}
+        {prenom && (
+          <>
+            <span className="mobile-menu-user">👋 Bonjour {prenom} !</span>
+            {role === "admin" && (
+              <a
+                href="/admin"
+                onClick={() => setMenuOpen(false)}
+                className="mobile-menu-admin"
+              >
+                ⚙️ Admin
+              </a>
+            )}
+            <button onClick={handleLogout} className="mobile-menu-logout">
+              🚪 Déconnexion
+            </button>
+          </>
+        )}
+      </div>
 
       <section className="hero">
         <div className="blob blob-1"></div>
