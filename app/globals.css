@@ -349,7 +349,7 @@ h1 em {
 
 /* FOOTER */
 footer {
-  position: fixed;
+  position: relative;
   bottom: 0;
   left: 0;
   right: 0;
@@ -1546,9 +1546,6 @@ body:has(.admin-page) footer {
   }
   .nav-links {
     display: none !important;
-  }
-  .mobile-menu {
-    display: flex;
   }
 }
 /* ── ADMIN MOBILE ── */
