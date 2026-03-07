@@ -10,27 +10,28 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Les figures de style",
   intro:
-    "Les figures de style sont des procédés qui permettent d'embellir le langage et de rendre les textes plus expressifs. On les retrouve souvent dans la poésie et la littérature.",
+    "Les figures de style sont des procédés littéraires qui rendent le langage plus expressif et imagé. En CM2, tu apprends à reconnaître la comparaison, la métaphore et la personnification.",
   points: [
     {
       titre: "La comparaison",
       texte:
-        "La comparaison rapproche deux éléments à l'aide d'un mot comparatif : comme, tel, pareil à, semblable à...",
-      exemple: "Il est fort comme un lion. · Elle court comme le vent.",
+        "La comparaison rapproche deux éléments à l'aide d'un mot outil : comme, tel, pareil à, ressemble à...",
+      exemple:
+        "Il court comme le vent. · Elle est douce comme la soie. · Il est fort tel un lion.",
     },
     {
       titre: "La métaphore",
       texte:
-        "La métaphore compare deux éléments sans utiliser de mot comparatif. C'est une comparaison directe.",
+        "La métaphore compare deux éléments SANS mot outil. Elle affirme directement qu'une chose en est une autre.",
       exemple:
-        "C'est un lion ! (pour dire qu'il est fort) · La vie est un long fleuve tranquille.",
+        "Il est un lion sur le terrain. · La vie est un long fleuve tranquille. · Ses yeux sont des étoiles.",
     },
     {
       titre: "La personnification",
       texte:
-        "La personnification donne des caractéristiques humaines à un objet, un animal ou une idée.",
+        "La personnification attribue des caractéristiques humaines à un animal, un objet ou une idée.",
       exemple:
-        "Le vent murmure dans les arbres. · La lune nous sourit ce soir.",
+        "Le vent hurle dans la nuit. · Les étoiles nous regardent. · La forêt murmure des secrets.",
     },
   ],
 };
@@ -39,54 +40,120 @@ const questions = [
   {
     id: 1,
     question:
-      "Dans 'Elle est douce comme la pluie', quelle figure de style est utilisée ?",
-    options: ["Métaphore", "Comparaison", "Personnification", "Aucune"],
-    reponse: "Comparaison",
-    explication: "Il y a le mot comparatif 'comme' → c'est une comparaison.",
+      "Quelle figure de style est utilisée : 'Il court comme le vent' ?",
+    options: ["métaphore", "personnification", "comparaison", "exagération"],
+    reponse: "comparaison",
+    explication: "'comme' est le mot outil de la comparaison.",
+    niveau: "facile",
   },
   {
     id: 2,
     question:
-      "Dans 'Le soleil se lève et nous sourit', quelle figure de style est utilisée ?",
-    options: ["Comparaison", "Métaphore", "Personnification", "Aucune"],
-    reponse: "Personnification",
+      "Quelle figure de style est utilisée : 'Le vent hurle dans la nuit' ?",
+    options: ["comparaison", "métaphore", "personnification", "répétition"],
+    reponse: "personnification",
     explication:
-      "Le soleil 'sourit' comme un être humain → c'est une personnification.",
+      "'hurle' est une action humaine attribuée au vent → personnification.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question:
-      "Dans 'Cet homme est un renard', quelle figure de style est utilisée ?",
-    options: ["Comparaison", "Métaphore", "Personnification", "Aucune"],
-    reponse: "Métaphore",
+    question: "Quelle est la différence entre comparaison et métaphore ?",
+    options: [
+      "Il n'y a aucune différence.",
+      "La comparaison utilise un mot outil, la métaphore non.",
+      "La métaphore utilise un mot outil, la comparaison non.",
+      "La comparaison parle d'animaux, la métaphore de personnes.",
+    ],
+    reponse: "La comparaison utilise un mot outil, la métaphore non.",
     explication:
-      "On compare l'homme à un renard sans 'comme' → c'est une métaphore (il est rusé).",
+      "Comparaison : 'comme', 'tel'... Métaphore : affirmation directe sans mot outil.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quelle figure de style utilise le mot 'comme' ?",
-    options: [
-      "La métaphore",
-      "La personnification",
-      "La comparaison",
-      "Aucune",
-    ],
-    reponse: "La comparaison",
+    question:
+      "Quelle figure de style est utilisée : 'Ses yeux sont des étoiles' ?",
+    options: ["comparaison", "métaphore", "personnification", "répétition"],
+    reponse: "métaphore",
     explication:
-      "La comparaison utilise des mots comme 'comme', 'tel', 'pareil à'.",
+      "Pas de mot outil — on affirme directement que ses yeux SONT des étoiles.",
+    niveau: "moyen",
   },
   {
     id: 5,
     question:
-      "Dans 'La forêt chuchote des secrets', quelle figure de style est utilisée ?",
-    options: ["Comparaison", "Métaphore", "Personnification", "Aucune"],
-    reponse: "Personnification",
+      "Quelle figure de style est utilisée : 'La mer chante une berceuse' ?",
+    options: ["comparaison", "métaphore", "personnification", "exagération"],
+    reponse: "personnification",
     explication:
-      "La forêt 'chuchote' comme un être humain → c'est une personnification.",
+      "'chante une berceuse' est une action humaine attribuée à la mer.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Identifie la figure de style : 'Elle est forte comme un roc.'",
+    options: ["métaphore", "personnification", "comparaison", "répétition"],
+    reponse: "comparaison",
+    explication: "'comme' est le mot outil → comparaison.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quelle phrase contient une MÉTAPHORE ?",
+    options: [
+      "Il est agile comme un chat.",
+      "Le soleil se lève tôt.",
+      "Sa voix est du miel.",
+      "Les oiseaux chantent le matin.",
+    ],
+    reponse: "Sa voix est du miel.",
+    explication:
+      "Pas de mot outil — on affirme que la voix EST du miel → métaphore.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Quelle phrase contient une PERSONNIFICATION ?",
+    options: [
+      "Le ciel est bleu comme la mer.",
+      "Les nuages sont des moutons blancs.",
+      "La pluie pleure sur les toits.",
+      "Il court vite.",
+    ],
+    reponse: "La pluie pleure sur les toits.",
+    explication:
+      "'pleurer' est une action humaine attribuée à la pluie → personnification.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Identifie la figure de style : 'La vie est un voyage.'",
+    options: ["comparaison", "métaphore", "personnification", "répétition"],
+    reponse: "métaphore",
+    explication:
+      "Pas de mot outil — on affirme que la vie EST un voyage → métaphore.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question:
+      "Dans 'Les arbres tendent leurs bras vers le ciel', quelle figure de style est utilisée ?",
+    options: ["comparaison", "métaphore", "personnification", "exagération"],
+    reponse: "personnification",
+    explication:
+      "'tendent leurs bras' attribue une action humaine aux arbres → personnification.",
+    niveau: "difficile",
   },
 ];
 
-export default function VocabulaireCM2FiguresStyle() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function VocabulaireCM2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -98,7 +165,6 @@ export default function VocabulaireCM2FiguresStyle() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -110,9 +176,8 @@ export default function VocabulaireCM2FiguresStyle() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -143,7 +208,6 @@ export default function VocabulaireCM2FiguresStyle() {
           <span className="breadcrumb-active">Vocabulaire</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -162,7 +226,6 @@ export default function VocabulaireCM2FiguresStyle() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">📚 Vocabulaire · CM2</div>
@@ -184,9 +247,11 @@ export default function VocabulaireCM2FiguresStyle() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -233,28 +298,31 @@ export default function VocabulaireCM2FiguresStyle() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les figures de style."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement les figures de style !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

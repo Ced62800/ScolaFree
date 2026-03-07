@@ -8,30 +8,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le conditionnel présent",
+  titre: "Le passé simple et le plus-que-parfait",
   intro:
-    "Le conditionnel présent exprime une action qui pourrait se réaliser sous certaines conditions. Il s'utilise aussi pour exprimer un souhait ou une demande polie.",
+    "En CM2, tu apprends deux nouveaux temps du passé très utilisés dans les récits littéraires : le passé simple et le plus-que-parfait.",
   points: [
     {
-      titre: "Formation du conditionnel",
+      titre: "Le passé simple",
       texte:
-        "Le conditionnel se forme avec l'infinitif du verbe + les terminaisons de l'imparfait : -ais, -ais, -ait, -ions, -iez, -aient.",
+        "Le passé simple exprime une action passée, brève et terminée. Il est surtout utilisé à l'écrit dans les récits. Terminaisons des verbes en -er : -ai, -as, -a, -âmes, -âtes, -èrent.",
       exemple:
-        "chanter → je chanterais · finir → je finirais · prendre → je prendrais",
+        "Il mangea une pomme. · Ils partirent à l'aube. · Elle chanta toute la nuit.",
     },
     {
-      titre: "Utilisation avec 'si'",
+      titre: "Le plus-que-parfait",
       texte:
-        "Le conditionnel s'utilise souvent dans la proposition principale quand la subordonnée commence par 'si' + imparfait.",
+        "Le plus-que-parfait exprime une action passée qui s'est produite AVANT une autre action passée. Il se forme avec l'auxiliaire être ou avoir à l'imparfait + participe passé.",
       exemple:
-        "Si j'avais de l'argent, j'achèterais un vélo. · S'il faisait beau, nous sortirions.",
+        "Il avait mangé avant de partir. · Elle était arrivée quand il téléphona.",
     },
     {
-      titre: "Pour exprimer la politesse",
+      titre: "L'ordre des événements",
       texte:
-        "Le conditionnel permet d'exprimer un souhait ou une demande de façon polie.",
+        "Plus-que-parfait → passé simple → imparfait/présent. Le plus-que-parfait est le plus ancien des événements.",
       exemple:
-        "Je voudrais un café. · Pourriez-vous m'aider ? · J'aimerais partir en vacances.",
+        "Quand il arriva (passé simple), elle avait déjà mangé (plus-que-parfait).",
     },
   ],
 };
@@ -39,52 +39,126 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel verbe est au conditionnel présent ?",
-    options: ["je chante", "je chantais", "je chanterais", "j'ai chanté"],
-    reponse: "je chanterais",
+    question: "Quel temps est utilisé : 'Il mangea une pomme' ?",
+    options: ["imparfait", "passé composé", "passé simple", "futur"],
+    reponse: "passé simple",
     explication:
-      "'je chanterais' est au conditionnel : infinitif 'chanter' + terminaison '-ais'.",
+      "'mangea' est au passé simple — terminaison -a pour les verbes en -er.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète : 'Si j'avais le temps, je ___ du sport.' (faire)",
-    options: ["fais", "ferai", "ferais", "faisais"],
-    reponse: "ferais",
+    question:
+      "Quelle est la terminaison du passé simple pour 'ils' avec un verbe en -er ?",
+    options: ["-aient", "-èrent", "-aient", "-ont"],
+    reponse: "-èrent",
     explication:
-      "Avec 'si' + imparfait, on utilise le conditionnel : 'je ferais'.",
+      "Au passé simple, 'ils' prend la terminaison -èrent : ils mangèrent.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Quelle phrase exprime une demande polie au conditionnel ?",
-    options: [
-      "Donne-moi du pain.",
-      "Je veux du pain.",
-      "Je voudrais du pain.",
-      "J'ai voulu du pain.",
-    ],
-    reponse: "Je voudrais du pain.",
+    question:
+      "Quel temps est utilisé : 'Elle avait déjà mangé quand il arriva' (pour 'avait mangé') ?",
+    options: ["imparfait", "passé composé", "passé simple", "plus-que-parfait"],
+    reponse: "plus-que-parfait",
     explication:
-      "'Je voudrais' est au conditionnel et exprime une demande polie.",
+      "'avait mangé' est au plus-que-parfait — action accomplie avant une autre.",
+    niveau: "facile",
   },
   {
     id: 4,
-    question: "Quelle est la terminaison du conditionnel pour 'nous' ?",
-    options: ["-ons", "-ions", "-aient", "-iez"],
-    reponse: "-ions",
-    explication:
-      "À la 1ère personne du pluriel, le conditionnel se termine par '-ions'.",
+    question:
+      "Complète au passé simple : 'Les enfants ___ dans la forêt.' (entrer)",
+    options: ["entraient", "sont entrés", "entrèrent", "entrent"],
+    reponse: "entrèrent",
+    explication: "Au passé simple avec 'ils' : 'entrèrent'.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Complète : 'S'il faisait beau, nous ___ au parc.' (aller)",
-    options: ["allons", "irons", "irions", "allions"],
-    reponse: "irions",
+    question: "Comment se forme le plus-que-parfait ?",
+    options: [
+      "avoir/être au présent + participe passé",
+      "avoir/être à l'imparfait + participe passé",
+      "avoir/être au futur + participe passé",
+      "avoir/être au passé simple + participe passé",
+    ],
+    reponse: "avoir/être à l'imparfait + participe passé",
     explication:
-      "Avec 'si' + imparfait, on utilise le conditionnel : 'nous irions'.",
+      "Plus-que-parfait = auxiliaire à l'imparfait + participe passé.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question:
+      "Complète au plus-que-parfait : 'Il ___ ses devoirs avant de jouer.' (finir)",
+    options: ["a fini", "finissait", "avait fini", "finira"],
+    reponse: "avait fini",
+    explication:
+      "'avait fini' est au plus-que-parfait — action accomplie avant une autre.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quelle phrase est au passé simple ?",
+    options: [
+      "Il mangeait sa soupe.",
+      "Il a mangé sa soupe.",
+      "Il mangea sa soupe.",
+      "Il mange sa soupe.",
+    ],
+    reponse: "Il mangea sa soupe.",
+    explication: "'mangea' est au passé simple — terminaison -a.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question:
+      "Dans quelle situation utilise-t-on principalement le passé simple ?",
+    options: [
+      "Dans les conversations.",
+      "Dans les textos.",
+      "Dans les récits littéraires écrits.",
+      "Dans les consignes.",
+    ],
+    reponse: "Dans les récits littéraires écrits.",
+    explication:
+      "Le passé simple est surtout utilisé à l'écrit dans les récits.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question:
+      "Quelle action est la plus ancienne dans : 'Quand il arriva, elle avait déjà parti' ?",
+    options: [
+      "il arriva",
+      "elle avait déjà parti",
+      "Les deux en même temps",
+      "On ne sait pas",
+    ],
+    reponse: "elle avait déjà parti",
+    explication: "Le plus-que-parfait exprime l'action la plus ancienne.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question:
+      "Complète au passé simple : 'Le roi ___ une décision courageuse.' (prendre)",
+    options: ["prenait", "a pris", "prit", "prendra"],
+    reponse: "prit",
+    explication: "Au passé simple, 'prendre' → 'prit' (verbe irrégulier).",
+    niveau: "difficile",
   },
 ];
 
-export default function ConjugaisonCM2Conditionnel() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function ConjugaisonCM2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -96,7 +170,6 @@ export default function ConjugaisonCM2Conditionnel() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -108,9 +181,8 @@ export default function ConjugaisonCM2Conditionnel() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -141,7 +213,6 @@ export default function ConjugaisonCM2Conditionnel() {
           <span className="breadcrumb-active">Conjugaison</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -160,7 +231,6 @@ export default function ConjugaisonCM2Conditionnel() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">⏰ Conjugaison · CM2</div>
@@ -182,9 +252,11 @@ export default function ConjugaisonCM2Conditionnel() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -231,28 +303,31 @@ export default function ConjugaisonCM2Conditionnel() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises le conditionnel présent."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement ces temps littéraires !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

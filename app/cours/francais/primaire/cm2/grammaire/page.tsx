@@ -8,29 +8,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les types et formes de phrases",
+  titre: "La phrase complexe",
   intro:
-    "En français, il existe plusieurs types de phrases selon leur but, et plusieurs formes selon qu'elles sont affirmatives ou négatives.",
+    "Une phrase simple contient un seul verbe conjugué. Une phrase complexe en contient plusieurs. Elle est composée de propositions reliées entre elles.",
   points: [
     {
-      titre: "Les types de phrases",
+      titre: "La proposition principale",
       texte:
-        "Il existe 4 types de phrases : déclarative (on affirme), interrogative (on questionne), exclamative (on exprime un sentiment), impérative (on donne un ordre).",
-      exemple:
-        "Il fait beau. (déclarative) · Fait-il beau ? (interrogative) · Quel beau temps ! (exclamative) · Sortez ! (impérative)",
+        "La proposition principale est celle qui a le sens le plus important. Elle peut exister seule.",
+      exemple: "Je pense que tu as raison. → 'Je pense' est la principale.",
     },
     {
-      titre: "La forme affirmative et négative",
+      titre: "La proposition subordonnée",
       texte:
-        "Une phrase peut être à la forme affirmative ou négative. La négation se forme avec 'ne...pas', 'ne...plus', 'ne...jamais'.",
+        "La proposition subordonnée dépend de la principale. Elle est souvent introduite par 'que', 'qui', 'quand', 'parce que', 'si'...",
       exemple:
-        "Il mange. (affirmative) · Il ne mange pas. (négative) · Il ne mange plus. (négative)",
+        "Je sais que tu viendras. · Elle part quand elle veut. · Il réussit parce qu'il travaille.",
     },
     {
-      titre: "La phrase complexe",
+      titre: "La coordination et la juxtaposition",
       texte:
-        "Une phrase complexe contient plusieurs propositions reliées par des conjonctions de coordination ou de subordination.",
-      exemple: "Il mange parce qu'il a faim. · Je joue et elle chante.",
+        "Deux propositions peuvent être reliées par une conjonction de coordination (mais, ou, et, donc, or, ni, car) ou simplement par une virgule (juxtaposition).",
+      exemple: "Il pleut et je reste chez moi. · Il pleut, je reste chez moi.",
     },
   ],
 };
@@ -38,58 +37,122 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel type de phrase est 'Ferme la porte !' ?",
-    options: ["Déclarative", "Interrogative", "Exclamative", "Impérative"],
-    reponse: "Impérative",
+    question:
+      "Combien de verbes conjugués y a-t-il dans : 'Je mange et je bois' ?",
+    options: ["1", "2", "3", "0"],
+    reponse: "2",
     explication:
-      "'Ferme la porte !' donne un ordre, c'est une phrase impérative.",
+      "'mange' et 'bois' sont deux verbes conjugués → phrase complexe.",
+    niveau: "facile",
   },
   {
     id: 2,
-    question: "Quelle phrase est à la forme négative ?",
+    question: "Quelle phrase est une phrase SIMPLE ?",
     options: [
-      "Il joue au foot.",
-      "Elle chante bien.",
-      "Il ne vient pas.",
-      "Nous mangeons.",
+      "Je crois qu'il viendra.",
+      "Il pleut et je reste.",
+      "Le chat dort sur le tapis.",
+      "Elle part quand elle veut.",
     ],
-    reponse: "Il ne vient pas.",
+    reponse: "Le chat dort sur le tapis.",
     explication:
-      "'Il ne vient pas' contient la négation 'ne...pas', c'est une forme négative.",
+      "'Le chat dort sur le tapis' contient un seul verbe conjugué → phrase simple.",
+    niveau: "facile",
   },
   {
     id: 3,
-    question: "Quel type de phrase est 'Quelle belle journée !' ?",
-    options: ["Déclarative", "Interrogative", "Exclamative", "Impérative"],
-    reponse: "Exclamative",
+    question:
+      "Quel mot introduit la subordonnée dans : 'Je sais que tu viendras' ?",
+    options: ["Je", "sais", "que", "viendras"],
+    reponse: "que",
     explication:
-      "'Quelle belle journée !' exprime un sentiment, c'est une phrase exclamative.",
+      "'que' est la conjonction de subordination qui introduit la subordonnée.",
+    niveau: "facile",
   },
   {
     id: 4,
     question:
-      "Dans 'Il mange parce qu'il a faim', combien y a-t-il de propositions ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication:
-      "Il y a 2 propositions : 'Il mange' et 'il a faim', reliées par 'parce que'.",
+      "Quelle est la proposition principale dans : 'Je pense que tu as raison' ?",
+    options: ["que tu as raison", "tu as raison", "Je pense", "raison"],
+    reponse: "Je pense",
+    explication: "'Je pense' est la principale — elle peut exister seule.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Quelle est la forme négative de 'Il mange toujours' ?",
-    options: [
-      "Il ne mange pas.",
-      "Il ne mange plus.",
-      "Il ne mange jamais.",
-      "Il mange encore.",
-    ],
-    reponse: "Il ne mange jamais.",
+    question:
+      "Quel mot relie les deux propositions dans : 'Il travaille car il veut réussir' ?",
+    options: ["Il", "travaille", "car", "réussir"],
+    reponse: "car",
     explication:
-      "Le contraire de 'toujours' à la forme négative est 'ne...jamais'.",
+      "'car' est une conjonction de coordination qui exprime la cause.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Quelle phrase contient une proposition subordonnée relative ?",
+    options: [
+      "Je mange et je bois.",
+      "Il pleut donc je reste.",
+      "Le livre que je lis est passionnant.",
+      "Elle chante mais il dort.",
+    ],
+    reponse: "Le livre que je lis est passionnant.",
+    explication:
+      "'que je lis' est une subordonnée relative introduite par 'que'.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quelle phrase est une phrase complexe par JUXTAPOSITION ?",
+    options: [
+      "Il pleut et je reste.",
+      "Il pleut, je reste.",
+      "Il pleut parce que c'est l'automne.",
+      "Il pleut donc je prends mon parapluie.",
+    ],
+    reponse: "Il pleut, je reste.",
+    explication:
+      "Les deux propositions sont reliées par une virgule = juxtaposition.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question:
+      "Combien de propositions y a-t-il dans : 'Je sais que tu viendras et que tu apporteras un gâteau' ?",
+    options: ["1", "2", "3", "4"],
+    reponse: "3",
+    explication:
+      "3 propositions : 'Je sais' + 'que tu viendras' + 'que tu apporteras un gâteau'.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Quel subordonnant introduit une cause ?",
+    options: ["quand", "si", "parce que", "que"],
+    reponse: "parce que",
+    explication: "'parce que' introduit une subordonnée de cause.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question:
+      "Quelle proposition est subordonnée dans : 'Elle réussira si elle travaille' ?",
+    options: ["Elle réussira", "si elle travaille", "réussira si", "Elle"],
+    reponse: "si elle travaille",
+    explication:
+      "'si elle travaille' est la subordonnée de condition introduite par 'si'.",
+    niveau: "difficile",
   },
 ];
 
-export default function GrammaireCM2TypesPhrases() {
+const niveauLabel = (n: string) => {
+  if (n === "facile") return "🟢 Facile";
+  if (n === "moyen") return "🟡 Moyen";
+  return "🔴 Difficile";
+};
+
+export default function GrammaireCM2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -101,7 +164,6 @@ export default function GrammaireCM2TypesPhrases() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -113,9 +175,8 @@ export default function GrammaireCM2TypesPhrases() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) {
-      setEtape("fini");
-    } else {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
@@ -146,7 +207,6 @@ export default function GrammaireCM2TypesPhrases() {
           <span className="breadcrumb-active">Grammaire</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -165,7 +225,6 @@ export default function GrammaireCM2TypesPhrases() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">📝 Grammaire · CM2</div>
@@ -187,9 +246,11 @@ export default function GrammaireCM2TypesPhrases() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
@@ -236,28 +297,31 @@ export default function GrammaireCM2TypesPhrases() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score === questions.length ? "🏆" : score >= 3 ? "⭐" : "💪"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score === questions.length
-              ? "Parfait !"
-              : score >= 3
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue comme ça !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
-            {score === questions.length
-              ? "Tu as tout bon ! Tu maîtrises les types et formes de phrases."
-              : score >= 3
+            {score >= 9
+              ? "Tu maîtrises parfaitement la phrase complexe !"
+              : score >= 7
                 ? "Tu as bien compris l'essentiel."
-                : "Relis la leçon et réessaie !"}
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
