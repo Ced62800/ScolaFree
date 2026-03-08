@@ -92,7 +92,7 @@ export default function Home() {
         <a href="#" onClick={() => setMenuOpen(false)}>
           À propos
         </a>
-        <a href="/cours/francais/primaire" onClick={() => setMenuOpen(false)}>
+        <a href="/cours/primaire" onClick={() => setMenuOpen(false)}>
           Découvrir les cours
         </a>
         {!prenom && (
@@ -160,7 +160,7 @@ export default function Home() {
             <a href="/inscription" className="btn-primary">
               Inscription →
             </a>
-            <a href="/cours/francais/primaire" className="btn-secondary">
+            <a href="/cours/primaire" className="btn-secondary">
               Découvrir les cours
             </a>
           </div>
