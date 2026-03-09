@@ -87,32 +87,26 @@ export default function AnglaisCE1() {
           border: "1px solid rgba(79,142,247,0.2)",
           borderRadius: "16px",
           padding: "20px 24px",
-          display: "flex",
-          alignItems: "center",
-          gap: "16px",
+          textAlign: "center",
         }}
       >
-        <div style={{ fontSize: "2rem" }}>🎧</div>
-        <div>
-          <div style={{ fontWeight: 700, marginBottom: "4px" }}>
-            Envie de pratiquer à l'oral ?
-          </div>
-          <p
-            style={{ color: "#aaa", fontSize: "0.9rem", margin: "0 0 10px 0" }}
-          >
-            <strong>LearnEnglish Kids</strong> — jeux, vidéos et chansons en
-            anglais. <span style={{ color: "#2ec4b6" }}>100% gratuit</span>,
-            sans inscription !
-          </p>
-          <a
-            href="https://learnenglishkids.britishcouncil.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "#4f8ef7", fontWeight: 600, fontSize: "0.9rem" }}
-          >
-            → learnenglishkids.britishcouncil.org
-          </a>
+        <div style={{ fontSize: "2rem", marginBottom: "8px" }}>🎧</div>
+        <div style={{ fontWeight: 700, marginBottom: "6px" }}>
+          Envie de pratiquer à l'oral ?
         </div>
+        <p style={{ color: "#aaa", fontSize: "0.9rem", margin: "0 0 10px 0" }}>
+          <strong>LearnEnglish Kids</strong> — jeux, vidéos et chansons en
+          anglais. <span style={{ color: "#2ec4b6" }}>100% gratuit</span>, sans
+          inscription !
+        </p>
+        <a
+          href="https://learnenglishkids.britishcouncil.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "#4f8ef7", fontWeight: 600, fontSize: "0.9rem" }}
+        >
+          → learnenglishkids.britishcouncil.org
+        </a>
       </div>
       <div style={{ marginTop: "40px", textAlign: "center" }}>
         <button
