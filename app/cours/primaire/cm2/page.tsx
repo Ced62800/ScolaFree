@@ -17,7 +17,7 @@ const matieres = [
     emoji: "➕",
     color: "#2ec4b6",
     desc: "Décimaux, Pourcentages, Aires, Statistiques",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "anglais",
