@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
@@ -14,26 +15,20 @@ const lecon = {
     {
       titre: "Multiplier, c'est additionner rapidement",
       texte:
-        "3 × 4 signifie « 3 fois 4 » ou « 4 + 4 + 4 ». On appelle ce calcul une multiplication. Les deux nombres s'appellent des facteurs, et le résultat s'appelle le produit.",
-      exemple: "🍎 3 × 4 = 4 + 4 + 4 = 12",
+        "3 × 4 signifie « 3 fois 4 » ou « 4 + 4 + 4 ». Les deux nombres s'appellent des facteurs, et le résultat s'appelle le produit.",
+      exemple: "3 × 4 = 4 + 4 + 4 = 12. 2 × 6 = 6 + 6 = 12.",
     },
     {
       titre: "Les tables de multiplication (2, 3, 5, 10)",
       texte:
-        "En CE1, on commence à apprendre les tables de 2, 3, 5 et 10. Ce sont les plus faciles ! La table de 10 est simple : on ajoute juste un zéro.",
-      exemple: "✖️ 5 × 3 = 15 | 10 × 4 = 40 | 2 × 7 = 14",
+        "En CE1, on commence à apprendre les tables de 2, 3, 5 et 10. La table de 10 est simple : on ajoute juste un zéro.",
+      exemple: "5 × 3 = 15 | 10 × 4 = 40 | 2 × 7 = 14 | 3 × 6 = 18.",
     },
     {
       titre: "La commutativité",
       texte:
         "L'ordre des facteurs ne change pas le produit ! 3 × 5 = 5 × 3. C'est très pratique pour apprendre les tables.",
-      exemple: "🔄 3 × 5 = 15 et 5 × 3 = 15",
-    },
-    {
-      titre: "Multiplication et situations concrètes",
-      texte:
-        "La multiplication sert à calculer des quantités en groupes égaux : prix d'articles identiques, rangées de chaises, etc.",
-      exemple: "🛒 4 cahiers à 3 € chacun → 4 × 3 = 12 €",
+      exemple: "3 × 5 = 15 et 5 × 3 = 15. 4 × 2 = 8 et 2 × 4 = 8.",
     },
   ],
 };
@@ -123,65 +118,49 @@ const questions = [
   },
 ];
 
+const niveauLabel = (n: string) =>
+  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+
 export default function MultiplicationCE1() {
   const router = useRouter();
-  const [etape, setEtape] = useState<"intro" | "qcm" | "fini">("intro");
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
+  const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
+  const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
-  const [answered, setAnswered] = useState(false);
+  const [score, setScore] = useState(0);
+  const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [session, setSession] = useState(0);
 
-  const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const current = shuffledQuestions[questionIndex];
   const shuffledOptions = useMemo(
-    () => shuffleArray(current.options),
-    [questionIndex],
+    () => shuffleArray(questions[qIndex].options),
+    [qIndex, session],
   );
 
-  function handleOption(opt: string) {
-    if (answered) return;
-    setSelected(opt);
-    setAnswered(true);
-    if (opt === current.reponse) setScore((s) => s + 1);
-  }
+  const progression = Math.round((bonnes.length / questions.length) * 100);
 
-  function handleNext() {
-    if (questionIndex + 1 < shuffledQuestions.length) {
-      setQuestionIndex((i) => i + 1);
+  const handleReponse = (option: string) => {
+    if (selected) return;
+    setSelected(option);
+    const correct = option === questions[qIndex].reponse;
+    if (correct) setScore((s) => s + 1);
+    setBonnes((b) => [...b, correct]);
+  };
+
+  const handleSuivant = () => {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
+      setQIndex((i) => i + 1);
       setSelected(null);
-      setAnswered(false);
-    } else {
-      setEtape("fini");
     }
-  }
+  };
 
-  function getResultat() {
-    if (score >= 9)
-      return {
-        icon: "🏆",
-        titre: "Excellent !",
-        desc: "Tu maîtrises parfaitement les premières multiplications !",
-      };
-    if (score >= 7)
-      return {
-        icon: "⭐",
-        titre: "Bien joué !",
-        desc: "Très bon début avec les tables de multiplication !",
-      };
-    if (score >= 5)
-      return {
-        icon: "👍",
-        titre: "Assez bien !",
-        desc: "Continue à réviser les tables de 2, 3, 5 et 10.",
-      };
-    return {
-      icon: "💪",
-      titre: "À revoir !",
-      desc: "Relis la leçon et entraîne-toi sur les tables de multiplication.",
-    };
-  }
-
-  const resultat = getResultat();
+  const handleRecommencer = () => {
+    setEtape("lecon");
+    setQIndex(0);
+    setSelected(null);
+    setScore(0);
+    setBonnes([]);
+    setSession((s) => s + 1);
+  };
 
   return (
     <div className="cours-page">
@@ -192,101 +171,103 @@ export default function MultiplicationCE1() {
         >
           ← Retour
         </button>
-        <span className="cours-breadcrumb">
-          Primaire › CE1 › Maths › Multiplication
-        </span>
+        <div className="cours-breadcrumb">
+          <span>CE1</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Maths</span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Multiplication</span>
+        </div>
       </div>
 
-      <div className="cours-hero">
-        <div className="cours-hero-icon">✖️</div>
-        <h1 className="cours-hero-title">La multiplication — découverte</h1>
-        <p className="cours-hero-desc">
-          Tables de 2, 3, 5 et 10 — multiplier c'est additionner vite !
-        </p>
-      </div>
+      {etape === "qcm" && (
+        <div className="progression-wrapper">
+          <div className="progression-info">
+            <span>
+              Question {qIndex + 1} / {questions.length}
+            </span>
+            <span>
+              {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}
+            </span>
+          </div>
+          <div className="progression-bar">
+            <div
+              className="progression-fill"
+              style={{ width: `${progression}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
 
-      {etape === "intro" && (
+      {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <span className="lecon-badge">📘 Leçon</span>
-          <h2 className="lecon-titre">{lecon.titre}</h2>
+          <div className="lecon-badge">✖️ Multiplication · CE1</div>
+          <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
                 <div className="lecon-point-titre">{p.titre}</div>
                 <div className="lecon-point-texte">{p.texte}</div>
-                <div className="lecon-point-exemple">{p.exemple}</div>
+                <div className="lecon-point-exemple">
+                  <span className="exemple-label">Exemples :</span> {p.exemple}
+                </div>
               </div>
             ))}
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
-            Commencer le QCM →
+            Je suis prêt(e) — Passer aux exercices →
           </button>
         </div>
       )}
 
       {etape === "qcm" && (
         <div className="qcm-wrapper">
-          <div className="progression-wrapper">
-            <div className="progression-info">
-              <span>
-                Question {questionIndex + 1} / {shuffledQuestions.length}
-              </span>
-              <span>Score : {score}</span>
-            </div>
-            <div className="progression-bar">
-              <div
-                className="progression-fill"
-                style={{
-                  width: `${((questionIndex + 1) / shuffledQuestions.length) * 100}%`,
-                }}
-              />
-            </div>
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
           </div>
-
-          <div className="qcm-question">
-            <span className={`niveau-label niveau-${current.niveau}`}>
-              {current.niveau}
-            </span>
-            <p>{current.question}</p>
-          </div>
-
+          <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
-              let cls = "qcm-option";
-              if (answered) {
-                if (opt === current.reponse) cls += " correct";
-                else if (opt === selected) cls += " incorrect";
-                cls += " disabled";
+              let className = "qcm-option";
+              if (selected) {
+                if (opt === questions[qIndex].reponse) className += " correct";
+                else if (opt === selected) className += " incorrect";
+                else className += " disabled";
               }
               return (
                 <button
                   key={opt}
-                  className={cls}
-                  onClick={() => handleOption(opt)}
+                  className={className}
+                  onClick={() => handleReponse(opt)}
                 >
                   {opt}
                 </button>
               );
             })}
           </div>
-
-          {answered && (
+          {selected && (
             <div
-              className={`qcm-feedback ${selected === current.reponse ? "feedback-correct" : "feedback-incorrect"}`}
+              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
             >
-              <span className="feedback-icon">
-                {selected === current.reponse ? "✅" : "❌"}
-              </span>
-              <span className="feedback-texte">{current.explication}</span>
+              <div className="feedback-icon">
+                {selected === questions[qIndex].reponse ? "✅" : "❌"}
+              </div>
+              <div className="feedback-texte">
+                <strong>
+                  {selected === questions[qIndex].reponse
+                    ? "Bravo !"
+                    : "Pas tout à fait..."}
+                </strong>
+                <p>{questions[qIndex].explication}</p>
+              </div>
             </div>
           )}
-
-          {answered && (
-            <button className="lecon-btn" onClick={handleNext}>
-              {questionIndex + 1 < shuffledQuestions.length
-                ? "Question suivante →"
-                : "Voir mon résultat →"}
+          {selected && (
+            <button className="lecon-btn" onClick={handleSuivant}>
+              {qIndex + 1 >= questions.length
+                ? "Voir mon résultat →"
+                : "Question suivante →"}
             </button>
           )}
         </div>
@@ -294,30 +275,39 @@ export default function MultiplicationCE1() {
 
       {etape === "fini" && (
         <div className="resultat-wrapper">
-          <div className="resultat-icon">{resultat.icon}</div>
-          <h2 className="resultat-titre">{resultat.titre}</h2>
-          <div className="resultat-score">
-            {score} / {shuffledQuestions.length}
+          <div className="resultat-icon">
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
-          <p className="resultat-desc">{resultat.desc}</p>
+          <h2 className="resultat-titre">
+            {score >= 9
+              ? "Excellent !"
+              : score >= 7
+                ? "Bien joué !"
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
+          </h2>
+          <div className="resultat-score">
+            {score} / {questions.length}
+          </div>
+          <p className="resultat-desc">
+            {score >= 9
+              ? "Tu maîtrises parfaitement les tables de multiplication !"
+              : score >= 7
+                ? "Tu as bien compris l'essentiel."
+                : score >= 5
+                  ? "Encore quelques efforts !"
+                  : "Relis la leçon et réessaie !"}
+          </p>
           <div className="resultat-actions">
-            <button
-              className="lecon-btn"
-              onClick={() => {
-                setEtape("intro");
-                setScore(0);
-                setQuestionIndex(0);
-                setSelected(null);
-                setAnswered(false);
-              }}
-            >
-              Recommencer
+            <button className="lecon-btn-outline" onClick={handleRecommencer}>
+              🔄 Recommencer
             </button>
             <button
-              className="lecon-btn-outline"
+              className="lecon-btn"
               onClick={() => router.push("/cours/primaire/ce1/maths")}
             >
-              Retour aux thèmes
+              Retour aux thèmes →
             </button>
           </div>
         </div>
