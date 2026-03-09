@@ -17,7 +17,7 @@ const matieres = [
     emoji: "➕",
     color: "#2ec4b6",
     desc: "Numération, Calcul, Fractions, Géométrie",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "anglais",
