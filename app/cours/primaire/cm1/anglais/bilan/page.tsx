@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -242,6 +243,17 @@ export default function BilanCM1Anglais() {
     description: 0,
   });
   const [totalScore, setTotalScore] = useState(0);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
+  // Ref pour tracker le score réel sans dépendre de l'async du state
+  const scoreRef = useRef(0);
 
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
   const shuffledOptions = useMemo(
@@ -249,6 +261,11 @@ export default function BilanCM1Anglais() {
     [qIndex, shuffledQuestions],
   );
   const progression = Math.round((qIndex / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore("cm1", "anglais", "bilan").then(setBestScore);
+    getLastScore("cm1", "anglais", "bilan").then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -258,18 +275,38 @@ export default function BilanCM1Anglais() {
       const theme = shuffledQuestions[qIndex].theme;
       setScores((s) => ({ ...s, [theme]: s[theme] + 1 }));
       setTotalScore((s) => s + 1);
+      scoreRef.current += 1; // mise à jour synchrone
     }
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= shuffledQuestions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= shuffledQuestions.length) {
+      if (scoreSaved.current) return;
+      scoreSaved.current = true;
+      // On utilise scoreRef.current — toujours à jour, pas de problème async
+      await saveScore({
+        classe: "cm1",
+        matiere: "anglais",
+        theme: "bilan",
+        score: scoreRef.current,
+        total: 20,
+      });
+      const [best, last] = await Promise.all([
+        getBestScore("cm1", "anglais", "bilan"),
+        getLastScore("cm1", "anglais", "bilan"),
+      ]);
+      setBestScore(best);
+      setLastScore(last);
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
+    scoreRef.current = 0;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -314,6 +351,50 @@ export default function BilanCM1Anglais() {
           <p className="lecon-intro">
             Ce bilan regroupe des questions sur les 4 thèmes d'Anglais du CM1.
           </p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="bilan-info-grid">
             <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
               <span>💼</span>
@@ -422,6 +503,50 @@ export default function BilanCM1Anglais() {
           <div className="resultat-score" style={{ color: mention.color }}>
             {totalScore} / 20
           </div>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", margin: "12px 0" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px",
+                    fontSize: "0.85rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px",
+                    fontSize: "0.85rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="bilan-detail">
             <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (

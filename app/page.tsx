@@ -4,10 +4,61 @@ import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+const CLASSES_CONFIG: Record<
+  string,
+  { label: string; matieres: { key: string; label: string; emoji: string }[] }
+> = {
+  cp: {
+    label: "CP",
+    matieres: [
+      { key: "francais", label: "Français", emoji: "📖" },
+      { key: "maths", label: "Maths", emoji: "🔢" },
+    ],
+  },
+  ce1: {
+    label: "CE1",
+    matieres: [
+      { key: "francais", label: "Français", emoji: "📖" },
+      { key: "maths", label: "Maths", emoji: "🔢" },
+      { key: "anglais", label: "Anglais", emoji: "🇬🇧" },
+    ],
+  },
+  ce2: {
+    label: "CE2",
+    matieres: [
+      { key: "francais", label: "Français", emoji: "📖" },
+      { key: "maths", label: "Maths", emoji: "🔢" },
+      { key: "anglais", label: "Anglais", emoji: "🇬🇧" },
+    ],
+  },
+  cm1: {
+    label: "CM1",
+    matieres: [
+      { key: "francais", label: "Français", emoji: "📖" },
+      { key: "maths", label: "Maths", emoji: "🔢" },
+      { key: "anglais", label: "Anglais", emoji: "🇬🇧" },
+    ],
+  },
+  cm2: {
+    label: "CM2",
+    matieres: [
+      { key: "francais", label: "Français", emoji: "📖" },
+      { key: "maths", label: "Maths", emoji: "🔢" },
+      { key: "anglais", label: "Anglais", emoji: "🇬🇧" },
+    ],
+  },
+};
+
+type BilanScore = { score: number; total: number } | null;
+type ClasseBilans = Record<string, BilanScore>;
+
 export default function Home() {
   const [prenom, setPrenom] = useState("");
   const [role, setRole] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [bilansByClasse, setBilansByClasse] = useState<
+    Record<string, ClasseBilans>
+  >({});
   const router = useRouter();
 
   useEffect(() => {
@@ -25,6 +76,28 @@ export default function Home() {
           setPrenom(profile.prenom);
           setRole(profile.role);
         }
+
+        // Récupérer tous les bilans uniquement
+        const { data: bilans } = await supabase
+          .from("scores")
+          .select("classe, matiere, score, total, created_at")
+          .eq("user_id", user.id)
+          .eq("theme", "bilan")
+          .order("created_at", { ascending: false });
+
+        if (bilans && bilans.length > 0) {
+          // Pour chaque classe/matière, garder le meilleur score
+          const result: Record<string, ClasseBilans> = {};
+          for (const b of bilans) {
+            if (!result[b.classe]) result[b.classe] = {};
+            if (!result[b.classe][b.matiere]) {
+              result[b.classe][b.matiere] = { score: b.score, total: b.total };
+            } else if (b.score > result[b.classe][b.matiere]!.score) {
+              result[b.classe][b.matiere] = { score: b.score, total: b.total };
+            }
+          }
+          setBilansByClasse(result);
+        }
       }
     };
     getUser();
@@ -35,8 +108,26 @@ export default function Home() {
     setPrenom("");
     setRole("");
     setMenuOpen(false);
+    setBilansByClasse({});
     router.refresh();
   };
+
+  const getMoyenneClasse = (classe: string): number | null => {
+    const bilans = bilansByClasse[classe];
+    if (!bilans) return null;
+    const config = CLASSES_CONFIG[classe];
+    const scores = config.matieres
+      .map((m) => bilans[m.key])
+      .filter((b): b is { score: number; total: number } => !!b);
+    if (scores.length === 0) return null;
+    return Math.round(
+      scores.reduce((acc, b) => acc + b.score, 0) / scores.length,
+    );
+  };
+
+  const classesAvecBilans = Object.keys(CLASSES_CONFIG).filter(
+    (c) => bilansByClasse[c] && Object.keys(bilansByClasse[c]).length > 0,
+  );
 
   return (
     <>
@@ -44,7 +135,6 @@ export default function Home() {
         <div className="nav-logo">
           🎓 Scola<span>Free</span>
         </div>
-
         <div className="nav-links">
           <a href="#">Matières</a>
           <a href="#">Niveaux</a>
@@ -72,7 +162,6 @@ export default function Home() {
             </>
           )}
         </div>
-
         <button
           className="hamburger"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -129,7 +218,6 @@ export default function Home() {
             <span className="badge-dot"></span> 100% gratuit · Aucune carte
             requise
           </div>
-
           <div className="logo-row">
             <span className="cap-emoji">🎓</span>
             <div className="logo-text">
@@ -137,25 +225,21 @@ export default function Home() {
               <span className="free">Free</span>
             </div>
           </div>
-
           <h1>
             L&apos;excellence scolaire,
             <br />
             <em>accessible à tous</em>
           </h1>
-
           <p className="desc">
             Une plateforme éducative complète pour{" "}
             <strong>apprendre, réviser et progresser</strong> en Français,
             Mathématiques et Anglais — du Primaire au Lycée.
           </p>
-
           <div className="tags">
             <span className="tag tag-blue">📖 Français</span>
             <span className="tag tag-coral">➕ Mathématiques</span>
             <span className="tag tag-yellow">🌍 Anglais</span>
           </div>
-
           <div className="cta-row">
             <a href="/inscription" className="btn-primary">
               Inscription →
@@ -193,6 +277,150 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Encart progrès — bilans par classe */}
+      {prenom && classesAvecBilans.length > 0 && (
+        <section
+          style={{
+            maxWidth: "800px",
+            margin: "0 auto 60px",
+            padding: "0 16px",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "1.3rem",
+              fontWeight: 700,
+              marginBottom: "20px",
+              color: "#fff",
+            }}
+          >
+            📊 Mes progrès
+          </h2>
+
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            {classesAvecBilans.map((classe) => {
+              const config = CLASSES_CONFIG[classe];
+              const bilans = bilansByClasse[classe];
+              const moyenne = getMoyenneClasse(classe);
+
+              return (
+                <div
+                  key={classe}
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "16px",
+                    padding: "20px",
+                  }}
+                >
+                  {/* Header */}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontWeight: 700,
+                        fontSize: "1.1rem",
+                        color: "#fff",
+                      }}
+                    >
+                      🎓 {config.label}
+                    </div>
+                    {moyenne !== null && (
+                      <div style={{ textAlign: "right" }}>
+                        <div style={{ fontSize: "0.75rem", color: "#aaa" }}>
+                          Moyenne bilans
+                        </div>
+                        <div
+                          style={{
+                            fontSize: "1.3rem",
+                            fontWeight: 800,
+                            color: "#ffd166",
+                          }}
+                        >
+                          {moyenne} / 20
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Matières */}
+                  <div
+                    style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
+                  >
+                    {config.matieres.map((matiere) => {
+                      const bilan = bilans[matiere.key];
+                      const scoreColor = bilan
+                        ? bilan.score >= 14
+                          ? "#2ec4b6"
+                          : bilan.score >= 10
+                            ? "#ffd166"
+                            : "#ff6b6b"
+                        : "#555";
+                      return (
+                        <div
+                          key={matiere.key}
+                          style={{
+                            flex: "1 1 120px",
+                            background: bilan
+                              ? "rgba(79,142,247,0.08)"
+                              : "rgba(255,255,255,0.03)",
+                            border: bilan
+                              ? "1px solid rgba(79,142,247,0.25)"
+                              : "1px solid rgba(255,255,255,0.07)",
+                            borderRadius: "12px",
+                            padding: "12px 14px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: "0.8rem",
+                              color: "#aaa",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            {matiere.emoji} {matiere.label}
+                          </div>
+                          {bilan ? (
+                            <div
+                              style={{
+                                fontSize: "1.4rem",
+                                fontWeight: 800,
+                                color: scoreColor,
+                              }}
+                            >
+                              {bilan.score} / 20
+                            </div>
+                          ) : (
+                            <div
+                              style={{
+                                fontSize: "0.85rem",
+                                color: "#555",
+                                fontStyle: "italic",
+                              }}
+                            >
+                              — / 20
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       <footer>
         <div className="footer-logo">
