@@ -25,7 +25,7 @@ const matieres = [
     emoji: "🌍",
     color: "#ff6b6b",
     desc: "Vocabulaire, Grammaire, Communication",
-    dispo: false,
+    dispo: true,
   },
 ];
 

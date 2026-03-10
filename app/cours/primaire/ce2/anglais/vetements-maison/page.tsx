@@ -1,0 +1,319 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+
+function shuffleArray<T>(array: T[]): T[] {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+const lecon = {
+  titre: "Clothes & House",
+  intro:
+    "Let's learn the names of clothes and rooms in the house in English! Les vêtements et la maison font partie de notre vie quotidienne.",
+  points: [
+    {
+      titre: "Clothes — Les vêtements",
+      texte:
+        "We wear different clothes every day. 'I wear a t-shirt' = Je porte un t-shirt.",
+      exemple:
+        "a t-shirt 👕 | trousers 👖 | a dress 👗 | shoes 👟 | a jacket 🧥 | a hat 🎩 | socks 🧦",
+    },
+    {
+      titre: "Rooms — Les pièces de la maison",
+      texte:
+        "A house has many rooms. 'I sleep in my bedroom' = Je dors dans ma chambre.",
+      exemple:
+        "the kitchen 🍳 | the living room 🛋️ | the bedroom 🛏️ | the bathroom 🛁 | the garden 🌿",
+    },
+    {
+      titre: "Furniture — Les meubles",
+      texte:
+        "These are objects we find at home. 'There is a table in the kitchen' = Il y a une table dans la cuisine.",
+      exemple:
+        "a table 🪑 | a chair 🪑 | a bed 🛏️ | a sofa 🛋️ | a window 🪟 | a door 🚪",
+    },
+  ],
+};
+
+const questions = [
+  {
+    id: 1,
+    question: "What is this? 👕",
+    options: ["trousers", "a dress", "a t-shirt", "a jacket"],
+    reponse: "a t-shirt",
+    explication: "This is a t-shirt. / C'est un t-shirt.",
+    niveau: "facile",
+  },
+  {
+    id: 2,
+    question: "Where do you sleep? 🛏️",
+    options: ["the kitchen", "the bathroom", "the living room", "the bedroom"],
+    reponse: "the bedroom",
+    explication: "We sleep in the bedroom. / On dort dans la chambre.",
+    niveau: "facile",
+  },
+  {
+    id: 3,
+    question: "What do you wear on your feet? 👟",
+    options: ["a hat", "socks", "a jacket", "shoes"],
+    reponse: "shoes",
+    explication:
+      "We wear shoes on our feet. / On porte des chaussures aux pieds.",
+    niveau: "facile",
+  },
+  {
+    id: 4,
+    question: "Where do you cook? 🍳",
+    options: ["the bedroom", "the garden", "the kitchen", "the bathroom"],
+    reponse: "the kitchen",
+    explication: "We cook in the kitchen. / On cuisine dans la cuisine.",
+    niveau: "moyen",
+  },
+  {
+    id: 5,
+    question: "What is this? 👗",
+    options: ["a t-shirt", "trousers", "a dress", "a jacket"],
+    reponse: "a dress",
+    explication: "This is a dress. / C'est une robe.",
+    niveau: "moyen",
+  },
+  {
+    id: 6,
+    question: "Where do you watch TV? 🛋️",
+    options: ["the kitchen", "the living room", "the bedroom", "the bathroom"],
+    reponse: "the living room",
+    explication:
+      "We watch TV in the living room. / On regarde la télé dans le salon.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "How do you say 'une chaise' in English?",
+    options: ["a table", "a bed", "a sofa", "a chair"],
+    reponse: "a chair",
+    explication: "A chair. / Une chaise.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
+    question: "Complete: 'I ___ a blue jacket.' (porter)",
+    options: ["eat", "drink", "wear", "have"],
+    reponse: "wear",
+    explication: "I wear a blue jacket. / Je porte une veste bleue.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "How do you say 'un chapeau' in English?",
+    options: ["socks", "shoes", "a hat", "a jacket"],
+    reponse: "a hat",
+    explication: "A hat. / Un chapeau.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Where do you wash? 🛁",
+    options: ["the kitchen", "the bedroom", "the garden", "the bathroom"],
+    reponse: "the bathroom",
+    explication: "We wash in the bathroom. / On se lave dans la salle de bain.",
+    niveau: "difficile",
+  },
+];
+
+const niveauLabel = (n: string) =>
+  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+
+export default function VetementsMaisonCE2() {
+  const router = useRouter();
+  const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
+  const [qIndex, setQIndex] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [score, setScore] = useState(0);
+  const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [session, setSession] = useState(0);
+
+  const shuffledOptions = useMemo(
+    () => shuffleArray(questions[qIndex].options),
+    [qIndex, session],
+  );
+  const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  const handleReponse = (option: string) => {
+    if (selected) return;
+    setSelected(option);
+    const correct = option === questions[qIndex].reponse;
+    if (correct) setScore((s) => s + 1);
+    setBonnes((b) => [...b, correct]);
+  };
+
+  const handleSuivant = () => {
+    if (qIndex + 1 >= questions.length) setEtape("fini");
+    else {
+      setQIndex((i) => i + 1);
+      setSelected(null);
+    }
+  };
+
+  const handleRecommencer = () => {
+    setEtape("lecon");
+    setQIndex(0);
+    setSelected(null);
+    setScore(0);
+    setBonnes([]);
+    setSession((s) => s + 1);
+  };
+
+  return (
+    <div className="cours-page">
+      <div className="cours-header">
+        <button
+          className="cours-back"
+          onClick={() => router.push("/cours/primaire/ce2/anglais")}
+        >
+          ← Retour
+        </button>
+        <div className="cours-breadcrumb">
+          <span>CE2</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Anglais</span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Clothes & House</span>
+        </div>
+      </div>
+
+      {etape === "qcm" && (
+        <div className="progression-wrapper">
+          <div className="progression-info">
+            <span>
+              Question {qIndex + 1} / {questions.length}
+            </span>
+            <span>
+              {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}
+            </span>
+          </div>
+          <div className="progression-bar">
+            <div
+              className="progression-fill"
+              style={{ width: `${progression}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
+
+      {etape === "lecon" && (
+        <div className="lecon-wrapper">
+          <div className="lecon-badge">👕 Clothes & House · CE2</div>
+          <h1 className="lecon-titre">{lecon.titre}</h1>
+          <p className="lecon-intro">{lecon.intro}</p>
+          <div className="lecon-points">
+            {lecon.points.map((p, i) => (
+              <div key={i} className="lecon-point">
+                <div className="lecon-point-titre">{p.titre}</div>
+                <div className="lecon-point-texte">{p.texte}</div>
+                <div className="lecon-point-exemple">
+                  <span className="exemple-label">Exemples :</span> {p.exemple}
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="lecon-btn" onClick={() => setEtape("qcm")}>
+            Je suis prêt(e) — Passer aux exercices →
+          </button>
+        </div>
+      )}
+
+      {etape === "qcm" && (
+        <div className="qcm-wrapper">
+          <div className="niveau-label">
+            {niveauLabel(questions[qIndex].niveau)}
+          </div>
+          <div className="qcm-question">{questions[qIndex].question}</div>
+          <div className="qcm-options">
+            {shuffledOptions.map((opt) => {
+              let className = "qcm-option";
+              if (selected) {
+                if (opt === questions[qIndex].reponse) className += " correct";
+                else if (opt === selected) className += " incorrect";
+                else className += " disabled";
+              }
+              return (
+                <button
+                  key={opt}
+                  className={className}
+                  onClick={() => handleReponse(opt)}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+          {selected && (
+            <div
+              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
+            >
+              <div className="feedback-icon">
+                {selected === questions[qIndex].reponse ? "✅" : "❌"}
+              </div>
+              <div className="feedback-texte">
+                <strong>
+                  {selected === questions[qIndex].reponse
+                    ? "Well done! 🎉"
+                    : "Not quite..."}
+                </strong>
+                <p>{questions[qIndex].explication}</p>
+              </div>
+            </div>
+          )}
+          {selected && (
+            <button className="lecon-btn" onClick={handleSuivant}>
+              {qIndex + 1 >= questions.length
+                ? "Voir mon résultat →"
+                : "Question suivante →"}
+            </button>
+          )}
+        </div>
+      )}
+
+      {etape === "fini" && (
+        <div className="resultat-wrapper">
+          <div className="resultat-icon">
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
+          </div>
+          <h2 className="resultat-titre">
+            {score >= 9
+              ? "Excellent!"
+              : score >= 7
+                ? "Well done!"
+                : score >= 5
+                  ? "Good job!"
+                  : "Keep trying!"}
+          </h2>
+          <div className="resultat-score">
+            {score} / {questions.length}
+          </div>
+          <p className="resultat-desc">
+            {score >= 9
+              ? "Tu connais parfaitement les vêtements et la maison !"
+              : score >= 7
+                ? "Tu as bien compris l'essentiel !"
+                : score >= 5
+                  ? "Encore quelques efforts !"
+                  : "Relis la leçon et réessaie !"}
+          </p>
+          <div className="resultat-actions">
+            <button className="lecon-btn-outline" onClick={handleRecommencer}>
+              🔄 Recommencer
+            </button>
+            <button
+              className="lecon-btn"
+              onClick={() => router.push("/cours/primaire/ce2/anglais")}
+            >
+              Retour aux thèmes →
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
