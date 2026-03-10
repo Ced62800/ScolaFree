@@ -18,14 +18,6 @@ const matieres = [
     desc: "Numération, Calcul, Fractions, Géométrie",
     dispo: true,
   },
-  {
-    id: "anglais",
-    label: "Anglais",
-    emoji: "🌍",
-    color: "#ff6b6b",
-    desc: "Vocabulaire, Grammaire, Communication",
-    dispo: false,
-  },
 ];
 
 export default function CPPage() {
