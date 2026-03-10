@@ -75,11 +75,8 @@ export default function CoursPage() {
                 : "rgba(255,255,255,0.02)",
               border: `2px solid ${n.dispo ? n.color : "rgba(255,255,255,0.08)"}`,
               borderRadius: "20px",
-              padding: "28px 32px",
+              padding: "24px 20px",
               cursor: n.dispo ? "pointer" : "default",
-              display: "flex",
-              alignItems: "center",
-              gap: "24px",
               opacity: n.dispo ? 1 : 0.5,
               transition: "transform 0.15s, box-shadow 0.15s",
             }}
@@ -97,34 +94,56 @@ export default function CoursPage() {
               (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
             }}
           >
-            <div style={{ fontSize: "3rem", flexShrink: 0 }}>{n.emoji}</div>
-            <div style={{ flex: 1 }}>
-              <div
-                style={{
-                  fontWeight: 800,
-                  fontSize: "1.3rem",
-                  marginBottom: "4px",
-                }}
-              >
+            {/* Ligne du haut : emoji + titre */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "16px",
+                marginBottom: "8px",
+              }}
+            >
+              <div style={{ fontSize: "2.5rem", flexShrink: 0 }}>{n.emoji}</div>
+              <div style={{ fontWeight: 800, fontSize: "1.3rem" }}>
                 {n.label}
               </div>
-              <div style={{ color: "#aaa", fontSize: "0.9rem" }}>{n.desc}</div>
-              <div
-                style={{ color: "#666", fontSize: "0.85rem", marginTop: "2px" }}
-              >
-                {n.age}
-              </div>
             </div>
-            <div style={{ flexShrink: 0 }}>
+            {/* Infos */}
+            <div
+              style={{
+                color: "#aaa",
+                fontSize: "0.9rem",
+                marginBottom: "2px",
+                paddingLeft: "4px",
+              }}
+            >
+              {n.desc}
+            </div>
+            <div
+              style={{ color: "#666", fontSize: "0.85rem", paddingLeft: "4px" }}
+            >
+              {n.age}
+            </div>
+            {/* Bouton en bas */}
+            <div style={{ marginTop: "16px", paddingLeft: "4px" }}>
               {n.dispo ? (
                 <span
-                  style={{ color: n.color, fontWeight: 700, fontSize: "1rem" }}
+                  style={{
+                    display: "inline-block",
+                    color: "#fff",
+                    background: n.color,
+                    fontWeight: 700,
+                    fontSize: "0.95rem",
+                    padding: "8px 20px",
+                    borderRadius: "12px",
+                  }}
                 >
                   Accéder →
                 </span>
               ) : (
                 <span
                   style={{
+                    display: "inline-block",
                     background: "rgba(255,255,255,0.08)",
                     color: "#666",
                     fontSize: "0.8rem",
