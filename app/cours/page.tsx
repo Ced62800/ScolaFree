@@ -75,7 +75,7 @@ export default function CoursPage() {
                 : "rgba(255,255,255,0.02)",
               border: `2px solid ${n.dispo ? n.color : "rgba(255,255,255,0.08)"}`,
               borderRadius: "20px",
-              padding: "24px 20px",
+              padding: "32px 24px",
               cursor: n.dispo ? "pointer" : "default",
               opacity: n.dispo ? 1 : 0.5,
               transition: "transform 0.15s, box-shadow 0.15s",
@@ -95,27 +95,29 @@ export default function CoursPage() {
               (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
             }}
           >
-            <div style={{ fontSize: "2.8rem", marginBottom: "8px" }}>
+            <div
+              style={{ fontSize: "5rem", marginBottom: "10px", lineHeight: 1 }}
+            >
               {n.emoji}
             </div>
             <div
               style={{
                 fontWeight: 800,
-                fontSize: "1.3rem",
+                fontSize: "2.2rem",
                 marginBottom: "6px",
               }}
             >
               {n.label}
             </div>
             <div
-              style={{ color: "#aaa", fontSize: "0.9rem", marginBottom: "2px" }}
+              style={{ color: "#aaa", fontSize: "1.2rem", marginBottom: "4px" }}
             >
               {n.desc}
             </div>
             <div
               style={{
                 color: "#666",
-                fontSize: "0.85rem",
+                fontSize: "1.1rem",
                 marginBottom: "16px",
               }}
             >
@@ -128,9 +130,9 @@ export default function CoursPage() {
                   color: "#fff",
                   background: n.color,
                   fontWeight: 700,
-                  fontSize: "0.95rem",
-                  padding: "8px 24px",
-                  borderRadius: "12px",
+                  fontSize: "1.1rem",
+                  padding: "10px 32px",
+                  borderRadius: "14px",
                 }}
               >
                 Accéder →
@@ -141,9 +143,9 @@ export default function CoursPage() {
                   display: "inline-block",
                   background: "rgba(255,255,255,0.08)",
                   color: "#666",
-                  fontSize: "0.8rem",
+                  fontSize: "0.95rem",
                   fontWeight: 600,
-                  padding: "6px 14px",
+                  padding: "8px 18px",
                   borderRadius: "20px",
                 }}
               >
