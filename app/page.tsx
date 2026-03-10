@@ -160,7 +160,7 @@ export default function Home() {
             <a href="/inscription" className="btn-primary">
               Inscription →
             </a>
-            <a href="/cours/primaire" className="btn-secondary">
+            <a href="/cours" className="btn-secondary">
               Découvrir les cours
             </a>
           </div>
