@@ -79,6 +79,7 @@ export default function CoursPage() {
               cursor: n.dispo ? "pointer" : "default",
               opacity: n.dispo ? 1 : 0.5,
               transition: "transform 0.15s, box-shadow 0.15s",
+              textAlign: "center",
             }}
             onMouseEnter={(e) => {
               if (n.dispo) {
@@ -94,68 +95,61 @@ export default function CoursPage() {
               (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
             }}
           >
-            {/* Ligne du haut : emoji + titre */}
+            <div style={{ fontSize: "2.8rem", marginBottom: "8px" }}>
+              {n.emoji}
+            </div>
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "16px",
-                marginBottom: "8px",
+                fontWeight: 800,
+                fontSize: "1.3rem",
+                marginBottom: "6px",
               }}
             >
-              <div style={{ fontSize: "2.5rem", flexShrink: 0 }}>{n.emoji}</div>
-              <div style={{ fontWeight: 800, fontSize: "1.3rem" }}>
-                {n.label}
-              </div>
+              {n.label}
             </div>
-            {/* Infos */}
             <div
-              style={{
-                color: "#aaa",
-                fontSize: "0.9rem",
-                marginBottom: "2px",
-                paddingLeft: "4px",
-              }}
+              style={{ color: "#aaa", fontSize: "0.9rem", marginBottom: "2px" }}
             >
               {n.desc}
             </div>
             <div
-              style={{ color: "#666", fontSize: "0.85rem", paddingLeft: "4px" }}
+              style={{
+                color: "#666",
+                fontSize: "0.85rem",
+                marginBottom: "16px",
+              }}
             >
               {n.age}
             </div>
-            {/* Bouton en bas */}
-            <div style={{ marginTop: "16px", paddingLeft: "4px" }}>
-              {n.dispo ? (
-                <span
-                  style={{
-                    display: "inline-block",
-                    color: "#fff",
-                    background: n.color,
-                    fontWeight: 700,
-                    fontSize: "0.95rem",
-                    padding: "8px 20px",
-                    borderRadius: "12px",
-                  }}
-                >
-                  Accéder →
-                </span>
-              ) : (
-                <span
-                  style={{
-                    display: "inline-block",
-                    background: "rgba(255,255,255,0.08)",
-                    color: "#666",
-                    fontSize: "0.8rem",
-                    fontWeight: 600,
-                    padding: "6px 14px",
-                    borderRadius: "20px",
-                  }}
-                >
-                  Bientôt disponible
-                </span>
-              )}
-            </div>
+            {n.dispo ? (
+              <span
+                style={{
+                  display: "inline-block",
+                  color: "#fff",
+                  background: n.color,
+                  fontWeight: 700,
+                  fontSize: "0.95rem",
+                  padding: "8px 24px",
+                  borderRadius: "12px",
+                }}
+              >
+                Accéder →
+              </span>
+            ) : (
+              <span
+                style={{
+                  display: "inline-block",
+                  background: "rgba(255,255,255,0.08)",
+                  color: "#666",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  padding: "6px 14px",
+                  borderRadius: "20px",
+                }}
+              >
+                Bientôt disponible
+              </span>
+            )}
           </div>
         ))}
       </div>
