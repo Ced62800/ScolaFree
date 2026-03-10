@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+// Import des utilitaires de score
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -205,11 +207,29 @@ export default function BilanCM1Maths() {
   });
   const [totalScore, setTotalScore] = useState(0);
 
+  // État pour les records
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
+
+  // Chargement des records au démarrage
+  useEffect(() => {
+    const loadRecords = async () => {
+      const best = await getBestScore("cm1", "maths", "bilan");
+      const last = await getLastScore("cm1", "maths", "bilan");
+      setBestScore(best);
+      setLastScore(last);
+    };
+    loadRecords();
+  }, []);
+
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const shuffledOptions = useMemo(
-    () => shuffleArray(shuffledQuestions[qIndex].options),
-    [qIndex, shuffledQuestions],
-  );
+
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
+
   const progression = Math.round((qIndex / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -223,15 +243,33 @@ export default function BilanCM1Maths() {
     }
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= shuffledQuestions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= shuffledQuestions.length) {
+      // Sauvegarde avant de passer à l'écran final
+      if (!isSaving.current) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "cm1",
+          matiere: "maths",
+          theme: "bilan",
+          score: totalScore,
+          total: 20,
+        });
+        // Rafraîchir les records pour l'écran de fin
+        const best = await getBestScore("cm1", "maths", "bilan");
+        const last = await getLastScore("cm1", "maths", "bilan");
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    isSaving.current = false;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -273,6 +311,51 @@ export default function BilanCM1Maths() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CM1 Maths</div>
           <h1 className="lecon-titre">Bilan Final — CM1 Mathématiques</h1>
+
+          {/* Affichage des records personnels */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "10px",
+                    background: "rgba(46, 196, 182, 0.1)",
+                    borderRadius: "10px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ fontSize: "0.8rem", color: "#2ec4b6" }}>
+                    🏆 Record
+                  </div>
+                  <div style={{ fontWeight: "bold" }}>
+                    {bestScore.score} / {bestScore.total}
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "10px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "10px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ fontSize: "0.8rem", color: "#888" }}>
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontWeight: "bold" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <p className="lecon-intro">
             Ce bilan regroupe des questions sur les 4 thèmes de Maths du CM1.
           </p>
@@ -303,7 +386,7 @@ export default function BilanCM1Maths() {
         </div>
       )}
 
-      {etape === "qcm" && (
+      {etape === "qcm" && shuffledQuestions[qIndex] && (
         <>
           <div className="progression-wrapper">
             <div className="progression-info">
@@ -384,6 +467,20 @@ export default function BilanCM1Maths() {
           <div className="resultat-score" style={{ color: mention.color }}>
             {totalScore} / 20
           </div>
+
+          {/* Rappel du record sur l'écran final */}
+          {bestScore && totalScore < bestScore.score && (
+            <div
+              style={{
+                fontSize: "0.9rem",
+                color: "#888",
+                marginBottom: "10px",
+              }}
+            >
+              Ton record est de {bestScore.score}/20
+            </div>
+          )}
+
           <div className="bilan-detail">
             <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (
