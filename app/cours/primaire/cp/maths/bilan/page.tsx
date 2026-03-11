@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+// Import de ta logique de persistance
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -181,6 +183,7 @@ const themeLabels: Record<string, string> = {
   fractions: "🍕 Fractions",
   geometrie: "📐 Géométrie",
 };
+
 const themeColors: Record<string, string> = {
   numeration: "#4f8ef7",
   addition: "#2ec4b6",
@@ -201,11 +204,26 @@ export default function BilanMathsCP() {
   });
   const [totalScore, setTotalScore] = useState(0);
 
+  // Gestion des records Cédric Flow
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const b = await getBestScore("cp", "maths", "bilan");
+      const l = await getLastScore("cp", "maths", "bilan");
+      setBestScore(b);
+      setLastScore(l);
+    };
+    loadData();
+  }, []);
+
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const shuffledOptions = useMemo(
-    () => shuffleArray(shuffledQuestions[qIndex].options),
-    [qIndex, shuffledQuestions],
-  );
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
   const progression = Math.round((qIndex / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -219,15 +237,27 @@ export default function BilanMathsCP() {
     }
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= shuffledQuestions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= shuffledQuestions.length) {
+      if (!isSaving.current) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "cp",
+          matiere: "maths",
+          theme: "bilan",
+          score: totalScore,
+          total: 20,
+        });
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    isSaving.current = false;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -263,39 +293,93 @@ export default function BilanMathsCP() {
           <span className="breadcrumb-active">Bilan Final</span>
         </div>
       </div>
+
       {etape === "intro" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CP Maths</div>
           <h1 className="lecon-titre">Bilan Final — CP Mathématiques</h1>
+
+          {/* Affichage des records de Cédric */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46, 196, 182, 0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Record
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <p className="lecon-intro">
             Ce bilan regroupe des questions sur les 4 thèmes de Maths du CP.
           </p>
           <div className="bilan-info-grid">
             <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
-              <span>🔢</span>
-              <span>5 questions de Numération</span>
+              <span>🔢</span> <span>5 questions de Numération</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
-              <span>➕</span>
-              <span>5 questions d'Addition/Soustraction</span>
+              <span>➕</span> <span>5 questions d'Addition/Soustraction</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
-              <span>🍕</span>
-              <span>5 questions de Fractions</span>
+              <span>🍕</span> <span>5 questions de Fractions</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
-              <span>📐</span>
-              <span>5 questions de Géométrie</span>
+              <span>📐</span> <span>5 questions de Géométrie</span>
             </div>
-          </div>
-          <div className="bilan-score-info">
-            Score final sur <strong>20</strong>
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
             Commencer le bilan →
           </button>
         </div>
       )}
+
       {etape === "qcm" && (
         <>
           <div className="progression-wrapper">
@@ -367,6 +451,7 @@ export default function BilanMathsCP() {
           </div>
         </>
       )}
+
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">{mention.icon}</div>
@@ -376,6 +461,7 @@ export default function BilanMathsCP() {
           <div className="resultat-score" style={{ color: mention.color }}>
             {totalScore} / 20
           </div>
+
           <div className="bilan-detail">
             <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (
@@ -394,15 +480,7 @@ export default function BilanMathsCP() {
               </div>
             ))}
           </div>
-          <p className="resultat-desc">
-            {totalScore >= 18
-              ? "Bravo, tu es un(e) champion(ne) des maths ! 🚀"
-              : totalScore >= 14
-                ? "Très bon niveau !"
-                : totalScore >= 10
-                  ? "Tu progresses bien !"
-                  : "Courage ! Reprends les leçons et réessaie."}
-          </p>
+
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
               🔄 Recommencer

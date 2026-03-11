@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+// Import de la logique de sauvegarde
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -208,12 +210,27 @@ export default function BilanFinalCP() {
   });
   const [totalScore, setTotalScore] = useState(0);
 
+  // Gestion des records de Cédric
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const b = await getBestScore("cp", "francais", "bilan");
+      const l = await getLastScore("cp", "francais", "bilan");
+      setBestScore(b);
+      setLastScore(l);
+    };
+    loadData();
+  }, []);
+
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
 
-  const shuffledOptions = useMemo(
-    () => shuffleArray(shuffledQuestions[qIndex].options),
-    [qIndex, shuffledQuestions],
-  );
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
 
   const progression = Math.round((qIndex / questions.length) * 100);
 
@@ -228,8 +245,20 @@ export default function BilanFinalCP() {
     }
   };
 
-  const handleSuivant = () => {
+  const handleSuivant = async () => {
     if (qIndex + 1 >= shuffledQuestions.length) {
+      if (!isSaving.current) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "cp",
+          matiere: "francais",
+          theme: "bilan",
+          score: totalScore,
+          total: 20,
+        });
+        const b = await getBestScore("cp", "francais", "bilan");
+        setBestScore(b);
+      }
       setEtape("fini");
     } else {
       setQIndex((i) => i + 1);
@@ -238,6 +267,7 @@ export default function BilanFinalCP() {
   };
 
   const handleRecommencer = () => {
+    isSaving.current = false;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -278,6 +308,65 @@ export default function BilanFinalCP() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CP</div>
           <h1 className="lecon-titre">Bilan Final — CP Français</h1>
+
+          {/* Records personnels */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46, 196, 182, 0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Record
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <p className="lecon-intro">
             Ce bilan regroupe des questions sur les 4 thèmes du CP : Grammaire,
             Conjugaison, Orthographe et Vocabulaire.
@@ -421,7 +510,7 @@ export default function BilanFinalCP() {
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
-              🔄 Recommencer le bilan
+              🔄 Recommencer
             </button>
             <button
               className="lecon-btn"
