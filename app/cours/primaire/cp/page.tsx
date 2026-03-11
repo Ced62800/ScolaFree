@@ -42,14 +42,7 @@ export default function CPPage() {
         <h1 className="cours-hero-title">CP — Choisis une matière</h1>
         <p className="cours-hero-desc">Cours Préparatoire · 6 ans</p>
       </div>
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
+      <div className="themes-grid">
         {matieres.map((m) => (
           <div
             key={m.id}

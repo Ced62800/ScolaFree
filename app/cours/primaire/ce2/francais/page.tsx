@@ -24,7 +24,7 @@ const themes = [
     label: "Orthographe",
     emoji: "✏️",
     color: "#ffd166",
-    desc: "Les homophones : a/à, est/et, on/ont",
+    desc: "Les homophones a/à, est/et, on/ont",
     nb: 10,
   },
   {
@@ -32,7 +32,7 @@ const themes = [
     label: "Vocabulaire",
     emoji: "📚",
     color: "#ff6b6b",
-    desc: "Les synonymes et les antonymes",
+    desc: "Les synonymes et antonymes",
     nb: 10,
   },
 ];
@@ -44,29 +44,29 @@ export default function FrancaisCE2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/francais/primaire")}
+          onClick={() => router.push("/cours/primaire/ce2")}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
           <span>Primaire</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">CE2</span>
+          <span>CE2</span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Français</span>
         </div>
       </div>
       <div className="cours-hero">
         <div className="cours-hero-icon">🌳</div>
         <h1 className="cours-hero-title">Français — CE2</h1>
-        <p className="cours-hero-desc">Cours Élémentaire 2 · 8-9 ans</p>
+        <p className="cours-hero-desc">Cours Élémentaire 2 · 8 ans</p>
       </div>
       <div className="themes-grid">
         {themes.map((t) => (
           <div
             key={t.id}
             className="theme-card"
-            onClick={() => router.push(`/cours/francais/primaire/ce2/${t.id}`)}
+            onClick={() => router.push(`/cours/primaire/ce2/francais/${t.id}`)}
             style={{ "--card-color": t.color } as React.CSSProperties}
           >
             <div className="theme-emoji">{t.emoji}</div>
@@ -82,7 +82,7 @@ export default function FrancaisCE2() {
       </div>
       <div style={{ marginTop: "40px", textAlign: "center" }}>
         <button
-          onClick={() => router.push("/cours/francais/primaire/ce2/bilan")}
+          onClick={() => router.push("/cours/primaire/ce2/francais/bilan")}
           style={{
             display: "inline-flex",
             alignItems: "center",
