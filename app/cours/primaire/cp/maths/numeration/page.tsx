@@ -148,7 +148,6 @@ export default function NumerationCP() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   useEffect(() => {
@@ -173,10 +172,9 @@ export default function NumerationCP() {
         classe: CLASSE,
         matiere: MATIERE,
         theme: THEME,
-        score: score,
+        score,
         total: questions.length,
       });
-
       const [best, last] = await Promise.all([
         getBestScore(CLASSE, MATIERE, THEME),
         getLastScore(CLASSE, MATIERE, THEME),
@@ -244,6 +242,8 @@ export default function NumerationCP() {
           <div className="lecon-badge">🔢 Numération · CP</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+
+          {/* Meilleur et dernier score */}
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
@@ -288,6 +288,7 @@ export default function NumerationCP() {
               )}
             </div>
           )}
+
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -299,7 +300,14 @@ export default function NumerationCP() {
               </div>
             ))}
           </div>
-          [Image of base ten blocks showing tens and units]
+
+          {/* Image des blocs base 10 */}
+          <img
+            src="/images/base-ten-blocks.png"
+            alt="Base ten blocks showing tens and units"
+            style={{ maxWidth: "100%", margin: "20px 0" }}
+          />
+
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
             Je suis prêt(e) — Passer aux exercices →
           </button>
@@ -333,7 +341,11 @@ export default function NumerationCP() {
           </div>
           {selected && (
             <div
-              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
+              className={`qcm-feedback ${
+                selected === questions[qIndex].reponse
+                  ? "feedback-correct"
+                  : "feedback-incorrect"
+              }`}
             >
               <div className="feedback-icon">
                 {selected === questions[qIndex].reponse ? "✅" : "❌"}
