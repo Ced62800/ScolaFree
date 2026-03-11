@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -223,6 +224,7 @@ const themeLabels: Record<string, string> = {
   orthographe: "✏️ Orthographe",
   vocabulaire: "📚 Vocabulaire",
 };
+
 const themeColors: Record<string, string> = {
   grammaire: "#4f8ef7",
   conjugaison: "#2ec4b6",
@@ -242,34 +244,56 @@ export default function BilanFinalCM2() {
     vocabulaire: 0,
   });
   const [totalScore, setTotalScore] = useState(0);
+  const [bestScore, setBestScore] = useState<any>(null);
+  const isSaving = useRef(false);
+
+  useEffect(() => {
+    async function load() {
+      const b = await getBestScore("cm2", "francais", "bilan");
+      setBestScore(b);
+    }
+    load();
+  }, []);
 
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const shuffledOptions = useMemo(
-    () => shuffleArray(shuffledQuestions[qIndex].options),
-    [qIndex, shuffledQuestions],
-  );
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
+
   const progression = Math.round((qIndex / questions.length) * 100);
 
   const handleReponse = (option: string) => {
     if (selected) return;
     setSelected(option);
-    const correct = option === shuffledQuestions[qIndex].reponse;
-    if (correct) {
+    if (option === shuffledQuestions[qIndex].reponse) {
       const theme = shuffledQuestions[qIndex].theme;
       setScores((s) => ({ ...s, [theme]: s[theme] + 1 }));
       setTotalScore((s) => s + 1);
     }
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= shuffledQuestions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= shuffledQuestions.length) {
+      if (!isSaving.current) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "cm2",
+          matiere: "francais",
+          theme: "bilan",
+          score: totalScore,
+          total: 20,
+        });
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    isSaving.current = false;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -277,16 +301,14 @@ export default function BilanFinalCM2() {
     setTotalScore(0);
   };
 
-  const getMention = (score: number) => {
-    if (score >= 18)
-      return { label: "Excellent !", icon: "🏆", color: "#2ec4b6" };
-    if (score >= 14) return { label: "Bien !", icon: "⭐", color: "#4f8ef7" };
-    if (score >= 10)
-      return { label: "Assez bien !", icon: "👍", color: "#ffd166" };
-    return { label: "À revoir !", icon: "💪", color: "#ff6b6b" };
-  };
-
-  const mention = getMention(totalScore);
+  const mention =
+    totalScore >= 18
+      ? { label: "Excellent !", icon: "🏆", color: "#2ec4b6" }
+      : totalScore >= 14
+        ? { label: "Bien !", icon: "⭐", color: "#4f8ef7" }
+        : totalScore >= 10
+          ? { label: "Assez bien !", icon: "👍", color: "#ffd166" }
+          : { label: "À revoir !", icon: "💪", color: "#ff6b6b" };
 
   return (
     <div className="cours-page">
@@ -298,54 +320,46 @@ export default function BilanFinalCM2() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
-          <span>CM2</span>
-          <span className="breadcrumb-sep">›</span>
+          <span>Français</span> <span className="breadcrumb-sep">›</span>{" "}
+          <span>CM2</span> <span className="breadcrumb-sep">›</span>{" "}
           <span className="breadcrumb-active">Bilan Final</span>
         </div>
       </div>
+
       {etape === "intro" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CM2</div>
           <h1 className="lecon-titre">Bilan Final — CM2 Français</h1>
+          {bestScore && (
+            <div className="record-badge" style={{ marginBottom: "20px" }}>
+              🏆 Meilleur score : {bestScore.score}/20
+            </div>
+          )}
           <p className="lecon-intro">
-            Ce bilan regroupe des questions sur les 4 thèmes du CM2 : Grammaire,
-            Conjugaison, Orthographe et Vocabulaire.
+            Prêt pour le grand test final avant le collège ?
           </p>
           <div className="bilan-info-grid">
-            <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
-              <span>📝</span>
-              <span>5 questions de Grammaire</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
-              <span>⏰</span>
-              <span>5 questions de Conjugaison</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
-              <span>✏️</span>
-              <span>5 questions d'Orthographe</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
-              <span>📚</span>
-              <span>5 questions de Vocabulaire</span>
-            </div>
-          </div>
-          <div className="bilan-score-info">
-            Score final sur <strong>20</strong>
+            {Object.entries(themeLabels).map(([key, label]) => (
+              <div
+                key={key}
+                className="bilan-info-card"
+                style={{ borderColor: themeColors[key] }}
+              >
+                <span>{label}</span>
+              </div>
+            ))}
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
-            Commencer le bilan →
+            Lancer le bilan →
           </button>
         </div>
       )}
+
       {etape === "qcm" && (
         <>
           <div className="progression-wrapper">
             <div className="progression-info">
-              <span>
-                Question {qIndex + 1} / {shuffledQuestions.length}
-              </span>
+              <span>Question {qIndex + 1} / 20</span>
               <span
                 style={{ color: themeColors[shuffledQuestions[qIndex].theme] }}
               >
@@ -364,52 +378,37 @@ export default function BilanFinalCM2() {
               {shuffledQuestions[qIndex].question}
             </div>
             <div className="qcm-options">
-              {shuffledOptions.map((opt) => {
-                let className = "qcm-option";
-                if (selected) {
-                  if (opt === shuffledQuestions[qIndex].reponse)
-                    className += " correct";
-                  else if (opt === selected) className += " incorrect";
-                  else className += " disabled";
-                }
-                return (
-                  <button
-                    key={opt}
-                    className={className}
-                    onClick={() => handleReponse(opt)}
-                  >
-                    {opt}
-                  </button>
-                );
-              })}
+              {shuffledOptions.map((opt) => (
+                <button
+                  key={opt}
+                  className={`qcm-option ${selected ? (opt === shuffledQuestions[qIndex].reponse ? "correct" : opt === selected ? "incorrect" : "disabled") : ""}`}
+                  onClick={() => handleReponse(opt)}
+                >
+                  {opt}
+                </button>
+              ))}
             </div>
             {selected && (
               <div
                 className={`qcm-feedback ${selected === shuffledQuestions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
               >
-                <div className="feedback-icon">
-                  {selected === shuffledQuestions[qIndex].reponse ? "✅" : "❌"}
-                </div>
-                <div className="feedback-texte">
-                  <strong>
-                    {selected === shuffledQuestions[qIndex].reponse
-                      ? "Bravo !"
-                      : "Pas tout à fait..."}
-                  </strong>
-                  <p>{shuffledQuestions[qIndex].explication}</p>
-                </div>
+                <strong>
+                  {selected === shuffledQuestions[qIndex].reponse
+                    ? "Bravo !"
+                    : "Pas tout à fait..."}
+                </strong>
+                <p>{shuffledQuestions[qIndex].explication}</p>
               </div>
             )}
             {selected && (
               <button className="lecon-btn" onClick={handleSuivant}>
-                {qIndex + 1 >= shuffledQuestions.length
-                  ? "Voir mon bilan →"
-                  : "Question suivante →"}
+                {qIndex + 1 >= 20 ? "Voir mon bilan →" : "Question suivante →"}
               </button>
             )}
           </div>
         </>
       )}
+
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">{mention.icon}</div>
@@ -420,7 +419,6 @@ export default function BilanFinalCM2() {
             {totalScore} / 20
           </div>
           <div className="bilan-detail">
-            <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (
               <div key={theme} className="bilan-detail-row">
                 <span className="bilan-detail-label">{themeLabels[theme]}</span>
@@ -437,15 +435,6 @@ export default function BilanFinalCM2() {
               </div>
             ))}
           </div>
-          <p className="resultat-desc">
-            {totalScore >= 18
-              ? "Bravo ! Tu es prêt(e) pour le collège ! 🚀"
-              : totalScore >= 14
-                ? "Très bon niveau !"
-                : totalScore >= 10
-                  ? "Tu progresses bien !"
-                  : "Courage ! Reprends les leçons et réessaie."}
-          </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
               🔄 Recommencer
@@ -454,7 +443,7 @@ export default function BilanFinalCM2() {
               className="lecon-btn"
               onClick={() => router.push("/cours/primaire/cm2/francais")}
             >
-              Retour aux thèmes →
+              Retour aux thèmes
             </button>
           </div>
         </div>
