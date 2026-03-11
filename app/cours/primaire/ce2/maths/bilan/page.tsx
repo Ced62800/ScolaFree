@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+// Import de la logique de persistance
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -212,11 +214,27 @@ export default function BilanCE2Maths() {
   });
   const [totalScore, setTotalScore] = useState(0);
 
+  // États pour les scores persistants
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
+
+  // Chargement initial des scores de Cédric
+  useEffect(() => {
+    const loadData = async () => {
+      const b = await getBestScore("ce2", "maths", "bilan");
+      const l = await getLastScore("ce2", "maths", "bilan");
+      setBestScore(b);
+      setLastScore(l);
+    };
+    loadData();
+  }, []);
+
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const shuffledOptions = useMemo(
-    () => shuffleArray(shuffledQuestions[qIndex].options),
-    [qIndex, shuffledQuestions],
-  );
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
   const progression = Math.round((qIndex / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -230,15 +248,30 @@ export default function BilanCE2Maths() {
     }
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= shuffledQuestions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= shuffledQuestions.length) {
+      if (!isSaving.current) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "ce2",
+          matiere: "maths",
+          theme: "bilan",
+          score: totalScore,
+          total: 20,
+        });
+        // Mise à jour des records pour l'écran final
+        const b = await getBestScore("ce2", "maths", "bilan");
+        setBestScore(b);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    isSaving.current = false;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -280,6 +313,65 @@ export default function BilanCE2Maths() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CE2 Maths</div>
           <h1 className="lecon-titre">Bilan Final — CE2 Mathématiques</h1>
+
+          {/* Records personnels */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46, 196, 182, 0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Record
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <p className="lecon-intro">
             Ce bilan regroupe des questions sur les 4 thèmes de Maths du CE2.
           </p>

@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+// Import de la logique de persistance
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -217,11 +219,26 @@ export default function BilanCE2Anglais() {
   });
   const [totalScore, setTotalScore] = useState(0);
 
+  // Gestion des records
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
+
+  useEffect(() => {
+    const loadScores = async () => {
+      const b = await getBestScore("ce2", "anglais", "bilan");
+      const l = await getLastScore("ce2", "anglais", "bilan");
+      setBestScore(b);
+      setLastScore(l);
+    };
+    loadScores();
+  }, []);
+
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const shuffledOptions = useMemo(
-    () => shuffleArray(shuffledQuestions[qIndex].options),
-    [qIndex, shuffledQuestions],
-  );
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
   const progression = Math.round((qIndex / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -235,15 +252,31 @@ export default function BilanCE2Anglais() {
     }
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= shuffledQuestions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= shuffledQuestions.length) {
+      if (!isSaving.current) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "ce2",
+          matiere: "anglais",
+          theme: "bilan",
+          score: totalScore,
+          total: 20,
+        });
+        const b = await getBestScore("ce2", "anglais", "bilan");
+        const l = await getLastScore("ce2", "anglais", "bilan");
+        setBestScore(b);
+        setLastScore(l);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    isSaving.current = false;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -285,6 +318,65 @@ export default function BilanCE2Anglais() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CE2 Anglais</div>
           <h1 className="lecon-titre">Bilan Final — CE2 Anglais</h1>
+
+          {/* Records personnels */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46, 196, 182, 0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Best
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Last
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <p className="lecon-intro">
             Ce bilan regroupe des questions sur les 4 thèmes d'Anglais du CE2.
           </p>
@@ -307,15 +399,15 @@ export default function BilanCE2Anglais() {
             </div>
           </div>
           <div className="bilan-score-info">
-            Score final sur <strong>20</strong>
+            Final score on <strong>20</strong>
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
-            Commencer le bilan →
+            Start the final test →
           </button>
         </div>
       )}
 
-      {etape === "qcm" && (
+      {etape === "qcm" && shuffledQuestions[qIndex] && (
         <>
           <div className="progression-wrapper">
             <div className="progression-info">
@@ -379,8 +471,8 @@ export default function BilanCE2Anglais() {
             {selected && (
               <button className="lecon-btn" onClick={handleSuivant}>
                 {qIndex + 1 >= shuffledQuestions.length
-                  ? "Voir mon bilan →"
-                  : "Question suivante →"}
+                  ? "See my results →"
+                  : "Next question →"}
               </button>
             )}
           </div>
@@ -397,7 +489,7 @@ export default function BilanCE2Anglais() {
             {totalScore} / 20
           </div>
           <div className="bilan-detail">
-            <h3 className="bilan-detail-titre">Détail par thème</h3>
+            <h3 className="bilan-detail-titre">Results by theme</h3>
             {Object.entries(scores).map(([theme, score]) => (
               <div key={theme} className="bilan-detail-row">
                 <span className="bilan-detail-label">{themeLabels[theme]}</span>
@@ -416,22 +508,22 @@ export default function BilanCE2Anglais() {
           </div>
           <p className="resultat-desc">
             {totalScore >= 18
-              ? "Bravo, tu es un(e) champion(ne) de l'anglais ! 🚀"
+              ? "Congratulations, you are an English star! 🚀"
               : totalScore >= 14
-                ? "Très bon niveau !"
+                ? "Very good level!"
                 : totalScore >= 10
-                  ? "Tu progresses bien !"
-                  : "Courage ! Reprends les leçons et réessaie."}
+                  ? "You're getting better!"
+                  : "Don't give up! Review the lessons and try again."}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
-              🔄 Recommencer
+              🔄 Try again
             </button>
             <button
               className="lecon-btn"
               onClick={() => router.push("/cours/primaire/ce2/anglais")}
             >
-              Retour aux thèmes →
+              Back to themes →
             </button>
           </div>
         </div>
