@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -35,7 +36,6 @@ const lecon = {
 };
 
 const questions = [
-  // Faciles
   {
     id: 1,
     question: "Quel mot est un nom commun ?",
@@ -63,7 +63,6 @@ const questions = [
       "'une' s'utilise avec les noms féminins : une fleur, une maison.",
     niveau: "facile",
   },
-  // Moyens
   {
     id: 4,
     question: "Dans 'Le chien de Léo aboie', combien y a-t-il de noms ?",
@@ -97,7 +96,6 @@ const questions = [
       "'emma' est mal écrit car un nom propre commence toujours par une majuscule : Emma.",
     niveau: "moyen",
   },
-  // Difficiles
   {
     id: 8,
     question:
@@ -138,6 +136,11 @@ const questions = [
   },
 ];
 
+// Identifiants uniques pour ce thème
+const CLASSE = "cp";
+const MATIERE = "francais";
+const THEME = "le-nom";
+
 export default function GrammaireCPNom() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
@@ -145,6 +148,15 @@ export default function GrammaireCPNom() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
@@ -152,6 +164,12 @@ export default function GrammaireCPNom() {
   );
 
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  // Charger les scores au chargement de la page
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -161,8 +179,27 @@ export default function GrammaireCPNom() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
+  const handleSuivant = async () => {
     if (qIndex + 1 >= questions.length) {
+      if (scoreSaved.current) return;
+      scoreSaved.current = true;
+
+      // Sauvegarde du score final
+      await saveScore({
+        classe: CLASSE,
+        matiere: MATIERE,
+        theme: THEME,
+        score: score,
+        total: questions.length,
+      });
+
+      // Rafraîchir les scores pour l'écran de fin
+      const [best, last] = await Promise.all([
+        getBestScore(CLASSE, MATIERE, THEME),
+        getLastScore(CLASSE, MATIERE, THEME),
+      ]);
+      setBestScore(best);
+      setLastScore(last);
       setEtape("fini");
     } else {
       setQIndex((i) => i + 1);
@@ -171,6 +208,7 @@ export default function GrammaireCPNom() {
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
@@ -189,7 +227,7 @@ export default function GrammaireCPNom() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cp/francais")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
@@ -229,6 +267,53 @@ export default function GrammaireCPNom() {
           <div className="lecon-badge">📝 Grammaire · CP</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+
+          {/* Encarts Score Meilleur / Dernier */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -327,7 +412,9 @@ export default function GrammaireCPNom() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cp/francais")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>

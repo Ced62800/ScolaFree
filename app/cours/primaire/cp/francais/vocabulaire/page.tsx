@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -34,7 +35,6 @@ const lecon = {
 };
 
 const questions = [
-  // Faciles
   {
     id: 1,
     question: "Quel est le contraire de 'grand' ?",
@@ -59,7 +59,6 @@ const questions = [
     explication: "Le contraire de 'chaud' est 'froid'.",
     niveau: "facile",
   },
-  // Moyens
   {
     id: 4,
     question: "Quel mot appartient à la famille de 'fleur' ?",
@@ -94,7 +93,6 @@ const questions = [
       "'chaton' appartient à la famille de 'chat' car il contient la même racine.",
     niveau: "moyen",
   },
-  // Difficiles
   {
     id: 8,
     question: "Quel groupe contient uniquement des synonymes ?",
@@ -120,7 +118,7 @@ const questions = [
     ],
     reponse: "jour / nuit",
     explication:
-      "'jour' et 'nuit' sont des contraires car ils ont des sens opposés.",
+      "'jour' et 'nuit' sont des contraires car they ont des sens opposés.",
     niveau: "difficile",
   },
   {
@@ -130,10 +128,14 @@ const questions = [
     options: ["maisonnette", "maisonner", "maisonnée", "maçon"],
     reponse: "maçon",
     explication:
-      "'maçon' ne vient pas de 'maison'. Les autres mots (maisonnette, maisonnée) partagent la même racine.",
+      "'maçon' ne vient pas de 'maison'. Les autres mots partagent la même racine.",
     niveau: "difficile",
   },
 ];
+
+const CLASSE = "cp";
+const MATIERE = "francais";
+const THEME = "sens-des-mots";
 
 export default function VocabulaireCPMots() {
   const router = useRouter();
@@ -142,6 +144,15 @@ export default function VocabulaireCPMots() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
@@ -149,6 +160,11 @@ export default function VocabulaireCPMots() {
   );
 
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -158,8 +174,25 @@ export default function VocabulaireCPMots() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
+  const handleSuivant = async () => {
     if (qIndex + 1 >= questions.length) {
+      if (scoreSaved.current) return;
+      scoreSaved.current = true;
+
+      await saveScore({
+        classe: CLASSE,
+        matiere: MATIERE,
+        theme: THEME,
+        score: score,
+        total: questions.length,
+      });
+
+      const [best, last] = await Promise.all([
+        getBestScore(CLASSE, MATIERE, THEME),
+        getLastScore(CLASSE, MATIERE, THEME),
+      ]);
+      setBestScore(best);
+      setLastScore(last);
       setEtape("fini");
     } else {
       setQIndex((i) => i + 1);
@@ -168,6 +201,7 @@ export default function VocabulaireCPMots() {
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
@@ -186,7 +220,7 @@ export default function VocabulaireCPMots() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cp/francais")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
@@ -226,6 +260,52 @@ export default function VocabulaireCPMots() {
           <div className="lecon-badge">📚 Vocabulaire · CP</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -315,7 +395,7 @@ export default function VocabulaireCPMots() {
               : score >= 7
                 ? "Tu as bien compris l'essentiel."
                 : score >= 5
-                  ? "Encore quelques efforts et tu y seras !"
+                  ? "Encore quelques efforts !"
                   : "Relis la leçon et réessaie !"}
           </p>
           <div className="resultat-actions">
@@ -324,7 +404,9 @@ export default function VocabulaireCPMots() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cp/francais")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>
