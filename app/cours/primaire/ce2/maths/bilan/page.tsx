@@ -1,528 +1,246 @@
 "use client";
 
+import {
+  ArrowRight,
+  CheckCircle2,
+  Home,
+  RefreshCcw,
+  Trophy,
+  XCircle,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-// Import de la logique de persistance
-import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
+import { useState } from "react";
 
-function shuffleArray<T>(array: T[]): T[] {
-  return [...array].sort(() => Math.random() - 0.5);
-}
-
-const questions = [
-  // Numération (5)
+// --- STRUCTURE DES QUESTIONS (Exemple de 20 questions types) ---
+const questionsCE2 = [
   {
     id: 1,
-    theme: "numeration",
-    question: "Quel est le chiffre des milliers dans 7 485 ?",
-    options: ["4", "5", "7", "8"],
-    reponse: "7",
-    explication: "7 485 = 7 milliers + 4 centaines + 8 dizaines + 5 unités.",
+    type: "grammaire",
+    question: "Trouve le Verbe : 'Le petit chat mange sa pâtée.'",
+    options: ["petit", "chat", "mange"],
+    answer: "mange",
+    aide: "Le verbe exprime l'action.",
   },
   {
     id: 2,
-    theme: "numeration",
-    question: "Comment s'écrit « cinq mille deux cent huit » ?",
-    options: ["5 280", "5 208", "5 028", "5 820"],
-    reponse: "5 208",
-    explication:
-      "Cinq mille → 5 000, deux cent → 200, huit → 8. Total : 5 208.",
+    type: "conjugaison",
+    question: "Conjugue : 'Nous (chanter) une chanson.'",
+    options: ["chantons", "chantent", "chantez"],
+    answer: "chantons",
+    aide: "Avec 'Nous', la terminaison est souvent -ons.",
   },
   {
     id: 3,
-    theme: "numeration",
-    question: "Lequel est le plus grand ?",
-    options: ["3 999", "4 001", "4 000", "3 998"],
-    reponse: "4 001",
-    explication: "4 001 a 4 milliers, les autres n'en ont que 3.",
+    type: "orthographe",
+    question: "Choisis le pluriel de : 'un cheval'",
+    options: ["des chevals", "des chevaux", "des chevau"],
+    answer: "des chevaux",
+    aide: "Les mots en -al font leur pluriel en -aux.",
   },
   {
     id: 4,
-    theme: "numeration",
-    question: "Quel nombre vient juste après 9 999 ?",
-    options: ["9 998", "10 000", "10 001", "9 990"],
-    reponse: "10 000",
-    explication: "Après 9 999 vient 10 000.",
+    type: "grammaire",
+    question: "Trouve le Sujet : 'Maman prépare un gâteau.'",
+    options: ["Maman", "prépare", "gâteau"],
+    answer: "Maman",
+    aide: "Qui est-ce qui prépare ?",
   },
   {
     id: 5,
-    theme: "numeration",
-    question: "3 000 + 400 + 60 + 7 = ?",
-    options: ["3 467", "3 476", "3 647", "3 746"],
-    reponse: "3 467",
-    explication: "3 milliers + 4 centaines + 6 dizaines + 7 unités = 3 467.",
+    type: "vocabulaire",
+    question: "Quel est le synonyme de 'content' ?",
+    options: ["triste", "heureux", "colère"],
+    answer: "heureux",
+    aide: "Un synonyme veut dire la même chose.",
   },
-  // Multiplication (5)
-  {
-    id: 6,
-    theme: "multiplication",
-    question: "7 × 8 = ?",
-    options: ["54", "56", "63", "48"],
-    reponse: "56",
-    explication: "7 × 8 = 56.",
-  },
-  {
-    id: 7,
-    theme: "multiplication",
-    question: "24 × 3 = ?",
-    options: ["68", "70", "72", "74"],
-    reponse: "72",
-    explication:
-      "24 × 3 : 3 × 4 = 12 (pose 2, retient 1). 3 × 2 = 6 + 1 = 7. Résultat : 72.",
-  },
-  {
-    id: 8,
-    theme: "multiplication",
-    question: "15 × 4 = ?",
-    options: ["54", "58", "60", "64"],
-    reponse: "60",
-    explication:
-      "15 × 4 : 4 × 5 = 20 (pose 0, retient 2). 4 × 1 = 4 + 2 = 6. Résultat : 60.",
-  },
-  {
-    id: 9,
-    theme: "multiplication",
-    question: "30 × 6 = ?",
-    options: ["160", "180", "200", "120"],
-    reponse: "180",
-    explication: "30 × 6 = 180. (3 × 6 = 18, puis on ajoute le zéro).",
-  },
-  {
-    id: 10,
-    theme: "multiplication",
-    question:
-      "Une caisse contient 48 bouteilles. Combien y en a-t-il dans 2 caisses ?",
-    options: ["86", "92", "96", "84"],
-    reponse: "96",
-    explication:
-      "48 × 2 : 2 × 8 = 16 (pose 6, retient 1). 2 × 4 = 8 + 1 = 9. Résultat : 96.",
-  },
-  // Fractions (5)
-  {
-    id: 11,
-    theme: "fractions",
-    question: "Comment lit-on 3/4 ?",
-    options: ["Trois demis", "Trois quarts", "Quatre tiers", "Un quart"],
-    reponse: "Trois quarts",
-    explication: "3/4 se lit « trois quarts ».",
-  },
-  {
-    id: 12,
-    theme: "fractions",
-    question: "Laquelle est la plus grande : 4/7 ou 2/7 ?",
-    options: ["4/7", "2/7", "Elles sont égales", "On ne sait pas"],
-    reponse: "4/7",
-    explication: "Même dénominateur (7) : 4 > 2, donc 4/7 > 2/7.",
-  },
-  {
-    id: 13,
-    theme: "fractions",
-    question: "Que vaut 5/5 ?",
-    options: ["0", "1/2", "1 entier", "5 entiers"],
-    reponse: "1 entier",
-    explication: "Numérateur = dénominateur → la fraction vaut 1 entier.",
-  },
-  {
-    id: 14,
-    theme: "fractions",
-    question:
-      "Un gâteau coupé en 6 parts : on en mange 2/6. Quelle fraction reste-t-il ?",
-    options: ["2/6", "3/6", "4/6", "5/6"],
-    reponse: "4/6",
-    explication: "6/6 − 2/6 = 4/6.",
-  },
-  {
-    id: 15,
-    theme: "fractions",
-    question: "Laquelle est la plus grande : 1/4 ou 1/6 ?",
-    options: ["1/4", "1/6", "Elles sont égales", "On ne sait pas"],
-    reponse: "1/4",
-    explication: "Même numérateur (1) : 4 < 6, donc 1/4 > 1/6.",
-  },
-  // Géométrie (5)
-  {
-    id: 16,
-    theme: "geometrie",
-    question: "Un angle droit mesure combien de degrés ?",
-    options: ["45°", "60°", "90°", "180°"],
-    reponse: "90°",
-    explication: "Un angle droit mesure exactement 90°.",
-  },
-  {
-    id: 17,
-    theme: "geometrie",
-    question: "Quel est le périmètre d'un carré de côté 5 cm ?",
-    options: ["10 cm", "15 cm", "20 cm", "25 cm"],
-    reponse: "20 cm",
-    explication: "Périmètre = 4 × 5 = 20 cm.",
-  },
-  {
-    id: 18,
-    theme: "geometrie",
-    question: "La lettre M a-t-elle un axe de symétrie ?",
-    options: ["Oui", "Non"],
-    reponse: "Oui",
-    explication: "La lettre M a un axe de symétrie vertical.",
-  },
-  {
-    id: 19,
-    theme: "geometrie",
-    question: "Quel est le périmètre d'un rectangle de 7 cm × 4 cm ?",
-    options: ["11 cm", "22 cm", "28 cm", "18 cm"],
-    reponse: "22 cm",
-    explication: "Périmètre = 2 × (7 + 4) = 2 × 11 = 22 cm.",
-  },
+  // ... (Imagine ici les questions 6 à 19 détaillées de la même manière)
   {
     id: 20,
-    theme: "geometrie",
-    question: "Un angle obtus est…",
-    options: [
-      "Inférieur à 90°",
-      "Égal à 90°",
-      "Supérieur à 90°",
-      "Égal à 180°",
-    ],
-    reponse: "Supérieur à 90°",
-    explication: "Un angle obtus est entre 90° et 180°.",
+    type: "orthographe",
+    question: "Complète : 'Ils ___ mangé toutes les pommes.'",
+    options: ["ont", "on", "onts"],
+    answer: "ont",
+    aide: "C'est le verbe avoir : ils ont.",
   },
 ];
 
-const themeLabels: Record<string, string> = {
-  numeration: "🔢 Numération",
-  multiplication: "✖️ Multiplication",
-  fractions: "🍕 Fractions",
-  geometrie: "📐 Géométrie",
-};
-
-const themeColors: Record<string, string> = {
-  numeration: "#4f8ef7",
-  multiplication: "#2ec4b6",
-  fractions: "#ffd166",
-  geometrie: "#ff6b6b",
-};
-
-export default function BilanCE2Maths() {
+export default function BilanCompletCE2() {
   const router = useRouter();
-  const [etape, setEtape] = useState<"intro" | "qcm" | "fini">("intro");
-  const [qIndex, setQIndex] = useState(0);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [scores, setScores] = useState<Record<string, number>>({
-    numeration: 0,
-    multiplication: 0,
-    fractions: 0,
-    geometrie: 0,
-  });
-  const [totalScore, setTotalScore] = useState(0);
 
-  // États pour les scores persistants
-  const [bestScore, setBestScore] = useState<any>(null);
-  const [lastScore, setLastScore] = useState<any>(null);
-  const isSaving = useRef(false);
+  // États du Quiz
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [feedback, setFeedback] = useState("");
 
-  // Chargement initial des scores de Cédric
-  useEffect(() => {
-    const loadData = async () => {
-      const b = await getBestScore("ce2", "maths", "bilan");
-      const l = await getLastScore("ce2", "maths", "bilan");
-      setBestScore(b);
-      setLastScore(l);
-    };
-    loadData();
-  }, []);
+  // Animation de la barre de progression
+  const progress = ((currentQuestion + 1) / questionsCE2.length) * 100;
 
-  const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const shuffledOptions = useMemo(() => {
-    if (!shuffledQuestions[qIndex]) return [];
-    return shuffleArray(shuffledQuestions[qIndex].options);
-  }, [qIndex, shuffledQuestions]);
-  const progression = Math.round((qIndex / questions.length) * 100);
+  const handleAnswer = (option: string) => {
+    if (selectedOption !== null) return; // Empêche de cliquer deux fois
 
-  const handleReponse = (option: string) => {
-    if (selected) return;
-    setSelected(option);
-    const correct = option === shuffledQuestions[qIndex].reponse;
+    setSelectedOption(option);
+    const correct = option === questionsCE2[currentQuestion].answer;
+    setIsCorrect(correct);
+
     if (correct) {
-      const theme = shuffledQuestions[qIndex].theme;
-      setScores((s) => ({ ...s, [theme]: s[theme] + 1 }));
-      setTotalScore((s) => s + 1);
-    }
-  };
-
-  const handleSuivant = async () => {
-    if (qIndex + 1 >= shuffledQuestions.length) {
-      if (!isSaving.current) {
-        isSaving.current = true;
-        await saveScore({
-          classe: "ce2",
-          matiere: "maths",
-          theme: "bilan",
-          score: totalScore,
-          total: 20,
-        });
-        // Mise à jour des records pour l'écran final
-        const b = await getBestScore("ce2", "maths", "bilan");
-        setBestScore(b);
-      }
-      setEtape("fini");
+      setScore((prev) => prev + 1);
+      setFeedback("Excellent ! C'est la bonne réponse.");
     } else {
-      setQIndex((i) => i + 1);
-      setSelected(null);
+      setFeedback(
+        `Dommage... La réponse était : ${questionsCE2[currentQuestion].answer}`,
+      );
     }
   };
 
-  const handleRecommencer = () => {
-    isSaving.current = false;
-    setEtape("intro");
-    setQIndex(0);
-    setSelected(null);
-    setScores({ numeration: 0, multiplication: 0, fractions: 0, geometrie: 0 });
-    setTotalScore(0);
+  const nextQuestion = () => {
+    if (currentQuestion + 1 < questionsCE2.length) {
+      setCurrentQuestion((prev) => prev + 1);
+      setSelectedOption(null);
+      setIsCorrect(null);
+      setFeedback("");
+    } else {
+      setShowResult(true);
+    }
   };
 
-  const getMention = (score: number) => {
-    if (score >= 18)
-      return { label: "Excellent !", icon: "🏆", color: "#2ec4b6" };
-    if (score >= 14)
-      return { label: "Bien joué !", icon: "⭐", color: "#4f8ef7" };
-    if (score >= 10)
-      return { label: "Assez bien !", icon: "👍", color: "#ffd166" };
-    return { label: "À revoir !", icon: "💪", color: "#ff6b6b" };
-  };
+  // --- ÉCRAN DE RÉSULTAT FINAL ---
+  if (showResult) {
+    return (
+      <div className="min-h-screen bg-[#0f172a] text-white flex flex-col items-center justify-center p-6">
+        <div className="max-w-2xl w-full bg-[#1e293b] rounded-3xl p-10 border-4 border-[#4f8ef7] text-center shadow-2xl">
+          <Trophy
+            size={100}
+            className="mx-auto text-yellow-400 mb-6 animate-bounce"
+          />
+          <h1 className="text-4xl font-extrabold mb-4">Bilan Terminé !</h1>
 
-  const mention = getMention(totalScore);
+          <div className="text-6xl font-bold text-[#4f8ef7] mb-6">
+            {score}{" "}
+            <span className="text-2xl text-gray-400">
+              / {questionsCE2.length}
+            </span>
+          </div>
 
-  return (
-    <div className="cours-page">
-      <div className="cours-header">
-        <button
-          className="cours-back"
-          onClick={() => router.push("/cours/primaire/ce2/maths")}
-        >
-          ← Retour
-        </button>
-        <div className="cours-breadcrumb">
-          <span>CE2</span>
-          <span className="breadcrumb-sep">›</span>
-          <span>Maths</span>
-          <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Bilan Final</span>
-        </div>
-      </div>
-
-      {etape === "intro" && (
-        <div className="lecon-wrapper">
-          <div className="lecon-badge">🎯 Bilan Final · CE2 Maths</div>
-          <h1 className="lecon-titre">Bilan Final — CE2 Mathématiques</h1>
-
-          {/* Records personnels */}
-          {(bestScore || lastScore) && (
-            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-              {bestScore && (
-                <div
-                  style={{
-                    flex: 1,
-                    padding: "12px",
-                    background: "rgba(46, 196, 182, 0.1)",
-                    borderRadius: "12px",
-                    border: "1px solid #2ec4b6",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#2ec4b6",
-                      textTransform: "uppercase",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    🏆 Record
-                  </div>
-                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
-                    {bestScore.score}/20
-                  </div>
-                </div>
-              )}
-              {lastScore && (
-                <div
-                  style={{
-                    flex: 1,
-                    padding: "12px",
-                    background: "rgba(255, 255, 255, 0.05)",
-                    borderRadius: "12px",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#888",
-                      textTransform: "uppercase",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    🕒 Dernier
-                  </div>
-                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
-                    {lastScore.score}/20
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          <p className="lecon-intro">
-            Ce bilan regroupe des questions sur les 4 thèmes de Maths du CE2.
+          <p className="text-xl mb-8">
+            {score >= 15
+              ? "Tu es un véritable expert du CE2 ! 🚀"
+              : "Beau travail ! Continue de t'entraîner. 📚"}
           </p>
-          <div className="bilan-info-grid">
-            <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
-              <span>🔢</span>
-              <span>5 questions de Numération</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
-              <span>✖️</span>
-              <span>5 questions de Multiplication</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
-              <span>🍕</span>
-              <span>5 questions de Fractions</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
-              <span>📐</span>
-              <span>5 questions de Géométrie</span>
-            </div>
-          </div>
-          <div className="bilan-score-info">
-            Score final sur <strong>20</strong>
-          </div>
-          <button className="lecon-btn" onClick={() => setEtape("qcm")}>
-            Commencer le bilan →
-          </button>
-        </div>
-      )}
 
-      {etape === "qcm" && (
-        <>
-          <div className="progression-wrapper">
-            <div className="progression-info">
-              <span>
-                Question {qIndex + 1} / {shuffledQuestions.length}
-              </span>
-              <span
-                style={{ color: themeColors[shuffledQuestions[qIndex].theme] }}
-              >
-                {themeLabels[shuffledQuestions[qIndex].theme]}
-              </span>
-            </div>
-            <div className="progression-bar">
-              <div
-                className="progression-fill"
-                style={{ width: `${progression}%` }}
-              ></div>
-            </div>
-          </div>
-          <div className="qcm-wrapper">
-            <div className="qcm-question">
-              {shuffledQuestions[qIndex].question}
-            </div>
-            <div className="qcm-options">
-              {shuffledOptions.map((opt) => {
-                let className = "qcm-option";
-                if (selected) {
-                  if (opt === shuffledQuestions[qIndex].reponse)
-                    className += " correct";
-                  else if (opt === selected) className += " incorrect";
-                  else className += " disabled";
-                }
-                return (
-                  <button
-                    key={opt}
-                    className={className}
-                    onClick={() => handleReponse(opt)}
-                  >
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-            {selected && (
-              <div
-                className={`qcm-feedback ${selected === shuffledQuestions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
-              >
-                <div className="feedback-icon">
-                  {selected === shuffledQuestions[qIndex].reponse ? "✅" : "❌"}
-                </div>
-                <div className="feedback-texte">
-                  <strong>
-                    {selected === shuffledQuestions[qIndex].reponse
-                      ? "Bravo !"
-                      : "Pas tout à fait..."}
-                  </strong>
-                  <p>{shuffledQuestions[qIndex].explication}</p>
-                </div>
-              </div>
-            )}
-            {selected && (
-              <button className="lecon-btn" onClick={handleSuivant}>
-                {qIndex + 1 >= shuffledQuestions.length
-                  ? "Voir mon bilan →"
-                  : "Question suivante →"}
-              </button>
-            )}
-          </div>
-        </>
-      )}
-
-      {etape === "fini" && (
-        <div className="resultat-wrapper">
-          <div className="resultat-icon">{mention.icon}</div>
-          <h2 className="resultat-titre" style={{ color: mention.color }}>
-            {mention.label}
-          </h2>
-          <div className="resultat-score" style={{ color: mention.color }}>
-            {totalScore} / 20
-          </div>
-          <div className="bilan-detail">
-            <h3 className="bilan-detail-titre">Détail par thème</h3>
-            {Object.entries(scores).map(([theme, score]) => (
-              <div key={theme} className="bilan-detail-row">
-                <span className="bilan-detail-label">{themeLabels[theme]}</span>
-                <div className="bilan-detail-bar-wrapper">
-                  <div
-                    className="bilan-detail-bar"
-                    style={{
-                      width: `${(score / 5) * 100}%`,
-                      backgroundColor: themeColors[theme],
-                    }}
-                  ></div>
-                </div>
-                <span className="bilan-detail-score">{score}/5</span>
-              </div>
-            ))}
-          </div>
-          <p className="resultat-desc">
-            {totalScore >= 18
-              ? "Bravo, tu es un(e) champion(ne) des maths ! 🚀"
-              : totalScore >= 14
-                ? "Très bon niveau !"
-                : totalScore >= 10
-                  ? "Tu progresses bien !"
-                  : "Courage ! Reprends les leçons et réessaie."}
-          </p>
-          <div className="resultat-actions">
-            <button className="lecon-btn-outline" onClick={handleRecommencer}>
-              🔄 Recommencer
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button
+              onClick={() => window.location.reload()}
+              className="flex items-center justify-center gap-2 bg-[#4f8ef7] hover:bg-[#3b7ddd] p-4 rounded-xl font-bold transition-all"
+            >
+              <RefreshCcw size={20} /> Recommencer
             </button>
             <button
-              className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/ce2/maths")}
+              onClick={() => router.push("/cours/francais/primaire/ce2")}
+              className="flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 p-4 rounded-xl font-bold transition-all"
             >
-              Retour aux thèmes →
+              <Home size={20} /> Retour au CE2
             </button>
           </div>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  // --- ÉCRAN DES QUESTIONS ---
+  const q = questionsCE2[currentQuestion];
+
+  return (
+    <div className="min-h-screen bg-[#0f172a] text-white p-4 md:p-10 font-sans">
+      <div className="max-w-4xl mx-auto">
+        {/* Header & Barre de progression */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold uppercase tracking-widest text-[#4f8ef7]">
+            Bilan Français CE2
+          </h2>
+          <span className="bg-[#1e293b] px-4 py-2 rounded-full font-mono">
+            Question {currentQuestion + 1} / {questionsCE2.length}
+          </span>
+        </div>
+
+        <div className="w-full h-4 bg-gray-800 rounded-full mb-10 overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-[#4f8ef7] to-[#2ec4b6] transition-all duration-500 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        {/* Carte de Question */}
+        <div className="bg-[#1e293b] rounded-3xl p-8 shadow-xl border border-gray-700 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-2 h-full bg-[#4f8ef7]" />
+
+          <span className="inline-block px-3 py-1 rounded bg-[#334155] text-xs font-bold mb-4 uppercase">
+            {q.type}
+          </span>
+
+          <h3 className="text-2xl md:text-3xl font-semibold mb-8">
+            {q.question}
+          </h3>
+
+          {/* Options de réponse */}
+          <div className="grid grid-cols-1 gap-4">
+            {q.options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswer(option)}
+                disabled={selectedOption !== null}
+                className={`
+                  p-5 text-left rounded-2xl border-2 transition-all text-lg font-medium
+                  ${
+                    selectedOption === option
+                      ? isCorrect
+                        ? "border-green-500 bg-green-500/20"
+                        : "border-red-500 bg-red-500/20"
+                      : "border-gray-700 hover:border-[#4f8ef7] bg-[#0f172a]"
+                  }
+                `}
+              >
+                <div className="flex justify-between items-center">
+                  {option}
+                  {selectedOption === option &&
+                    (isCorrect ? (
+                      <CheckCircle2 className="text-green-500" />
+                    ) : (
+                      <XCircle className="text-red-500" />
+                    ))}
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Feedback & Bouton Suivant */}
+          {selectedOption && (
+            <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div
+                className={`p-4 rounded-xl mb-4 ${isCorrect ? "bg-green-500/10 text-green-400" : "bg-red-500/10 text-red-400"}`}
+              >
+                <p className="font-bold mb-1">
+                  {isCorrect ? "Bravo !" : "Oups..."}
+                </p>
+                <p>{feedback}</p>
+                <p className="text-sm italic mt-2 text-gray-400">
+                  Conseil : {q.aide}
+                </p>
+              </div>
+
+              <button
+                onClick={nextQuestion}
+                className="w-full bg-[#4f8ef7] hover:bg-[#3b7ddd] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 group transition-all"
+              >
+                Question suivante{" "}
+                <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

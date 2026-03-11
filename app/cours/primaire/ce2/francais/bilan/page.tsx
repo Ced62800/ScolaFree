@@ -1,205 +1,192 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
 const questions = [
-  // Grammaire (5)
+  // --- GRAMMAIRE (5) ---
   {
     id: 1,
-    question: "Quel est le sujet dans : 'Le chat dort sur le canapé' ?",
-    options: ["dort", "canapé", "Le chat", "sur"],
-    reponse: "Le chat",
-    explication: "Qui est-ce qui dort ? → Le chat.",
     theme: "grammaire",
+    question: "Trouve le verbe dans : 'Le chat attrape la souris.'",
+    options: ["chat", "attrape", "souris", "le"],
+    reponse: "attrape",
+    explication: "Le verbe est l'action : c'est le mot 'attrape'.",
   },
   {
     id: 2,
-    question: "Quelle phrase est correcte ?",
-    options: [
-      "Les enfants joue.",
-      "Les enfants jouent.",
-      "Les enfant jouent.",
-      "Les enfants joues.",
-    ],
-    reponse: "Les enfants jouent.",
-    explication: "Avec 'les enfants' (pluriel), le verbe prend -nt.",
     theme: "grammaire",
+    question: "Quel est le sujet dans : 'Maman prépare un gâteau.' ?",
+    options: ["Maman", "prépare", "gâteau", "un"],
+    reponse: "Maman",
+    explication: "C'est Maman qui fait l'action de préparer.",
   },
   {
     id: 3,
-    question: "Complète : 'Mon frère ___ au foot.'",
-    options: ["jouent", "jouez", "joue", "jouons"],
-    reponse: "joue",
-    explication: "'Mon frère' est singulier → 'joue'.",
     theme: "grammaire",
+    question: "Quel est le pluriel de 'Le petit garçon' ?",
+    options: [
+      "Les petits garçons",
+      "Les petit garçons",
+      "Le petits garçon",
+      "Les petits garçon",
+    ],
+    reponse: "Les petits garçons",
+    explication: "Tout le groupe nominal s'accorde au pluriel.",
   },
   {
     id: 4,
-    question: "Quelle phrase contient une erreur d'accord sujet-verbe ?",
-    options: [
-      "Les élèves travaillent.",
-      "Le professeur explique.",
-      "Les chiens aboie.",
-      "Nous chantons.",
-    ],
-    reponse: "Les chiens aboie.",
-    explication: "'Les chiens' est pluriel → il faut 'aboient'.",
     theme: "grammaire",
+    question: "Trouve l'adjectif dans : 'Une jolie fleur rouge.'",
+    options: ["fleur", "une", "jolie", "est"],
+    reponse: "jolie",
+    explication:
+      "'Jolie' donne une précision sur la fleur : c'est un adjectif.",
   },
   {
     id: 5,
-    question: "Complète : 'La maîtresse et les élèves ___ la leçon.'",
-    options: ["prépare", "prépares", "préparent", "préparez"],
-    reponse: "préparent",
-    explication: "Deux sujets = pluriel → 'préparent'.",
     theme: "grammaire",
+    question:
+      "Quel type de phrase se termine par un point d'interrogation (?) ?",
+    options: ["Déclarative", "Exclamative", "Interrogative", "Impérative"],
+    reponse: "Interrogative",
+    explication: "On utilise le point d'interrogation pour poser une question.",
   },
-  // Conjugaison (5)
+  // --- CONJUGAISON (5) ---
   {
     id: 6,
-    question:
-      "Quel temps est utilisé : 'Quand j'étais petit, je jouais au ballon' ?",
-    options: ["présent", "imparfait", "futur", "passé composé"],
-    reponse: "imparfait",
-    explication: "'jouais' est à l'imparfait.",
     theme: "conjugaison",
+    question: "Conjugue : 'Tu (chanter) une chanson.'",
+    options: ["chante", "chantes", "chantons", "chantez"],
+    reponse: "chantes",
+    explication: "Au présent, avec 'Tu', les verbes en -er prennent un 's'.",
   },
   {
     id: 7,
-    question:
-      "Complète à l'imparfait : 'Nous ___ au parc tous les dimanches.' (aller)",
-    options: ["allons", "irons", "allions", "allez"],
-    reponse: "allions",
-    explication: "À l'imparfait avec 'nous' : 'allions'.",
     theme: "conjugaison",
+    question: "Quel est l'auxiliaire dans : 'Ils ont mangé' ?",
+    options: ["Ils", "ont", "mangé", "avoir"],
+    reponse: "ont",
+    explication: "C'est l'auxiliaire 'avoir' conjugué au présent.",
   },
   {
     id: 8,
-    question: "Quelle phrase est à l'imparfait ?",
-    options: [
-      "Je mange ma soupe.",
-      "Je mangerai ma soupe.",
-      "Je mangeais ma soupe.",
-      "Je mangerais ma soupe.",
-    ],
-    reponse: "Je mangeais ma soupe.",
-    explication: "'mangeais' est à l'imparfait — terminaison -ais.",
     theme: "conjugaison",
+    question: "Trouve le verbe 'Être' au présent avec 'Nous' :",
+    options: ["sommes", "somme", "êtes", "sont"],
+    reponse: "sommes",
+    explication: "On dit : Nous sommes.",
   },
   {
     id: 9,
-    question: "Complète au futur : 'Vous ___ vos amis ce week-end.' (voir)",
-    options: ["voyez", "verrez", "voyiez", "voir"],
-    reponse: "verrez",
-    explication: "Au futur avec 'vous', 'voir' devient 'verrez'.",
     theme: "conjugaison",
+    question: "Demain, je (jouer) au foot. (Futur)",
+    options: ["jouerai", "jouerait", "jouait", "joue"],
+    reponse: "jouerai",
+    explication: "Au futur, avec 'je', la terminaison est -ai.",
   },
   {
     id: 10,
-    question: "Complète : 'Autrefois, les gens ___ sans électricité.' (vivre)",
-    options: ["vivent", "vivront", "vivaient", "vivez"],
-    reponse: "vivaient",
-    explication: "'Autrefois' = habitude dans le passé → imparfait.",
     theme: "conjugaison",
+    question: "Choisissez la bonne forme : 'Elles ___ faim.'",
+    options: ["ont", "on", "sont", "font"],
+    reponse: "ont",
+    explication: "C'est le verbe avoir (elles ont). 'On' est un pronom sujet.",
   },
-  // Orthographe (5)
+  // --- ORTHOGRAPHE (5) ---
   {
     id: 11,
-    question: "Complète : 'Il ___ très faim ce soir.'",
-    options: ["à", "a", "est", "et"],
-    reponse: "a",
-    explication: "'a' = verbe avoir (il avait très faim ✅).",
     theme: "orthographe",
+    question: "Le pluriel de 'un journal' est :",
+    options: ["des journals", "des journaux", "des journales", "des journauxs"],
+    reponse: "des journaux",
+    explication: "Les noms en -al font leur pluriel en -aux.",
   },
   {
     id: 12,
-    question: "Complète : 'Elle va ___ l'école.'",
-    options: ["a", "à", "est", "et"],
-    reponse: "à",
-    explication: "'à' indique le lieu.",
     theme: "orthographe",
+    question: "Comment écrit-on le féminin de 'un lion' ?",
+    options: ["une lionne", "une lione", "une lionte", "une lionn"],
+    reponse: "une lionne",
+    explication: "On double souvent la consonne au féminin : une lionne.",
   },
   {
     id: 13,
-    question: "Complète : 'Elle ___ très gentille.'",
-    options: ["et", "est", "a", "à"],
-    reponse: "est",
-    explication: "'est' = verbe être (elle était très gentille ✅).",
     theme: "orthographe",
+    question: "Mets au pluriel : 'un clou'",
+    options: ["des clous", "des cloux", "des clous s", "des cloues"],
+    reponse: "des clous",
+    explication: "C'est une exception, 'clou' prend un 's' et pas un 'x'.",
   },
   {
     id: 14,
-    question: "Complète : 'Les élèves ___ bien travaillé.'",
-    options: ["on", "ont", "son", "a"],
-    reponse: "ont",
-    explication: "'ont' = verbe avoir au pluriel.",
     theme: "orthographe",
+    question: "On écrit : 'Un ___ homme'.",
+    options: ["beau", "belle", "bel", "beaux"],
+    reponse: "bel",
+    explication:
+      "Devant un nom masculin commençant par une voyelle ou un h, on utilise 'bel'.",
   },
   {
     id: 15,
-    question: "Quelle phrase contient une erreur ?",
-    options: [
-      "Elle a mangé.",
-      "Il est grand et fort.",
-      "On à froid.",
-      "Ils ont chaud.",
-    ],
-    reponse: "On à froid.",
-    explication: "Il faut 'a' (verbe avoir) : 'On a froid'.",
     theme: "orthographe",
+    question: "Complète : 'Il y a ___ de monde.'",
+    options: ["beaucoup", "beaucoup s", "beaucou", "bocoup"],
+    reponse: "beaucoup",
+    explication: "C'est un mot invariable qui s'écrit toujours 'beaucoup'.",
   },
-  // Vocabulaire (5)
+  // --- VOCABULAIRE (5) ---
   {
     id: 16,
-    question: "Quel est le synonyme de 'content' ?",
-    options: ["triste", "heureux", "fatigué", "fâché"],
-    reponse: "heureux",
-    explication: "'heureux' et 'content' ont le même sens.",
     theme: "vocabulaire",
+    question: "Quel est le synonyme de 'content' ?",
+    options: ["triste", "heureux", "colère", "fatigué"],
+    reponse: "heureux",
+    explication: "Un synonyme est un mot qui a le même sens.",
   },
   {
     id: 17,
-    question: "Quel est l'antonyme de 'grand' ?",
-    options: ["énorme", "long", "petit", "haut"],
-    reponse: "petit",
-    explication: "'petit' est le contraire de 'grand'.",
     theme: "vocabulaire",
+    question: "Quel est le contraire de 'monter' ?",
+    options: ["grimper", "descendre", "courir", "sauter"],
+    reponse: "descendre",
+    explication: "L'antonyme (contraire) de monter est descendre.",
   },
   {
     id: 18,
-    question: "Quel mot est un synonyme de 'rapide' ?",
-    options: ["lent", "vite", "calme", "lourd"],
-    reponse: "vite",
-    explication: "'vite' et 'rapide' ont le même sens.",
     theme: "vocabulaire",
+    question: "Trouve l'intrus :",
+    options: ["Pomme", "Banane", "Carotte", "Poire"],
+    reponse: "Carotte",
+    explication: "La carotte est un légume, les autres sont des fruits.",
   },
   {
     id: 19,
-    question: "Quel est l'antonyme de 'possible' ?",
-    options: ["difficile", "impossible", "facile", "probable"],
-    reponse: "impossible",
-    explication: "Le préfixe 'im-' forme le contraire.",
     theme: "vocabulaire",
+    question: "Quel mot appartient à la famille de 'dent' ?",
+    options: ["dentiste", "danseur", "demain", "douche"],
+    reponse: "dentiste",
+    explication: "Le dentiste soigne les dents.",
   },
   {
     id: 20,
-    question: "Quel est l'antonyme de 'commencer' ?",
-    options: ["continuer", "reprendre", "finir", "avancer"],
-    reponse: "finir",
-    explication: "'finir' est le contraire de 'commencer'.",
     theme: "vocabulaire",
+    question: "Que signifie le préfixe 're-' dans 'refaire' ?",
+    options: ["Ne pas", "Encore", "Avant", "Contre"],
+    reponse: "Encore",
+    explication: "Le préfixe 're-' indique la répétition (faire à nouveau).",
   },
 ];
 
 const themeLabels: Record<string, string> = {
-  grammaire: "📝 Grammaire",
-  conjugaison: "⏰ Conjugaison",
-  orthographe: "✏️ Orthographe",
+  grammaire: "📖 Grammaire",
+  conjugaison: "⏳ Conjugaison",
+  orthographe: "✍️ Orthographe",
   vocabulaire: "📚 Vocabulaire",
 };
 
@@ -210,7 +197,7 @@ const themeColors: Record<string, string> = {
   vocabulaire: "#ff6b6b",
 };
 
-export default function BilanFinalCE2() {
+export default function BilanCE2Francais() {
   const router = useRouter();
   const [etape, setEtape] = useState<"intro" | "qcm" | "fini">("intro");
   const [qIndex, setQIndex] = useState(0);
@@ -223,11 +210,26 @@ export default function BilanFinalCE2() {
   });
   const [totalScore, setTotalScore] = useState(0);
 
+  // Persistance des scores
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const b = await getBestScore("ce2", "francais", "bilan");
+      const l = await getLastScore("ce2", "francais", "bilan");
+      setBestScore(b);
+      setLastScore(l);
+    };
+    loadData();
+  }, []);
+
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const shuffledOptions = useMemo(
-    () => shuffleArray(shuffledQuestions[qIndex].options),
-    [qIndex, shuffledQuestions],
-  );
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
   const progression = Math.round((qIndex / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -241,15 +243,29 @@ export default function BilanFinalCE2() {
     }
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= shuffledQuestions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= shuffledQuestions.length) {
+      if (!isSaving.current) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "ce2",
+          matiere: "francais",
+          theme: "bilan",
+          score: totalScore,
+          total: 20,
+        });
+        const b = await getBestScore("ce2", "francais", "bilan");
+        setBestScore(b);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    isSaving.current = false;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -260,7 +276,8 @@ export default function BilanFinalCE2() {
   const getMention = (score: number) => {
     if (score >= 18)
       return { label: "Excellent !", icon: "🏆", color: "#2ec4b6" };
-    if (score >= 14) return { label: "Bien !", icon: "⭐", color: "#4f8ef7" };
+    if (score >= 14)
+      return { label: "Bien joué !", icon: "⭐", color: "#4f8ef7" };
     if (score >= 10)
       return { label: "Assez bien !", icon: "👍", color: "#ffd166" };
     return { label: "À revoir !", icon: "💪", color: "#ff6b6b" };
@@ -273,14 +290,14 @@ export default function BilanFinalCE2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/ce2/francais")}
+          onClick={() => router.push("/cours/francais/primaire/ce2")}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CE2</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Français</span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Bilan Final</span>
         </div>
@@ -288,32 +305,81 @@ export default function BilanFinalCE2() {
 
       {etape === "intro" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🎯 Bilan Final · CE2</div>
+          <div className="lecon-badge">🎯 Bilan Final · CE2 Français</div>
           <h1 className="lecon-titre">Bilan Final — CE2 Français</h1>
+
+          {/* Records personnels */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46, 196, 182, 0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Record
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <p className="lecon-intro">
-            Ce bilan regroupe des questions sur les 4 thèmes du CE2 : Grammaire,
-            Conjugaison, Orthographe et Vocabulaire.
+            Ce bilan regroupe des questions sur les 4 thèmes de Français du CE2.
           </p>
           <div className="bilan-info-grid">
-            <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
-              <span>📝</span>
-              <span>5 questions de Grammaire</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
-              <span>⏰</span>
-              <span>5 questions de Conjugaison</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
-              <span>✏️</span>
-              <span>5 questions d'Orthographe</span>
-            </div>
-            <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
-              <span>📚</span>
-              <span>5 questions de Vocabulaire</span>
-            </div>
-          </div>
-          <div className="bilan-score-info">
-            Score final sur <strong>20</strong>
+            {Object.entries(themeLabels).map(([key, label]) => (
+              <div
+                key={key}
+                className="bilan-info-card"
+                style={{ borderColor: themeColors[key] }}
+              >
+                <span>{label.split(" ")[0]}</span>
+                <span>5 questions de {label.split(" ")[1]}</span>
+              </div>
+            ))}
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
             Commencer le bilan →
@@ -325,9 +391,7 @@ export default function BilanFinalCE2() {
         <>
           <div className="progression-wrapper">
             <div className="progression-info">
-              <span>
-                Question {qIndex + 1} / {shuffledQuestions.length}
-              </span>
+              <span>Question {qIndex + 1} / 20</span>
               <span
                 style={{ color: themeColors[shuffledQuestions[qIndex].theme] }}
               >
@@ -346,24 +410,15 @@ export default function BilanFinalCE2() {
               {shuffledQuestions[qIndex].question}
             </div>
             <div className="qcm-options">
-              {shuffledOptions.map((opt) => {
-                let className = "qcm-option";
-                if (selected) {
-                  if (opt === shuffledQuestions[qIndex].reponse)
-                    className += " correct";
-                  else if (opt === selected) className += " incorrect";
-                  else className += " disabled";
-                }
-                return (
-                  <button
-                    key={opt}
-                    className={className}
-                    onClick={() => handleReponse(opt)}
-                  >
-                    {opt}
-                  </button>
-                );
-              })}
+              {shuffledOptions.map((opt) => (
+                <button
+                  key={opt}
+                  className={`qcm-option ${selected ? (opt === shuffledQuestions[qIndex].reponse ? "correct" : opt === selected ? "incorrect" : "disabled") : ""}`}
+                  onClick={() => handleReponse(opt)}
+                >
+                  {opt}
+                </button>
+              ))}
             </div>
             {selected && (
               <div
@@ -376,7 +431,7 @@ export default function BilanFinalCE2() {
                   <strong>
                     {selected === shuffledQuestions[qIndex].reponse
                       ? "Bravo !"
-                      : "Pas tout à fait..."}
+                      : "Oups..."}
                   </strong>
                   <p>{shuffledQuestions[qIndex].explication}</p>
                 </div>
@@ -384,9 +439,7 @@ export default function BilanFinalCE2() {
             )}
             {selected && (
               <button className="lecon-btn" onClick={handleSuivant}>
-                {qIndex + 1 >= shuffledQuestions.length
-                  ? "Voir mon bilan →"
-                  : "Question suivante →"}
+                {qIndex + 1 >= 20 ? "Voir mon bilan →" : "Question suivante →"}
               </button>
             )}
           </div>
@@ -403,7 +456,6 @@ export default function BilanFinalCE2() {
             {totalScore} / 20
           </div>
           <div className="bilan-detail">
-            <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (
               <div key={theme} className="bilan-detail-row">
                 <span className="bilan-detail-label">{themeLabels[theme]}</span>
@@ -420,24 +472,15 @@ export default function BilanFinalCE2() {
               </div>
             ))}
           </div>
-          <p className="resultat-desc">
-            {totalScore >= 18
-              ? "Bravo ! Tu es prêt(e) pour le CM1 ! 🚀"
-              : totalScore >= 14
-                ? "Très bon niveau !"
-                : totalScore >= 10
-                  ? "Tu progresses bien !"
-                  : "Courage ! Reprends les leçons et réessaie."}
-          </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
               🔄 Recommencer
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/ce2/francais")}
+              onClick={() => router.push("/cours/francais/primaire/ce2")}
             >
-              Retour aux thèmes →
+              Menu CE2 →
             </button>
           </div>
         </div>
