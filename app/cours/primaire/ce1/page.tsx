@@ -22,7 +22,13 @@ const matieres = [
   {
     id: "anglais",
     label: "Anglais",
-    emoji: "🌍",
+    emoji: (
+      <img
+        src="https://flagcdn.com/w160/gb.png"
+        alt="Drapeau Anglais"
+        style={{ width: "45px", height: "auto", borderRadius: "4px" }}
+      />
+    ),
     color: "#ff6b6b",
     desc: "Vocabulaire, Grammaire, Communication",
     dispo: true,
