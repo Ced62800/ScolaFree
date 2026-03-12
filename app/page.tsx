@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const CLASSES_CONFIG: Record<
   string,
-  { label: string; matieres: { key: string; label: string; emoji: string }[] }
+  { label: string; matieres: { key: string; label: string; emoji: any }[] }
 > = {
   cp: {
     label: "CP",
@@ -20,7 +20,21 @@ const CLASSES_CONFIG: Record<
     matieres: [
       { key: "francais", label: "Français", emoji: "📖" },
       { key: "maths", label: "Maths", emoji: "🔢" },
-      { key: "anglais", label: "Anglais", emoji: "🇬🇧" },
+      {
+        key: "anglais",
+        label: "Anglais",
+        emoji: (
+          <img
+            src="https://flagcdn.com/w40/gb.png"
+            alt="UK"
+            style={{
+              width: "20px",
+              verticalAlign: "middle",
+              borderRadius: "2px",
+            }}
+          />
+        ),
+      },
     ],
   },
   ce2: {
@@ -28,7 +42,21 @@ const CLASSES_CONFIG: Record<
     matieres: [
       { key: "francais", label: "Français", emoji: "📖" },
       { key: "maths", label: "Maths", emoji: "🔢" },
-      { key: "anglais", label: "Anglais", emoji: "🇬🇧" },
+      {
+        key: "anglais",
+        label: "Anglais",
+        emoji: (
+          <img
+            src="https://flagcdn.com/w40/gb.png"
+            alt="UK"
+            style={{
+              width: "20px",
+              verticalAlign: "middle",
+              borderRadius: "2px",
+            }}
+          />
+        ),
+      },
     ],
   },
   cm1: {
@@ -36,7 +64,21 @@ const CLASSES_CONFIG: Record<
     matieres: [
       { key: "francais", label: "Français", emoji: "📖" },
       { key: "maths", label: "Maths", emoji: "🔢" },
-      { key: "anglais", label: "Anglais", emoji: "🇬🇧" },
+      {
+        key: "anglais",
+        label: "Anglais",
+        emoji: (
+          <img
+            src="https://flagcdn.com/w40/gb.png"
+            alt="UK"
+            style={{
+              width: "20px",
+              verticalAlign: "middle",
+              borderRadius: "2px",
+            }}
+          />
+        ),
+      },
     ],
   },
   cm2: {
@@ -44,7 +86,21 @@ const CLASSES_CONFIG: Record<
     matieres: [
       { key: "francais", label: "Français", emoji: "📖" },
       { key: "maths", label: "Maths", emoji: "🔢" },
-      { key: "anglais", label: "Anglais", emoji: "🇬🇧" },
+      {
+        key: "anglais",
+        label: "Anglais",
+        emoji: (
+          <img
+            src="https://flagcdn.com/w40/gb.png"
+            alt="UK"
+            style={{
+              width: "20px",
+              verticalAlign: "middle",
+              borderRadius: "2px",
+            }}
+          />
+        ),
+      },
     ],
   },
 };
@@ -119,7 +175,6 @@ export default function Home() {
       .filter((b): b is { score: number; total: number } => !!b);
     if (scores.length === 0) return null;
 
-    // MODIFIÉ : Retrait de Math.round
     return scores.reduce((acc, b) => acc + b.score, 0) / scores.length;
   };
 
@@ -342,7 +397,6 @@ export default function Home() {
                             color: "#ffd166",
                           }}
                         >
-                          {/* MODIFIÉ : .toFixed(2) avec virgule */}
                           {moyenne.toFixed(2).replace(".", ",")} / 20
                         </div>
                       </div>
@@ -384,6 +438,7 @@ export default function Home() {
                               marginBottom: "6px",
                             }}
                           >
+                            {/* Ici on affiche l'emoji ou l'image du drapeau */}
                             {matiere.emoji} {matiere.label}
                           </div>
                           {bilan ? (
@@ -394,7 +449,6 @@ export default function Home() {
                                 color: scoreColor,
                               }}
                             >
-                              {/* MODIFIÉ : .toFixed(2) avec virgule */}
                               {bilan.score.toFixed(2).replace(".", ",")} / 20
                             </div>
                           ) : (
