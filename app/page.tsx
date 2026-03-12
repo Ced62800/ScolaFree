@@ -77,7 +77,6 @@ export default function Home() {
           setRole(profile.role);
         }
 
-        // Récupérer tous les bilans uniquement
         const { data: bilans } = await supabase
           .from("scores")
           .select("classe, matiere, score, total, created_at")
@@ -86,7 +85,6 @@ export default function Home() {
           .order("created_at", { ascending: false });
 
         if (bilans && bilans.length > 0) {
-          // Pour chaque classe/matière, garder le meilleur score
           const result: Record<string, ClasseBilans> = {};
           for (const b of bilans) {
             if (!result[b.classe]) result[b.classe] = {};
@@ -120,9 +118,9 @@ export default function Home() {
       .map((m) => bilans[m.key])
       .filter((b): b is { score: number; total: number } => !!b);
     if (scores.length === 0) return null;
-    return Math.round(
-      scores.reduce((acc, b) => acc + b.score, 0) / scores.length,
-    );
+
+    // MODIFIÉ : Retrait de Math.round
+    return scores.reduce((acc, b) => acc + b.score, 0) / scores.length;
   };
 
   const classesAvecBilans = Object.keys(CLASSES_CONFIG).filter(
@@ -278,7 +276,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Encart progrès — bilans par classe */}
       {prenom && classesAvecBilans.length > 0 && (
         <section
           style={{
@@ -316,7 +313,6 @@ export default function Home() {
                     padding: "20px",
                   }}
                 >
-                  {/* Header */}
                   <div
                     style={{
                       display: "flex",
@@ -346,13 +342,13 @@ export default function Home() {
                             color: "#ffd166",
                           }}
                         >
-                          {moyenne} / 20
+                          {/* MODIFIÉ : .toFixed(2) avec virgule */}
+                          {moyenne.toFixed(2).replace(".", ",")} / 20
                         </div>
                       </div>
                     )}
                   </div>
 
-                  {/* Matières */}
                   <div
                     style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
                   >
@@ -398,7 +394,8 @@ export default function Home() {
                                 color: scoreColor,
                               }}
                             >
-                              {bilan.score} / 20
+                              {/* MODIFIÉ : .toFixed(2) avec virgule */}
+                              {bilan.score.toFixed(2).replace(".", ",")} / 20
                             </div>
                           ) : (
                             <div
@@ -432,7 +429,7 @@ export default function Home() {
           <a href="#">Contact</a>
         </div>
         <div className="footer-copy">
-          © 2025 ScolaFree — Tous droits réservés
+          © 2026 ScolaFree — Tous droits réservés
         </div>
       </footer>
     </>
