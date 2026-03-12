@@ -65,6 +65,30 @@ export default function CPPage() {
           </div>
         ))}
       </div>
+      {/* Bannière de citation en bas de page */}
+      <div
+        style={{
+          marginTop: "40px",
+          padding: "30px 20px",
+          borderTop: "1px solid rgba(255, 255, 255, 0.05)",
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
+        <p
+          style={{
+            color: "#aaa",
+            fontStyle: "italic",
+            fontSize: "0.9rem",
+            maxWidth: "500px",
+            margin: "0 auto",
+            lineHeight: "1.5",
+          }}
+        >
+          "Chaque jour est une nouvelle chance d'apprendre quelque chose de
+          nouveau."
+        </p>
+      </div>
     </div>
   );
 }

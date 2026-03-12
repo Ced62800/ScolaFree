@@ -31,6 +31,7 @@ const matieres = [
 
 export default function CM2Page() {
   const router = useRouter();
+
   return (
     <div className="cours-page">
       <div className="cours-header">
@@ -46,11 +47,13 @@ export default function CM2Page() {
           <span className="breadcrumb-active">CM2</span>
         </div>
       </div>
+
       <div className="cours-hero">
         <div className="cours-hero-icon">🚀</div>
         <h1 className="cours-hero-title">CM2 — Choisis une matière</h1>
         <p className="cours-hero-desc">Cours Moyen 2 · 10 ans</p>
       </div>
+
       <div className="themes-grid">
         {matieres.map((m) => (
           <div
@@ -75,6 +78,30 @@ export default function CM2Page() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* BLOC CITATION SANS STATISTIQUES */}
+      <div
+        style={{
+          marginTop: "60px",
+          padding: "30px 20px",
+          borderTop: "1px solid rgba(255, 255, 255, 0.05)",
+          textAlign: "center",
+        }}
+      >
+        <p
+          style={{
+            color: "#aaa",
+            fontStyle: "italic",
+            fontSize: "0.9rem",
+            maxWidth: "500px",
+            margin: "0 auto",
+            lineHeight: "1.5",
+          }}
+        >
+          "Chaque jour est une nouvelle chance d'apprendre quelque chose de
+          nouveau."
+        </p>
       </div>
     </div>
   );
