@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -122,8 +123,9 @@ const questions = [
   },
 ];
 
-const niveauLabel = (n: string) =>
-  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+const CLASSE = "ce2";
+const MATIERE = "maths";
+const THEME = "multiplication-posee";
 
 export default function MultiplicationCE2() {
   const router = useRouter();
@@ -132,13 +134,26 @@ export default function MultiplicationCE2() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
-  const [session, setSession] = useState(0);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
-    [qIndex, session],
+    [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, [etape]);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -148,38 +163,51 @@ export default function MultiplicationCE2() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (scoreSaved.current) return;
+      scoreSaved.current = true;
+      await saveScore({
+        classe: CLASSE,
+        matiere: MATIERE,
+        theme: THEME,
+        score: score,
+        total: questions.length,
+      });
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
-    setSession((s) => s + 1);
   };
+
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/ce2/maths")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>CE2</span>
+          <span>{CLASSE.toUpperCase()}</span>
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Multiplication posée</span>
+          <span className="breadcrumb-active">Multiplication</span>
         </div>
       </div>
 
@@ -204,9 +232,51 @@ export default function MultiplicationCE2() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✖️ Multiplication posée · CE2</div>
+          <div className="lecon-badge">✖️ Multiplication · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+
+          <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+            {bestScore && (
+              <div
+                style={{
+                  flex: 1,
+                  background: "rgba(79,142,247,0.1)",
+                  border: "1px solid rgba(79,142,247,0.3)",
+                  borderRadius: "12px",
+                  padding: "10px",
+                  textAlign: "center",
+                  color: "#4f8ef7",
+                }}
+              >
+                🏆 Meilleur
+                <br />
+                <strong>
+                  {bestScore.score} / {bestScore.total}
+                </strong>
+              </div>
+            )}
+            {lastScore && (
+              <div
+                style={{
+                  flex: 1,
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "12px",
+                  padding: "10px",
+                  textAlign: "center",
+                  color: "#aaa",
+                }}
+              >
+                ⏱️ Dernier
+                <br />
+                <strong style={{ color: "#fff" }}>
+                  {lastScore.score} / {lastScore.total}
+                </strong>
+              </div>
+            )}
+          </div>
+
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -231,23 +301,15 @@ export default function MultiplicationCE2() {
           </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
-            {shuffledOptions.map((opt) => {
-              let className = "qcm-option";
-              if (selected) {
-                if (opt === questions[qIndex].reponse) className += " correct";
-                else if (opt === selected) className += " incorrect";
-                else className += " disabled";
-              }
-              return (
-                <button
-                  key={opt}
-                  className={className}
-                  onClick={() => handleReponse(opt)}
-                >
-                  {opt}
-                </button>
-              );
-            })}
+            {shuffledOptions.map((opt, idx) => (
+              <button
+                key={`${opt}-${idx}`}
+                className={`qcm-option ${selected ? (opt === questions[qIndex].reponse ? "correct" : opt === selected ? "incorrect" : "disabled") : ""}`}
+                onClick={() => handleReponse(opt)}
+              >
+                {opt}
+              </button>
+            ))}
           </div>
           {selected && (
             <div
@@ -286,21 +348,15 @@ export default function MultiplicationCE2() {
               ? "Excellent !"
               : score >= 7
                 ? "Bien joué !"
-                : score >= 5
-                  ? "Assez bien !"
-                  : "À revoir !"}
+                : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement la multiplication posée !"
-              : score >= 7
-                ? "Tu as bien compris l'essentiel."
-                : score >= 5
-                  ? "Encore quelques efforts !"
-                  : "Relis la leçon et réessaie !"}
+              ? "Tu maîtrises parfaitement la multiplication !"
+              : "Entraîne-toi encore sur les retenues."}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -308,7 +364,9 @@ export default function MultiplicationCE2() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/ce2/maths")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>
