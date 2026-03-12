@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -15,20 +16,20 @@ const lecon = {
     {
       titre: "Partager en parts égales",
       texte:
-        "Pour parler de fractions, on doit d'abord partager quelque chose en parties égales. Si on coupe une pizza en 4 parts égales, chaque part est un quart de la pizza.",
+        "Pour parler de fractions, on doit d'abord partager en parties égales. Si on coupe une pizza en 4 parts égales, chaque part est un quart de la pizza.",
       exemple: "1 pizza ÷ 4 = 4 parts → chaque part = 1/4 (un quart).",
     },
     {
-      titre: "La moitié (1/2), le tiers (1/3) et le quart (1/4)",
+      titre: "La moitié, le tiers et le quart",
       texte:
-        "La moitié = 1 part sur 2 parts égales. Le tiers = 1 part sur 3 parts égales. Le quart = 1 part sur 4 parts égales. Plus il y a de parts, plus chaque part est petite.",
+        "La moitié = 1 part sur 2 (1/2). Le tiers = 1 part sur 3 (1/3). Le quart = 1 part sur 4 (1/4). Plus il y a de parts, plus chaque part est petite.",
       exemple: "1/4 < 1/3 < 1/2. Le quart est plus petit que la moitié.",
     },
     {
       titre: "Lire et écrire une fraction",
       texte:
-        "Une fraction s'écrit avec un numérateur (en haut) et un dénominateur (en bas). Le dénominateur dit en combien de parts on a coupé.",
-      exemple: "1/3 → numérateur = 1, dénominateur = 3. On dit « un tiers ».",
+        "Le chiffre du haut (numérateur) dit combien on prend de parts. Le chiffre du bas (dénominateur) dit en combien de parts on a coupé.",
+      exemple: "1/3 → On a coupé en 3 et on en a pris 1. On dit « un tiers ».",
     },
   ],
 };
@@ -65,14 +66,14 @@ const questions = [
     id: 4,
     question: "Dans la fraction 1/4, que représente le chiffre 4 ?",
     options: [
-      "Le nombre de parts prises",
-      "Le nombre total de parts égales",
-      "La taille de la part",
+      "Nombre de parts prises",
+      "Nombre total de parts égales",
+      "La taille",
       "Le total",
     ],
     reponse: "Le nombre total de parts égales",
     explication:
-      "Le dénominateur (bas de la fraction) indique en combien de parts égales on a partagé.",
+      "Le bas de la fraction indique en combien de parts égales on a partagé.",
     niveau: "moyen",
   },
   {
@@ -81,16 +82,16 @@ const questions = [
     options: ["1/4", "1/2", "1/3", "Elles sont égales"],
     reponse: "1/2",
     explication:
-      "1/2 > 1/3 > 1/4. Moins on coupe en parts, plus chaque part est grande.",
+      "1/2 > 1/3 > 1/4. Moins on coupe de parts, plus elles sont grandes !",
     niveau: "moyen",
   },
   {
     id: 6,
     question:
-      "Un ruban est partagé en 4 morceaux égaux. Nina prend 1 morceau. Quelle fraction du ruban a-t-elle ?",
+      "Un ruban est partagé en 4 morceaux égaux. Nina prend 1 morceau. Quelle fraction a-t-elle ?",
     options: ["1/3", "1/4", "1/2", "4/1"],
     reponse: "1/4",
-    explication: "4 parts égales → chaque part = 1/4. Nina prend 1 part = 1/4.",
+    explication: "4 parts égales → chaque part = 1/4.",
     niveau: "moyen",
   },
   {
@@ -105,7 +106,7 @@ const questions = [
   {
     id: 8,
     question:
-      "Sur un dessin, un carré est divisé en 4 parts égales. 1 part est coloriée. Quelle fraction est coloriée ?",
+      "Un carré est divisé en 4 parts égales. 1 part est coloriée. Quelle fraction est coloriée ?",
     options: ["1/2", "1/3", "1/4", "3/4"],
     reponse: "1/4",
     explication: "4 parts au total, 1 coloriée → 1/4 est colorié.",
@@ -116,28 +117,30 @@ const questions = [
     question:
       "Léa dit : « J'ai mangé la moitié de mon sandwich ». Qu'est-ce que cela signifie ?",
     options: [
-      "Elle a tout mangé",
-      "Elle a mangé 1 part sur 2 parts égales",
-      "Elle a mangé 2 parts sur 3",
-      "Elle n'a rien mangé",
+      "Tout mangé",
+      "1 part sur 2 égales",
+      "2 parts sur 3",
+      "Rien mangé",
     ],
-    reponse: "Elle a mangé 1 part sur 2 parts égales",
+    reponse: "1 part sur 2 égales",
     explication: "La moitié = 1/2 = 1 part sur 2 parts égales.",
     niveau: "difficile",
   },
   {
     id: 10,
     question:
-      "Un chocolat est coupé en 3 parts égales. Zoé mange 1/3 et Luc mange 1/3. Quelle fraction reste-t-il ?",
+      "Un chocolat est coupé en 3 parts égales. Zoé mange 1/3 et Luc mange 1/3. Que reste-t-il ?",
     options: ["1/3", "2/3", "1/2", "0"],
     reponse: "1/3",
-    explication: "1/3 + 1/3 = 2/3 mangés. Il reste 3/3 − 2/3 = 1/3.",
+    explication:
+      "Il y avait 3 tiers. Ils en ont mangé 2, il en reste donc 1 (1/3).",
     niveau: "difficile",
   },
 ];
 
-const niveauLabel = (n: string) =>
-  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+const CLASSE = "ce1";
+const MATIERE = "maths";
+const THEME = "fractions-unitaires";
 
 export default function FractionsCE1() {
   const router = useRouter();
@@ -146,14 +149,27 @@ export default function FractionsCE1() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
-  const [session, setSession] = useState(0);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
-    [qIndex, session],
+    [qIndex],
   );
 
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -163,29 +179,49 @@ export default function FractionsCE1() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score: score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
-    setSession((s) => s + 1);
   };
+
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/ce1/maths")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
@@ -219,9 +255,53 @@ export default function FractionsCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🍕 Fractions · CE1</div>
+          <div className="lecon-badge">🍕 Maths · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur <br />{" "}
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier <br />{" "}
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -310,7 +390,7 @@ export default function FractionsCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les fractions unitaires !"
+              ? "Tu maîtrises parfaitement les fractions !"
               : score >= 7
                 ? "Tu as bien compris l'essentiel."
                 : score >= 5
@@ -323,7 +403,9 @@ export default function FractionsCE1() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/ce1/maths")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>

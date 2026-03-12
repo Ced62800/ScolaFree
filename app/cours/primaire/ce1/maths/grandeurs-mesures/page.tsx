@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -73,7 +74,7 @@ const questions = [
     question: "Lequel de ces objets mesure environ 30 cm ?",
     options: ["Une règle", "Une maison", "Une fourmi", "Une voiture"],
     reponse: "Une règle",
-    explication: "Une règle classique mesure 30 cm.",
+    explication: "Une règle d'école classique mesure 30 cm.",
     niveau: "moyen",
   },
   {
@@ -82,7 +83,7 @@ const questions = [
       "L'école commence à 8h30 et finit à 11h30. Combien de temps dure la matinée ?",
     options: ["2h", "2h30", "3h", "3h30"],
     reponse: "3h",
-    explication: "De 8h30 à 11h30, il s'écoule 3 heures.",
+    explication: "De 8h30 à 11h30, il s'écoule exactement 3 heures.",
     niveau: "moyen",
   },
   {
@@ -90,7 +91,7 @@ const questions = [
     question: "150 cm, c'est la même chose que…",
     options: ["15 m", "1 m 50 cm", "1 m 5 cm", "15 dm"],
     reponse: "1 m 50 cm",
-    explication: "100 cm = 1 m, donc 150 cm = 1 m + 50 cm = 1 m 50 cm.",
+    explication: "100 cm = 1 m, il reste 50 cm. Donc 1 m 50 cm.",
     niveau: "moyen",
   },
   {
@@ -98,7 +99,7 @@ const questions = [
     question: "Lequel est le plus lourd ?",
     options: ["500 g", "1 kg", "800 g", "0,5 kg"],
     reponse: "1 kg",
-    explication: "1 kg = 1 000 g. C'est plus lourd que 500 g et 800 g.",
+    explication: "1 kg = 1 000 g. C'est plus lourd que 500 g ou 800 g.",
     niveau: "difficile",
   },
   {
@@ -106,28 +107,23 @@ const questions = [
     question: "Un film dure 1 h 45 min. En minutes, cela fait…",
     options: ["100 min", "105 min", "145 min", "115 min"],
     reponse: "105 min",
-    explication: "1 h = 60 min. 60 + 45 = 105 minutes.",
+    explication: "1 h = 60 min. On ajoute 45 min : 60 + 45 = 105 minutes.",
     niveau: "difficile",
   },
   {
     id: 10,
     question:
       "Lucas mesure 1 m 32 cm et son frère mesure 128 cm. Qui est le plus grand ?",
-    options: [
-      "Lucas",
-      "Son frère",
-      "Ils ont la même taille",
-      "On ne peut pas savoir",
-    ],
+    options: ["Lucas", "Son frère", "Même taille", "Inconnu"],
     reponse: "Lucas",
-    explication:
-      "Lucas mesure 1 m 32 cm = 132 cm. 132 cm > 128 cm, donc Lucas est plus grand.",
+    explication: "Lucas fait 132 cm. 132 > 128, donc Lucas est le plus grand.",
     niveau: "difficile",
   },
 ];
 
-const niveauLabel = (n: string) =>
-  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+const CLASSE = "ce1";
+const MATIERE = "maths";
+const THEME = "grandeurs-mesures";
 
 export default function GrandeursMesuresCE1() {
   const router = useRouter();
@@ -136,14 +132,27 @@ export default function GrandeursMesuresCE1() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
-  const [session, setSession] = useState(0);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
-    [qIndex, session],
+    [qIndex],
   );
 
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -153,29 +162,49 @@ export default function GrandeursMesuresCE1() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score: score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
-    setSession((s) => s + 1);
   };
+
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/ce1/maths")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
@@ -184,7 +213,7 @@ export default function GrandeursMesuresCE1() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Grandeurs et mesures</span>
+          <span className="breadcrumb-active">Mesures</span>
         </div>
       </div>
 
@@ -209,9 +238,53 @@ export default function GrandeursMesuresCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">📏 Grandeurs et mesures · CE1</div>
+          <div className="lecon-badge">📏 Maths · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Record <br />{" "}
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier <br />{" "}
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -265,7 +338,7 @@ export default function GrandeursMesuresCE1() {
                 <strong>
                   {selected === questions[qIndex].reponse
                     ? "Bravo !"
-                    : "Pas tout à fait..."}
+                    : "Oups..."}
                 </strong>
                 <p>{questions[qIndex].explication}</p>
               </div>
@@ -288,11 +361,11 @@ export default function GrandeursMesuresCE1() {
           </div>
           <h2 className="resultat-titre">
             {score >= 9
-              ? "Excellent !"
+              ? "Expert en mesures !"
               : score >= 7
                 ? "Bien joué !"
                 : score >= 5
-                  ? "Assez bien !"
+                  ? "Pas mal !"
                   : "À revoir !"}
           </h2>
           <div className="resultat-score">
@@ -300,22 +373,24 @@ export default function GrandeursMesuresCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les grandeurs et mesures !"
+              ? "Tu connais parfaitement les unités de mesure !"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris comment mesurer."
                 : score >= 5
-                  ? "Encore quelques efforts !"
-                  : "Relis la leçon et réessaie !"}
+                  ? "Encore un peu d'entraînement !"
+                  : "Relis bien les points de la leçon."}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
-              🔄 Recommencer
+              🔄 Réessayer
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/ce1/maths")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
-              Retour aux thèmes →
+              Autres thèmes →
             </button>
           </div>
         </div>

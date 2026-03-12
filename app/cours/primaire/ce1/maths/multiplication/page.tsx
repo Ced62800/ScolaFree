@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -10,7 +11,7 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "La multiplication — découverte",
   intro:
-    "La multiplication, c'est une addition répétée ! Quand on ajoute plusieurs fois le même nombre, on peut utiliser la multiplication pour aller plus vite.",
+    "La multiplication, c'est une addition répétée ! Quand on ajoute plusieurs fois le même nombre, on utilise la multiplication pour aller plus vite.",
   points: [
     {
       titre: "Multiplier, c'est additionner rapidement",
@@ -21,13 +22,13 @@ const lecon = {
     {
       titre: "Les tables de multiplication (2, 3, 5, 10)",
       texte:
-        "En CE1, on commence à apprendre les tables de 2, 3, 5 et 10. La table de 10 est simple : on ajoute juste un zéro.",
+        "En CE1, on commence par les tables de 2, 3, 5 et 10. La table de 10 est la plus simple : on ajoute juste un zéro à la fin du nombre !",
       exemple: "5 × 3 = 15 | 10 × 4 = 40 | 2 × 7 = 14 | 3 × 6 = 18.",
     },
     {
-      titre: "La commutativité",
+      titre: "L'ordre ne compte pas (Commutativité)",
       texte:
-        "L'ordre des facteurs ne change pas le produit ! 3 × 5 = 5 × 3. C'est très pratique pour apprendre les tables.",
+        "Peu importe l'ordre des nombres, le résultat est le même ! 3 × 5, c'est la même chose que 5 × 3. Ça aide beaucoup pour apprendre les tables.",
       exemple: "3 × 5 = 15 et 5 × 3 = 15. 4 × 2 = 8 et 2 × 4 = 8.",
     },
   ],
@@ -39,7 +40,7 @@ const questions = [
     question: "2 × 5 = ?",
     options: ["8", "10", "12", "7"],
     reponse: "10",
-    explication: "2 × 5 = 5 + 5 = 10.",
+    explication: "2 × 5, c'est 5 + 5 = 10. C'est le double de 5 !",
     niveau: "facile",
   },
   {
@@ -55,7 +56,7 @@ const questions = [
     question: "10 × 6 = ?",
     options: ["16", "60", "600", "61"],
     reponse: "60",
-    explication: "Pour multiplier par 10, on ajoute un zéro : 6 × 10 = 60.",
+    explication: "On écrit 6 et on ajoute le zéro du 10 : ça fait 60.",
     niveau: "facile",
   },
   {
@@ -63,7 +64,7 @@ const questions = [
     question: "5 × 4 = ?",
     options: ["9", "20", "25", "15"],
     reponse: "20",
-    explication: "5 × 4 = 5 + 5 + 5 + 5 = 20.",
+    explication: "5 + 5 + 5 + 5 = 20. Dans la table de 5, on compte 5 par 5.",
     niveau: "moyen",
   },
   {
@@ -72,15 +73,15 @@ const questions = [
       "Il y a 3 boîtes avec 6 crayons chacune. Combien de crayons au total ?",
     options: ["9", "12", "18", "24"],
     reponse: "18",
-    explication: "3 boîtes × 6 crayons = 18 crayons.",
+    explication: "3 boîtes × 6 crayons = 6 + 6 + 6 = 18.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Quelle addition correspond à 4 × 3 ?",
+    question: "Quelle addition est la même chose que 4 × 3 ?",
     options: ["4 + 3", "3 + 3 + 3 + 3", "4 + 4 + 4", "3 × 4 + 1"],
     reponse: "3 + 3 + 3 + 3",
-    explication: "4 × 3 signifie « 4 fois 3 » soit 3 + 3 + 3 + 3 = 12.",
+    explication: "4 × 3 signifie qu'on a 4 fois le nombre 3.",
     niveau: "moyen",
   },
   {
@@ -88,7 +89,7 @@ const questions = [
     question: "2 × 8 = ?",
     options: ["10", "14", "16", "18"],
     reponse: "16",
-    explication: "2 × 8 = 8 + 8 = 16.",
+    explication: "C'est le double de 8 : 8 + 8 = 16.",
     niveau: "moyen",
   },
   {
@@ -104,22 +105,22 @@ const questions = [
     question: "5 × 9 = ?",
     options: ["40", "45", "50", "35"],
     reponse: "45",
-    explication: "5 × 9 = 45. La table de 5 se termine toujours par 0 ou 5.",
+    explication: "5 × 9 = 45. Astuce : c'est la moitié de 10 × 9 (90).",
     niveau: "difficile",
   },
   {
     id: 10,
-    question:
-      "Léa dispose 8 rangées de 5 chaises. Combien y a-t-il de chaises ?",
+    question: "Léa range 8 rangées de 5 chaises. Combien y a-t-il de chaises ?",
     options: ["13", "35", "40", "45"],
     reponse: "40",
-    explication: "8 rangées × 5 chaises = 8 × 5 = 40 chaises.",
+    explication: "8 rangées × 5 chaises = 40. On peut aussi faire 5 × 8.",
     niveau: "difficile",
   },
 ];
 
-const niveauLabel = (n: string) =>
-  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+const CLASSE = "ce1";
+const MATIERE = "maths";
+const THEME = "multiplication-decouverte";
 
 export default function MultiplicationCE1() {
   const router = useRouter();
@@ -128,14 +129,27 @@ export default function MultiplicationCE1() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
-  const [session, setSession] = useState(0);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
-    [qIndex, session],
+    [qIndex],
   );
 
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -145,29 +159,49 @@ export default function MultiplicationCE1() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score: score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
-    setSession((s) => s + 1);
   };
+
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/ce1/maths")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
@@ -187,7 +221,7 @@ export default function MultiplicationCE1() {
               Question {qIndex + 1} / {questions.length}
             </span>
             <span>
-              {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}
+              {score} bonne{score > 1 ? "s" : ""}
             </span>
           </div>
           <div className="progression-bar">
@@ -201,9 +235,52 @@ export default function MultiplicationCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✖️ Multiplication · CE1</div>
+          <div className="lecon-badge">✖️ Maths · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          [Image of a multiplication table grid for kids]
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur <br />{" "}
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier <br />{" "}
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -256,8 +333,8 @@ export default function MultiplicationCE1() {
               <div className="feedback-texte">
                 <strong>
                   {selected === questions[qIndex].reponse
-                    ? "Bravo !"
-                    : "Pas tout à fait..."}
+                    ? "Gagné !"
+                    : "Presque..."}
                 </strong>
                 <p>{questions[qIndex].explication}</p>
               </div>
@@ -265,9 +342,7 @@ export default function MultiplicationCE1() {
           )}
           {selected && (
             <button className="lecon-btn" onClick={handleSuivant}>
-              {qIndex + 1 >= questions.length
-                ? "Voir mon résultat →"
-                : "Question suivante →"}
+              {qIndex + 1 >= questions.length ? "Résultats →" : "Suivant →"}
             </button>
           )}
         </div>
@@ -280,24 +355,24 @@ export default function MultiplicationCE1() {
           </div>
           <h2 className="resultat-titre">
             {score >= 9
-              ? "Excellent !"
+              ? "Bravo Champion !"
               : score >= 7
-                ? "Bien joué !"
+                ? "Beau travail !"
                 : score >= 5
-                  ? "Assez bien !"
-                  : "À revoir !"}
+                  ? "C'est bien !"
+                  : "Continue d'apprendre !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les tables de multiplication !"
+              ? "Tu connais tes tables sur le bout des doigts !"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris le principe."
                 : score >= 5
-                  ? "Encore quelques efforts !"
-                  : "Relis la leçon et réessaie !"}
+                  ? "Révise encore un peu tes tables."
+                  : "Relis la leçon et recommence !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -305,9 +380,11 @@ export default function MultiplicationCE1() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/ce1/maths")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
-              Retour aux thèmes →
+              Menu Maths →
             </button>
           </div>
         </div>
