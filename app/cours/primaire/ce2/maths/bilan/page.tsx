@@ -201,7 +201,7 @@ export default function BilanMathsCE2() {
     [qIndex, shuffled],
   );
 
-  // Correction de l'erreur de dépendance pour les scores
+  // Correction de l'erreur useEffect (image_0f7467.png)
   useEffect(() => {
     async function load() {
       const b = await getBestScore("ce2", "maths", "bilan");
@@ -237,25 +237,29 @@ export default function BilanMathsCE2() {
     }
   };
 
+  // BANNIÈRE HAUTE IDENTIQUE AUX CAPTURES (image_0f0840.png)
+  const HeaderNav = () => (
+    <div className="cours-header">
+      <button
+        className="cours-back"
+        onClick={() => router.push("/cours/primaire/ce2/maths")}
+      >
+        ← Retour
+      </button>
+      <div className="cours-breadcrumb">
+        <span>CE2</span>
+        <span className="breadcrumb-sep">›</span>
+        <span>Maths</span>
+        <span className="breadcrumb-sep">›</span>
+        <span className="breadcrumb-active">Bilan Final</span>
+      </div>
+    </div>
+  );
+
   if (etape === "intro")
     return (
       <div className="cours-page">
-        <div className="cours-header">
-          <button
-            className="cours-back"
-            onClick={() => router.push("/cours/primaire/ce2/maths")}
-          >
-            ← Retour
-          </button>
-          <div className="cours-breadcrumb">
-            <span>CE2</span>
-            <span className="breadcrumb-sep">›</span>
-            <span>Maths</span>
-            <span className="breadcrumb-sep">›</span>
-            <span className="breadcrumb-active">Bilan Final</span>
-          </div>
-        </div>
-
+        <HeaderNav />
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CE2 Maths</div>
           <h1 className="lecon-titre">Bilan Final — CE2 Mathématiques</h1>
@@ -380,6 +384,7 @@ export default function BilanMathsCE2() {
   if (etape === "fini")
     return (
       <div className="cours-page">
+        <HeaderNav />
         <div className="resultat-wrapper">
           <div className="resultat-icon">{total >= 15 ? "🏆" : "⭐"}</div>
           <h2 className="resultat-titre">
@@ -408,6 +413,7 @@ export default function BilanMathsCE2() {
 
   return (
     <div className="cours-page">
+      <HeaderNav />
       <div className="progression-wrapper">
         <div className="progression-info">
           <span>Question {qIndex + 1} / 20</span>
@@ -437,26 +443,22 @@ export default function BilanMathsCE2() {
           ))}
         </div>
 
-        {/* FEEDBACK ET BOUTON SUIVANT : STRUCTURE CORRIGÉE */}
         {selected && (
           <div style={{ marginTop: "20px" }}>
+            {/* STRUCTURE DE FEEDBACK (image_0f0444.png) */}
             <div
               className={`qcm-feedback ${selected === current.reponse ? "feedback-correct" : "feedback-incorrect"}`}
               style={{ marginBottom: "20px" }}
             >
               <div
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "12px",
-                }}
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
               >
                 <div
                   style={{
                     background:
                       selected === current.reponse ? "#2ec4b6" : "#ff6b6b",
-                    padding: "4px",
-                    borderRadius: "6px",
+                    padding: "6px",
+                    borderRadius: "8px",
                     color: "#fff",
                     display: "flex",
                   }}
@@ -465,13 +467,16 @@ export default function BilanMathsCE2() {
                 </div>
                 <div className="feedback-texte">
                   <strong>
-                    {selected === current.reponse ? "Bravo !" : "Oups..."}
+                    {selected === current.reponse
+                      ? "Bravo !"
+                      : "Pas tout à fait..."}
                   </strong>
                   <p>{current.explication}</p>
                 </div>
               </div>
             </div>
 
+            {/* BOUTON SUIVANT EN BAS (image_0f0444.png) */}
             <button className="lecon-btn" onClick={handleSuivant}>
               {qIndex + 1 >= 20 ? "Terminer le bilan →" : "Question suivante →"}
             </button>
