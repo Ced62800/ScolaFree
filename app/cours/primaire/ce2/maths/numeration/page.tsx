@@ -1,8 +1,8 @@
 "use client";
 
-import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
+import { saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -11,25 +11,24 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "Les nombres jusqu'à 10 000",
   intro:
-    "En CE2, on apprend à lire, écrire et comprendre les nombres jusqu'à 10 000. Un nombre peut avoir des milliers, des centaines, des dizaines et des unités.",
+    "En CE2, on apprend à lire, écrire et comprendre les nombres jusqu'à 10 000.",
   points: [
     {
       titre: "Les milliers",
       texte:
-        "Un nombre à 4 chiffres se décompose en milliers, centaines, dizaines et unités. 1 millier = 10 centaines = 100 dizaines = 1 000 unités.",
+        "Un nombre à 4 chiffres se décompose en milliers, centaines, dizaines et unités.",
       exemple: "3 542 = 3 milliers + 5 centaines + 4 dizaines + 2 unités.",
     },
     {
       titre: "Lire et écrire les grands nombres",
       texte:
-        "On lit d'abord les milliers, puis les centaines, puis les dizaines, puis les unités. On peut écrire un espace entre les milliers et les centaines.",
-      exemple:
-        "7 308 → « sept mille trois cent huit ». 5 000 → « cinq mille ».",
+        "On lit d'abord les milliers, puis les centaines... On peut écrire un espace entre les milliers et les centaines.",
+      exemple: "7 308 → « sept mille trois cent huit ».",
     },
     {
       titre: "Comparer et ranger",
       texte:
-        "Pour comparer, on regarde d'abord les milliers, puis les centaines, etc. Un nombre avec plus de milliers est toujours plus grand.",
+        "Pour comparer, on regarde d'abord les milliers, puis les centaines, etc.",
       exemple: "4 521 > 3 999 car 4 milliers > 3 milliers.",
     },
   ],
@@ -49,8 +48,7 @@ const questions = [
     question: "Comment s'écrit « quatre mille deux cent trente-six » ?",
     options: ["4 326", "4 236", "4 263", "4 362"],
     reponse: "4 236",
-    explication:
-      "Quatre mille → 4 000, deux cent → 200, trente-six → 36. Total : 4 236.",
+    explication: "Quatre mille (4 000) + deux cent (200) + trente-six (36).",
     niveau: "facile",
   },
   {
@@ -66,8 +64,7 @@ const questions = [
     question: "Quel est le chiffre des milliers dans 7 485 ?",
     options: ["4", "5", "7", "8"],
     reponse: "7",
-    explication:
-      "Le chiffre des milliers est le quatrième en partant de la droite.",
+    explication: "C'est le 4ème chiffre en partant de la droite.",
     niveau: "moyen",
   },
   {
@@ -75,7 +72,7 @@ const questions = [
     question: "Lequel de ces nombres est le plus grand ?",
     options: ["3 999", "4 001", "3 998", "4 000"],
     reponse: "4 001",
-    explication: "4 001 possède 4 milliers alors que les autres en ont 3.",
+    explication: "4 001 possède 4 milliers, les autres seulement 3.",
     niveau: "moyen",
   },
   {
@@ -96,7 +93,7 @@ const questions = [
       "2 153 - 2 135 - 2 531 - 2 315",
     ],
     reponse: "2 135 - 2 153 - 2 315 - 2 531",
-    explication: "On compare les centaines (1, 1, 3, 5) puis les dizaines.",
+    explication: "On compare les centaines (1, 1, 3, 5).",
     niveau: "moyen",
   },
   {
@@ -112,7 +109,7 @@ const questions = [
     question: "Combien y a-t-il de centaines dans 10 000 ?",
     options: ["10", "100", "1 000", "10 000"],
     reponse: "100",
-    explication: "10 milliers = 10 × 10 centaines = 100 centaines.",
+    explication: "10 milliers = 100 centaines.",
     niveau: "difficile",
   },
   {
@@ -120,7 +117,7 @@ const questions = [
     question: "Combien d'entiers entre 9 990 et 10 000 (exclus) ?",
     options: ["8", "9", "10", "11"],
     reponse: "9",
-    explication: "Ce sont les nombres de 9 991 à 9 999.",
+    explication: "De 9 991 à 9 999.",
     niveau: "difficile",
   },
 ];
@@ -129,6 +126,9 @@ const CLASSE = "ce2";
 const MATIERE = "maths";
 const THEME = "numeration";
 
+const niveauLabel = (n: string) =>
+  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+
 export default function NumerationCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
@@ -136,14 +136,6 @@ export default function NumerationCE2() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
-  const [bestScore, setBestScore] = useState<{
-    score: number;
-    total: number;
-  } | null>(null);
-  const [lastScore, setLastScore] = useState<{
-    score: number;
-    total: number;
-  } | null>(null);
   const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
@@ -151,11 +143,6 @@ export default function NumerationCE2() {
     [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
-
-  useEffect(() => {
-    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
-    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
-  }, [etape]);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -203,10 +190,9 @@ export default function NumerationCE2() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>{CLASSE.toUpperCase()}</span>
+          <span>{CLASSE.toUpperCase()}</span>{" "}
           <span className="breadcrumb-sep">›</span>
-          <span>Maths</span>
-          <span className="breadcrumb-sep">›</span>
+          <span>Maths</span> <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Numération</span>
         </div>
       </div>
@@ -234,46 +220,6 @@ export default function NumerationCE2() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🔢 Numération · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
-
-          <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-            {bestScore && (
-              <div
-                style={{
-                  flex: 1,
-                  background: "rgba(79,142,247,0.1)",
-                  border: "1px solid rgba(79,142,247,0.3)",
-                  borderRadius: "12px",
-                  padding: "10px",
-                  textAlign: "center",
-                  color: "#4f8ef7",
-                }}
-              >
-                🏆 Meilleur :{" "}
-                <strong>
-                  {bestScore.score}/{bestScore.total}
-                </strong>
-              </div>
-            )}
-            {lastScore && (
-              <div
-                style={{
-                  flex: 1,
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "12px",
-                  padding: "10px",
-                  textAlign: "center",
-                  color: "#aaa",
-                }}
-              >
-                ⏱️ Dernier :{" "}
-                <strong>
-                  {lastScore.score}/{lastScore.total}
-                </strong>
-              </div>
-            )}
-          </div>
-
           <p className="lecon-intro">{lecon.intro}</p>
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
@@ -287,7 +233,7 @@ export default function NumerationCE2() {
             ))}
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
-            Démarrer les exercices →
+            Je suis prêt(e) — Passer aux exercices →
           </button>
         </div>
       )}
@@ -295,11 +241,7 @@ export default function NumerationCE2() {
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
-            {questions[qIndex].niveau === "facile"
-              ? "🟢 Facile"
-              : questions[qIndex].niveau === "moyen"
-                ? "🟡 Moyen"
-                : "🔴 Difficile"}
+            {niveauLabel(questions[qIndex].niveau)}
           </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
@@ -314,25 +256,28 @@ export default function NumerationCE2() {
             ))}
           </div>
           {selected && (
-            <div
-              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
-            >
-              <p>
-                <strong>
-                  {selected === questions[qIndex].reponse
-                    ? "Bravo !"
-                    : "Oups..."}
-                </strong>
-              </p>
-              <p>{questions[qIndex].explication}</p>
-              <button
-                className="lecon-btn"
-                style={{ marginTop: "15px" }}
-                onClick={handleSuivant}
+            <>
+              <div
+                className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
               >
-                Continuer
+                <div className="feedback-icon">
+                  {selected === questions[qIndex].reponse ? "✅" : "❌"}
+                </div>
+                <div className="feedback-texte">
+                  <strong>
+                    {selected === questions[qIndex].reponse
+                      ? "Bravo !"
+                      : "Pas tout à fait..."}
+                  </strong>
+                  <p>{questions[qIndex].explication}</p>
+                </div>
+              </div>
+              <button className="lecon-btn" onClick={handleSuivant}>
+                {qIndex + 1 >= questions.length
+                  ? "Voir mon résultat →"
+                  : "Question suivante →"}
               </button>
-            </div>
+            </>
           )}
         </div>
       )}
@@ -356,7 +301,7 @@ export default function NumerationCE2() {
                 router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
               }
             >
-              Autres thèmes
+              Retour aux thèmes →
             </button>
           </div>
         </div>
