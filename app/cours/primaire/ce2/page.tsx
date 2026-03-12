@@ -2,106 +2,94 @@
 
 import { useRouter } from "next/navigation";
 
-const themes = [
+const matieres = [
   {
-    id: "grammaire",
-    label: "Grammaire",
-    emoji: "📝",
-    color: "#4f8ef7",
-    desc: "Le sujet et le verbe",
-    nb: 10,
-  },
-  {
-    id: "conjugaison",
-    label: "Conjugaison",
-    emoji: "⏰",
-    color: "#2ec4b6",
-    desc: "Le présent, l'imparfait et le futur",
-    nb: 10,
-  },
-  {
-    id: "orthographe",
-    label: "Orthographe",
-    emoji: "✏️",
-    color: "#ffd166",
-    desc: "Les homophones a/à, est/et, on/ont",
-    nb: 10,
-  },
-  {
-    id: "vocabulaire",
-    label: "Vocabulaire",
-    emoji: "📚",
+    id: "francais",
+    label: "Français",
+    emoji: "📖",
     color: "#ff6b6b",
-    desc: "Les synonymes et antonymes",
-    nb: 10,
+    desc: "Grammaire, Conjugaison, Orthographe, Vocabulaire",
+  },
+  {
+    id: "maths",
+    label: "Mathématiques",
+    emoji: "➕",
+    color: "#2ec4b6",
+    desc: "Numération, Calcul, Fractions, Géométrie",
+  },
+  {
+    id: "anglais",
+    label: "Anglais",
+    emoji: "🇬🇧",
+    color: "#4f8ef7",
+    desc: "Vocabulary, Numbers, Daily Routine",
   },
 ];
 
-export default function FrancaisCE2() {
+export default function CE2Page() {
   const router = useRouter();
+
   return (
     <div className="cours-page">
+      {/* Header avec bouton retour et fil d'ariane */}
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/ce2")}
+          onClick={() => router.push("/cours/primaire")}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
           <span>Primaire</span>
           <span className="breadcrumb-sep">›</span>
-          <span>CE2</span>
-          <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Français</span>
+          <span className="breadcrumb-active">CE2</span>
         </div>
       </div>
+
+      {/* Section Hero */}
       <div className="cours-hero">
-        <div className="cours-hero-icon">📖</div>
-        <h1 className="cours-hero-title">Français — CE2</h1>
-        <p className="cours-hero-desc">Cours Élémentaire 2 · 8 ans</p>
+        <div className="cours-hero-icon">🎒</div>
+        <h1 className="cours-hero-title">CE2 — Choisis ta matière</h1>
+        <p className="cours-hero-desc">
+          Apprends et amuse-toi avec Cédric Flow !
+        </p>
       </div>
+
+      {/* Grille des matières */}
       <div className="themes-grid">
-        {themes.map((t) => (
+        {matieres.map((m) => (
           <div
-            key={t.id}
+            key={m.id}
             className="theme-card"
-            onClick={() => router.push(`/cours/primaire/ce2/francais/${t.id}`)}
-            style={{ "--card-color": t.color } as React.CSSProperties}
+            onClick={() => router.push(`/cours/primaire/ce2/${m.id}`)}
+            style={
+              {
+                "--card-color": m.color,
+                cursor: "pointer",
+              } as React.CSSProperties
+            }
           >
-            <div className="theme-emoji">{t.emoji}</div>
-            <div className="theme-label">{t.label}</div>
-            <div className="theme-desc">{t.desc}</div>
-            <div className="theme-nb">{t.nb} exercices</div>
-            <div className="theme-progress">
-              <div className="theme-progress-bar" style={{ width: "0%" }}></div>
-            </div>
+            <div className="theme-emoji">{m.emoji}</div>
+            <div className="theme-label">{m.label}</div>
+            <div className="theme-desc">{m.desc}</div>
             <div className="theme-arrow">Commencer →</div>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: "40px", textAlign: "center" }}>
-        <button
-          onClick={() => router.push("/cours/primaire/ce2/francais/bilan")}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "10px",
-            background: "linear-gradient(135deg, #ffd166, #ff6b6b)",
-            color: "#1a1a2e",
-            fontWeight: 800,
-            fontSize: "1.1rem",
-            padding: "16px 32px",
-            borderRadius: "16px",
-            border: "none",
-            cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(255,209,102,0.3)",
-          }}
-        >
-          🎯 Bilan Final CE2 — 20 questions
-        </button>
-        <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
-          Teste toutes tes connaissances du CE2 en une seule fois !
+
+      {/* Encart d'encouragement */}
+      <div
+        style={{
+          marginTop: "50px",
+          textAlign: "center",
+          padding: "20px",
+          background: "rgba(255,255,255,0.05)",
+          borderRadius: "20px",
+        }}
+      >
+        <p style={{ color: "#aaa", fontStyle: "italic" }}>
+          "Chaque jour est une nouvelle chance d'apprendre quelque chose de
+          nouveau."
         </p>
       </div>
     </div>
