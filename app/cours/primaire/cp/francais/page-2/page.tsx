@@ -4,47 +4,47 @@ import { useRouter } from "next/navigation";
 
 const themes = [
   {
-    id: "grammaire",
-    label: "Grammaire",
-    emoji: "📝",
-    color: "#4f8ef7",
-    desc: "La phrase, le nom, le verbe",
+    id: "grammaire-2",
+    label: "Grammaire 2",
+    emoji: "💬",
+    color: "#4cc9f0",
+    desc: "Le nom et l'article",
     nb: 10,
   },
   {
-    id: "conjugaison",
-    label: "Conjugaison",
-    emoji: "⏰",
-    color: "#2ec4b6",
-    desc: "Le présent des verbes être et avoir",
+    id: "conjugaison-2",
+    label: "Conjugaison 2",
+    emoji: "⏳",
+    color: "#4ade80",
+    desc: "Hier, Aujourd'hui, Demain",
     nb: 10,
   },
   {
-    id: "orthographe",
-    label: "Orthographe",
-    emoji: "✏️",
+    id: "orthographe-2",
+    label: "Orthographe 2",
+    emoji: "👂",
     color: "#ffd166",
-    desc: "Les sons et les lettres",
+    desc: "Les sons complexes : ou, oi, an, in, on",
     nb: 10,
   },
   {
-    id: "vocabulaire",
-    label: "Vocabulaire",
-    emoji: "📚",
+    id: "vocabulaire-2",
+    label: "Vocabulaire 2",
+    emoji: "🌳",
     color: "#ff6b6b",
-    desc: "Les mots de la vie quotidienne",
+    desc: "Ranger les mots par familles",
     nb: 10,
   },
 ];
 
-export default function FrancaisCP() {
+export default function FrancaisCP2() {
   const router = useRouter();
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cp")}
+          onClick={() => router.push("/cours/primaire/cp/francais")}
         >
           ← Retour
         </button>
@@ -53,7 +53,7 @@ export default function FrancaisCP() {
           <span className="breadcrumb-sep">›</span>
           <span>CP</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Français</span>
+          <span className="breadcrumb-active">Français — Page 2</span>
         </div>
       </div>
 
@@ -83,7 +83,6 @@ export default function FrancaisCP() {
         ))}
       </div>
 
-      {/* ZONE DES BOUTONS DE NAVIGATION BAS DE PAGE */}
       <div
         style={{
           marginTop: "40px",
@@ -94,10 +93,9 @@ export default function FrancaisCP() {
           gap: "20px",
         }}
       >
-        {/* BOUTON BILAN (Existant) */}
         <div>
           <button
-            onClick={() => router.push("/cours/primaire/cp/francais/bilan")}
+            onClick={() => router.push("/cours/primaire/cp/francais/bilan-2")}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -113,40 +111,12 @@ export default function FrancaisCP() {
               boxShadow: "0 4px 20px rgba(255,209,102,0.3)",
             }}
           >
-            🎯 Bilan Final CP — 20 questions
+            🎯 Bilan Final CP 2 — 20 questions
           </button>
           <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
-            Teste toutes tes connaissances du CP en une seule fois !
+            Teste toutes tes connaissances de la partie 2 !
           </p>
         </div>
-
-        {/* NOUVEAU BOUTON : COURS SUIVANT (PAGE 2) */}
-        <button
-          onClick={() => router.push("/cours/primaire/cp/francais/page-2")}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "10px",
-            background: "rgba(255, 255, 255, 0.05)",
-            color: "#fff",
-            fontWeight: 600,
-            fontSize: "1rem",
-            padding: "12px 24px",
-            borderRadius: "12px",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-          }}
-          onMouseOver={(e) =>
-            (e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)")
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)")
-          }
-        >
-          📚 Cours suivants — Partie 2{" "}
-          <span style={{ fontSize: "1.2rem" }}>→</span>
-        </button>
       </div>
     </div>
   );
