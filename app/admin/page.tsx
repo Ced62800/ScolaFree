@@ -10,8 +10,30 @@ type Profile = {
   nom: string;
   email: string;
   niveau: string;
+  classe: string;
   role: string;
   created_at: string;
+};
+
+const CLASSES_PAR_NIVEAU: Record<string, string[]> = {
+  primaire: ["cp", "ce1", "ce2", "cm1", "cm2"],
+  college: ["6eme", "5eme", "4eme", "3eme"],
+  lycee: ["seconde", "premiere", "terminale"],
+};
+
+const CLASSE_LABELS: Record<string, string> = {
+  cp: "CP",
+  ce1: "CE1",
+  ce2: "CE2",
+  cm1: "CM1",
+  cm2: "CM2",
+  "6eme": "6ème",
+  "5eme": "5ème",
+  "4eme": "4ème",
+  "3eme": "3ème",
+  seconde: "Seconde",
+  premiere: "Première",
+  terminale: "Terminale",
 };
 
 export default function Admin() {
@@ -65,10 +87,22 @@ export default function Admin() {
   const handleNiveauChange = async (userId: string, newNiveau: string) => {
     await supabase
       .from("profiles")
-      .update({ niveau: newNiveau })
+      .update({ niveau: newNiveau, classe: "" })
       .eq("id", userId);
     setProfiles(
-      profiles.map((p) => (p.id === userId ? { ...p, niveau: newNiveau } : p)),
+      profiles.map((p) =>
+        p.id === userId ? { ...p, niveau: newNiveau, classe: "" } : p,
+      ),
+    );
+  };
+
+  const handleClasseChange = async (userId: string, newClasse: string) => {
+    await supabase
+      .from("profiles")
+      .update({ classe: newClasse })
+      .eq("id", userId);
+    setProfiles(
+      profiles.map((p) => (p.id === userId ? { ...p, classe: newClasse } : p)),
     );
   };
 
@@ -100,12 +134,10 @@ export default function Admin() {
 
   return (
     <div className="admin-page">
-      {/* Overlay mobile */}
       {sidebarOpen && (
         <div className="admin-overlay" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* Bouton hamburger mobile */}
       <button
         className="admin-hamburger"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -224,6 +256,21 @@ export default function Admin() {
                   </select>
                 </div>
                 <div className="admin-user-card-row">
+                  <label>Classe</label>
+                  <select
+                    className="role-select"
+                    value={p.classe || ""}
+                    onChange={(e) => handleClasseChange(p.id, e.target.value)}
+                  >
+                    <option value="">-- Classe --</option>
+                    {(CLASSES_PAR_NIVEAU[p.niveau] || []).map((c) => (
+                      <option key={c} value={c}>
+                        {CLASSE_LABELS[c]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="admin-user-card-row">
                   <label>Rôle</label>
                   <select
                     className="role-select"
@@ -249,6 +296,7 @@ export default function Admin() {
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Niveau</th>
+                <th>Classe</th>
                 <th>Rôle</th>
                 <th>Inscrit le</th>
                 <th>Actions</th>
@@ -270,6 +318,20 @@ export default function Admin() {
                       <option value="primaire">Primaire</option>
                       <option value="college">Collège</option>
                       <option value="lycee">Lycée</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select
+                      className="role-select"
+                      value={p.classe || ""}
+                      onChange={(e) => handleClasseChange(p.id, e.target.value)}
+                    >
+                      <option value="">-- Classe --</option>
+                      {(CLASSES_PAR_NIVEAU[p.niveau] || []).map((c) => (
+                        <option key={c} value={c}>
+                          {CLASSE_LABELS[c]}
+                        </option>
+                      ))}
                     </select>
                   </td>
                   <td>
