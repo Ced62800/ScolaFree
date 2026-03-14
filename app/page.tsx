@@ -112,9 +112,8 @@ export default function Home() {
   const [prenom, setPrenom] = useState("");
   const [role, setRole] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [bilansByClasse, setBilansByClasse] = useState<
-    Record<string, ClasseBilans>
-  >({});
+  const [classeEleve, setClasseEleve] = useState<string | null>(null);
+  const [bilans, setBilans] = useState<ClasseBilans>({});
   const router = useRouter();
 
   useEffect(() => {
@@ -125,32 +124,36 @@ export default function Home() {
       if (user) {
         const { data: profile } = await supabase
           .from("profiles")
-          .select("prenom, role")
+          .select("prenom, role, classe")
           .eq("id", user.id)
           .single();
         if (profile) {
           setPrenom(profile.prenom);
           setRole(profile.role);
-        }
+          setClasseEleve(profile.classe);
 
-        const { data: bilans } = await supabase
-          .from("scores")
-          .select("classe, matiere, score, total, created_at")
-          .eq("user_id", user.id)
-          .eq("theme", "bilan")
-          .order("created_at", { ascending: false });
+          // On charge uniquement les bilans de la classe du profil
+          if (profile.classe) {
+            const { data: bilanData } = await supabase
+              .from("scores")
+              .select("matiere, score, total, created_at")
+              .eq("user_id", user.id)
+              .eq("classe", profile.classe)
+              .eq("theme", "bilan")
+              .order("created_at", { ascending: false });
 
-        if (bilans && bilans.length > 0) {
-          const result: Record<string, ClasseBilans> = {};
-          for (const b of bilans) {
-            if (!result[b.classe]) result[b.classe] = {};
-            if (!result[b.classe][b.matiere]) {
-              result[b.classe][b.matiere] = { score: b.score, total: b.total };
-            } else if (b.score > result[b.classe][b.matiere]!.score) {
-              result[b.classe][b.matiere] = { score: b.score, total: b.total };
+            if (bilanData && bilanData.length > 0) {
+              const result: ClasseBilans = {};
+              for (const b of bilanData) {
+                if (!result[b.matiere]) {
+                  result[b.matiere] = { score: b.score, total: b.total };
+                } else if (b.score > result[b.matiere]!.score) {
+                  result[b.matiere] = { score: b.score, total: b.total };
+                }
+              }
+              setBilans(result);
             }
           }
-          setBilansByClasse(result);
         }
       }
     };
@@ -162,25 +165,25 @@ export default function Home() {
     setPrenom("");
     setRole("");
     setMenuOpen(false);
-    setBilansByClasse({});
+    setClasseEleve(null);
+    setBilans({});
     router.refresh();
   };
 
-  const getMoyenneClasse = (classe: string): number | null => {
-    const bilans = bilansByClasse[classe];
-    if (!bilans) return null;
-    const config = CLASSES_CONFIG[classe];
+  const getMoyenne = (): number | null => {
+    if (!classeEleve) return null;
+    const config = CLASSES_CONFIG[classeEleve];
+    if (!config) return null;
     const scores = config.matieres
       .map((m) => bilans[m.key])
       .filter((b): b is { score: number; total: number } => !!b);
     if (scores.length === 0) return null;
-
     return scores.reduce((acc, b) => acc + b.score, 0) / scores.length;
   };
 
-  const classesAvecBilans = Object.keys(CLASSES_CONFIG).filter(
-    (c) => bilansByClasse[c] && Object.keys(bilansByClasse[c]).length > 0,
-  );
+  const moyenne = getMoyenne();
+  const config = classeEleve ? CLASSES_CONFIG[classeEleve] : null;
+  const aBilans = config && Object.keys(bilans).length > 0;
 
   return (
     <>
@@ -331,7 +334,7 @@ export default function Home() {
         </div>
       </section>
 
-      {prenom && classesAvecBilans.length > 0 && (
+      {prenom && config && aBilans && (
         <section
           style={{
             maxWidth: "800px",
@@ -351,124 +354,104 @@ export default function Home() {
           </h2>
 
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "16px",
+              padding: "20px",
+            }}
           >
-            {classesAvecBilans.map((classe) => {
-              const config = CLASSES_CONFIG[classe];
-              const bilans = bilansByClasse[classe];
-              const moyenne = getMoyenneClasse(classe);
-
-              return (
-                <div
-                  key={classe}
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "16px",
-                    padding: "20px",
-                  }}
-                >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "16px",
+              }}
+            >
+              <div
+                style={{ fontWeight: 700, fontSize: "1.1rem", color: "#fff" }}
+              >
+                🎓 {config.label}
+              </div>
+              {moyenne !== null && (
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: "0.75rem", color: "#aaa" }}>
+                    Moyenne bilans
+                  </div>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: "16px",
+                      fontSize: "1.3rem",
+                      fontWeight: 800,
+                      color: "#ffd166",
+                    }}
+                  >
+                    {moyenne.toFixed(2).replace(".", ",")} / 20
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              {config.matieres.map((matiere) => {
+                const bilan = bilans[matiere.key];
+                const scoreColor = bilan
+                  ? bilan.score >= 14
+                    ? "#2ec4b6"
+                    : bilan.score >= 10
+                      ? "#ffd166"
+                      : "#ff6b6b"
+                  : "#555";
+                return (
+                  <div
+                    key={matiere.key}
+                    style={{
+                      flex: "1 1 120px",
+                      background: bilan
+                        ? "rgba(79,142,247,0.08)"
+                        : "rgba(255,255,255,0.03)",
+                      border: bilan
+                        ? "1px solid rgba(79,142,247,0.25)"
+                        : "1px solid rgba(255,255,255,0.07)",
+                      borderRadius: "12px",
+                      padding: "12px 14px",
+                      textAlign: "center",
                     }}
                   >
                     <div
                       style={{
-                        fontWeight: 700,
-                        fontSize: "1.1rem",
-                        color: "#fff",
+                        fontSize: "0.8rem",
+                        color: "#aaa",
+                        marginBottom: "6px",
                       }}
                     >
-                      🎓 {config.label}
+                      {matiere.emoji} {matiere.label}
                     </div>
-                    {moyenne !== null && (
-                      <div style={{ textAlign: "right" }}>
-                        <div style={{ fontSize: "0.75rem", color: "#aaa" }}>
-                          Moyenne bilans
-                        </div>
-                        <div
-                          style={{
-                            fontSize: "1.3rem",
-                            fontWeight: 800,
-                            color: "#ffd166",
-                          }}
-                        >
-                          {moyenne.toFixed(2).replace(".", ",")} / 20
-                        </div>
+                    {bilan ? (
+                      <div
+                        style={{
+                          fontSize: "1.4rem",
+                          fontWeight: 800,
+                          color: scoreColor,
+                        }}
+                      >
+                        {bilan.score.toFixed(2).replace(".", ",")} / 20
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "#555",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        — / 20
                       </div>
                     )}
                   </div>
-
-                  <div
-                    style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
-                  >
-                    {config.matieres.map((matiere) => {
-                      const bilan = bilans[matiere.key];
-                      const scoreColor = bilan
-                        ? bilan.score >= 14
-                          ? "#2ec4b6"
-                          : bilan.score >= 10
-                            ? "#ffd166"
-                            : "#ff6b6b"
-                        : "#555";
-                      return (
-                        <div
-                          key={matiere.key}
-                          style={{
-                            flex: "1 1 120px",
-                            background: bilan
-                              ? "rgba(79,142,247,0.08)"
-                              : "rgba(255,255,255,0.03)",
-                            border: bilan
-                              ? "1px solid rgba(79,142,247,0.25)"
-                              : "1px solid rgba(255,255,255,0.07)",
-                            borderRadius: "12px",
-                            padding: "12px 14px",
-                            textAlign: "center",
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontSize: "0.8rem",
-                              color: "#aaa",
-                              marginBottom: "6px",
-                            }}
-                          >
-                            {/* Ici on affiche l'emoji ou l'image du drapeau */}
-                            {matiere.emoji} {matiere.label}
-                          </div>
-                          {bilan ? (
-                            <div
-                              style={{
-                                fontSize: "1.4rem",
-                                fontWeight: 800,
-                                color: scoreColor,
-                              }}
-                            >
-                              {bilan.score.toFixed(2).replace(".", ",")} / 20
-                            </div>
-                          ) : (
-                            <div
-                              style={{
-                                fontSize: "0.85rem",
-                                color: "#555",
-                                fontStyle: "italic",
-                              }}
-                            >
-                              — / 20
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </section>
       )}

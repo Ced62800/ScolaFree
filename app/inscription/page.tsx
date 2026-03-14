@@ -4,6 +4,27 @@ import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+const CLASSES_PAR_NIVEAU: Record<string, { value: string; label: string }[]> = {
+  primaire: [
+    { value: "cp", label: "CP" },
+    { value: "ce1", label: "CE1" },
+    { value: "ce2", label: "CE2" },
+    { value: "cm1", label: "CM1" },
+    { value: "cm2", label: "CM2" },
+  ],
+  college: [
+    { value: "6eme", label: "6ème" },
+    { value: "5eme", label: "5ème" },
+    { value: "4eme", label: "4ème" },
+    { value: "3eme", label: "3ème" },
+  ],
+  lycee: [
+    { value: "seconde", label: "Seconde" },
+    { value: "premiere", label: "Première" },
+    { value: "terminale", label: "Terminale" },
+  ],
+};
+
 export default function Inscription() {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -12,6 +33,7 @@ export default function Inscription() {
     email: "",
     password: "",
     niveau: "",
+    classe: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,7 +41,13 @@ export default function Inscription() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    // Si on change le niveau, on remet la classe à vide
+    if (name === "niveau") {
+      setForm({ ...form, niveau: value, classe: "" });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,7 +60,8 @@ export default function Inscription() {
       !form.nom ||
       !form.email ||
       !form.password ||
-      !form.niveau
+      !form.niveau ||
+      !form.classe
     ) {
       setError("Veuillez remplir tous les champs.");
       setLoading(false);
@@ -48,6 +77,7 @@ export default function Inscription() {
           prenom: form.prenom,
           nom: form.nom,
           niveau: form.niveau,
+          classe: form.classe,
           role: "user",
         },
       },
@@ -67,6 +97,7 @@ export default function Inscription() {
         nom: form.nom,
         email: form.email,
         niveau: form.niveau,
+        classe: form.classe,
         role: "user",
       });
 
@@ -80,6 +111,8 @@ export default function Inscription() {
     setLoading(false);
     router.push("/connexion?inscrit=1");
   };
+
+  const classesDisponibles = form.niveau ? CLASSES_PAR_NIVEAU[form.niveau] : [];
 
   return (
     <div className="auth-page">
@@ -145,6 +178,20 @@ export default function Inscription() {
               <option value="lycee">Lycée</option>
             </select>
           </div>
+
+          {form.niveau && (
+            <div className="form-group">
+              <label>Classe</label>
+              <select name="classe" value={form.classe} onChange={handleChange}>
+                <option value="">-- Choisir une classe --</option>
+                {classesDisponibles.map((c) => (
+                  <option key={c.value} value={c.value}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {error && <div className="auth-error">⚠️ {error}</div>}
 

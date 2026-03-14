@@ -1,93 +1,151 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 
-const matieres = [
+const themes = [
   {
-    id: "francais",
-    label: "Français",
-    emoji: "📖",
-    color: "#4f8ef7",
-    desc: "Grammaire, Conjugaison, Orthographe, Vocabulaire",
-    dispo: true,
+    id: "nombres-100",
+    label: "Les Nombres",
+    emoji: "🔢",
+    color: "#4cc9f0",
+    desc: "Compter et comparer jusqu'à 100",
+    nb: 10,
   },
   {
-    id: "maths",
-    label: "Mathématiques",
+    id: "additions",
+    label: "Additions",
     emoji: "➕",
-    color: "#2ec4b6",
-    desc: "Numération, Calcul, Fractions, Géométrie",
-    dispo: true,
+    color: "#4ade80",
+    desc: "Calculer des sommes simples",
+    nb: 10,
+  },
+  {
+    id: "soustractions",
+    label: "Soustractions",
+    emoji: "➖",
+    color: "#ffd166",
+    desc: "Apprendre à retirer des quantités",
+    nb: 10,
+  },
+  {
+    id: "geometrie",
+    label: "Géométrie",
+    emoji: "📐",
+    color: "#ff6b6b",
+    desc: "Carré, triangle, cercle et rectangle",
+    nb: 10,
   },
 ];
 
-export default function CPPage() {
+export default function MathCP() {
   const router = useRouter();
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire")}
+          onClick={() => router.push("/cours/primaire/cp")}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
           <span>Primaire</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">CP</span>
+          <span>CP</span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Mathématiques</span>
         </div>
       </div>
+
       <div className="cours-hero">
-        <div className="cours-hero-icon">🌱</div>
-        <h1 className="cours-hero-title">CP — Choisis une matière</h1>
+        <div className="cours-hero-icon">🔢</div>
+        <h1 className="cours-hero-title">Mathématiques — CP</h1>
         <p className="cours-hero-desc">Cours Préparatoire · 6 ans</p>
       </div>
+
       <div className="themes-grid">
-        {matieres.map((m) => (
+        {themes.map((t) => (
           <div
-            key={m.id}
+            key={t.id}
             className="theme-card"
-            onClick={() => m.dispo && router.push(`/cours/primaire/cp/${m.id}`)}
-            style={
-              {
-                "--card-color": m.color,
-                opacity: m.dispo ? 1 : 0.5,
-                cursor: m.dispo ? "pointer" : "not-allowed",
-              } as React.CSSProperties
-            }
+            onClick={() => router.push(`/cours/primaire/cp/maths/${t.id}`)}
+            style={{ "--card-color": t.color } as React.CSSProperties}
           >
-            <div className="theme-emoji">{m.emoji}</div>
-            <div className="theme-label">{m.label}</div>
-            <div className="theme-desc">{m.desc}</div>
-            <div className="theme-arrow">
-              {m.dispo ? "Commencer →" : "Bientôt disponible"}
+            <div className="theme-emoji">{t.emoji}</div>
+            <div className="theme-label">{t.label}</div>
+            <div className="theme-desc">{t.desc}</div>
+            <div className="theme-nb">{t.nb} exercices</div>
+            <div className="theme-progress">
+              <div className="theme-progress-bar" style={{ width: "0%" }}></div>
             </div>
+            <div className="theme-arrow">Commencer →</div>
           </div>
         ))}
       </div>
-      {/* Bannière de citation en bas de page */}
+
       <div
         style={{
           marginTop: "40px",
-          padding: "30px 20px",
-          borderTop: "1px solid rgba(255, 255, 255, 0.05)",
           textAlign: "center",
-          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "20px",
         }}
       >
-        <p
+        {/* BOUTON BILAN (SANS LE "1") */}
+        <div>
+          <button
+            onClick={() => router.push("/cours/primaire/cp/maths/bilan")}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              background: "linear-gradient(135deg, #4cc9f0, #4ade80)",
+              color: "#1a1a2e",
+              fontWeight: 800,
+              fontSize: "1.1rem",
+              padding: "16px 32px",
+              borderRadius: "16px",
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 4px 20px rgba(76, 201, 240, 0.3)",
+            }}
+          >
+            🎯 Bilan Final CP — 20 questions
+          </button>
+          <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
+            Vérifie tes acquis sur les nombres et les calculs !
+          </p>
+        </div>
+
+        {/* BOUTON COURS SUIVANTS */}
+        <button
+          onClick={() => router.push("/cours/primaire/cp/maths/page-2")}
           style={{
-            color: "#aaa",
-            fontStyle: "italic",
-            fontSize: "0.9rem",
-            maxWidth: "500px",
-            margin: "0 auto",
-            lineHeight: "1.5",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            background: "rgba(255, 255, 255, 0.05)",
+            color: "#fff",
+            fontWeight: 600,
+            fontSize: "1rem",
+            padding: "12px 24px",
+            borderRadius: "12px",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
           }}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)")
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)")
+          }
         >
-          "Chaque jour est une nouvelle chance d'apprendre quelque chose de
-          nouveau."
-        </p>
+          📚 Cours suivants — Partie 2{" "}
+          <span style={{ fontSize: "1.2rem" }}>→</span>
+        </button>
       </div>
     </div>
   );

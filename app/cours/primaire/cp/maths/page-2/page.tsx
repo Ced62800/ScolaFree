@@ -28,7 +28,7 @@ const themesMath2 = [
     nb: 10,
   },
   {
-    id: "calcul-mental-2",
+    id: "calcul-mental",
     label: "Calcul Mental 2",
     emoji: "🧠",
     color: "#ff6b6b",
@@ -51,11 +51,9 @@ export default function MathCPPage2() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Primaire</span>
+          <span>Mathématiques</span>
           <span className="breadcrumb-sep">›</span>
           <span>CP</span>
-          <span className="breadcrumb-sep">›</span>
-          <span>Mathématiques</span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Partie 2</span>
         </div>
@@ -119,10 +117,10 @@ export default function MathCPPage2() {
               boxShadow: "0 4px 20px rgba(74,222,128,0.3)",
             }}
           >
-            🎯 Bilan Final CP — 20 questions
+            🎯 Bilan Mathématiques CP 2 — 20 questions
           </button>
           <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
-            Teste toutes tes connaissances de Maths du CP !
+            Cédric, es-tu prêt pour le grand défi des mesures ?
           </p>
         </div>
       </div>
