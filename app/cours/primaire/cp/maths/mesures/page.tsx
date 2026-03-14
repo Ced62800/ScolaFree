@@ -9,26 +9,25 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "La Monnaie : L'Euro",
+  titre: "Mesures de longueurs",
   intro:
-    "On utilise l'Euro (€) pour acheter des choses en France et dans de nombreux pays d'Europe.",
+    "On mesure les longueurs avec une règle. L'unité de mesure la plus utilisée est le centimètre (cm).",
   points: [
     {
-      titre: "Les pièces",
-      texte:
-        "Il existe des pièces de 1€ et 2€ (et aussi des centimes : 1c, 2c, 5c, 10c, 20c, 50c).",
-      exemple: "2 pièces de 1€ = 1 pièce de 2€",
+      titre: "Le centimètre (cm)",
+      texte: "C'est la petite unité pour mesurer des objets du quotidien.",
+      exemple: "Un crayon mesure environ 15 cm.",
     },
     {
-      titre: "Les billets",
-      texte: "Il existe des billets de 5€, 10€, 20€, 50€...",
-      exemple: "1 billet de 5€ = 5 pièces de 1€",
+      titre: "Le mètre (m)",
+      texte: "C'est une grande unité. 1 mètre = 100 centimètres.",
+      exemple: "Une porte mesure environ 2 mètres.",
     },
     {
-      titre: "La monnaie rendue",
+      titre: "Comparer des longueurs",
       texte:
-        "Quand on paye plus que le prix, on reçoit de la monnaie en retour.",
-      exemple: "Je donne 2€ pour une sucette à 1€ → on me rend 1€",
+        "On peut dire qu'un objet est plus long, plus court ou aussi long qu'un autre.",
+      exemple: "Un stylo (14 cm) est plus court qu'une règle (30 cm).",
     },
   ],
 };
@@ -36,91 +35,94 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Si j'ai deux pièces de 2€, combien ai-je ?",
-    options: ["2€", "4€", "5€", "6€"],
-    reponse: "4€",
-    explication: "2 + 2 = 4 euros.",
+    question: "Quelle est l'unité pour mesurer une longueur ?",
+    options: ["Le kilo", "Le centimètre", "Le litre", "Le degré"],
+    reponse: "Le centimètre",
+    explication:
+      "On mesure les longueurs en centimètres (cm) ou en mètres (m).",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Quel est le plus petit billet ?",
-    options: ["5€", "10€", "20€", "50€"],
-    reponse: "5€",
-    explication: "Le billet de 5€ est le plus petit.",
+    question: "Combien de centimètres y a-t-il dans 1 mètre ?",
+    options: ["10", "50", "100", "1000"],
+    reponse: "100",
+    explication: "1 mètre = 100 centimètres.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Combien faut-il de pièces de 1€ pour faire 5€ ?",
-    options: ["2", "5", "10", "3"],
-    reponse: "5",
-    explication: "Il faut 5 pièces de 1 euro.",
+    question: "Avec quoi mesure-t-on une longueur ?",
+    options: ["Une balance", "Un verre", "Une règle", "Un thermomètre"],
+    reponse: "Une règle",
+    explication: "On utilise une règle pour mesurer les longueurs.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Une sucette coûte 1€. Je donne 2€. Combien me rend-on ?",
-    options: ["1€", "2€", "Rien", "3€"],
-    reponse: "1€",
-    explication: "2 - 1 = 1 euro.",
+    question:
+      "Un crayon mesure 15 cm. Une règle mesure 30 cm. Laquelle est la plus longue ?",
+    options: ["Le crayon", "La règle", "Les deux pareil"],
+    reponse: "La règle",
+    explication: "30 cm > 15 cm, donc la règle est plus longue.",
     niveau: "moyen",
   },
   {
     id: 5,
-    question: "Lequel est une pièce ?",
-    options: ["5€", "10€", "2€", "20€"],
-    reponse: "2€",
-    explication: "Le 2€ est une pièce, le 5€ est un billet.",
+    question: "Que signifie 'cm' ?",
+    options: ["Centimètre", "Centilitre", "Carré mètre", "Cube mètre"],
+    reponse: "Centimètre",
+    explication: "cm est l'abréviation de centimètre.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "J'ai 10€. J'achète un livre à 7€. Il me reste :",
-    options: ["2€", "3€", "4€", "5€"],
-    reponse: "3€",
-    explication: "10 - 7 = 3.",
+    question: "Une table mesure 1 mètre. Combien font 1 mètre en centimètres ?",
+    options: ["10 cm", "50 cm", "100 cm", "200 cm"],
+    reponse: "100 cm",
+    explication: "1 m = 100 cm.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Combien font 5€ + 5€ ?",
-    options: ["10€", "15€", "20€", "8€"],
-    reponse: "10€",
-    explication: "5 + 5 = 10.",
+    question: "Quel objet mesure environ 1 cm ?",
+    options: ["Une maison", "Un ongle", "Une voiture", "Un terrain"],
+    reponse: "Un ongle",
+    explication: "Un ongle mesure environ 1 cm de large.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quelle pièce n'existe pas ?",
-    options: ["1€", "2€", "3€", "50c"],
-    reponse: "3€",
-    explication: "Il n'y a pas de pièce de 3 euros.",
+    question:
+      "Un ver mesure 5 cm, un serpent mesure 50 cm. Lequel est le plus court ?",
+    options: ["Le ver", "Le serpent", "Les deux pareil"],
+    reponse: "Le ver",
+    explication: "5 cm < 50 cm, donc le ver est plus court.",
     niveau: "difficile",
   },
   {
     id: 9,
-    question: "Pour payer 6€, je peux donner :",
-    options: ["5€ + 1€", "2€ + 2€", "3€ + 4€", "10€ - 3€"],
-    reponse: "5€ + 1€",
-    explication: "5 + 1 = 6.",
+    question: "50 cm + 50 cm = ?",
+    options: ["1 m", "2 m", "100 m", "5 m"],
+    reponse: "1 m",
+    explication: "50 + 50 = 100 cm = 1 mètre.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Le signe de l'Euro est :",
-    options: ["$", "€", "£", "¥"],
-    reponse: "€",
-    explication: "C'est le symbole de notre monnaie.",
+    question: "Une cour d'école mesure 20 mètres. C'est combien en cm ?",
+    options: ["20 cm", "200 cm", "2000 cm", "20000 cm"],
+    reponse: "2000 cm",
+    explication: "20 m × 100 = 2000 cm.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cp";
 const MATIERE = "maths";
-const THEME = "monnaie";
+const THEME = "mesures";
 
-export default function MonnaieCP() {
+export default function MesuresCP() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -142,7 +144,6 @@ export default function MonnaieCP() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex, refreshKey],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   useEffect(() => {
@@ -203,7 +204,7 @@ export default function MonnaieCP() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cp/maths")}
+          onClick={() => router.push("/cours/primaire/cp/maths/page-2")}
         >
           ← Retour
         </button>
@@ -212,7 +213,7 @@ export default function MonnaieCP() {
           <span className="breadcrumb-sep">›</span>
           <span>CP</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">La Monnaie</span>
+          <span className="breadcrumb-active">Mesures de longueurs</span>
         </div>
       </div>
 
@@ -240,22 +241,21 @@ export default function MonnaieCP() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">💶 Monnaie · CP</div>
+          <div className="lecon-badge">📏 Mesures · CP</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
                 <div
                   style={{
                     flex: 1,
-                    background: "rgba(76,201,240,0.1)",
-                    border: "1px solid rgba(76,201,240,0.3)",
+                    background: "rgba(74,222,128,0.1)",
+                    border: "1px solid rgba(74,222,128,0.3)",
                     borderRadius: "12px",
                     padding: "10px 16px",
                     fontSize: "0.9rem",
-                    color: "#4cc9f0",
+                    color: "#4ade80",
                     textAlign: "center",
                   }}
                 >
@@ -288,7 +288,6 @@ export default function MonnaieCP() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -362,7 +361,7 @@ export default function MonnaieCP() {
           </div>
           <h2 className="resultat-titre">
             {score >= 9
-              ? "Expert de la monnaie !"
+              ? "Expert des mesures !"
               : score >= 7
                 ? "Bien joué !"
                 : score >= 5
@@ -378,12 +377,12 @@ export default function MonnaieCP() {
                 <div
                   style={{
                     flex: 1,
-                    background: "rgba(76,201,240,0.1)",
-                    border: "1px solid rgba(76,201,240,0.3)",
+                    background: "rgba(74,222,128,0.1)",
+                    border: "1px solid rgba(74,222,128,0.3)",
                     borderRadius: "12px",
                     padding: "10px",
                     fontSize: "0.85rem",
-                    color: "#4cc9f0",
+                    color: "#4ade80",
                     textAlign: "center",
                   }}
                 >
@@ -422,7 +421,7 @@ export default function MonnaieCP() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cp/maths")}
+              onClick={() => router.push("/cours/primaire/cp/maths/page-2")}
             >
               Retour aux thèmes →
             </button>

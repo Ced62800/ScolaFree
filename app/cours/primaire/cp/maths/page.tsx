@@ -2,51 +2,49 @@
 
 import { useRouter } from "next/navigation";
 
-const themesMath2 = [
+const themes = [
   {
-    id: "monnaie",
-    label: "Monnaie et Prix",
-    emoji: "💶",
+    id: "numeration",
+    label: "Les Nombres",
+    emoji: "🔢",
     color: "#4cc9f0",
-    desc: "Utiliser les pièces et les billets en euros",
+    desc: "Compter et comparer jusqu'à 100",
     nb: 10,
   },
   {
-    id: "mesures",
-    label: "Mesures de longueurs",
-    emoji: "📏",
+    id: "addition",
+    label: "Additions",
+    emoji: "➕",
     color: "#4ade80",
-    desc: "Mesurer avec la règle et comparer (cm)",
+    desc: "Calculer des sommes simples",
     nb: 10,
   },
   {
-    id: "temps",
-    label: "Heures et Temps",
-    emoji: "🕒",
+    id: "fractions",
+    label: "Fractions",
+    emoji: "➖",
     color: "#ffd166",
-    desc: "Lire l'heure et utiliser le calendrier",
+    desc: "Apprendre à retirer des quantités",
     nb: 10,
   },
   {
-    id: "calcul-mental-2",
-    label: "Calcul Mental 2",
-    emoji: "🧠",
+    id: "geometrie",
+    label: "Géométrie",
+    emoji: "📐",
     color: "#ff6b6b",
-    desc: "Les doubles, les moitiés et compléments",
+    desc: "Carré, triangle, cercle et rectangle",
     nb: 10,
   },
 ];
 
-export default function MathCPPage2() {
+export default function MathCP() {
   const router = useRouter();
-
   return (
     <div className="cours-page">
-      {/* HEADER FIL D'ARIANE */}
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cp/maths")}
+          onClick={() => router.push("/cours/primaire/cp")}
         >
           ← Retour
         </button>
@@ -55,22 +53,16 @@ export default function MathCPPage2() {
           <span className="breadcrumb-sep">›</span>
           <span>CP</span>
           <span className="breadcrumb-sep">›</span>
-          <span>Mathématiques</span>
-          <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Partie 2</span>
+          <span className="breadcrumb-active">Mathématiques</span>
         </div>
       </div>
-
-      {/* HERO SECTION */}
       <div className="cours-hero">
         <div className="cours-hero-icon">🔢</div>
         <h1 className="cours-hero-title">Mathématiques — CP</h1>
-        <p className="cours-hero-desc">Partie 2 · Grandeurs et Mesures</p>
+        <p className="cours-hero-desc">Cours Préparatoire · 6 ans</p>
       </div>
-
-      {/* GRILLE DES THEMES (CARTES VERTICALES) */}
       <div className="themes-grid">
-        {themesMath2.map((t) => (
+        {themes.map((t) => (
           <div
             key={t.id}
             className="theme-card"
@@ -88,8 +80,6 @@ export default function MathCPPage2() {
           </div>
         ))}
       </div>
-
-      {/* BOUTON BILAN FINAL */}
       <div
         style={{
           marginTop: "40px",
@@ -98,17 +88,16 @@ export default function MathCPPage2() {
           flexDirection: "column",
           alignItems: "center",
           gap: "20px",
-          paddingBottom: "40px",
         }}
       >
         <div>
           <button
-            onClick={() => router.push("/cours/primaire/cp/maths/page-2/bilan")}
+            onClick={() => router.push("/cours/primaire/cp/maths/bilan")}
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "10px",
-              background: "linear-gradient(135deg, #4ade80, #4cc9f0)",
+              background: "linear-gradient(135deg, #4cc9f0, #4ade80)",
               color: "#1a1a2e",
               fontWeight: 800,
               fontSize: "1.1rem",
@@ -116,15 +105,34 @@ export default function MathCPPage2() {
               borderRadius: "16px",
               border: "none",
               cursor: "pointer",
-              boxShadow: "0 4px 20px rgba(74,222,128,0.3)",
+              boxShadow: "0 4px 20px rgba(76, 201, 240, 0.3)",
             }}
           >
             🎯 Bilan Final CP — 20 questions
           </button>
           <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
-            Teste toutes tes connaissances de Maths du CP !
+            Vérifie tes acquis sur les nombres et les calculs !
           </p>
         </div>
+        <button
+          onClick={() => router.push("/cours/primaire/cp/maths/page-2")}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            background: "rgba(255,255,255,0.05)",
+            color: "#fff",
+            fontWeight: 600,
+            fontSize: "1rem",
+            padding: "12px 24px",
+            borderRadius: "12px",
+            border: "1px solid rgba(255,255,255,0.2)",
+            cursor: "pointer",
+          }}
+        >
+          📚 Cours suivants — Partie 2{" "}
+          <span style={{ fontSize: "1.2rem" }}>→</span>
+        </button>
       </div>
     </div>
   );

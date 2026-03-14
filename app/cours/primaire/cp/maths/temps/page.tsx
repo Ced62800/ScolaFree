@@ -9,26 +9,27 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "La Monnaie : L'Euro",
+  titre: "Heures et Temps",
   intro:
-    "On utilise l'Euro (€) pour acheter des choses en France et dans de nombreux pays d'Europe.",
+    "Savoir lire l'heure et comprendre le temps qui passe est très utile dans la vie quotidienne.",
   points: [
     {
-      titre: "Les pièces",
+      titre: "Les heures",
       texte:
-        "Il existe des pièces de 1€ et 2€ (et aussi des centimes : 1c, 2c, 5c, 10c, 20c, 50c).",
-      exemple: "2 pièces de 1€ = 1 pièce de 2€",
+        "Une journée dure 24 heures. La grande aiguille indique les minutes, la petite les heures.",
+      exemple:
+        "Quand la grande aiguille est sur 12, on dit 'et quart', 'et demie' ou 'pile'.",
     },
     {
-      titre: "Les billets",
-      texte: "Il existe des billets de 5€, 10€, 20€, 50€...",
-      exemple: "1 billet de 5€ = 5 pièces de 1€",
+      titre: "Les minutes",
+      texte:
+        "1 heure = 60 minutes. Un quart d'heure = 15 minutes. Une demie-heure = 30 minutes.",
+      exemple: "8h30 = 8 heures et demie.",
     },
     {
-      titre: "La monnaie rendue",
-      texte:
-        "Quand on paye plus que le prix, on reçoit de la monnaie en retour.",
-      exemple: "Je donne 2€ pour une sucette à 1€ → on me rend 1€",
+      titre: "Les jours et les mois",
+      texte: "1 semaine = 7 jours. 1 an = 12 mois = 365 jours.",
+      exemple: "Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche.",
     },
   ],
 };
@@ -36,91 +37,97 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Si j'ai deux pièces de 2€, combien ai-je ?",
-    options: ["2€", "4€", "5€", "6€"],
-    reponse: "4€",
-    explication: "2 + 2 = 4 euros.",
+    question: "Combien y a-t-il d'heures dans une journée ?",
+    options: ["12", "24", "60", "7"],
+    reponse: "24",
+    explication: "Une journée dure 24 heures.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Quel est le plus petit billet ?",
-    options: ["5€", "10€", "20€", "50€"],
-    reponse: "5€",
-    explication: "Le billet de 5€ est le plus petit.",
+    question: "Combien y a-t-il de jours dans une semaine ?",
+    options: ["5", "6", "7", "8"],
+    reponse: "7",
+    explication:
+      "Une semaine = 7 jours : lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Combien faut-il de pièces de 1€ pour faire 5€ ?",
-    options: ["2", "5", "10", "3"],
-    reponse: "5",
-    explication: "Il faut 5 pièces de 1 euro.",
+    question: "Combien y a-t-il de minutes dans 1 heure ?",
+    options: ["24", "30", "60", "100"],
+    reponse: "60",
+    explication: "1 heure = 60 minutes.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Une sucette coûte 1€. Je donne 2€. Combien me rend-on ?",
-    options: ["1€", "2€", "Rien", "3€"],
-    reponse: "1€",
-    explication: "2 - 1 = 1 euro.",
+    question: "Quel jour vient après le mercredi ?",
+    options: ["Mardi", "Jeudi", "Vendredi", "Lundi"],
+    reponse: "Jeudi",
+    explication: "L'ordre est : lundi, mardi, mercredi, jeudi...",
     niveau: "moyen",
   },
   {
     id: 5,
-    question: "Lequel est une pièce ?",
-    options: ["5€", "10€", "2€", "20€"],
-    reponse: "2€",
-    explication: "Le 2€ est une pièce, le 5€ est un billet.",
+    question: "Il est 8h30. Comment dit-on ?",
+    options: [
+      "8 heures et quart",
+      "8 heures et demie",
+      "8 heures pile",
+      "9 heures moins le quart",
+    ],
+    reponse: "8 heures et demie",
+    explication: "30 minutes = une demie heure.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "J'ai 10€. J'achète un livre à 7€. Il me reste :",
-    options: ["2€", "3€", "4€", "5€"],
-    reponse: "3€",
-    explication: "10 - 7 = 3.",
+    question: "Combien de mois y a-t-il dans une année ?",
+    options: ["7", "10", "12", "24"],
+    reponse: "12",
+    explication: "Une année = 12 mois.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Combien font 5€ + 5€ ?",
-    options: ["10€", "15€", "20€", "8€"],
-    reponse: "10€",
-    explication: "5 + 5 = 10.",
+    question: "Un quart d'heure, c'est combien de minutes ?",
+    options: ["5", "10", "15", "30"],
+    reponse: "15",
+    explication: "Un quart d'heure = 15 minutes.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quelle pièce n'existe pas ?",
-    options: ["1€", "2€", "3€", "50c"],
-    reponse: "3€",
-    explication: "Il n'y a pas de pièce de 3 euros.",
+    question: "Quel est le premier jour de la semaine ?",
+    options: ["Dimanche", "Samedi", "Lundi", "Mardi"],
+    reponse: "Lundi",
+    explication: "En France, la semaine commence le lundi.",
     niveau: "difficile",
   },
   {
     id: 9,
-    question: "Pour payer 6€, je peux donner :",
-    options: ["5€ + 1€", "2€ + 2€", "3€ + 4€", "10€ - 3€"],
-    reponse: "5€ + 1€",
-    explication: "5 + 1 = 6.",
+    question: "Il est 9h00. Dans 30 minutes, il sera ?",
+    options: ["9h15", "9h30", "10h00", "8h30"],
+    reponse: "9h30",
+    explication: "9h00 + 30 minutes = 9h30.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Le signe de l'Euro est :",
-    options: ["$", "€", "£", "¥"],
-    reponse: "€",
-    explication: "C'est le symbole de notre monnaie.",
+    question: "Combien de jours y a-t-il dans une année ?",
+    options: ["300", "350", "365", "400"],
+    reponse: "365",
+    explication: "Une année normale = 365 jours.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cp";
 const MATIERE = "maths";
-const THEME = "monnaie";
+const THEME = "temps";
 
-export default function MonnaieCP() {
+export default function TempsCP() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -142,7 +149,6 @@ export default function MonnaieCP() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex, refreshKey],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   useEffect(() => {
@@ -203,7 +209,7 @@ export default function MonnaieCP() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cp/maths")}
+          onClick={() => router.push("/cours/primaire/cp/maths/page-2")}
         >
           ← Retour
         </button>
@@ -212,7 +218,7 @@ export default function MonnaieCP() {
           <span className="breadcrumb-sep">›</span>
           <span>CP</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">La Monnaie</span>
+          <span className="breadcrumb-active">Heures et Temps</span>
         </div>
       </div>
 
@@ -240,22 +246,21 @@ export default function MonnaieCP() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">💶 Monnaie · CP</div>
+          <div className="lecon-badge">🕒 Heures et Temps · CP</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
                 <div
                   style={{
                     flex: 1,
-                    background: "rgba(76,201,240,0.1)",
-                    border: "1px solid rgba(76,201,240,0.3)",
+                    background: "rgba(255,209,102,0.1)",
+                    border: "1px solid rgba(255,209,102,0.3)",
                     borderRadius: "12px",
                     padding: "10px 16px",
                     fontSize: "0.9rem",
-                    color: "#4cc9f0",
+                    color: "#ffd166",
                     textAlign: "center",
                   }}
                 >
@@ -288,7 +293,6 @@ export default function MonnaieCP() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -362,7 +366,7 @@ export default function MonnaieCP() {
           </div>
           <h2 className="resultat-titre">
             {score >= 9
-              ? "Expert de la monnaie !"
+              ? "Expert du temps !"
               : score >= 7
                 ? "Bien joué !"
                 : score >= 5
@@ -378,12 +382,12 @@ export default function MonnaieCP() {
                 <div
                   style={{
                     flex: 1,
-                    background: "rgba(76,201,240,0.1)",
-                    border: "1px solid rgba(76,201,240,0.3)",
+                    background: "rgba(255,209,102,0.1)",
+                    border: "1px solid rgba(255,209,102,0.3)",
                     borderRadius: "12px",
                     padding: "10px",
                     fontSize: "0.85rem",
-                    color: "#4cc9f0",
+                    color: "#ffd166",
                     textAlign: "center",
                   }}
                 >
@@ -422,7 +426,7 @@ export default function MonnaieCP() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cp/maths")}
+              onClick={() => router.push("/cours/primaire/cp/maths/page-2")}
             >
               Retour aux thèmes →
             </button>

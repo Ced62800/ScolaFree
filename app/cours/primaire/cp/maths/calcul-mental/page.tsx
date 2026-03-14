@@ -9,26 +9,25 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "La Monnaie : L'Euro",
+  titre: "Calcul Mental 2",
   intro:
-    "On utilise l'Euro (€) pour acheter des choses en France et dans de nombreux pays d'Europe.",
+    "Le calcul mental, c'est calculer dans sa tête sans papier ni crayon. On va apprendre les doubles, les moitiés et les compléments.",
   points: [
     {
-      titre: "Les pièces",
-      texte:
-        "Il existe des pièces de 1€ et 2€ (et aussi des centimes : 1c, 2c, 5c, 10c, 20c, 50c).",
-      exemple: "2 pièces de 1€ = 1 pièce de 2€",
+      titre: "Les doubles",
+      texte: "Doubler un nombre, c'est l'additionner avec lui-même.",
+      exemple: "Le double de 4 = 4 + 4 = 8",
     },
     {
-      titre: "Les billets",
-      texte: "Il existe des billets de 5€, 10€, 20€, 50€...",
-      exemple: "1 billet de 5€ = 5 pièces de 1€",
+      titre: "Les moitiés",
+      texte: "La moitié d'un nombre, c'est le diviser par 2.",
+      exemple: "La moitié de 10 = 10 ÷ 2 = 5",
     },
     {
-      titre: "La monnaie rendue",
+      titre: "Les compléments à 10",
       texte:
-        "Quand on paye plus que le prix, on reçoit de la monnaie en retour.",
-      exemple: "Je donne 2€ pour une sucette à 1€ → on me rend 1€",
+        "Le complément à 10 d'un nombre, c'est ce qu'il faut ajouter pour arriver à 10.",
+      exemple: "Le complément de 6 = 4 (car 6 + 4 = 10)",
     },
   ],
 };
@@ -36,91 +35,91 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Si j'ai deux pièces de 2€, combien ai-je ?",
-    options: ["2€", "4€", "5€", "6€"],
-    reponse: "4€",
-    explication: "2 + 2 = 4 euros.",
+    question: "Quel est le double de 3 ?",
+    options: ["3", "5", "6", "9"],
+    reponse: "6",
+    explication: "3 + 3 = 6.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Quel est le plus petit billet ?",
-    options: ["5€", "10€", "20€", "50€"],
-    reponse: "5€",
-    explication: "Le billet de 5€ est le plus petit.",
+    question: "Quel est le double de 5 ?",
+    options: ["5", "8", "10", "15"],
+    reponse: "10",
+    explication: "5 + 5 = 10.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Combien faut-il de pièces de 1€ pour faire 5€ ?",
-    options: ["2", "5", "10", "3"],
-    reponse: "5",
-    explication: "Il faut 5 pièces de 1 euro.",
+    question: "Quelle est la moitié de 8 ?",
+    options: ["2", "4", "6", "8"],
+    reponse: "4",
+    explication: "8 ÷ 2 = 4.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Une sucette coûte 1€. Je donne 2€. Combien me rend-on ?",
-    options: ["1€", "2€", "Rien", "3€"],
-    reponse: "1€",
-    explication: "2 - 1 = 1 euro.",
+    question: "Quel est le complément de 3 pour arriver à 10 ?",
+    options: ["3", "5", "7", "6"],
+    reponse: "7",
+    explication: "3 + 7 = 10.",
     niveau: "moyen",
   },
   {
     id: 5,
-    question: "Lequel est une pièce ?",
-    options: ["5€", "10€", "2€", "20€"],
-    reponse: "2€",
-    explication: "Le 2€ est une pièce, le 5€ est un billet.",
+    question: "Quel est le double de 7 ?",
+    options: ["7", "12", "14", "17"],
+    reponse: "14",
+    explication: "7 + 7 = 14.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "J'ai 10€. J'achète un livre à 7€. Il me reste :",
-    options: ["2€", "3€", "4€", "5€"],
-    reponse: "3€",
-    explication: "10 - 7 = 3.",
+    question: "Quelle est la moitié de 12 ?",
+    options: ["4", "5", "6", "8"],
+    reponse: "6",
+    explication: "12 ÷ 2 = 6.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Combien font 5€ + 5€ ?",
-    options: ["10€", "15€", "20€", "8€"],
-    reponse: "10€",
-    explication: "5 + 5 = 10.",
+    question: "Quel est le complément de 8 pour arriver à 10 ?",
+    options: ["1", "2", "3", "4"],
+    reponse: "2",
+    explication: "8 + 2 = 10.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quelle pièce n'existe pas ?",
-    options: ["1€", "2€", "3€", "50c"],
-    reponse: "3€",
-    explication: "Il n'y a pas de pièce de 3 euros.",
+    question: "Quel est le double de 9 ?",
+    options: ["16", "17", "18", "19"],
+    reponse: "18",
+    explication: "9 + 9 = 18.",
     niveau: "difficile",
   },
   {
     id: 9,
-    question: "Pour payer 6€, je peux donner :",
-    options: ["5€ + 1€", "2€ + 2€", "3€ + 4€", "10€ - 3€"],
-    reponse: "5€ + 1€",
-    explication: "5 + 1 = 6.",
+    question: "Quelle est la moitié de 20 ?",
+    options: ["5", "8", "10", "15"],
+    reponse: "10",
+    explication: "20 ÷ 2 = 10.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Le signe de l'Euro est :",
-    options: ["$", "€", "£", "¥"],
-    reponse: "€",
-    explication: "C'est le symbole de notre monnaie.",
+    question: "Quel est le complément de 4 pour arriver à 10 ?",
+    options: ["4", "5", "6", "7"],
+    reponse: "6",
+    explication: "4 + 6 = 10.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cp";
 const MATIERE = "maths";
-const THEME = "monnaie";
+const THEME = "calcul-mental";
 
-export default function MonnaieCP() {
+export default function CalculMentalCP() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -142,7 +141,6 @@ export default function MonnaieCP() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex, refreshKey],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   useEffect(() => {
@@ -203,7 +201,7 @@ export default function MonnaieCP() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cp/maths")}
+          onClick={() => router.push("/cours/primaire/cp/maths/page-2")}
         >
           ← Retour
         </button>
@@ -212,7 +210,7 @@ export default function MonnaieCP() {
           <span className="breadcrumb-sep">›</span>
           <span>CP</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">La Monnaie</span>
+          <span className="breadcrumb-active">Calcul Mental 2</span>
         </div>
       </div>
 
@@ -240,22 +238,21 @@ export default function MonnaieCP() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">💶 Monnaie · CP</div>
+          <div className="lecon-badge">🧠 Calcul Mental · CP</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
                 <div
                   style={{
                     flex: 1,
-                    background: "rgba(76,201,240,0.1)",
-                    border: "1px solid rgba(76,201,240,0.3)",
+                    background: "rgba(255,107,107,0.1)",
+                    border: "1px solid rgba(255,107,107,0.3)",
                     borderRadius: "12px",
                     padding: "10px 16px",
                     fontSize: "0.9rem",
-                    color: "#4cc9f0",
+                    color: "#ff6b6b",
                     textAlign: "center",
                   }}
                 >
@@ -288,7 +285,6 @@ export default function MonnaieCP() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -362,7 +358,7 @@ export default function MonnaieCP() {
           </div>
           <h2 className="resultat-titre">
             {score >= 9
-              ? "Expert de la monnaie !"
+              ? "Champion du calcul mental !"
               : score >= 7
                 ? "Bien joué !"
                 : score >= 5
@@ -378,12 +374,12 @@ export default function MonnaieCP() {
                 <div
                   style={{
                     flex: 1,
-                    background: "rgba(76,201,240,0.1)",
-                    border: "1px solid rgba(76,201,240,0.3)",
+                    background: "rgba(255,107,107,0.1)",
+                    border: "1px solid rgba(255,107,107,0.3)",
                     borderRadius: "12px",
                     padding: "10px",
                     fontSize: "0.85rem",
-                    color: "#4cc9f0",
+                    color: "#ff6b6b",
                     textAlign: "center",
                   }}
                 >
@@ -422,7 +418,7 @@ export default function MonnaieCP() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cp/maths")}
+              onClick={() => router.push("/cours/primaire/cp/maths/page-2")}
             >
               Retour aux thèmes →
             </button>
