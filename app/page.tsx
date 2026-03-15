@@ -144,10 +144,10 @@ export default function Home() {
 
             if (bilanData && bilanData.length > 0) {
               const result: ClasseBilans = {};
+              // Les données arrivent du plus récent au plus ancien.
+              // On prend le premier trouvé par matière = le dernier score effectué.
               for (const b of bilanData) {
                 if (!result[b.matiere]) {
-                  result[b.matiere] = { score: b.score, total: b.total };
-                } else if (b.score > result[b.matiere]!.score) {
                   result[b.matiere] = { score: b.score, total: b.total };
                 }
               }
@@ -435,7 +435,7 @@ export default function Home() {
                           color: scoreColor,
                         }}
                       >
-                        {bilan.score.toFixed(2).replace(".", ",")} / 20
+                        {bilan.score} / 20
                       </div>
                     ) : (
                       <div

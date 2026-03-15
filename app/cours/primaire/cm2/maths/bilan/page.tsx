@@ -1,6 +1,6 @@
 "use client";
 
-import { getBestScore, saveScore } from "@/lib/scores";
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -204,15 +204,22 @@ export default function BilanCM2Maths() {
     statistiques: 0,
   });
   const [totalScore, setTotalScore] = useState(0);
-  const [bestScore, setBestScore] = useState<any>(null);
-  const isSaving = useRef(false);
 
+  // États pour la persistance
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
+  const scoreRef = useRef(0);
+
+  // Charger les scores au montage
   useEffect(() => {
-    async function load() {
+    const loadScores = async () => {
       const b = await getBestScore("cm2", "maths", "bilan");
+      const l = await getLastScore("cm2", "maths", "bilan");
       setBestScore(b);
-    }
-    load();
+      setLastScore(l);
+    };
+    loadScores();
   }, []);
 
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
@@ -226,10 +233,12 @@ export default function BilanCM2Maths() {
   const handleReponse = (option: string) => {
     if (selected) return;
     setSelected(option);
-    if (option === shuffledQuestions[qIndex].reponse) {
+    const correct = option === shuffledQuestions[qIndex].reponse;
+    if (correct) {
       const theme = shuffledQuestions[qIndex].theme;
       setScores((s) => ({ ...s, [theme]: s[theme] + 1 }));
       setTotalScore((s) => s + 1);
+      scoreRef.current += 1;
     }
   };
 
@@ -241,9 +250,14 @@ export default function BilanCM2Maths() {
           classe: "cm2",
           matiere: "maths",
           theme: "bilan",
-          score: totalScore,
+          score: scoreRef.current,
           total: 20,
         });
+        // Rafraîchir les données locales
+        const b = await getBestScore("cm2", "maths", "bilan");
+        const l = await getLastScore("cm2", "maths", "bilan");
+        setBestScore(b);
+        setLastScore(l);
       }
       setEtape("fini");
     } else {
@@ -254,6 +268,7 @@ export default function BilanCM2Maths() {
 
   const handleRecommencer = () => {
     isSaving.current = false;
+    scoreRef.current = 0;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -261,14 +276,16 @@ export default function BilanCM2Maths() {
     setTotalScore(0);
   };
 
-  const mention =
-    totalScore >= 18
-      ? { label: "Expert !", icon: "🏆", color: "#2ec4b6" }
-      : totalScore >= 14
-        ? { label: "Très bien !", icon: "⭐", color: "#4f8ef7" }
-        : totalScore >= 10
-          ? { label: "Pas mal !", icon: "👍", color: "#ffd166" }
-          : { label: "À réviser !", icon: "💪", color: "#ff6b6b" };
+  const getMention = (score: number) => {
+    if (score >= 18) return { label: "Expert !", icon: "🏆", color: "#2ec4b6" };
+    if (score >= 14)
+      return { label: "Très bien !", icon: "⭐", color: "#4f8ef7" };
+    if (score >= 10)
+      return { label: "Pas mal !", icon: "👍", color: "#ffd166" };
+    return { label: "À réviser !", icon: "💪", color: "#ff6b6b" };
+  };
+
+  const mention = getMention(totalScore);
 
   return (
     <div className="cours-page">
@@ -290,36 +307,102 @@ export default function BilanCM2Maths() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CM2</div>
           <h1 className="lecon-titre">Bilan Final — CM2 Mathématiques</h1>
-          {bestScore && (
-            <div className="record-badge" style={{ marginBottom: "20px" }}>
-              🏆 Meilleur score : {bestScore.score}/20
+
+          {/* Records personnels */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46, 196, 182, 0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Record
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
             </div>
           )}
+
           <p className="lecon-intro">
             Dernière étape ! 20 questions pour valider ton année de CM2.
           </p>
           <div className="bilan-info-grid">
-            {Object.entries(themeLabels).map(([key, label]) => (
-              <div
-                key={key}
-                className="bilan-info-card"
-                style={{ borderColor: themeColors[key] }}
-              >
-                <span>{label}</span>
-              </div>
-            ))}
+            <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
+              <span>🔢</span>
+              <span>5 questions de Décimaux</span>
+            </div>
+            <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
+              <span>🍕</span>
+              <span>5 questions de Fractions</span>
+            </div>
+            <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
+              <span>📐</span>
+              <span>5 questions de Géométrie</span>
+            </div>
+            <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
+              <span>📊</span>
+              <span>5 questions de Statistiques</span>
+            </div>
+          </div>
+          <div className="bilan-score-info">
+            Score final sur <strong>20</strong>
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
-            Commencer le test →
+            Commencer le bilan →
           </button>
         </div>
       )}
 
-      {etape === "qcm" && (
+      {etape === "qcm" && shuffledQuestions[qIndex] && (
         <>
           <div className="progression-wrapper">
             <div className="progression-info">
-              <span>Question {qIndex + 1} / 20</span>
+              <span>
+                Question {qIndex + 1} / {shuffledQuestions.length}
+              </span>
               <span
                 style={{ color: themeColors[shuffledQuestions[qIndex].theme] }}
               >
@@ -338,31 +421,47 @@ export default function BilanCM2Maths() {
               {shuffledQuestions[qIndex].question}
             </div>
             <div className="qcm-options">
-              {shuffledOptions.map((opt) => (
-                <button
-                  key={opt}
-                  className={`qcm-option ${selected ? (opt === shuffledQuestions[qIndex].reponse ? "correct" : opt === selected ? "incorrect" : "disabled") : ""}`}
-                  onClick={() => handleReponse(opt)}
-                >
-                  {opt}
-                </button>
-              ))}
+              {shuffledOptions.map((opt) => {
+                let className = "qcm-option";
+                if (selected) {
+                  if (opt === shuffledQuestions[qIndex].reponse)
+                    className += " correct";
+                  else if (opt === selected) className += " incorrect";
+                  else className += " disabled";
+                }
+                return (
+                  <button
+                    key={opt}
+                    className={className}
+                    onClick={() => handleReponse(opt)}
+                  >
+                    {opt}
+                  </button>
+                );
+              })}
             </div>
             {selected && (
               <div
                 className={`qcm-feedback ${selected === shuffledQuestions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
               >
-                <strong>
-                  {selected === shuffledQuestions[qIndex].reponse
-                    ? "Excellent !"
-                    : "Oups..."}
-                </strong>
-                <p>{shuffledQuestions[qIndex].explication}</p>
+                <div className="feedback-icon">
+                  {selected === shuffledQuestions[qIndex].reponse ? "✅" : "❌"}
+                </div>
+                <div className="feedback-texte">
+                  <strong>
+                    {selected === shuffledQuestions[qIndex].reponse
+                      ? "Bravo !"
+                      : "Pas tout à fait..."}
+                  </strong>
+                  <p>{shuffledQuestions[qIndex].explication}</p>
+                </div>
               </div>
             )}
             {selected && (
               <button className="lecon-btn" onClick={handleSuivant}>
-                {qIndex + 1 >= 20 ? "Résultats →" : "Question suivante →"}
+                {qIndex + 1 >= shuffledQuestions.length
+                  ? "Voir mon bilan →"
+                  : "Question suivante →"}
               </button>
             )}
           </div>
@@ -378,7 +477,21 @@ export default function BilanCM2Maths() {
           <div className="resultat-score" style={{ color: mention.color }}>
             {totalScore} / 20
           </div>
+
+          {bestScore && totalScore < bestScore.score && (
+            <div
+              style={{
+                fontSize: "0.9rem",
+                color: "#888",
+                marginBottom: "15px",
+              }}
+            >
+              Record à battre : {bestScore.score}/20
+            </div>
+          )}
+
           <div className="bilan-detail">
+            <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (
               <div key={theme} className="bilan-detail-row">
                 <span className="bilan-detail-label">{themeLabels[theme]}</span>
@@ -395,15 +508,24 @@ export default function BilanCM2Maths() {
               </div>
             ))}
           </div>
+          <p className="resultat-desc">
+            {totalScore >= 18
+              ? "Bravo, tu es un(e) champion(ne) des maths ! 🚀"
+              : totalScore >= 14
+                ? "Très bon niveau !"
+                : totalScore >= 10
+                  ? "Tu progresses bien !"
+                  : "Courage ! Reprends les leçons et réessaie."}
+          </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
-              🔄 Réessayer
+              🔄 Recommencer
             </button>
             <button
               className="lecon-btn"
               onClick={() => router.push("/cours/primaire/cm2/maths")}
             >
-              Retour aux thèmes
+              Retour aux thèmes →
             </button>
           </div>
         </div>
