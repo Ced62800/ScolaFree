@@ -9,28 +9,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le présent et l'imparfait",
+  titre: "Les homophones et accords avancés",
   intro:
-    "En CE2, on approfondit deux temps essentiels : le présent (ce qui se passe maintenant ou habituellement) et l'imparfait (une habitude ou une description dans le passé).",
+    "En CE2, on approfondit les homophones grammaticaux et on apprend de nouveaux accords. Il faut bien distinguer les mots qui se prononcent pareil mais s'écrivent différemment !",
   points: [
     {
-      titre: "Le présent",
+      titre: "ces / ses / c'est / s'est",
       texte:
-        "On utilise le présent pour ce qui se passe maintenant ou habituellement. Les verbes en -er prennent les terminaisons : -e, -es, -e, -ons, -ez, -ent.",
-      exemple: "Je mange. · Tu joues. · Nous finissons. · Ils chantent.",
-    },
-    {
-      titre: "L'imparfait",
-      texte:
-        "On utilise l'imparfait pour une habitude passée ou une description dans le passé. Terminaisons : -ais, -ais, -ait, -ions, -iez, -aient.",
-      exemple: "Je mangeais. · Tu jouais. · Nous allions. · Ils chantaient.",
-    },
-    {
-      titre: "Comment les distinguer ?",
-      texte:
-        "Le présent va avec 'maintenant', 'aujourd'hui'. L'imparfait va avec 'autrefois', 'quand j'étais petit', 'tous les jours (dans le passé)'.",
+        "'ces' est un déterminant pluriel (ces enfants). 'ses' indique la possession (ses affaires). 'c'est' = cela est. 's'est' vient d'un verbe pronominal.",
       exemple:
-        "Aujourd'hui je lis. (présent) · Avant, je lisais chaque soir. (imparfait)",
+        "Ces fleurs sont belles. · Il prend ses affaires. · C'est beau. · Il s'est levé.",
+    },
+    {
+      titre: "leur / leurs",
+      texte:
+        "'leur' sans -s remplace 'à eux/elles' (je leur parle). 'leurs' avec -s est un déterminant pluriel (leurs affaires).",
+      exemple: "Je leur parle. · Ils rangent leurs affaires.",
+    },
+    {
+      titre: "tout / tous / toute / toutes",
+      texte:
+        "'tout' s'accorde avec le nom qu'il accompagne. Masculin singulier : tout, masculin pluriel : tous, féminin singulier : toute, féminin pluriel : toutes.",
+      exemple:
+        "Tout le monde. · Tous les élèves. · Toute la classe. · Toutes les filles.",
     },
   ],
 };
@@ -38,100 +39,92 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question:
-      "Quel temps est utilisé : 'Quand j'étais petit, je jouais au ballon' ?",
-    options: ["présent", "imparfait", "futur", "passé composé"],
-    reponse: "imparfait",
-    explication:
-      "'jouais' est à l'imparfait — c'était une habitude dans le passé.",
+    question: "Complète : '___ enfants jouent dans la cour.'",
+    options: ["Ses", "Ces", "C'est", "S'est"],
+    reponse: "Ces",
+    explication: "'Ces' est un déterminant pluriel (= ces enfants-là).",
     niveau: "facile",
   },
   {
     id: 2,
-    question:
-      "Complète à l'imparfait : 'Nous ___ au parc tous les dimanches.' (aller)",
-    options: ["allons", "irons", "allions", "allez"],
-    reponse: "allions",
-    explication: "À l'imparfait avec 'nous', on dit 'allions'.",
+    question: "Complète : 'Il range ___ affaires.'",
+    options: ["ces", "c'est", "ses", "s'est"],
+    reponse: "ses",
+    explication:
+      "'ses' indique la possession (ses affaires = les affaires de lui).",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète au présent : 'Tu ___ tes devoirs.' (finir)",
-    options: ["finissais", "finiras", "finissez", "finis"],
-    reponse: "finis",
-    explication: "Au présent avec 'tu', le verbe finir donne 'finis'.",
+    question: "Complète : '___ une belle journée.'",
+    options: ["Ces", "Ses", "S'est", "C'est"],
+    reponse: "C'est",
+    explication: "'C'est' = cela est.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète à l'imparfait : 'Il ___ très fort.' (pleuvoir)",
-    options: ["pleut", "pleuvra", "pleuvait", "pleuvoir"],
-    reponse: "pleuvait",
-    explication: "À l'imparfait, 'pleuvoir' devient 'pleuvait'.",
+    question: "Complète : 'Je ___ parle tous les jours.' (leur/leurs)",
+    options: ["leurs", "leur"],
+    reponse: "leur",
+    explication: "'leur' sans -s remplace 'à eux' (je parle à eux).",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Quelle phrase est à l'imparfait ?",
-    options: [
-      "Je mange ma soupe.",
-      "Je mangerai ma soupe.",
-      "Je mangeais ma soupe.",
-      "Je mangerais ma soupe.",
-    ],
-    reponse: "Je mangeais ma soupe.",
-    explication: "'mangeais' est à l'imparfait — terminaison -ais.",
+    question: "Complète : 'Ils rangent ___ affaires.' (leur/leurs)",
+    options: ["leur", "leurs"],
+    reponse: "leurs",
+    explication: "'leurs' avec -s accompagne un nom pluriel (leurs affaires).",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète au présent : 'Nous ___ une chanson.' (chanter)",
-    options: ["chantions", "chanterons", "chantons", "chantez"],
-    reponse: "chantons",
-    explication: "Au présent avec 'nous', on dit 'chantons'.",
+    question: "Complète : '___ les élèves ont réussi.' (tout/tous)",
+    options: ["Tout", "Toute", "Tous", "Toutes"],
+    reponse: "Tous",
+    explication: "'élèves' est masculin pluriel → 'tous'.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Complète à l'imparfait : 'Les enfants ___ souvent.' (rire)",
-    options: ["rient", "riront", "riaient", "riez"],
-    reponse: "riaient",
-    explication: "À l'imparfait avec 'ils', on dit 'riaient'.",
+    question: "Complète : '___ la classe a bien travaillé.' (tout/toute)",
+    options: ["Tout", "Tous", "Toutes", "Toute"],
+    reponse: "Toute",
+    explication: "'classe' est féminin singulier → 'toute'.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quelle terminaison correspond à l'imparfait avec 'tu' ?",
-    options: ["-ras", "-ais", "-es", "-as"],
-    reponse: "-ais",
-    explication: "À l'imparfait avec 'tu', la terminaison est toujours -ais.",
+    question: "Complète : 'Il ___ levé tôt ce matin.' (s'est/c'est)",
+    options: ["c'est", "ces", "s'est", "ses"],
+    reponse: "s'est",
+    explication: "'s'est levé' vient du verbe pronominal 'se lever'.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Complète : 'Autrefois, les gens ___ sans électricité.' (vivre)",
-    options: ["vivent", "vivront", "vivaient", "vivez"],
-    reponse: "vivaient",
-    explication: "'Autrefois' indique une habitude dans le passé → imparfait.",
+    question: "Complète : 'Je ___ donne un cadeau.' (leur/leurs)",
+    options: ["leurs", "leur"],
+    reponse: "leur",
+    explication: "'leur' sans -s = à eux (je donne à eux un cadeau).",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Quel mot indique qu'on doit utiliser l'imparfait ?",
-    options: ["demain", "aujourd'hui", "autrefois", "maintenant"],
-    reponse: "autrefois",
-    explication:
-      "'Autrefois' indique une action passée habituellement → imparfait.",
+    question: "Complète : '___ les filles chantent bien.' (tout/toutes)",
+    options: ["Tout", "Tous", "Toute", "Toutes"],
+    reponse: "Toutes",
+    explication: "'filles' est féminin pluriel → 'toutes'.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce2";
 const MATIERE = "francais";
-const THEME = "conjugaison";
+const THEME = "orthographe-2";
 
-export default function ConjugaisonCE2() {
+export default function OrthographeCE2Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -209,7 +202,9 @@ export default function ConjugaisonCE2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -218,7 +213,7 @@ export default function ConjugaisonCE2() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Conjugaison</span>
+          <span className="breadcrumb-active">Orthographe 2</span>
         </div>
       </div>
 
@@ -243,7 +238,7 @@ export default function ConjugaisonCE2() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">⏰ Conjugaison · CE2</div>
+          <div className="lecon-badge">✏️ Orthographe 2 · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -378,7 +373,7 @@ export default function ConjugaisonCE2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le présent et l'imparfait ! 🚀"
+              ? "Tu maîtrises parfaitement les homophones ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -392,7 +387,7 @@ export default function ConjugaisonCE2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

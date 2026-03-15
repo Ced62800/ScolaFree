@@ -18,7 +18,7 @@ const themes = [
     label: "Conjugaison",
     emoji: "⏰",
     color: "#2ec4b6",
-    desc: "Présent, Imparfait et Futur",
+    desc: "Le présent et l'imparfait",
     nb: 10,
   },
   {
@@ -44,18 +44,14 @@ export default function FrancaisCE2() {
   const [bestScores, setBestScores] = useState<
     Record<string, { score: number; total: number } | null>
   >({});
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
-      // On ne récupère plus la moyenne globale ici
-
       const bests: Record<string, { score: number; total: number } | null> = {};
       for (const t of themes) {
         bests[t.id] = await getBestScore("ce2", "francais", t.id);
       }
       setBestScores(bests);
-      setLoading(false);
     };
     fetchStats();
   }, []);
@@ -99,7 +95,6 @@ export default function FrancaisCE2() {
               <div className="theme-emoji">{t.emoji}</div>
               <div className="theme-label">{t.label}</div>
               <div className="theme-desc">{t.desc}</div>
-
               {best && (
                 <div
                   style={{
@@ -112,7 +107,6 @@ export default function FrancaisCE2() {
                   Record : {best.score}/{best.total}
                 </div>
               )}
-
               <div className="theme-nb">{t.nb} exercices</div>
               <div className="theme-arrow">Commencer →</div>
             </div>
@@ -123,18 +117,46 @@ export default function FrancaisCE2() {
       <div style={{ marginTop: "40px", textAlign: "center" }}>
         <button
           onClick={() => router.push("/cours/primaire/ce2/francais/bilan")}
-          className="bilan-button"
           style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
             background: "linear-gradient(135deg, #ffd166, #ff6b6b)",
             color: "#1a1a2e",
+            fontWeight: 800,
+            fontSize: "1.1rem",
             padding: "16px 32px",
             borderRadius: "16px",
-            fontWeight: 800,
             border: "none",
             cursor: "pointer",
+            boxShadow: "0 4px 20px rgba(255,209,102,0.3)",
           }}
         >
           🎯 Bilan Final Français CE2
+        </button>
+        <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
+          Teste toutes tes connaissances du CE2 en une seule fois !
+        </p>
+      </div>
+
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <button
+          onClick={() => router.push("/cours/primaire/ce2/francais/page-2")}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            background: "rgba(255,255,255,0.06)",
+            color: "#fff",
+            fontWeight: 700,
+            fontSize: "1rem",
+            padding: "14px 28px",
+            borderRadius: "16px",
+            border: "1px solid rgba(255,255,255,0.15)",
+            cursor: "pointer",
+          }}
+        >
+          📚 Cours suivants — Partie 2 →
         </button>
       </div>
     </div>

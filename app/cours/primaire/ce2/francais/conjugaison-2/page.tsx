@@ -9,28 +9,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le présent et l'imparfait",
+  titre: "Le passé composé et le futur",
   intro:
-    "En CE2, on approfondit deux temps essentiels : le présent (ce qui se passe maintenant ou habituellement) et l'imparfait (une habitude ou une description dans le passé).",
+    "En CE2, on apprend deux nouveaux temps : le passé composé (une action terminée dans le passé) et le futur simple (une action qui aura lieu).",
   points: [
     {
-      titre: "Le présent",
+      titre: "Le passé composé",
       texte:
-        "On utilise le présent pour ce qui se passe maintenant ou habituellement. Les verbes en -er prennent les terminaisons : -e, -es, -e, -ons, -ez, -ent.",
-      exemple: "Je mange. · Tu joues. · Nous finissons. · Ils chantent.",
+        "Le passé composé se forme avec l'auxiliaire avoir ou être au présent + le participe passé. Il exprime une action terminée.",
+      exemple:
+        "J'ai mangé. · Tu as joué. · Elle est partie. · Nous avons chanté.",
     },
     {
-      titre: "L'imparfait",
+      titre: "Le futur simple",
       texte:
-        "On utilise l'imparfait pour une habitude passée ou une description dans le passé. Terminaisons : -ais, -ais, -ait, -ions, -iez, -aient.",
-      exemple: "Je mangeais. · Tu jouais. · Nous allions. · Ils chantaient.",
+        "Le futur simple exprime une action qui se passera. Terminaisons : -rai, -ras, -ra, -rons, -rez, -ront.",
+      exemple: "Je mangerai. · Tu joueras. · Il viendra. · Nous partirons.",
     },
     {
       titre: "Comment les distinguer ?",
       texte:
-        "Le présent va avec 'maintenant', 'aujourd'hui'. L'imparfait va avec 'autrefois', 'quand j'étais petit', 'tous les jours (dans le passé)'.",
+        "Le passé composé parle d'une action déjà terminée (hier, la semaine dernière). Le futur parle d'une action à venir (demain, bientôt).",
       exemple:
-        "Aujourd'hui je lis. (présent) · Avant, je lisais chaque soir. (imparfait)",
+        "Hier, j'ai mangé une pomme. (PC) · Demain, je mangerai une orange. (futur)",
     },
   ],
 };
@@ -38,100 +39,98 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question:
-      "Quel temps est utilisé : 'Quand j'étais petit, je jouais au ballon' ?",
-    options: ["présent", "imparfait", "futur", "passé composé"],
-    reponse: "imparfait",
+    question: "Quel temps est utilisé : 'Hier, il a mangé une pizza' ?",
+    options: ["présent", "imparfait", "passé composé", "futur"],
+    reponse: "passé composé",
     explication:
-      "'jouais' est à l'imparfait — c'était une habitude dans le passé.",
+      "'a mangé' = auxiliaire avoir + participe passé → passé composé.",
     niveau: "facile",
   },
   {
     id: 2,
-    question:
-      "Complète à l'imparfait : 'Nous ___ au parc tous les dimanches.' (aller)",
-    options: ["allons", "irons", "allions", "allez"],
-    reponse: "allions",
-    explication: "À l'imparfait avec 'nous', on dit 'allions'.",
+    question: "Complète au passé composé : 'Elle ___ ses devoirs.' (finir)",
+    options: ["finissait", "finira", "a fini", "finit"],
+    reponse: "a fini",
+    explication:
+      "Passé composé : avoir au présent + participe passé → 'a fini'.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète au présent : 'Tu ___ tes devoirs.' (finir)",
-    options: ["finissais", "finiras", "finissez", "finis"],
-    reponse: "finis",
-    explication: "Au présent avec 'tu', le verbe finir donne 'finis'.",
+    question: "Complète au futur : 'Demain, nous ___ en vacances.' (partir)",
+    options: ["partions", "partons", "partirons", "sommes partis"],
+    reponse: "partirons",
+    explication: "Au futur avec 'nous', on dit 'partirons'.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète à l'imparfait : 'Il ___ très fort.' (pleuvoir)",
-    options: ["pleut", "pleuvra", "pleuvait", "pleuvoir"],
-    reponse: "pleuvait",
-    explication: "À l'imparfait, 'pleuvoir' devient 'pleuvait'.",
+    question:
+      "Quel auxiliaire utilise-t-on avec les verbes de mouvement au passé composé ?",
+    options: ["avoir", "être", "aller", "faire"],
+    reponse: "être",
+    explication:
+      "Les verbes de mouvement (aller, partir, arriver...) utilisent 'être'.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Quelle phrase est à l'imparfait ?",
-    options: [
-      "Je mange ma soupe.",
-      "Je mangerai ma soupe.",
-      "Je mangeais ma soupe.",
-      "Je mangerais ma soupe.",
-    ],
-    reponse: "Je mangeais ma soupe.",
-    explication: "'mangeais' est à l'imparfait — terminaison -ais.",
+    question: "Quelle phrase est au passé composé ?",
+    options: ["Il mange.", "Il mangera.", "Il mangeait.", "Il a mangé."],
+    reponse: "Il a mangé.",
+    explication: "'a mangé' = auxiliaire avoir + participe passé.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète au présent : 'Nous ___ une chanson.' (chanter)",
-    options: ["chantions", "chanterons", "chantons", "chantez"],
-    reponse: "chantons",
-    explication: "Au présent avec 'nous', on dit 'chantons'.",
+    question: "Complète au passé composé : 'Nous ___ au cinéma.' (aller)",
+    options: ["allons", "allions", "irons", "sommes allés"],
+    reponse: "sommes allés",
+    explication: "'Aller' utilise 'être' → nous sommes allés.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Complète à l'imparfait : 'Les enfants ___ souvent.' (rire)",
-    options: ["rient", "riront", "riaient", "riez"],
-    reponse: "riaient",
-    explication: "À l'imparfait avec 'ils', on dit 'riaient'.",
+    question: "Complète au futur : 'Ils ___ le match.' (gagner)",
+    options: ["gagnaient", "gagnent", "gagneront", "ont gagné"],
+    reponse: "gagneront",
+    explication: "Au futur avec 'ils', on ajoute -ront : 'gagneront'.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quelle terminaison correspond à l'imparfait avec 'tu' ?",
-    options: ["-ras", "-ais", "-es", "-as"],
-    reponse: "-ais",
-    explication: "À l'imparfait avec 'tu', la terminaison est toujours -ais.",
+    question: "Complète au passé composé : 'Tu ___ la vérité.' (dire)",
+    options: ["disais", "diras", "as dit", "dis"],
+    reponse: "as dit",
+    explication:
+      "Passé composé : avoir au présent + participe passé de dire → 'as dit'.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Complète : 'Autrefois, les gens ___ sans électricité.' (vivre)",
-    options: ["vivent", "vivront", "vivaient", "vivez"],
-    reponse: "vivaient",
-    explication: "'Autrefois' indique une habitude dans le passé → imparfait.",
+    question: "Quelle phrase est au futur ?",
+    options: ["J'ai couru.", "Je courais.", "Je cours.", "Je courrai."],
+    reponse: "Je courrai.",
+    explication: "'courrai' est au futur — terminaison -rai.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Quel mot indique qu'on doit utiliser l'imparfait ?",
-    options: ["demain", "aujourd'hui", "autrefois", "maintenant"],
-    reponse: "autrefois",
+    question:
+      "Complète au passé composé : 'Les élèves ___ leurs exercices.' (rendre)",
+    options: ["rendent", "rendaient", "ont rendu", "rendront"],
+    reponse: "ont rendu",
     explication:
-      "'Autrefois' indique une action passée habituellement → imparfait.",
+      "Passé composé : avoir au présent + participe passé de rendre → 'ont rendu'.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce2";
 const MATIERE = "francais";
-const THEME = "conjugaison";
+const THEME = "conjugaison-2";
 
-export default function ConjugaisonCE2() {
+export default function ConjugaisonCE2Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -209,7 +208,9 @@ export default function ConjugaisonCE2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -218,7 +219,7 @@ export default function ConjugaisonCE2() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Conjugaison</span>
+          <span className="breadcrumb-active">Conjugaison 2</span>
         </div>
       </div>
 
@@ -243,7 +244,7 @@ export default function ConjugaisonCE2() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">⏰ Conjugaison · CE2</div>
+          <div className="lecon-badge">⏰ Conjugaison 2 · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -378,7 +379,7 @@ export default function ConjugaisonCE2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le présent et l'imparfait ! 🚀"
+              ? "Tu maîtrises parfaitement le passé composé et le futur ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -392,7 +393,7 @@ export default function ConjugaisonCE2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

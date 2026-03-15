@@ -9,28 +9,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le présent et l'imparfait",
+  titre: "Les compléments et la ponctuation",
   intro:
-    "En CE2, on approfondit deux temps essentiels : le présent (ce qui se passe maintenant ou habituellement) et l'imparfait (une habitude ou une description dans le passé).",
+    "En CE2, on apprend à enrichir ses phrases avec des compléments et à bien les ponctuer. Un complément apporte des informations supplémentaires sur l'action.",
   points: [
     {
-      titre: "Le présent",
+      titre: "Le complément de lieu et de temps",
       texte:
-        "On utilise le présent pour ce qui se passe maintenant ou habituellement. Les verbes en -er prennent les terminaisons : -e, -es, -e, -ons, -ez, -ent.",
-      exemple: "Je mange. · Tu joues. · Nous finissons. · Ils chantent.",
-    },
-    {
-      titre: "L'imparfait",
-      texte:
-        "On utilise l'imparfait pour une habitude passée ou une description dans le passé. Terminaisons : -ais, -ais, -ait, -ions, -iez, -aient.",
-      exemple: "Je mangeais. · Tu jouais. · Nous allions. · Ils chantaient.",
-    },
-    {
-      titre: "Comment les distinguer ?",
-      texte:
-        "Le présent va avec 'maintenant', 'aujourd'hui'. L'imparfait va avec 'autrefois', 'quand j'étais petit', 'tous les jours (dans le passé)'.",
+        "Le complément de lieu répond à 'où ?' et le complément de temps répond à 'quand ?'. On peut les déplacer ou les supprimer.",
       exemple:
-        "Aujourd'hui je lis. (présent) · Avant, je lisais chaque soir. (imparfait)",
+        "Le chat dort dans le jardin. (où ?) · Il joue le matin. (quand ?)",
+    },
+    {
+      titre: "Le complément d'objet direct (COD)",
+      texte:
+        "Le COD répond à 'qui ?' ou 'quoi ?' après le verbe. On ne peut pas le déplacer facilement.",
+      exemple:
+        "Marie mange une pomme. (mange quoi ? → une pomme) · Il lit un livre.",
+    },
+    {
+      titre: "La ponctuation",
+      texte:
+        "La ponctuation aide à comprendre les phrases. Le point (.) termine une phrase. La virgule (,) sépare des éléments. Le point d'interrogation (?) pose une question.",
+      exemple: "Le chien aboie. · Léa, Tom et Paul jouent. · Où vas-tu ?",
     },
   ],
 };
@@ -39,99 +40,103 @@ const questions = [
   {
     id: 1,
     question:
-      "Quel temps est utilisé : 'Quand j'étais petit, je jouais au ballon' ?",
-    options: ["présent", "imparfait", "futur", "passé composé"],
-    reponse: "imparfait",
-    explication:
-      "'jouais' est à l'imparfait — c'était une habitude dans le passé.",
+      "Dans 'Le chat dort dans le jardin', quel est le complément de lieu ?",
+    options: ["Le chat", "dort", "dans le jardin", "le"],
+    reponse: "dans le jardin",
+    explication: "'dans le jardin' répond à 'où ?' → complément de lieu.",
     niveau: "facile",
   },
   {
     id: 2,
-    question:
-      "Complète à l'imparfait : 'Nous ___ au parc tous les dimanches.' (aller)",
-    options: ["allons", "irons", "allions", "allez"],
-    reponse: "allions",
-    explication: "À l'imparfait avec 'nous', on dit 'allions'.",
+    question: "Dans 'Marie mange une pomme', quel est le COD ?",
+    options: ["Marie", "mange", "une pomme", "une"],
+    reponse: "une pomme",
+    explication: "Mange quoi ? → une pomme. C'est le COD.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète au présent : 'Tu ___ tes devoirs.' (finir)",
-    options: ["finissais", "finiras", "finissez", "finis"],
-    reponse: "finis",
-    explication: "Au présent avec 'tu', le verbe finir donne 'finis'.",
+    question: "Quel signe de ponctuation termine une phrase affirmative ?",
+    options: ["?", "!", ",", "."],
+    reponse: ".",
+    explication: "Le point (.) termine une phrase affirmative.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète à l'imparfait : 'Il ___ très fort.' (pleuvoir)",
-    options: ["pleut", "pleuvra", "pleuvait", "pleuvoir"],
-    reponse: "pleuvait",
-    explication: "À l'imparfait, 'pleuvoir' devient 'pleuvait'.",
+    question: "Dans 'Il joue le matin', quel est le complément de temps ?",
+    options: ["Il", "joue", "le matin", "le"],
+    reponse: "le matin",
+    explication: "'le matin' répond à 'quand ?' → complément de temps.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Quelle phrase est à l'imparfait ?",
-    options: [
-      "Je mange ma soupe.",
-      "Je mangerai ma soupe.",
-      "Je mangeais ma soupe.",
-      "Je mangerais ma soupe.",
-    ],
-    reponse: "Je mangeais ma soupe.",
-    explication: "'mangeais' est à l'imparfait — terminaison -ais.",
+    question: "Dans 'Léa lit un roman', le COD est...",
+    options: ["Léa", "lit", "un roman", "un"],
+    reponse: "un roman",
+    explication: "Lit quoi ? → un roman. C'est le COD.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète au présent : 'Nous ___ une chanson.' (chanter)",
-    options: ["chantions", "chanterons", "chantons", "chantez"],
-    reponse: "chantons",
-    explication: "Au présent avec 'nous', on dit 'chantons'.",
+    question: "Quelle phrase est correctement ponctuée ?",
+    options: [
+      "Le chien aboie",
+      "Le chien aboie.",
+      "le chien aboie.",
+      "Le chien, aboie.",
+    ],
+    reponse: "Le chien aboie.",
+    explication: "Majuscule au début, point à la fin.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Complète à l'imparfait : 'Les enfants ___ souvent.' (rire)",
-    options: ["rient", "riront", "riaient", "riez"],
-    reponse: "riaient",
-    explication: "À l'imparfait avec 'ils', on dit 'riaient'.",
+    question: "Quel signe utilise-t-on pour poser une question ?",
+    options: [".", "!", "?", ","],
+    reponse: "?",
+    explication: "Le point d'interrogation (?) pose une question.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quelle terminaison correspond à l'imparfait avec 'tu' ?",
-    options: ["-ras", "-ais", "-es", "-as"],
-    reponse: "-ais",
-    explication: "À l'imparfait avec 'tu', la terminaison est toujours -ais.",
+    question:
+      "Dans 'Le soir, il regarde la télé', quel est le complément de temps ?",
+    options: ["Le soir", "il", "regarde", "la télé"],
+    reponse: "Le soir",
+    explication: "'Le soir' répond à 'quand ?' → complément de temps.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Complète : 'Autrefois, les gens ___ sans électricité.' (vivre)",
-    options: ["vivent", "vivront", "vivaient", "vivez"],
-    reponse: "vivaient",
-    explication: "'Autrefois' indique une habitude dans le passé → imparfait.",
+    question:
+      "Dans 'Paul joue au foot dans le parc', le complément de lieu est...",
+    options: ["Paul", "joue", "au foot", "dans le parc"],
+    reponse: "dans le parc",
+    explication: "'dans le parc' répond à 'où ?' → complément de lieu.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Quel mot indique qu'on doit utiliser l'imparfait ?",
-    options: ["demain", "aujourd'hui", "autrefois", "maintenant"],
-    reponse: "autrefois",
-    explication:
-      "'Autrefois' indique une action passée habituellement → imparfait.",
+    question: "Quelle phrase contient un COD ?",
+    options: [
+      "Il court vite.",
+      "Elle mange une orange.",
+      "Nous partons demain.",
+      "Tu dors bien.",
+    ],
+    reponse: "Elle mange une orange.",
+    explication: "Mange quoi ? → une orange. C'est le COD.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce2";
 const MATIERE = "francais";
-const THEME = "conjugaison";
+const THEME = "grammaire-2";
 
-export default function ConjugaisonCE2() {
+export default function GrammaireCE2Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -209,7 +214,9 @@ export default function ConjugaisonCE2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -218,7 +225,7 @@ export default function ConjugaisonCE2() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Conjugaison</span>
+          <span className="breadcrumb-active">Grammaire 2</span>
         </div>
       </div>
 
@@ -243,7 +250,7 @@ export default function ConjugaisonCE2() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">⏰ Conjugaison · CE2</div>
+          <div className="lecon-badge">📝 Grammaire 2 · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -378,7 +385,7 @@ export default function ConjugaisonCE2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le présent et l'imparfait ! 🚀"
+              ? "Tu maîtrises parfaitement les compléments ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -392,7 +399,7 @@ export default function ConjugaisonCE2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →
