@@ -45,6 +45,7 @@ const classes = [
 export default function PrimairePage() {
   const router = useRouter();
   const [maClasse, setMaClasse] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [chargement, setChargement] = useState(true);
 
   useEffect(() => {
@@ -55,21 +56,23 @@ export default function PrimairePage() {
       if (user) {
         const { data: profile } = await supabase
           .from("profiles")
-          .select("classe")
+          .select("classe, role")
           .eq("id", user.id)
           .single();
         if (profile?.classe) setMaClasse(profile.classe);
+        if (profile?.role === "admin") setIsAdmin(true);
       }
-      setChargement(false); // chargement terminé dans tous les cas
+      setChargement(false);
     };
     getClasse();
   }, []);
 
   const handleClick = (id: string) => {
-    // Bloqué pendant le chargement
     if (chargement) return;
-    // Si pas connecté → accès libre
-    // Si connecté → seulement sa classe
+    if (isAdmin) {
+      router.push(`/cours/primaire/${id}`);
+      return;
+    }
     if (maClasse === null || maClasse === id) {
       router.push(`/cours/primaire/${id}`);
     }
@@ -94,14 +97,14 @@ export default function PrimairePage() {
         <p className="cours-hero-desc">Choisis ta classe pour commencer !</p>
       </div>
 
-      {/* Pendant le chargement toutes les cartes sont grises */}
       <div
         className="themes-grid"
         style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
       >
         {classes.map((c) => {
           const estMaClasse = !chargement && maClasse === c.id;
-          const estBloquee = !chargement && maClasse !== null && !estMaClasse;
+          const estBloquee =
+            !chargement && !isAdmin && maClasse !== null && !estMaClasse;
 
           return (
             <div
@@ -110,10 +113,15 @@ export default function PrimairePage() {
               onClick={() => handleClick(c.id)}
               style={
                 {
-                  "--card-color": estMaClasse ? c.color : "#444",
+                  "--card-color": estMaClasse
+                    ? c.color
+                    : isAdmin
+                      ? c.color
+                      : "#666",
                   position: "relative",
+                  opacity: estBloquee ? 0.55 : 1,
                   filter: estBloquee
-                    ? "grayscale(80%) brightness(0.4)"
+                    ? "grayscale(50%) brightness(0.7)"
                     : "none",
                   boxShadow: estMaClasse ? `0 0 24px ${c.color}55` : "none",
                   border: estMaClasse
@@ -121,41 +129,72 @@ export default function PrimairePage() {
                     : "2px solid rgba(255,255,255,0.06)",
                   cursor: chargement || estBloquee ? "not-allowed" : "pointer",
                   transition: "all 0.2s",
+                  paddingTop:
+                    estMaClasse || estBloquee || isAdmin ? "44px" : undefined,
                 } as React.CSSProperties
               }
             >
+              {/* Badge Ma classe — INTÉRIEUR de la carte en haut */}
               {estMaClasse && (
                 <div
                   style={{
                     position: "absolute",
-                    top: "-12px",
-                    right: "-8px",
+                    top: "10px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
                     background: c.color,
                     color: "#fff",
-                    fontSize: "0.72rem",
+                    fontSize: "0.85rem",
                     fontWeight: 800,
-                    padding: "5px 12px",
+                    padding: "6px 16px",
                     borderRadius: "20px",
                     boxShadow: `0 4px 14px ${c.color}88`,
+                    whiteSpace: "nowrap",
+                    letterSpacing: "0.02em",
                   }}
                 >
                   ⭐ Ma classe
                 </div>
               )}
 
+              {/* Badge Admin */}
+              {isAdmin && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(255,209,102,0.15)",
+                    color: "#ffd166",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    padding: "6px 16px",
+                    borderRadius: "20px",
+                    border: "1px solid rgba(255,209,102,0.4)",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  ⚙️ Admin
+                </div>
+              )}
+
+              {/* Badge Autre classe */}
               {estBloquee && (
                 <div
                   style={{
                     position: "absolute",
-                    top: "-12px",
-                    right: "-8px",
-                    background: "rgba(255,255,255,0.08)",
-                    color: "#666",
-                    fontSize: "0.72rem",
+                    top: "10px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(255,255,255,0.07)",
+                    color: "#777",
+                    fontSize: "0.85rem",
                     fontWeight: 700,
-                    padding: "5px 12px",
+                    padding: "6px 16px",
                     borderRadius: "20px",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   🔒 Autre classe
@@ -165,21 +204,21 @@ export default function PrimairePage() {
               <div className="theme-emoji">{c.emoji}</div>
               <div
                 className="theme-label"
-                style={{ color: estBloquee ? "#555" : "#fff" }}
+                style={{ color: estBloquee ? "#888" : "#fff" }}
               >
                 {c.label}
               </div>
               <div
                 className="theme-desc"
-                style={{ color: estBloquee ? "#444" : "#aaa" }}
+                style={{ color: estBloquee ? "#666" : "#aaa" }}
               >
                 {c.desc}
               </div>
               <div
                 className="theme-arrow"
-                style={{ color: estMaClasse ? c.color : "#555" }}
+                style={{ color: estMaClasse || isAdmin ? c.color : "#666" }}
               >
-                {estMaClasse ? "Accéder →" : estBloquee ? "🔒" : "Choisir →"}
+                {estBloquee ? "🔒" : "Accéder →"}
               </div>
             </div>
           );
