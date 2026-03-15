@@ -1,36 +1,38 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
 const lecon = {
-  titre: "Le passé composé",
+  titre: "Le passé composé et l'imparfait",
   intro:
-    "Le passé composé sert à exprimer une action terminée dans le passé. On le forme avec l'auxiliaire 'avoir' ou 'être' au présent + le participe passé du verbe.",
+    "En CM1, on approfondit deux temps du passé : le passé composé (action terminée et ponctuelle) et l'imparfait (habitude ou description dans le passé).",
   points: [
     {
-      titre: "Formation avec 'avoir'",
+      titre: "Le passé composé",
       texte:
-        "La plupart des verbes utilisent 'avoir' comme auxiliaire. Le participe passé ne s'accorde pas avec le sujet.",
-      exemple: "J'ai mangé. · Tu as couru. · Il a fini. · Nous avons joué.",
+        "Le passé composé se forme avec l'auxiliaire avoir ou être au présent + le participe passé. Il exprime une action terminée et ponctuelle.",
+      exemple:
+        "J'ai mangé. · Elle est partie. · Nous avons joué. · Ils sont arrivés.",
     },
     {
-      titre: "Formation avec 'être'",
+      titre: "L'imparfait",
       texte:
-        "Les verbes de mouvement et les verbes pronominaux utilisent 'être'. Le participe passé s'accorde avec le sujet.",
+        "L'imparfait exprime une habitude passée ou une description. Terminaisons : -ais, -ais, -ait, -ions, -iez, -aient.",
       exemple:
-        "Je suis allé(e). · Elle est partie. · Ils sont arrivés. · Nous nous sommes levés.",
+        "Je mangeais. · Il jouait. · Nous allions au parc. · Elles chantaient.",
     },
     {
-      titre: "Passé composé vs imparfait",
+      titre: "Comment les distinguer ?",
       texte:
-        "Le passé composé exprime une action ponctuelle et terminée. L'imparfait exprime une habitude ou une action qui durait.",
+        "Le passé composé = action précise et terminée (hier, soudain, une fois). L'imparfait = habitude ou durée (avant, tous les jours, quand j'étais petit).",
       exemple:
-        "Hier, j'ai mangé une pizza. (ponctuel) · Avant, je mangeais des pizzas. (habitude)",
+        "Hier, j'ai mangé une pizza. (PC) · Avant, je mangeais des pizzas. (imparfait)",
     },
   ],
 };
@@ -39,11 +41,10 @@ const questions = [
   {
     id: 1,
     question:
-      "Quel auxiliaire utilise-t-on pour former le passé composé de 'manger' ?",
+      "Quel auxiliaire utilise-t-on pour le passé composé de 'manger' ?",
     options: ["être", "avoir", "aller", "faire"],
     reponse: "avoir",
-    explication:
-      "'manger' se conjugue avec 'avoir' au passé composé : j'ai mangé.",
+    explication: "'manger' se conjugue avec 'avoir' : j'ai mangé.",
     niveau: "facile",
   },
   {
@@ -51,7 +52,7 @@ const questions = [
     question: "Complète au passé composé : 'Elle ___ à l'école.' (aller)",
     options: ["a allé", "est allée", "a allée", "est allé"],
     reponse: "est allée",
-    explication: "'aller' se conjugue avec 'être'. Sujet féminin → 'allée'.",
+    explication: "'aller' utilise 'être'. Sujet féminin → 'allée'.",
     niveau: "facile",
   },
   {
@@ -64,32 +65,39 @@ const questions = [
   },
   {
     id: 4,
-    question: "Complète au passé composé : 'Nous ___ nos devoirs.' (faire)",
-    options: ["avons fait", "sommes fait", "avons fais", "avons faits"],
-    reponse: "avons fait",
-    explication: "'faire' se conjugue avec 'avoir' : nous avons fait.",
-    niveau: "moyen",
+    question: "Quel temps est : 'Quand j'étais petit, je jouais au ballon' ?",
+    options: ["présent", "passé composé", "imparfait", "futur"],
+    reponse: "imparfait",
+    explication: "'jouais' est à l'imparfait — habitude dans le passé.",
+    niveau: "facile",
   },
   {
     id: 5,
-    question: "Quelle phrase est au passé composé ?",
-    options: ["Je mangeais.", "Je mangerai.", "J'ai mangé.", "Je mange."],
-    reponse: "J'ai mangé.",
-    explication:
-      "'J'ai mangé' = auxiliaire avoir + participe passé → passé composé.",
+    question:
+      "Complète à l'imparfait : 'Nous ___ au parc tous les dimanches.' (aller)",
+    options: ["allons", "irons", "allions", "sommes allés"],
+    reponse: "allions",
+    explication: "À l'imparfait avec 'nous' : 'allions'.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète : 'Les élèves ___ bien travaillé.' (passé composé)",
-    options: ["ont", "sont", "avaient", "étaient"],
-    reponse: "ont",
-    explication:
-      "'travailler' se conjugue avec 'avoir' : les élèves ont travaillé.",
+    question: "Complète au passé composé : 'Nous ___ nos devoirs.' (faire)",
+    options: ["avons fait", "sommes fait", "avons fais", "avons faits"],
+    reponse: "avons fait",
+    explication: "'faire' utilise 'avoir' : nous avons fait.",
     niveau: "moyen",
   },
   {
     id: 7,
+    question: "Quelle phrase est à l'imparfait ?",
+    options: ["J'ai mangé.", "Je mangerai.", "Je mangeais.", "Je mange."],
+    reponse: "Je mangeais.",
+    explication: "'mangeais' est à l'imparfait — terminaison -ais.",
+    niveau: "moyen",
+  },
+  {
+    id: 8,
     question:
       "Quelle phrase utilise correctement le passé composé avec 'être' ?",
     options: [
@@ -99,12 +107,11 @@ const questions = [
       "Elle a partis.",
     ],
     reponse: "Elle est partie.",
-    explication:
-      "'partir' utilise 'être'. Sujet féminin → participe passé accordé : 'partie'.",
+    explication: "'partir' utilise 'être'. Sujet féminin → 'partie'.",
     niveau: "moyen",
   },
   {
-    id: 8,
+    id: 9,
     question: "Quelle est la différence entre 'Il mangeait' et 'Il a mangé' ?",
     options: [
       "Aucune différence.",
@@ -114,34 +121,23 @@ const questions = [
     ],
     reponse: "'mangeait' = habitude passée, 'a mangé' = action terminée.",
     explication:
-      "L'imparfait exprime une habitude, le passé composé une action ponctuelle terminée.",
-    niveau: "difficile",
-  },
-  {
-    id: 9,
-    question:
-      "Complète : 'Mes parents ___ en France.' (naître — passé composé)",
-    options: ["ont né", "sont nés", "ont nés", "sont né"],
-    reponse: "sont nés",
-    explication: "'naître' utilise 'être'. Sujet masculin pluriel → 'nés'.",
+      "L'imparfait exprime une habitude, le passé composé une action ponctuelle.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Quel verbe se conjugue avec 'être' au passé composé ?",
-    options: ["manger", "finir", "partir", "chanter"],
-    reponse: "partir",
+    question: "Complète : 'Autrefois, les gens ___ sans électricité.' (vivre)",
+    options: ["vivent", "vivront", "vivaient", "ont vécu"],
+    reponse: "vivaient",
     explication:
-      "'partir' est un verbe de mouvement qui se conjugue avec 'être'.",
+      "'Autrefois' = habitude dans le passé → imparfait : 'vivaient'.",
     niveau: "difficile",
   },
 ];
 
-const niveauLabel = (n: string) => {
-  if (n === "facile") return "🟢 Facile";
-  if (n === "moyen") return "🟡 Moyen";
-  return "🔴 Difficile";
-};
+const CLASSE = "cm1";
+const MATIERE = "francais";
+const THEME = "conjugaison";
 
 export default function ConjugaisonCM1() {
   const router = useRouter();
@@ -150,12 +146,26 @@ export default function ConjugaisonCM1() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -165,15 +175,33 @@ export default function ConjugaisonCM1() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
@@ -181,19 +209,22 @@ export default function ConjugaisonCM1() {
     setBonnes([]);
   };
 
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm1/francais")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CM1</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Français</span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Conjugaison</span>
         </div>
@@ -223,6 +254,50 @@ export default function ConjugaisonCM1() {
           <div className="lecon-badge">⏰ Conjugaison · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -311,12 +386,12 @@ export default function ConjugaisonCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le passé composé !"
+              ? "Tu maîtrises parfaitement le passé composé et l'imparfait ! 🚀"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
                   ? "Encore quelques efforts et tu y seras !"
-                  : "Relis la leçon et réessaie !"}
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -324,7 +399,9 @@ export default function ConjugaisonCM1() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm1/francais")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>

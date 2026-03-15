@@ -4,62 +4,62 @@ import { useRouter } from "next/navigation";
 
 const themes = [
   {
-    id: "grammaire",
-    label: "Grammaire",
+    id: "grammaire-2",
+    label: "Grammaire 2",
     emoji: "📝",
     color: "#4f8ef7",
-    desc: "La phrase simple et complexe",
+    desc: "L'accord du participe passé",
     nb: 10,
   },
   {
-    id: "conjugaison",
-    label: "Conjugaison",
+    id: "conjugaison-2",
+    label: "Conjugaison 2",
     emoji: "⏰",
     color: "#2ec4b6",
-    desc: "Le passé composé et l'imparfait",
+    desc: "Le futur simple",
     nb: 10,
   },
   {
-    id: "orthographe",
-    label: "Orthographe",
+    id: "orthographe-2",
+    label: "Orthographe 2",
     emoji: "✏️",
     color: "#ffd166",
-    desc: "Les homophones ces/ses, son/sont, ou/où",
+    desc: "Les préfixes et suffixes",
     nb: 10,
   },
   {
-    id: "vocabulaire",
-    label: "Vocabulaire",
+    id: "vocabulaire-2",
+    label: "Vocabulaire 2",
     emoji: "📚",
     color: "#ff6b6b",
-    desc: "Les niveaux de langue",
+    desc: "Les figures de style",
     nb: 10,
   },
 ];
 
-export default function FrancaisCM1() {
+export default function FrancaisCM1Page2() {
   const router = useRouter();
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm1")}
+          onClick={() => router.push("/cours/primaire/cm1/francais")}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Primaire</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CM1</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Français</span>
+          <span>Français</span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Partie 2</span>
         </div>
       </div>
       <div className="cours-hero">
         <div className="cours-hero-icon">📖</div>
         <h1 className="cours-hero-title">Français — CM1</h1>
-        <p className="cours-hero-desc">Cours Moyen 1 · 9 ans</p>
+        <p className="cours-hero-desc">Partie 2 · Second semestre</p>
       </div>
       <div className="themes-grid">
         {themes.map((t) => (
@@ -82,7 +82,7 @@ export default function FrancaisCM1() {
       </div>
       <div style={{ marginTop: "40px", textAlign: "center" }}>
         <button
-          onClick={() => router.push("/cours/primaire/cm1/francais/bilan")}
+          onClick={() => router.push("/cours/primaire/cm1/francais/bilan-2")}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -98,31 +98,11 @@ export default function FrancaisCM1() {
             boxShadow: "0 4px 20px rgba(255,209,102,0.3)",
           }}
         >
-          🎯 Bilan Final CM1 — 20 questions
+          🎯 Bilan CM1 Français Partie 2 — 20 questions
         </button>
         <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
-          Teste toutes tes connaissances du CM1 en une seule fois !
+          Teste toutes tes connaissances de la partie 2 !
         </p>
-      </div>
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <button
-          onClick={() => router.push("/cours/primaire/cm1/francais/page-2")}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "10px",
-            background: "rgba(255,255,255,0.06)",
-            color: "#fff",
-            fontWeight: 700,
-            fontSize: "1rem",
-            padding: "14px 28px",
-            borderRadius: "16px",
-            border: "1px solid rgba(255,255,255,0.15)",
-            cursor: "pointer",
-          }}
-        >
-          📚 Cours suivants — Partie 2 →
-        </button>
       </div>
     </div>
   );

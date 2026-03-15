@@ -1,35 +1,37 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
 const lecon = {
-  titre: "Les classes de mots",
+  titre: "La phrase simple et complexe",
   intro:
-    "En français, chaque mot appartient à une classe grammaticale. Reconnaître la classe d'un mot permet de mieux comprendre la phrase et de mieux l'écrire !",
+    "En CM1, on apprend à reconnaître et construire des phrases simples et complexes, et à identifier les classes de mots qui les composent.",
   points: [
     {
-      titre: "Le nom, le déterminant et l'adjectif",
+      titre: "La phrase simple",
       texte:
-        "Le nom désigne une personne, un animal ou une chose. Le déterminant accompagne le nom (le, la, un, une, mon...). L'adjectif qualifie le nom.",
+        "Une phrase simple contient un seul verbe conjugué. Elle a un sujet et un prédicat. On peut identifier les classes de mots : nom, déterminant, adjectif, verbe, pronom.",
+      exemple: "Le petit chien court. · Emma chante. · Il est grand.",
+    },
+    {
+      titre: "La phrase complexe",
+      texte:
+        "Une phrase complexe contient au moins deux verbes conjugués. Les propositions sont reliées par des conjonctions (et, mais, que, parce que, quand...).",
       exemple:
-        "le petit chien → 'chien' = nom, 'le' = déterminant, 'petit' = adjectif",
+        "Je mange parce que j'ai faim. · Il joue et elle chante. · Je sais que tu viendras.",
     },
     {
-      titre: "Le verbe et le pronom",
+      titre: "Les classes de mots",
       texte:
-        "Le verbe exprime une action ou un état. Le pronom remplace un nom déjà mentionné (je, tu, il, elle, nous, vous, ils, elles, le, la, lui...).",
-      exemple: "Emma chante. → Elle chante. ('Elle' remplace 'Emma')",
-    },
-    {
-      titre: "Les mots invariables",
-      texte:
-        "Certains mots ne changent jamais : les prépositions (à, de, dans, sur...) et les conjonctions (et, mais, ou, donc, car...).",
-      exemple: "Le chat est sur le tapis. · Je veux du pain et du lait.",
+        "Nom, déterminant, adjectif, verbe, pronom, préposition, conjonction. Reconnaître la classe d'un mot aide à mieux écrire et à construire des phrases correctes.",
+      exemple:
+        "le (déterminant) petit (adjectif) chien (nom) court (verbe) vite (adverbe)",
     },
   ],
 };
@@ -61,11 +63,16 @@ const questions = [
   },
   {
     id: 4,
-    question: "Quelle est la classe du mot 'grand' dans 'un grand arbre' ?",
-    options: ["nom", "verbe", "adjectif", "déterminant"],
-    reponse: "adjectif",
-    explication: "'grand' est un adjectif — il qualifie le nom 'arbre'.",
-    niveau: "moyen",
+    question: "Laquelle est une phrase complexe ?",
+    options: [
+      "Le chien court.",
+      "Emma chante bien.",
+      "Je mange parce que j'ai faim.",
+      "Il est grand.",
+    ],
+    reponse: "Je mange parce que j'ai faim.",
+    explication: "Deux verbes conjugués (mange, ai) → phrase complexe.",
+    niveau: "facile",
   },
   {
     id: 5,
@@ -90,17 +97,16 @@ const questions = [
     options: ["nom", "verbe", "adjectif", "préposition"],
     reponse: "préposition",
     explication:
-      "'sur' est une préposition — c'est un mot invariable qui indique le lieu.",
+      "'sur' est une préposition — mot invariable qui indique le lieu.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question:
-      "Dans 'Les belles fleurs parfument le jardin', combien y a-t-il d'adjectifs ?",
-    options: ["0", "1", "2", "3"],
-    reponse: "1",
-    explication: "Il y a 1 adjectif : 'belles' — il qualifie 'fleurs'.",
-    niveau: "difficile",
+    question: "Combien y a-t-il de verbes dans : 'Il joue et elle chante' ?",
+    options: ["1", "2", "3", "0"],
+    reponse: "2",
+    explication: "Il y a 2 verbes : 'joue' et 'chante' → phrase complexe.",
+    niveau: "moyen",
   },
   {
     id: 9,
@@ -123,11 +129,9 @@ const questions = [
   },
 ];
 
-const niveauLabel = (n: string) => {
-  if (n === "facile") return "🟢 Facile";
-  if (n === "moyen") return "🟡 Moyen";
-  return "🔴 Difficile";
-};
+const CLASSE = "cm1";
+const MATIERE = "francais";
+const THEME = "grammaire";
 
 export default function GrammaireCM1() {
   const router = useRouter();
@@ -136,12 +140,26 @@ export default function GrammaireCM1() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -151,15 +169,33 @@ export default function GrammaireCM1() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
@@ -167,19 +203,22 @@ export default function GrammaireCM1() {
     setBonnes([]);
   };
 
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm1/francais")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CM1</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Français</span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Grammaire</span>
         </div>
@@ -209,6 +248,50 @@ export default function GrammaireCM1() {
           <div className="lecon-badge">📝 Grammaire · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -297,12 +380,12 @@ export default function GrammaireCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les classes de mots !"
+              ? "Tu maîtrises parfaitement la phrase et les classes de mots ! 🚀"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
                   ? "Encore quelques efforts et tu y seras !"
-                  : "Relis la leçon et réessaie !"}
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -310,7 +393,9 @@ export default function GrammaireCM1() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm1/francais")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>

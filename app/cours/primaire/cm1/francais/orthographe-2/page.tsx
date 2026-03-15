@@ -9,30 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les homophones : ces/ses, son/sont, ou/où",
+  titre: "Les préfixes et les suffixes",
   intro:
-    "Ces mots se prononcent pareil mais s'écrivent différemment selon leur rôle dans la phrase. Une astuce : essaie de les remplacer par un autre mot pour trouver lequel utiliser !",
+    "Un préfixe se place avant le radical d'un mot pour en modifier le sens. Un suffixe se place après le radical pour créer un nouveau mot. Les connaître aide à comprendre et enrichir son vocabulaire !",
   points: [
     {
-      titre: "ces / ses",
+      titre: "Les préfixes",
       texte:
-        "'ses' est un déterminant possessif (= les siens). On peut le remplacer par 'mes' ou 'tes'. 'ces' est un déterminant démonstratif (= ceux-là). On peut le remplacer par 'ce' + nom.",
+        "Les préfixes changent le sens d'un mot sans changer sa nature. Exemples : in-/im- (contraire), re- (à nouveau), pré- (avant), dé-/dés- (contraire ou séparation).",
       exemple:
-        "Il range ses affaires. → ses = les siennes ✅ · Ces fleurs sont belles. → ces fleurs-là ✅",
+        "possible → impossible · lire → relire · voir → prévoir · faire → défaire",
     },
     {
-      titre: "son / sont",
+      titre: "Les suffixes",
       texte:
-        "'son' est un déterminant possessif (= le sien). On peut le remplacer par 'mon' ou 'ton'. 'sont' est le verbe être au pluriel (ils sont). On peut le remplacer par 'étaient'.",
+        "Les suffixes créent souvent des mots d'une autre nature. Exemples : -eur/-euse (personne qui fait), -tion (action), -ment (adverbe), -ette (diminutif).",
       exemple:
-        "Il prend son vélo. → son = le sien ✅ · Ils sont fatigués. → ils étaient fatigués ✅",
+        "chanter → chanteur · construire → construction · rapide → rapidement",
     },
     {
-      titre: "ou / où",
+      titre: "Le radical",
       texte:
-        "'ou' est une conjonction qui exprime un choix (= ou bien). 'où' est un adverbe qui indique le lieu ou le temps. On peut remplacer 'ou' par 'ou bien'.",
+        "Le radical est la partie centrale du mot qui porte le sens principal. Préfixe + radical + suffixe = famille de mots.",
       exemple:
-        "Tu veux du thé ou du café ? → ou bien ✅ · La ville où j'habite est belle.",
+        "Radical 'port' : porteur, portable, transporter, reporter, importer",
     },
   ],
 };
@@ -40,104 +40,104 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète : 'Il range ___ affaires.'",
-    options: ["ces", "ses", "son", "sont"],
-    reponse: "ses",
-    explication: "'ses' = les siennes. On peut dire 'mes affaires' → ses ✅",
+    question: "Quel est le préfixe dans 'impossible' ?",
+    options: ["im", "possible", "ible", "po"],
+    reponse: "im",
+    explication: "'im-' signifie 'pas' : impossible = pas possible.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète : 'Les enfants ___ fatigués après la récréation.'",
-    options: ["son", "sont", "ses", "ces"],
-    reponse: "sont",
-    explication:
-      "'sont' = verbe être. On peut dire 'étaient fatigués' → sont ✅",
+    question: "Que signifie le préfixe 're-' dans 'relire' ?",
+    options: ["avant", "à nouveau", "contraire", "après"],
+    reponse: "à nouveau",
+    explication: "'re-' signifie 'à nouveau' : relire = lire à nouveau.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : 'Tu veux du pain ___ des gâteaux ?'",
-    options: ["où", "ou", "son", "sont"],
-    reponse: "ou",
-    explication: "'ou' exprime un choix. On peut dire 'ou bien des gâteaux' ✅",
+    question: "Quel suffixe indique une personne qui fait une action ?",
+    options: ["-tion", "-ment", "-eur", "-ette"],
+    reponse: "-eur",
+    explication:
+      "'-eur' indique la personne qui fait l'action : chanteur, joueur.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète : '___ livres sont très intéressants.'",
-    options: ["Ses", "Son", "Ces", "Sont"],
-    reponse: "Ces",
-    explication: "'Ces' = ces livres-là. C'est un déterminant démonstratif ✅",
-    niveau: "moyen",
+    question: "Quel est le suffixe dans 'construction' ?",
+    options: ["con", "construct", "-tion", "ion"],
+    reponse: "-tion",
+    explication: "'-tion' transforme un verbe en nom d'action.",
+    niveau: "facile",
   },
   {
     id: 5,
-    question: "Complète : 'La ville ___ je vis est magnifique.'",
-    options: ["ou", "où", "son", "sont"],
-    reponse: "où",
+    question: "Que signifie 'défaire' ?",
+    options: [
+      "faire à nouveau",
+      "faire avant",
+      "faire le contraire",
+      "bien faire",
+    ],
+    reponse: "faire le contraire",
     explication:
-      "'où' indique le lieu. On ne peut pas dire 'ou bien je vis' ✅",
+      "'dé-' indique le contraire : défaire = faire le contraire de faire.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète : 'Il a perdu ___ cahier.'",
-    options: ["ses", "ces", "son", "sont"],
-    reponse: "son",
-    explication: "'son' = le sien. On peut dire 'mon cahier' → son ✅",
+    question: "Quel mot contient le suffixe '-ment' ?",
+    options: ["chanteur", "rapidement", "construction", "maisonnette"],
+    reponse: "rapidement",
+    explication: "'-ment' forme des adverbes : rapide → rapidement.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Quelle phrase est correcte ?",
+    question: "Que signifie 'maisonnette' ?",
     options: [
-      "Ces chaussures sont à moi.",
-      "Ses chaussures sont à moi.",
-      "Ces chaussures son à moi.",
-      "Ses chaussures son à moi.",
+      "grande maison",
+      "petite maison",
+      "belle maison",
+      "vieille maison",
     ],
-    reponse: "Ces chaussures sont à moi.",
-    explication: "'Ces' = celles-là + 'sont' = verbe être (étaient) ✅",
+    reponse: "petite maison",
+    explication: "Le suffixe '-ette' indique quelque chose de petit.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Complète : 'Je ne sais pas ___ il est parti.'",
-    options: ["ou", "où", "son", "sont"],
-    reponse: "où",
+    question: "Quel est le radical commun à : porteur, portable, transporter ?",
+    options: ["port", "able", "eur", "trans"],
+    reponse: "port",
     explication:
-      "'où' indique le lieu — on ne peut pas dire 'ou bien il est parti'.",
-    niveau: "difficile",
+      "Le radical 'port' porte le sens principal dans tous ces mots.",
+    niveau: "moyen",
   },
   {
     id: 9,
-    question: "Quelle phrase contient une erreur ?",
-    options: [
-      "Ces enfants sont sages.",
-      "Il aime son chien.",
-      "Ses amis où gentils.",
-      "Tu viens ou tu restes ?",
-    ],
-    reponse: "Ses amis où gentils.",
-    explication: "Il faut 'sont' (verbe être) : 'Ses amis sont gentils'.",
+    question: "Quel préfixe signifie 'avant' ?",
+    options: ["re-", "im-", "pré-", "dé-"],
+    reponse: "pré-",
+    explication: "'pré-' signifie 'avant' : prévoir = voir avant.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Complète : '___ parents ___ très fiers de lui.'",
-    options: ["Ses / sont", "Ces / son", "Son / sont", "Ses / son"],
-    reponse: "Ses / sont",
-    explication: "'Ses' = les siens + 'sont' = verbe être ✅",
+    question: "Quel mot est formé avec le préfixe 'in-' ?",
+    options: ["inviter", "incroyable", "inonder", "insecte"],
+    reponse: "incroyable",
+    explication: "'incroyable' = in- (pas) + croyable : pas croyable.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm1";
 const MATIERE = "francais";
-const THEME = "orthographe";
+const THEME = "orthographe-2";
 
-export default function OrthographeCM1() {
+export default function OrthographeCM1Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -215,7 +215,9 @@ export default function OrthographeCM1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -224,10 +226,9 @@ export default function OrthographeCM1() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Orthographe</span>
+          <span className="breadcrumb-active">Orthographe 2</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -246,10 +247,9 @@ export default function OrthographeCM1() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✏️ Orthographe · CM1</div>
+          <div className="lecon-badge">✏️ Orthographe 2 · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -312,7 +312,6 @@ export default function OrthographeCM1() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
@@ -364,7 +363,6 @@ export default function OrthographeCM1() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
@@ -384,7 +382,7 @@ export default function OrthographeCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les homophones ! 🚀"
+              ? "Tu maîtrises parfaitement les préfixes et suffixes ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -398,7 +396,7 @@ export default function OrthographeCM1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

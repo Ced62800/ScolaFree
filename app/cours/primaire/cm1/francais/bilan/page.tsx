@@ -37,11 +37,15 @@ const questions = [
   {
     id: 4,
     theme: "grammaire",
-    question:
-      "Quelle est la classe du mot 'sur' dans 'Le livre est sur la table' ?",
-    options: ["nom", "verbe", "adjectif", "préposition"],
-    reponse: "préposition",
-    explication: "'sur' est une préposition invariable.",
+    question: "Laquelle est une phrase complexe ?",
+    options: [
+      "Le chien court.",
+      "Emma chante.",
+      "Je mange parce que j'ai faim.",
+      "Il est grand.",
+    ],
+    reponse: "Je mange parce que j'ai faim.",
+    explication: "Deux verbes conjugués (mange, ai) → phrase complexe.",
   },
   {
     id: 5,
@@ -52,7 +56,7 @@ const questions = [
     reponse: "conjonction",
     explication: "'mais' est une conjonction de coordination.",
   },
-  // Conjugaison (5)
+  // Conjugaison (5) - PC + imparfait
   {
     id: 6,
     theme: "conjugaison",
@@ -72,26 +76,27 @@ const questions = [
   {
     id: 8,
     theme: "conjugaison",
-    question: "Quelle phrase est au passé composé ?",
-    options: ["Je mangeais.", "Je mangerai.", "J'ai mangé.", "Je mange."],
-    reponse: "J'ai mangé.",
-    explication: "Auxiliaire avoir + participe passé = passé composé.",
+    question: "Quel temps est : 'Quand j'étais petit, je jouais au ballon' ?",
+    options: ["présent", "passé composé", "imparfait", "futur"],
+    reponse: "imparfait",
+    explication: "'jouais' est à l'imparfait — habitude dans le passé.",
   },
   {
     id: 9,
+    theme: "conjugaison",
+    question:
+      "Complète à l'imparfait : 'Autrefois, les gens ___ sans électricité.' (vivre)",
+    options: ["vivent", "vivront", "vivaient", "ont vécu"],
+    reponse: "vivaient",
+    explication: "'Autrefois' = habitude dans le passé → imparfait.",
+  },
+  {
+    id: 10,
     theme: "conjugaison",
     question: "Quel verbe se conjugue avec 'être' au passé composé ?",
     options: ["manger", "finir", "partir", "chanter"],
     reponse: "partir",
     explication: "'partir' est un verbe de mouvement — il utilise 'être'.",
-  },
-  {
-    id: 10,
-    theme: "conjugaison",
-    question: "Complète : 'Mes parents ___ en France.' (naître)",
-    options: ["ont né", "sont nés", "ont nés", "sont né"],
-    reponse: "sont nés",
-    explication: "'naître' utilise 'être'. Masculin pluriel → 'nés'.",
   },
   // Orthographe (5)
   {
@@ -308,9 +313,9 @@ export default function BilanFinalCM1() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CM1</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Français</span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Bilan Final</span>
         </div>
@@ -320,10 +325,6 @@ export default function BilanFinalCM1() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CM1</div>
           <h1 className="lecon-titre">Bilan Final — CM1 Français</h1>
-          <p className="lecon-intro">
-            Ce bilan regroupe des questions sur les 4 thèmes du CM1 : Grammaire,
-            Conjugaison, Orthographe et Vocabulaire.
-          </p>
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
@@ -368,6 +369,10 @@ export default function BilanFinalCM1() {
               )}
             </div>
           )}
+          <p className="lecon-intro">
+            Ce bilan regroupe des questions sur les 4 thèmes du CM1 : Grammaire,
+            Conjugaison, Orthographe et Vocabulaire.
+          </p>
           <div className="bilan-info-grid">
             <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
               <span>📝</span>

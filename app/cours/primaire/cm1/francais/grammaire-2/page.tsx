@@ -9,30 +9,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les homophones : ces/ses, son/sont, ou/où",
+  titre: "L'accord du participe passé",
   intro:
-    "Ces mots se prononcent pareil mais s'écrivent différemment selon leur rôle dans la phrase. Une astuce : essaie de les remplacer par un autre mot pour trouver lequel utiliser !",
+    "Le participe passé s'accorde différemment selon l'auxiliaire utilisé. Avec 'être', il s'accorde avec le sujet. Avec 'avoir', il ne s'accorde pas (sauf cas particulier).",
   points: [
     {
-      titre: "ces / ses",
+      titre: "Avec l'auxiliaire être",
       texte:
-        "'ses' est un déterminant possessif (= les siens). On peut le remplacer par 'mes' ou 'tes'. 'ces' est un déterminant démonstratif (= ceux-là). On peut le remplacer par 'ce' + nom.",
+        "Avec 'être', le participe passé s'accorde en genre et en nombre avec le sujet.",
       exemple:
-        "Il range ses affaires. → ses = les siennes ✅ · Ces fleurs sont belles. → ces fleurs-là ✅",
+        "Elle est partie. · Ils sont arrivés. · Elles sont tombées. · Il est venu.",
     },
     {
-      titre: "son / sont",
-      texte:
-        "'son' est un déterminant possessif (= le sien). On peut le remplacer par 'mon' ou 'ton'. 'sont' est le verbe être au pluriel (ils sont). On peut le remplacer par 'étaient'.",
+      titre: "Avec l'auxiliaire avoir",
+      texte: "Avec 'avoir', le participe passé ne s'accorde PAS avec le sujet.",
       exemple:
-        "Il prend son vélo. → son = le sien ✅ · Ils sont fatigués. → ils étaient fatigués ✅",
+        "Elle a mangé. · Ils ont joué. · Elles ont chanté. · Il a couru.",
     },
     {
-      titre: "ou / où",
+      titre: "Comment s'y retrouver ?",
       texte:
-        "'ou' est une conjonction qui exprime un choix (= ou bien). 'où' est un adverbe qui indique le lieu ou le temps. On peut remplacer 'ou' par 'ou bien'.",
+        "Identifie d'abord l'auxiliaire (être ou avoir). Si c'est 'être', accorde avec le sujet. Si c'est 'avoir', ne change rien.",
       exemple:
-        "Tu veux du thé ou du café ? → ou bien ✅ · La ville où j'habite est belle.",
+        "Les filles sont parties. (être → accord) · Les filles ont mangé. (avoir → pas d'accord)",
     },
   ],
 };
@@ -40,104 +39,106 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète : 'Il range ___ affaires.'",
-    options: ["ces", "ses", "son", "sont"],
-    reponse: "ses",
-    explication: "'ses' = les siennes. On peut dire 'mes affaires' → ses ✅",
+    question: "Complète : 'Elle est ___.' (partir)",
+    options: ["parti", "partis", "partie", "parties"],
+    reponse: "partie",
+    explication: "Auxiliaire être + sujet féminin singulier → 'partie'.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète : 'Les enfants ___ fatigués après la récréation.'",
-    options: ["son", "sont", "ses", "ces"],
-    reponse: "sont",
-    explication:
-      "'sont' = verbe être. On peut dire 'étaient fatigués' → sont ✅",
+    question: "Complète : 'Ils sont ___.' (arriver)",
+    options: ["arrivé", "arrivée", "arrivés", "arrivées"],
+    reponse: "arrivés",
+    explication: "Auxiliaire être + sujet masculin pluriel → 'arrivés'.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : 'Tu veux du pain ___ des gâteaux ?'",
-    options: ["où", "ou", "son", "sont"],
-    reponse: "ou",
-    explication: "'ou' exprime un choix. On peut dire 'ou bien des gâteaux' ✅",
+    question: "Complète : 'Elle a ___.' (manger)",
+    options: ["mangé", "mangée", "mangés", "mangées"],
+    reponse: "mangé",
+    explication: "Auxiliaire avoir → pas d'accord : 'mangé'.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète : '___ livres sont très intéressants.'",
-    options: ["Ses", "Son", "Ces", "Sont"],
-    reponse: "Ces",
-    explication: "'Ces' = ces livres-là. C'est un déterminant démonstratif ✅",
-    niveau: "moyen",
+    question: "Complète : 'Elles sont ___.' (tomber)",
+    options: ["tombé", "tombée", "tombés", "tombées"],
+    reponse: "tombées",
+    explication: "Auxiliaire être + sujet féminin pluriel → 'tombées'.",
+    niveau: "facile",
   },
   {
     id: 5,
-    question: "Complète : 'La ville ___ je vis est magnifique.'",
-    options: ["ou", "où", "son", "sont"],
-    reponse: "où",
-    explication:
-      "'où' indique le lieu. On ne peut pas dire 'ou bien je vis' ✅",
+    question: "Quelle phrase est correcte ?",
+    options: [
+      "Elle a mangée.",
+      "Elle a mangé.",
+      "Elle est mangé.",
+      "Elle est mangée.",
+    ],
+    reponse: "Elle a mangé.",
+    explication: "'manger' utilise 'avoir' → pas d'accord.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète : 'Il a perdu ___ cahier.'",
-    options: ["ses", "ces", "son", "sont"],
-    reponse: "son",
-    explication: "'son' = le sien. On peut dire 'mon cahier' → son ✅",
+    question: "Complète : 'Les filles sont ___.' (venir)",
+    options: ["venu", "venue", "venus", "venues"],
+    reponse: "venues",
+    explication: "Auxiliaire être + sujet féminin pluriel → 'venues'.",
     niveau: "moyen",
   },
   {
     id: 7,
     question: "Quelle phrase est correcte ?",
     options: [
-      "Ces chaussures sont à moi.",
-      "Ses chaussures sont à moi.",
-      "Ces chaussures son à moi.",
-      "Ses chaussures son à moi.",
+      "Ils ont joués.",
+      "Ils ont jouées.",
+      "Ils ont joué.",
+      "Ils sont joué.",
     ],
-    reponse: "Ces chaussures sont à moi.",
-    explication: "'Ces' = celles-là + 'sont' = verbe être (étaient) ✅",
+    reponse: "Ils ont joué.",
+    explication: "'jouer' utilise 'avoir' → pas d'accord.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Complète : 'Je ne sais pas ___ il est parti.'",
-    options: ["ou", "où", "son", "sont"],
-    reponse: "où",
-    explication:
-      "'où' indique le lieu — on ne peut pas dire 'ou bien il est parti'.",
-    niveau: "difficile",
+    question: "Complète : 'Ma sœur est ___.' (naître)",
+    options: ["né", "née", "nés", "nées"],
+    reponse: "née",
+    explication: "Auxiliaire être + sujet féminin singulier → 'née'.",
+    niveau: "moyen",
   },
   {
     id: 9,
     question: "Quelle phrase contient une erreur ?",
     options: [
-      "Ces enfants sont sages.",
-      "Il aime son chien.",
-      "Ses amis où gentils.",
-      "Tu viens ou tu restes ?",
+      "Il est parti.",
+      "Elle est venue.",
+      "Ils ont mangés.",
+      "Elles sont tombées.",
     ],
-    reponse: "Ses amis où gentils.",
-    explication: "Il faut 'sont' (verbe être) : 'Ses amis sont gentils'.",
+    reponse: "Ils ont mangés.",
+    explication: "'manger' utilise 'avoir' → pas d'accord : 'Ils ont mangé'.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Complète : '___ parents ___ très fiers de lui.'",
-    options: ["Ses / sont", "Ces / son", "Son / sont", "Ses / son"],
-    reponse: "Ses / sont",
-    explication: "'Ses' = les siens + 'sont' = verbe être ✅",
+    question: "Complète : 'Les garçons sont ___.' (rentrer)",
+    options: ["rentré", "rentrée", "rentrés", "rentrées"],
+    reponse: "rentrés",
+    explication: "Auxiliaire être + sujet masculin pluriel → 'rentrés'.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm1";
 const MATIERE = "francais";
-const THEME = "orthographe";
+const THEME = "grammaire-2";
 
-export default function OrthographeCM1() {
+export default function GrammaireCM1Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -215,7 +216,9 @@ export default function OrthographeCM1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -224,10 +227,9 @@ export default function OrthographeCM1() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Orthographe</span>
+          <span className="breadcrumb-active">Grammaire 2</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -246,10 +248,9 @@ export default function OrthographeCM1() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✏️ Orthographe · CM1</div>
+          <div className="lecon-badge">📝 Grammaire 2 · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -312,7 +313,6 @@ export default function OrthographeCM1() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
@@ -364,7 +364,6 @@ export default function OrthographeCM1() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
@@ -384,7 +383,7 @@ export default function OrthographeCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les homophones ! 🚀"
+              ? "Tu maîtrises l'accord du participe passé ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -398,7 +397,7 @@ export default function OrthographeCM1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

@@ -9,30 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les homophones : ces/ses, son/sont, ou/où",
+  titre: "Les figures de style",
   intro:
-    "Ces mots se prononcent pareil mais s'écrivent différemment selon leur rôle dans la phrase. Une astuce : essaie de les remplacer par un autre mot pour trouver lequel utiliser !",
+    "Les figures de style sont des procédés littéraires qui rendent le langage plus expressif et imagé. On les retrouve dans les poèmes, les textes littéraires et même dans la vie quotidienne !",
   points: [
     {
-      titre: "ces / ses",
+      titre: "La comparaison et la métaphore",
       texte:
-        "'ses' est un déterminant possessif (= les siens). On peut le remplacer par 'mes' ou 'tes'. 'ces' est un déterminant démonstratif (= ceux-là). On peut le remplacer par 'ce' + nom.",
+        "La comparaison rapproche deux éléments avec un mot comparatif (comme, tel, pareil à...). La métaphore fait la même chose SANS mot comparatif.",
       exemple:
-        "Il range ses affaires. → ses = les siennes ✅ · Ces fleurs sont belles. → ces fleurs-là ✅",
+        "Comparaison : Il court comme le vent. · Métaphore : C'est un lion sur le terrain.",
     },
     {
-      titre: "son / sont",
+      titre: "La personnification et l'hyperbole",
       texte:
-        "'son' est un déterminant possessif (= le sien). On peut le remplacer par 'mon' ou 'ton'. 'sont' est le verbe être au pluriel (ils sont). On peut le remplacer par 'étaient'.",
+        "La personnification attribue des caractéristiques humaines à un objet ou animal. L'hyperbole exagère volontairement pour produire un effet.",
       exemple:
-        "Il prend son vélo. → son = le sien ✅ · Ils sont fatigués. → ils étaient fatigués ✅",
+        "Personnification : Le soleil souriait. · Hyperbole : J'ai attendu mille ans !",
     },
     {
-      titre: "ou / où",
+      titre: "La répétition et l'anaphore",
       texte:
-        "'ou' est une conjonction qui exprime un choix (= ou bien). 'où' est un adverbe qui indique le lieu ou le temps. On peut remplacer 'ou' par 'ou bien'.",
+        "La répétition répète un mot pour insister. L'anaphore répète le même mot ou groupe de mots au début de plusieurs phrases.",
       exemple:
-        "Tu veux du thé ou du café ? → ou bien ✅ · La ville où j'habite est belle.",
+        "Répétition : C'est beau, beau, beau ! · Anaphore : J'ai rêvé... J'ai vu... J'ai espéré...",
     },
   ],
 };
@@ -40,104 +40,120 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète : 'Il range ___ affaires.'",
-    options: ["ces", "ses", "son", "sont"],
-    reponse: "ses",
-    explication: "'ses' = les siennes. On peut dire 'mes affaires' → ses ✅",
+    question:
+      "Dans 'Il court comme le vent', quelle figure de style est utilisée ?",
+    options: ["Métaphore", "Comparaison", "Hyperbole", "Personnification"],
+    reponse: "Comparaison",
+    explication: "Il y a le mot comparatif 'comme' → comparaison.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète : 'Les enfants ___ fatigués après la récréation.'",
-    options: ["son", "sont", "ses", "ces"],
-    reponse: "sont",
+    question:
+      "Dans 'Le soleil souriait', quelle figure de style est utilisée ?",
+    options: ["Comparaison", "Hyperbole", "Personnification", "Métaphore"],
+    reponse: "Personnification",
     explication:
-      "'sont' = verbe être. On peut dire 'étaient fatigués' → sont ✅",
+      "On attribue une action humaine (sourire) au soleil → personnification.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Complète : 'Tu veux du pain ___ des gâteaux ?'",
-    options: ["où", "ou", "son", "sont"],
-    reponse: "ou",
-    explication: "'ou' exprime un choix. On peut dire 'ou bien des gâteaux' ✅",
+    question:
+      "Dans 'J'ai attendu mille ans !', quelle figure de style est utilisée ?",
+    options: ["Comparaison", "Répétition", "Anaphore", "Hyperbole"],
+    reponse: "Hyperbole",
+    explication: "Exagération volontaire pour insister → hyperbole.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète : '___ livres sont très intéressants.'",
-    options: ["Ses", "Son", "Ces", "Sont"],
-    reponse: "Ces",
-    explication: "'Ces' = ces livres-là. C'est un déterminant démonstratif ✅",
-    niveau: "moyen",
+    question:
+      "Dans 'C'est un lion sur le terrain', quelle figure de style est utilisée ?",
+    options: ["Comparaison", "Métaphore", "Personnification", "Hyperbole"],
+    reponse: "Métaphore",
+    explication: "On compare sans mot comparatif (pas de 'comme') → métaphore.",
+    niveau: "facile",
   },
   {
     id: 5,
-    question: "Complète : 'La ville ___ je vis est magnifique.'",
-    options: ["ou", "où", "son", "sont"],
-    reponse: "où",
+    question: "Quelle est la différence entre comparaison et métaphore ?",
+    options: [
+      "Il n'y a aucune différence.",
+      "La comparaison utilise 'comme', la métaphore non.",
+      "La métaphore utilise 'comme', la comparaison non.",
+      "La comparaison est plus forte.",
+    ],
+    reponse: "La comparaison utilise 'comme', la métaphore non.",
     explication:
-      "'où' indique le lieu. On ne peut pas dire 'ou bien je vis' ✅",
+      "La comparaison a un mot comparatif ('comme', 'tel'), la métaphore non.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète : 'Il a perdu ___ cahier.'",
-    options: ["ses", "ces", "son", "sont"],
-    reponse: "son",
-    explication: "'son' = le sien. On peut dire 'mon cahier' → son ✅",
+    question:
+      "Dans 'J'ai rêvé... J'ai vu... J'ai espéré...', quelle figure est utilisée ?",
+    options: ["Hyperbole", "Métaphore", "Anaphore", "Personnification"],
+    reponse: "Anaphore",
+    explication: "Répétition de 'J'ai' en début de phrase → anaphore.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Quelle phrase est correcte ?",
+    question: "Laquelle est une métaphore ?",
     options: [
-      "Ces chaussures sont à moi.",
-      "Ses chaussures sont à moi.",
-      "Ces chaussures son à moi.",
-      "Ses chaussures son à moi.",
+      "Il est fort comme un bœuf.",
+      "La vie est un long fleuve tranquille.",
+      "Le vent soufflait très fort.",
+      "Elle a couru très vite.",
     ],
-    reponse: "Ces chaussures sont à moi.",
-    explication: "'Ces' = celles-là + 'sont' = verbe être (étaient) ✅",
+    reponse: "La vie est un long fleuve tranquille.",
+    explication:
+      "On compare la vie à un fleuve sans mot comparatif → métaphore.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Complète : 'Je ne sais pas ___ il est parti.'",
-    options: ["ou", "où", "son", "sont"],
-    reponse: "où",
-    explication:
-      "'où' indique le lieu — on ne peut pas dire 'ou bien il est parti'.",
-    niveau: "difficile",
+    question: "Laquelle est une comparaison ?",
+    options: [
+      "C'est un géant.",
+      "Il pleure des cordes.",
+      "Elle est douce comme du miel.",
+      "La montagne nous regardait.",
+    ],
+    reponse: "Elle est douce comme du miel.",
+    explication: "Mot comparatif 'comme' → comparaison.",
+    niveau: "moyen",
   },
   {
     id: 9,
-    question: "Quelle phrase contient une erreur ?",
-    options: [
-      "Ces enfants sont sages.",
-      "Il aime son chien.",
-      "Ses amis où gentils.",
-      "Tu viens ou tu restes ?",
-    ],
-    reponse: "Ses amis où gentils.",
-    explication: "Il faut 'sont' (verbe être) : 'Ses amis sont gentils'.",
+    question: "Dans 'C'est beau, beau, beau !', quelle figure est utilisée ?",
+    options: ["Anaphore", "Répétition", "Hyperbole", "Métaphore"],
+    reponse: "Répétition",
+    explication: "Le mot 'beau' est répété pour insister → répétition.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Complète : '___ parents ___ très fiers de lui.'",
-    options: ["Ses / sont", "Ces / son", "Son / sont", "Ses / son"],
-    reponse: "Ses / sont",
-    explication: "'Ses' = les siens + 'sont' = verbe être ✅",
+    question: "Laquelle est une personnification ?",
+    options: [
+      "Il court comme le vent.",
+      "La forêt murmurait des secrets.",
+      "J'ai mangé mille pizzas !",
+      "C'est un tigre en cage.",
+    ],
+    reponse: "La forêt murmurait des secrets.",
+    explication:
+      "On attribue une action humaine (murmurer) à la forêt → personnification.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm1";
 const MATIERE = "francais";
-const THEME = "orthographe";
+const THEME = "vocabulaire-2";
 
-export default function OrthographeCM1() {
+export default function VocabulaireCM1Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -215,7 +231,9 @@ export default function OrthographeCM1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -224,10 +242,9 @@ export default function OrthographeCM1() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Orthographe</span>
+          <span className="breadcrumb-active">Vocabulaire 2</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -246,10 +263,9 @@ export default function OrthographeCM1() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✏️ Orthographe · CM1</div>
+          <div className="lecon-badge">📚 Vocabulaire 2 · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -312,7 +328,6 @@ export default function OrthographeCM1() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
@@ -364,7 +379,6 @@ export default function OrthographeCM1() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
@@ -384,7 +398,7 @@ export default function OrthographeCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les homophones ! 🚀"
+              ? "Tu maîtrises parfaitement les figures de style ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -398,7 +412,7 @@ export default function OrthographeCM1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →
