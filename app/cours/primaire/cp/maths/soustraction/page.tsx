@@ -9,28 +9,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "La moitié, le quart et le tiers",
+  titre: "La soustraction",
   intro:
-    "Quand on partage quelque chose en parties égales, on utilise les fractions ! En CP on apprend la moitié, le quart et le tiers.",
+    "Soustraire, c'est enlever une quantité d'une autre. On utilise le signe − (moins). Le résultat s'appelle la différence.",
   points: [
     {
-      titre: "La moitié",
+      titre: "Soustraire, c'est enlever",
       texte:
-        "La moitié c'est partager en 2 parts égales. La moitié de 8 c'est 4 car 4 + 4 = 8.",
+        "Quand on soustrait, on part d'un nombre et on enlève une quantité. Le résultat est toujours plus petit que le nombre de départ.",
+      exemple: "7 − 3 = 4 · On part de 7, on enlève 3, il reste 4.",
+    },
+    {
+      titre: "La soustraction sur la droite numérique",
+      texte:
+        "Sur la droite numérique, soustraire c'est reculer vers la gauche. On part du grand nombre et on recule du nombre à enlever.",
       exemple:
-        "La moitié de 10 = 5 · La moitié de 6 = 3 · La moitié de 20 = 10",
+        "9 − 4 = 5 · On part de 9 et on recule de 4 cases → on arrive à 5.",
     },
     {
-      titre: "Le quart",
+      titre: "Vérifier avec l'addition",
       texte:
-        "Le quart c'est partager en 4 parts égales. Le quart de 8 c'est 2 car 2 + 2 + 2 + 2 = 8.",
-      exemple: "Le quart de 12 = 3 · Le quart de 20 = 5 · Le quart de 8 = 2",
-    },
-    {
-      titre: "Le tiers",
-      texte:
-        "Le tiers c'est partager en 3 parts égales. Le tiers de 9 c'est 3 car 3 + 3 + 3 = 9.",
-      exemple: "Le tiers de 6 = 2 · Le tiers de 12 = 4 · Le tiers de 9 = 3",
+        "On peut vérifier une soustraction avec une addition. Si 8 − 3 = 5, alors 5 + 3 = 8.",
+      exemple: "10 − 6 = 4 car 4 + 6 = 10 ✓",
     },
   ],
 };
@@ -38,93 +38,92 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quelle est la moitié de 8 ?",
-    options: ["2", "3", "4", "6"],
+    question: "7 − 3 = ?",
+    options: ["3", "4", "5", "2"],
     reponse: "4",
-    explication: "8 ÷ 2 = 4. La moitié de 8 est 4.",
+    explication: "7 − 3 = 4. On enlève 3 de 7, il reste 4.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Quelle est la moitié de 10 ?",
-    options: ["4", "5", "6", "2"],
-    reponse: "5",
-    explication: "10 ÷ 2 = 5. La moitié de 10 est 5.",
+    question: "5 − 2 = ?",
+    options: ["1", "2", "3", "4"],
+    reponse: "3",
+    explication: "5 − 2 = 3. On enlève 2 de 5, il reste 3.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quelle est la moitié de 6 ?",
-    options: ["2", "4", "3", "1"],
-    reponse: "3",
-    explication: "6 ÷ 2 = 3. La moitié de 6 est 3.",
+    question: "9 − 4 = ?",
+    options: ["4", "5", "6", "3"],
+    reponse: "5",
+    explication: "9 − 4 = 5. On enlève 4 de 9, il reste 5.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est le quart de 8 ?",
-    options: ["4", "3", "2", "1"],
-    reponse: "2",
-    explication: "8 ÷ 4 = 2. Le quart de 8 est 2.",
+    question: "10 − 6 = ?",
+    options: ["3", "5", "4", "6"],
+    reponse: "4",
+    explication: "10 − 6 = 4. On vérifie : 4 + 6 = 10 ✓",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Quel est le tiers de 9 ?",
-    options: ["2", "4", "3", "6"],
+    question: "8 − 5 = ?",
+    options: ["2", "4", "3", "1"],
     reponse: "3",
-    explication: "9 ÷ 3 = 3. Le tiers de 9 est 3.",
+    explication: "8 − 5 = 3. On enlève 5 de 8, il reste 3.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Quelle est la moitié de 20 ?",
-    options: ["5", "15", "10", "8"],
-    reponse: "10",
-    explication: "20 ÷ 2 = 10. La moitié de 20 est 10.",
+    question: "Léa a 9 bonbons. Elle en mange 4. Combien lui en reste-t-il ?",
+    options: ["4", "6", "5", "3"],
+    reponse: "5",
+    explication: "9 − 4 = 5. Il reste 5 bonbons à Léa.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Quel est le quart de 12 ?",
-    options: ["4", "3", "6", "2"],
-    reponse: "3",
-    explication: "12 ÷ 4 = 3. Le quart de 12 est 3.",
+    question: "12 − 7 = ?",
+    options: ["4", "6", "5", "3"],
+    reponse: "5",
+    explication: "12 − 7 = 5. On vérifie : 5 + 7 = 12 ✓",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quel est le tiers de 12 ?",
-    options: ["3", "6", "4", "2"],
-    reponse: "4",
-    explication: "12 ÷ 3 = 4. Le tiers de 12 est 4.",
+    question:
+      "Il y a 10 oiseaux sur un arbre. 3 s'envolent. Combien reste-t-il ?",
+    options: ["6", "8", "7", "5"],
+    reponse: "7",
+    explication: "10 − 3 = 7. Il reste 7 oiseaux sur l'arbre.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question:
-      "On coupe une pizza en 4 parts égales. Chaque part représente quelle fraction ?",
-    options: ["La moitié", "Le tiers", "Le quart", "Un entier"],
-    reponse: "Le quart",
-    explication: "Couper en 4 parts égales = chaque part est un quart.",
+    question: "15 − 8 = ?",
+    options: ["6", "8", "7", "9"],
+    reponse: "7",
+    explication: "15 − 8 = 7. On vérifie : 7 + 8 = 15 ✓",
     niveau: "difficile",
   },
   {
     id: 10,
-    question:
-      "Marie a 16 billes. Elle en donne la moitié à son ami. Combien en garde-t-elle ?",
-    options: ["4", "6", "10", "8"],
+    question: "Tom a 14 billes. Il en perd 6. Combien lui en reste-t-il ?",
+    options: ["7", "9", "8", "6"],
     reponse: "8",
-    explication: "La moitié de 16 = 8. Marie garde 8 billes.",
+    explication: "14 − 6 = 8. Tom a encore 8 billes.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cp";
 const MATIERE = "maths";
-const THEME = "fractions";
+const THEME = "soustraction";
 
-export default function FractionsCP() {
+export default function SoustractionCP() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -148,7 +147,6 @@ export default function FractionsCP() {
 
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
-  // Charger les scores au montage du composant
   useEffect(() => {
     getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
     getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
@@ -166,8 +164,6 @@ export default function FractionsCP() {
     if (qIndex + 1 >= questions.length) {
       if (scoreSaved.current) return;
       scoreSaved.current = true;
-
-      // Sauvegarde du score
       await saveScore({
         classe: CLASSE,
         matiere: MATIERE,
@@ -175,8 +171,6 @@ export default function FractionsCP() {
         score: score,
         total: questions.length,
       });
-
-      // Rafraîchir les scores pour l'écran final
       const [best, last] = await Promise.all([
         getBestScore(CLASSE, MATIERE, THEME),
         getLastScore(CLASSE, MATIERE, THEME),
@@ -216,7 +210,7 @@ export default function FractionsCP() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Fractions</span>
+          <span className="breadcrumb-active">Soustraction</span>
         </div>
       </div>
 
@@ -241,11 +235,10 @@ export default function FractionsCP() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🍕 Fractions · CP</div>
+          <div className="lecon-badge">➖ Soustraction · CP</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
 
-          {/* Affichage des Scores */}
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
@@ -379,12 +372,12 @@ export default function FractionsCP() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les fractions !"
+              ? "Tu maîtrises parfaitement la soustraction ! 🚀"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
-                  ? "Encore quelques efforts !"
-                  : "Relis la leçon et réessaie !"}
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

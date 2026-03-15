@@ -20,11 +20,11 @@ const themes = [
     nb: 10,
   },
   {
-    id: "fractions",
-    label: "Fractions",
+    id: "soustraction",
+    label: "Soustraction",
     emoji: "➖",
     color: "#ffd166",
-    desc: "Apprendre à retirer des quantités",
+    desc: "Enlever une quantité d'une autre",
     nb: 10,
   },
   {

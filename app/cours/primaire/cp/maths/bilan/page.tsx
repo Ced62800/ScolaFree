@@ -1,9 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-// Import de ta logique de persistance
-import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -51,7 +50,7 @@ const questions = [
     explication: "7 dizaines + 4 unités = 74.",
     theme: "numeration",
   },
-  // Addition/Soustraction (5)
+  // Addition (5)
   {
     id: 6,
     question: "Combien font 4 + 3 ?",
@@ -92,47 +91,47 @@ const questions = [
     explication: "20 + 15 = 35",
     theme: "addition",
   },
-  // Fractions (5)
+  // Soustraction (5)
   {
     id: 11,
-    question: "Quelle est la moitié de 8 ?",
-    options: ["2", "3", "4", "6"],
-    reponse: "4",
-    explication: "8 ÷ 2 = 4.",
-    theme: "fractions",
+    question: "9 − 4 = ?",
+    options: ["4", "5", "6", "3"],
+    reponse: "5",
+    explication: "9 − 4 = 5. On enlève 4 de 9, il reste 5.",
+    theme: "soustraction",
   },
   {
     id: 12,
-    question: "Quelle est la moitié de 10 ?",
-    options: ["4", "5", "6", "2"],
-    reponse: "5",
-    explication: "10 ÷ 2 = 5.",
-    theme: "fractions",
+    question: "15 − 8 = ?",
+    options: ["6", "8", "7", "9"],
+    reponse: "7",
+    explication: "15 − 8 = 7. On vérifie : 7 + 8 = 15 ✓",
+    theme: "soustraction",
   },
   {
     id: 13,
-    question: "Quel est le quart de 8 ?",
-    options: ["4", "3", "2", "1"],
-    reponse: "2",
-    explication: "8 ÷ 4 = 2.",
-    theme: "fractions",
+    question:
+      "Il y a 10 oiseaux sur un arbre. 3 s'envolent. Combien reste-t-il ?",
+    options: ["6", "8", "7", "5"],
+    reponse: "7",
+    explication: "10 − 3 = 7. Il reste 7 oiseaux.",
+    theme: "soustraction",
   },
   {
     id: 14,
-    question: "Quel est le tiers de 9 ?",
-    options: ["2", "4", "3", "6"],
-    reponse: "3",
-    explication: "9 ÷ 3 = 3.",
-    theme: "fractions",
+    question: "12 − 7 = ?",
+    options: ["4", "6", "5", "3"],
+    reponse: "5",
+    explication: "12 − 7 = 5. On vérifie : 5 + 7 = 12 ✓",
+    theme: "soustraction",
   },
   {
     id: 15,
-    question:
-      "Marie a 16 billes. Elle en donne la moitié. Combien en garde-t-elle ?",
-    options: ["4", "6", "10", "8"],
+    question: "Tom a 14 billes. Il en perd 6. Combien lui en reste-t-il ?",
+    options: ["7", "9", "8", "6"],
     reponse: "8",
-    explication: "16 ÷ 2 = 8.",
-    theme: "fractions",
+    explication: "14 − 6 = 8. Tom a encore 8 billes.",
+    theme: "soustraction",
   },
   // Géométrie (5)
   {
@@ -179,15 +178,15 @@ const questions = [
 
 const themeLabels: Record<string, string> = {
   numeration: "🔢 Numération",
-  addition: "➕ Addition/Soustraction",
-  fractions: "🍕 Fractions",
+  addition: "➕ Addition",
+  soustraction: "➖ Soustraction",
   geometrie: "📐 Géométrie",
 };
 
 const themeColors: Record<string, string> = {
   numeration: "#4f8ef7",
   addition: "#2ec4b6",
-  fractions: "#ffd166",
+  soustraction: "#ffd166",
   geometrie: "#ff6b6b",
 };
 
@@ -199,15 +198,15 @@ export default function BilanMathsCP() {
   const [scores, setScores] = useState<Record<string, number>>({
     numeration: 0,
     addition: 0,
-    fractions: 0,
+    soustraction: 0,
     geometrie: 0,
   });
   const [totalScore, setTotalScore] = useState(0);
 
-  // Gestion des records Cédric Flow
   const [bestScore, setBestScore] = useState<any>(null);
   const [lastScore, setLastScore] = useState<any>(null);
   const isSaving = useRef(false);
+  const scoreRef = useRef(0);
 
   useEffect(() => {
     const loadData = async () => {
@@ -234,6 +233,7 @@ export default function BilanMathsCP() {
       const theme = shuffledQuestions[qIndex].theme;
       setScores((s) => ({ ...s, [theme]: s[theme] + 1 }));
       setTotalScore((s) => s + 1);
+      scoreRef.current += 1;
     }
   };
 
@@ -245,9 +245,13 @@ export default function BilanMathsCP() {
           classe: "cp",
           matiere: "maths",
           theme: "bilan",
-          score: totalScore,
+          score: scoreRef.current,
           total: 20,
         });
+        const b = await getBestScore("cp", "maths", "bilan");
+        const l = await getLastScore("cp", "maths", "bilan");
+        setBestScore(b);
+        setLastScore(l);
       }
       setEtape("fini");
     } else {
@@ -258,10 +262,11 @@ export default function BilanMathsCP() {
 
   const handleRecommencer = () => {
     isSaving.current = false;
+    scoreRef.current = 0;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
-    setScores({ numeration: 0, addition: 0, fractions: 0, geometrie: 0 });
+    setScores({ numeration: 0, addition: 0, soustraction: 0, geometrie: 0 });
     setTotalScore(0);
   };
 
@@ -299,7 +304,6 @@ export default function BilanMathsCP() {
           <div className="lecon-badge">🎯 Bilan Final · CP Maths</div>
           <h1 className="lecon-titre">Bilan Final — CP Mathématiques</h1>
 
-          {/* Affichage des records de Cédric */}
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
               {bestScore && (
@@ -365,14 +369,17 @@ export default function BilanMathsCP() {
               <span>🔢</span> <span>5 questions de Numération</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
-              <span>➕</span> <span>5 questions d'Addition/Soustraction</span>
+              <span>➕</span> <span>5 questions d'Addition</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
-              <span>🍕</span> <span>5 questions de Fractions</span>
+              <span>➖</span> <span>5 questions de Soustraction</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
               <span>📐</span> <span>5 questions de Géométrie</span>
             </div>
+          </div>
+          <div className="bilan-score-info">
+            Score final sur <strong>20</strong>
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
             Commencer le bilan →
@@ -462,6 +469,64 @@ export default function BilanMathsCP() {
             {totalScore} / 20
           </div>
 
+          {/* Encarts Meilleur / Dernier */}
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46, 196, 182, 0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Meilleur
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="bilan-detail">
             <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (
@@ -480,7 +545,15 @@ export default function BilanMathsCP() {
               </div>
             ))}
           </div>
-
+          <p className="resultat-desc">
+            {totalScore >= 18
+              ? "Bravo, tu maîtrises les maths du CP ! 🚀"
+              : totalScore >= 14
+                ? "Très bon niveau, continue !"
+                : totalScore >= 10
+                  ? "Tu progresses bien !"
+                  : "Courage ! Reprends les leçons et réessaie."}
+          </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
               🔄 Recommencer
