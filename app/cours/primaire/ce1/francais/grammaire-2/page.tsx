@@ -9,28 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le présent des verbes",
+  titre: "L'accord nom/adjectif",
   intro:
-    "On utilise le présent pour parler de ce qui se passe maintenant ou de ce qu'on fait habituellement. Apprends à conjuguer les verbes au présent !",
+    "Un adjectif s'accorde toujours avec le nom qu'il accompagne. Il prend le même genre (masculin ou féminin) et le même nombre (singulier ou pluriel).",
   points: [
     {
-      titre: "Le présent, c'est maintenant",
+      titre: "Le genre : masculin et féminin",
       texte:
-        "On utilise le présent pour une action qui se passe en ce moment ou une habitude. Des mots comme 'maintenant', 'aujourd'hui', 'tous les jours' accompagnent souvent le présent.",
-      exemple: "Je mange une pomme. · Il joue au foot tous les jours.",
-    },
-    {
-      titre: "Les terminaisons du présent (verbes en -er)",
-      texte:
-        "Pour les verbes en -er (comme chanter, jouer, manger), les terminaisons au présent sont : -e, -es, -e, -ons, -ez, -ent.",
+        "Au féminin, on ajoute généralement un -e à l'adjectif. Certains adjectifs changent complètement au féminin.",
       exemple:
-        "Je chante · Tu chantes · Il chante · Nous chantons · Vous chantez · Ils chantent",
+        "un chat noir → une chatte noire · un beau garçon → une belle fille",
     },
     {
-      titre: "Les verbes être et avoir au présent",
+      titre: "Le nombre : singulier et pluriel",
       texte:
-        "Les verbes être et avoir sont irréguliers. Il faut les apprendre par cœur.",
-      exemple: "Je suis / Tu es / Il est · J'ai / Tu as / Il a",
+        "Au pluriel, on ajoute généralement un -s à l'adjectif. Si l'adjectif se termine déjà par -s ou -x, il ne change pas.",
+      exemple:
+        "un chien gentil → des chiens gentils · une fleur rouge → des fleurs rouges",
+    },
+    {
+      titre: "Masculin et féminin pluriel",
+      texte:
+        "Quand on combine genre et nombre, on applique les deux règles à la fois.",
+      exemple:
+        "un petit chat → de petits chats · une petite fleur → de petites fleurs",
     },
   ],
 };
@@ -38,96 +40,109 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète au présent : 'Je ___ au foot.' (jouer)",
-    options: ["joueras", "joues", "joue", "jouez"],
-    reponse: "joue",
-    explication: "Au présent avec 'je', on dit 'joue' (verbe en -er).",
+    question: "Complète : 'Une fleur ___.' (rouge)",
+    options: ["rouge", "rouges", "rougis", "rougée"],
+    reponse: "rouge",
+    explication:
+      "'fleur' est féminin singulier. 'rouge' ne change pas au féminin.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète au présent : 'Tu ___ une chanson.' (chanter)",
-    options: ["chanteras", "chantes", "chanta", "chantez"],
-    reponse: "chantes",
-    explication: "Au présent avec 'tu', on dit 'chantes'.",
+    question: "Complète : 'Un chat ___.' (noir)",
+    options: ["noire", "noirs", "noir", "noires"],
+    reponse: "noir",
+    explication: "'chat' est masculin singulier → 'noir'.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quelle phrase est au présent ?",
-    options: [
-      "Il chantera demain.",
-      "Nous partirons bientôt.",
-      "Elle lit un livre.",
-      "Tu viendras.",
-    ],
-    reponse: "Elle lit un livre.",
-    explication: "'lit' est au présent — l'action se passe maintenant.",
+    question: "Complète : 'Une fille ___.' (grand)",
+    options: ["grand", "grands", "grandes", "grande"],
+    reponse: "grande",
+    explication: "'fille' est féminin singulier → on ajoute -e : 'grande'.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète au présent : 'Il ___ grand.' (être)",
-    options: ["sera", "était", "est", "soit"],
-    reponse: "est",
-    explication: "Au présent avec 'il', le verbe être donne 'est'.",
+    question: "Complète : 'Des chiens ___.' (gentil)",
+    options: ["gentil", "gentille", "gentils", "gentilles"],
+    reponse: "gentils",
+    explication: "'chiens' est masculin pluriel → on ajoute -s : 'gentils'.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Complète au présent : 'Nous ___ dans le jardin.' (jouer)",
-    options: ["jouons", "jouez", "jouerons", "jouaient"],
-    reponse: "jouons",
-    explication: "Au présent avec 'nous', on dit 'jouons'.",
+    question: "Complète : 'Des robes ___.' (beau)",
+    options: ["beau", "beaux", "belle", "belles"],
+    reponse: "belles",
+    explication: "'robes' est féminin pluriel → 'belles'.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète au présent : 'Vous ___ vos devoirs.' (finir)",
-    options: ["finirez", "finissez", "finissait", "fini"],
-    reponse: "finissez",
-    explication: "Au présent avec 'vous', le verbe finir donne 'finissez'.",
+    question: "Quelle phrase est correcte ?",
+    options: [
+      "Un grand arbre.",
+      "Une grand arbre.",
+      "Un grandes arbre.",
+      "Des grand arbres.",
+    ],
+    reponse: "Un grand arbre.",
+    explication: "'arbre' est masculin singulier → 'grand' sans accord.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Complète au présent : 'J'___ un chien.' (avoir)",
-    options: ["aurai", "avais", "ai", "ait"],
-    reponse: "ai",
-    explication: "Au présent avec 'j'', le verbe avoir donne 'ai'.",
+    question: "Complète : 'Une petite ___.' (maison)",
+    options: [
+      "petit maison",
+      "petite maison",
+      "petits maison",
+      "petites maisons",
+    ],
+    reponse: "petite maison",
+    explication: "'maison' est féminin singulier → 'petite'.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Complète au présent : 'Ils ___ dans la cour.' (courir)",
-    options: ["couraient", "courront", "courent", "couru"],
-    reponse: "courent",
-    explication: "Au présent avec 'ils', le verbe courir donne 'courent'.",
+    question: "Complète : 'Des garçons ___.' (courageux)",
+    options: ["courageux", "courageuse", "courageuses", "courageuxs"],
+    reponse: "courageux",
+    explication:
+      "'courageux' se termine par -x, il ne change pas au pluriel masculin.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Quel mot indique que la phrase est au présent ?",
-    options: ["demain", "hier", "bientôt", "aujourd'hui"],
-    reponse: "aujourd'hui",
-    explication: "'aujourd'hui' indique que l'action se passe maintenant.",
+    question: "Complète : 'De ___ fleurs.' (beau)",
+    options: ["beau", "beaux", "belle", "belles"],
+    reponse: "belles",
+    explication: "'fleurs' est féminin pluriel → 'belles'.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Complète au présent : 'Nous ___ contents.' (être)",
-    options: ["serons", "étions", "sommes", "soyons"],
-    reponse: "sommes",
-    explication: "Au présent avec 'nous', le verbe être donne 'sommes'.",
+    question: "Quelle phrase est correcte ?",
+    options: [
+      "Des enfants joyeux.",
+      "Des enfants joyeuxs.",
+      "Des enfants joyeuse.",
+      "Des enfant joyeux.",
+    ],
+    reponse: "Des enfants joyeux.",
+    explication:
+      "'enfants' est masculin pluriel. 'joyeux' se termine par -x, il ne change pas.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce1";
 const MATIERE = "francais";
-const THEME = "conjugaison";
+const THEME = "grammaire-2";
 
-export default function ConjugaisonCE1() {
+export default function GrammaireCE1Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -148,7 +163,6 @@ export default function ConjugaisonCE1() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   useEffect(() => {
@@ -172,7 +186,7 @@ export default function ConjugaisonCE1() {
           classe: CLASSE,
           matiere: MATIERE,
           theme: THEME,
-          score: score,
+          score,
           total: questions.length,
         });
         const [best, last] = await Promise.all([
@@ -206,7 +220,9 @@ export default function ConjugaisonCE1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -215,7 +231,7 @@ export default function ConjugaisonCE1() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Conjugaison</span>
+          <span className="breadcrumb-active">Grammaire 2</span>
         </div>
       </div>
 
@@ -240,10 +256,9 @@ export default function ConjugaisonCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">⏰ Conjugaison · CE1</div>
+          <div className="lecon-badge">📝 Grammaire 2 · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
@@ -259,7 +274,8 @@ export default function ConjugaisonCE1() {
                     textAlign: "center",
                   }}
                 >
-                  🏆 Meilleur <br />{" "}
+                  🏆 Meilleur
+                  <br />
                   <strong>
                     {bestScore.score} / {bestScore.total}
                   </strong>
@@ -278,7 +294,8 @@ export default function ConjugaisonCE1() {
                     textAlign: "center",
                   }}
                 >
-                  🕐 Dernier <br />{" "}
+                  🕐 Dernier
+                  <br />
                   <strong style={{ color: "#fff" }}>
                     {lastScore.score} / {lastScore.total}
                   </strong>
@@ -286,7 +303,6 @@ export default function ConjugaisonCE1() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -375,7 +391,7 @@ export default function ConjugaisonCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le présent ! 🚀"
+              ? "Tu maîtrises parfaitement l'accord nom/adjectif ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -389,7 +405,7 @@ export default function ConjugaisonCE1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

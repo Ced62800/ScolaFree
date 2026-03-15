@@ -9,28 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le présent des verbes",
+  titre: "Les familles de mots",
   intro:
-    "On utilise le présent pour parler de ce qui se passe maintenant ou de ce qu'on fait habituellement. Apprends à conjuguer les verbes au présent !",
+    "Une famille de mots regroupe des mots qui partagent la même racine et qui ont un sens proche. Reconnaître les familles de mots aide à comprendre et retenir le vocabulaire !",
   points: [
     {
-      titre: "Le présent, c'est maintenant",
+      titre: "Qu'est-ce qu'une famille de mots ?",
       texte:
-        "On utilise le présent pour une action qui se passe en ce moment ou une habitude. Des mots comme 'maintenant', 'aujourd'hui', 'tous les jours' accompagnent souvent le présent.",
-      exemple: "Je mange une pomme. · Il joue au foot tous les jours.",
-    },
-    {
-      titre: "Les terminaisons du présent (verbes en -er)",
-      texte:
-        "Pour les verbes en -er (comme chanter, jouer, manger), les terminaisons au présent sont : -e, -es, -e, -ons, -ez, -ent.",
+        "Des mots de la même famille ont la même racine. Ils parlent tous du même sujet mais de façon différente.",
       exemple:
-        "Je chante · Tu chantes · Il chante · Nous chantons · Vous chantez · Ils chantent",
+        "jardin → jardinier, jardinage, jardiner · mer → marin, marine, maritime",
     },
     {
-      titre: "Les verbes être et avoir au présent",
+      titre: "Comment trouver la racine ?",
       texte:
-        "Les verbes être et avoir sont irréguliers. Il faut les apprendre par cœur.",
-      exemple: "Je suis / Tu es / Il est · J'ai / Tu as / Il a",
+        "La racine est la partie commune à tous les mots de la famille. On enlève les préfixes et suffixes pour trouver la racine.",
+      exemple:
+        "chanter → chanteur, chanson, chant · pain → boulanger, boulangerie, boulange",
+    },
+    {
+      titre: "À quoi ça sert ?",
+      texte:
+        "Connaître les familles de mots aide à deviner le sens d'un mot inconnu et à enrichir son vocabulaire.",
+      exemple:
+        "Si je connais 'mer', je peux deviner que 'marin' est lié à la mer.",
     },
   ],
 };
@@ -38,96 +40,94 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète au présent : 'Je ___ au foot.' (jouer)",
-    options: ["joueras", "joues", "joue", "jouez"],
-    reponse: "joue",
-    explication: "Au présent avec 'je', on dit 'joue' (verbe en -er).",
+    question: "Quel mot appartient à la famille de 'jardin' ?",
+    options: ["jardinier", "journal", "jambe", "jaune"],
+    reponse: "jardinier",
+    explication: "'jardinier' vient de 'jardin' — même racine.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète au présent : 'Tu ___ une chanson.' (chanter)",
-    options: ["chanteras", "chantes", "chanta", "chantez"],
-    reponse: "chantes",
-    explication: "Au présent avec 'tu', on dit 'chantes'.",
+    question: "Quel mot appartient à la famille de 'chanter' ?",
+    options: ["chapeau", "chanteur", "chariot", "chandail"],
+    reponse: "chanteur",
+    explication: "'chanteur' vient de 'chanter' — même racine 'chant'.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quelle phrase est au présent ?",
-    options: [
-      "Il chantera demain.",
-      "Nous partirons bientôt.",
-      "Elle lit un livre.",
-      "Tu viendras.",
-    ],
-    reponse: "Elle lit un livre.",
-    explication: "'lit' est au présent — l'action se passe maintenant.",
+    question: "Quel mot N'appartient PAS à la famille de 'mer' ?",
+    options: ["marin", "marine", "merci", "maritime"],
+    reponse: "merci",
+    explication: "'merci' n'a pas de lien avec la mer.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète au présent : 'Il ___ grand.' (être)",
-    options: ["sera", "était", "est", "soit"],
-    reponse: "est",
-    explication: "Au présent avec 'il', le verbe être donne 'est'.",
+    question: "Quel mot appartient à la famille de 'livre' ?",
+    options: ["librairie", "liberté", "ligne", "liste"],
+    reponse: "librairie",
+    explication:
+      "'librairie' vient de 'livre' — c'est là où on vend des livres.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Complète au présent : 'Nous ___ dans le jardin.' (jouer)",
-    options: ["jouons", "jouez", "jouerons", "jouaient"],
-    reponse: "jouons",
-    explication: "Au présent avec 'nous', on dit 'jouons'.",
+    question: "Quel mot appartient à la famille de 'pain' ?",
+    options: ["peinture", "boulangerie", "panier", "palette"],
+    reponse: "boulangerie",
+    explication:
+      "'boulangerie' est liée au pain — on y fabrique et vend du pain.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète au présent : 'Vous ___ vos devoirs.' (finir)",
-    options: ["finirez", "finissez", "finissait", "fini"],
-    reponse: "finissez",
-    explication: "Au présent avec 'vous', le verbe finir donne 'finissez'.",
+    question: "Trouve l'intrus : famille de 'soleil'",
+    options: ["ensoleillé", "solaire", "solitaire", "parasol"],
+    reponse: "solitaire",
+    explication: "'solitaire' vient de 'seul', pas de 'soleil'.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Complète au présent : 'J'___ un chien.' (avoir)",
-    options: ["aurai", "avais", "ai", "ait"],
-    reponse: "ai",
-    explication: "Au présent avec 'j'', le verbe avoir donne 'ai'.",
+    question: "Quel mot appartient à la famille de 'école' ?",
+    options: ["écolier", "éclair", "écharpe", "écran"],
+    reponse: "écolier",
+    explication: "'écolier' vient de 'école' — c'est celui qui va à l'école.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Complète au présent : 'Ils ___ dans la cour.' (courir)",
-    options: ["couraient", "courront", "courent", "couru"],
-    reponse: "courent",
-    explication: "Au présent avec 'ils', le verbe courir donne 'courent'.",
+    question: "Quel mot appartient à la famille de 'fleur' ?",
+    options: ["fleuve", "fleuriste", "flèche", "flamme"],
+    reponse: "fleuriste",
+    explication:
+      "'fleuriste' vient de 'fleur' — c'est celui qui vend des fleurs.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Quel mot indique que la phrase est au présent ?",
-    options: ["demain", "hier", "bientôt", "aujourd'hui"],
-    reponse: "aujourd'hui",
-    explication: "'aujourd'hui' indique que l'action se passe maintenant.",
+    question: "Quelle est la racine commune de : nageur, nager, natation ?",
+    options: ["nat", "nag", "nage", "na"],
+    reponse: "nage",
+    explication: "'nage' est la racine commune à ces trois mots.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Complète au présent : 'Nous ___ contents.' (être)",
-    options: ["serons", "étions", "sommes", "soyons"],
-    reponse: "sommes",
-    explication: "Au présent avec 'nous', le verbe être donne 'sommes'.",
+    question: "Trouve l'intrus : famille de 'terre'",
+    options: ["terrasse", "territoire", "terrible", "enterrer"],
+    reponse: "terrible",
+    explication: "'terrible' vient de 'terreur', pas de 'terre'.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce1";
 const MATIERE = "francais";
-const THEME = "conjugaison";
+const THEME = "vocabulaire-2";
 
-export default function ConjugaisonCE1() {
+export default function VocabulaireCE1Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -148,7 +148,6 @@ export default function ConjugaisonCE1() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   useEffect(() => {
@@ -172,7 +171,7 @@ export default function ConjugaisonCE1() {
           classe: CLASSE,
           matiere: MATIERE,
           theme: THEME,
-          score: score,
+          score,
           total: questions.length,
         });
         const [best, last] = await Promise.all([
@@ -206,7 +205,9 @@ export default function ConjugaisonCE1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -215,7 +216,7 @@ export default function ConjugaisonCE1() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Conjugaison</span>
+          <span className="breadcrumb-active">Vocabulaire 2</span>
         </div>
       </div>
 
@@ -240,10 +241,9 @@ export default function ConjugaisonCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">⏰ Conjugaison · CE1</div>
+          <div className="lecon-badge">📚 Vocabulaire 2 · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
@@ -259,7 +259,8 @@ export default function ConjugaisonCE1() {
                     textAlign: "center",
                   }}
                 >
-                  🏆 Meilleur <br />{" "}
+                  🏆 Meilleur
+                  <br />
                   <strong>
                     {bestScore.score} / {bestScore.total}
                   </strong>
@@ -278,7 +279,8 @@ export default function ConjugaisonCE1() {
                     textAlign: "center",
                   }}
                 >
-                  🕐 Dernier <br />{" "}
+                  🕐 Dernier
+                  <br />
                   <strong style={{ color: "#fff" }}>
                     {lastScore.score} / {lastScore.total}
                   </strong>
@@ -286,7 +288,6 @@ export default function ConjugaisonCE1() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -375,7 +376,7 @@ export default function ConjugaisonCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le présent ! 🚀"
+              ? "Tu maîtrises parfaitement les familles de mots ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -389,7 +390,7 @@ export default function ConjugaisonCE1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

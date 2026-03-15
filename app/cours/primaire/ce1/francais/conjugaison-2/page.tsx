@@ -9,28 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le présent des verbes",
+  titre: "Le futur et l'imparfait",
   intro:
-    "On utilise le présent pour parler de ce qui se passe maintenant ou de ce qu'on fait habituellement. Apprends à conjuguer les verbes au présent !",
+    "On utilise le futur pour parler de ce qui va se passer, et l'imparfait pour parler d'habitudes ou de descriptions dans le passé.",
   points: [
     {
-      titre: "Le présent, c'est maintenant",
+      titre: "Le futur simple",
       texte:
-        "On utilise le présent pour une action qui se passe en ce moment ou une habitude. Des mots comme 'maintenant', 'aujourd'hui', 'tous les jours' accompagnent souvent le présent.",
-      exemple: "Je mange une pomme. · Il joue au foot tous les jours.",
-    },
-    {
-      titre: "Les terminaisons du présent (verbes en -er)",
-      texte:
-        "Pour les verbes en -er (comme chanter, jouer, manger), les terminaisons au présent sont : -e, -es, -e, -ons, -ez, -ent.",
+        "On utilise le futur pour parler d'une action qui aura lieu. Les terminaisons sont : -rai, -ras, -ra, -rons, -rez, -ront. Des mots comme 'demain', 'bientôt' accompagnent souvent le futur.",
       exemple:
-        "Je chante · Tu chantes · Il chante · Nous chantons · Vous chantez · Ils chantent",
+        "Je mangerai. · Tu joueras. · Il viendra. · Demain, nous partirons.",
     },
     {
-      titre: "Les verbes être et avoir au présent",
+      titre: "L'imparfait",
       texte:
-        "Les verbes être et avoir sont irréguliers. Il faut les apprendre par cœur.",
-      exemple: "Je suis / Tu es / Il est · J'ai / Tu as / Il a",
+        "On utilise l'imparfait pour décrire une habitude passée ou une action qui durait dans le passé. Les terminaisons sont : -ais, -ais, -ait, -ions, -iez, -aient.",
+      exemple:
+        "Je jouais dehors. · Il mangeait sa soupe. · Nous chantions ensemble.",
+    },
+    {
+      titre: "Comment les distinguer ?",
+      texte:
+        "Le futur parle de ce qui va arriver (demain, bientôt). L'imparfait parle de ce qui se passait avant (avant, quand j'étais petit, tous les jours).",
+      exemple:
+        "Avant, je jouais au parc. (imparfait) · Demain, je jouerai au parc. (futur)",
     },
   ],
 };
@@ -38,96 +40,102 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète au présent : 'Je ___ au foot.' (jouer)",
-    options: ["joueras", "joues", "joue", "jouez"],
-    reponse: "joue",
-    explication: "Au présent avec 'je', on dit 'joue' (verbe en -er).",
+    question: "Complète au futur : 'Demain, je ___ à l'école.' (aller)",
+    options: ["allais", "vais", "irai", "allons"],
+    reponse: "irai",
+    explication: "Au futur avec 'je', le verbe aller donne 'irai'.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète au présent : 'Tu ___ une chanson.' (chanter)",
-    options: ["chanteras", "chantes", "chanta", "chantez"],
-    reponse: "chantes",
-    explication: "Au présent avec 'tu', on dit 'chantes'.",
+    question: "Quel temps est utilisé : 'Il mangeait sa soupe' ?",
+    options: ["présent", "futur", "imparfait", "passé simple"],
+    reponse: "imparfait",
+    explication: "'mangeait' est à l'imparfait — terminaison -ait.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quelle phrase est au présent ?",
-    options: [
-      "Il chantera demain.",
-      "Nous partirons bientôt.",
-      "Elle lit un livre.",
-      "Tu viendras.",
-    ],
-    reponse: "Elle lit un livre.",
-    explication: "'lit' est au présent — l'action se passe maintenant.",
+    question: "Complète au futur : 'Tu ___ tes devoirs ce soir.' (finir)",
+    options: ["finissais", "finis", "finiras", "finissez"],
+    reponse: "finiras",
+    explication: "Au futur avec 'tu', on dit 'finiras'.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète au présent : 'Il ___ grand.' (être)",
-    options: ["sera", "était", "est", "soit"],
-    reponse: "est",
-    explication: "Au présent avec 'il', le verbe être donne 'est'.",
+    question:
+      "Complète à l'imparfait : 'Quand j'étais petit, je ___ beaucoup.' (jouer)",
+    options: ["jouerai", "jouais", "joue", "joueras"],
+    reponse: "jouais",
+    explication: "À l'imparfait avec 'je', on dit 'jouais'.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Complète au présent : 'Nous ___ dans le jardin.' (jouer)",
-    options: ["jouons", "jouez", "jouerons", "jouaient"],
-    reponse: "jouons",
-    explication: "Au présent avec 'nous', on dit 'jouons'.",
+    question: "Quel mot indique le futur ?",
+    options: ["avant", "jadis", "bientôt", "autrefois"],
+    reponse: "bientôt",
+    explication: "'bientôt' indique que l'action va se passer dans le futur.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète au présent : 'Vous ___ vos devoirs.' (finir)",
-    options: ["finirez", "finissez", "finissait", "fini"],
-    reponse: "finissez",
-    explication: "Au présent avec 'vous', le verbe finir donne 'finissez'.",
+    question: "Complète au futur : 'Nous ___ en vacances cet été.' (partir)",
+    options: ["partions", "partons", "partirons", "partîmes"],
+    reponse: "partirons",
+    explication: "Au futur avec 'nous', on dit 'partirons'.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Complète au présent : 'J'___ un chien.' (avoir)",
-    options: ["aurai", "avais", "ai", "ait"],
-    reponse: "ai",
-    explication: "Au présent avec 'j'', le verbe avoir donne 'ai'.",
+    question: "Complète à l'imparfait : 'Ils ___ tous les soirs.' (chanter)",
+    options: ["chanteront", "chantent", "chantaient", "chanterez"],
+    reponse: "chantaient",
+    explication: "À l'imparfait avec 'ils', on dit 'chantaient'.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Complète au présent : 'Ils ___ dans la cour.' (courir)",
-    options: ["couraient", "courront", "courent", "couru"],
-    reponse: "courent",
-    explication: "Au présent avec 'ils', le verbe courir donne 'courent'.",
+    question: "Quelle phrase est au futur ?",
+    options: [
+      "Elle chantait tous les soirs.",
+      "Nous jouions dehors.",
+      "Il viendra demain.",
+      "Tu mangeais bien.",
+    ],
+    reponse: "Il viendra demain.",
+    explication: "'viendra' est au futur — 'demain' le confirme.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Quel mot indique que la phrase est au présent ?",
-    options: ["demain", "hier", "bientôt", "aujourd'hui"],
-    reponse: "aujourd'hui",
-    explication: "'aujourd'hui' indique que l'action se passe maintenant.",
+    question: "Complète à l'imparfait : 'Vous ___ souvent au parc.' (aller)",
+    options: ["irez", "allez", "alliez", "allés"],
+    reponse: "alliez",
+    explication: "À l'imparfait avec 'vous', le verbe aller donne 'alliez'.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Complète au présent : 'Nous ___ contents.' (être)",
-    options: ["serons", "étions", "sommes", "soyons"],
-    reponse: "sommes",
-    explication: "Au présent avec 'nous', le verbe être donne 'sommes'.",
+    question: "Quelle phrase est à l'imparfait ?",
+    options: [
+      "Je mangerai une pizza.",
+      "Tu finiras tes devoirs.",
+      "Il pleuvait tous les jours.",
+      "Nous partirons bientôt.",
+    ],
+    reponse: "Il pleuvait tous les jours.",
+    explication: "'pleuvait' est à l'imparfait — terminaison -ait.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce1";
 const MATIERE = "francais";
-const THEME = "conjugaison";
+const THEME = "conjugaison-2";
 
-export default function ConjugaisonCE1() {
+export default function ConjugaisonCE1Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -148,7 +156,6 @@ export default function ConjugaisonCE1() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   useEffect(() => {
@@ -172,7 +179,7 @@ export default function ConjugaisonCE1() {
           classe: CLASSE,
           matiere: MATIERE,
           theme: THEME,
-          score: score,
+          score,
           total: questions.length,
         });
         const [best, last] = await Promise.all([
@@ -206,7 +213,9 @@ export default function ConjugaisonCE1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -215,7 +224,7 @@ export default function ConjugaisonCE1() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Conjugaison</span>
+          <span className="breadcrumb-active">Conjugaison 2</span>
         </div>
       </div>
 
@@ -240,10 +249,9 @@ export default function ConjugaisonCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">⏰ Conjugaison · CE1</div>
+          <div className="lecon-badge">⏰ Conjugaison 2 · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
@@ -259,7 +267,8 @@ export default function ConjugaisonCE1() {
                     textAlign: "center",
                   }}
                 >
-                  🏆 Meilleur <br />{" "}
+                  🏆 Meilleur
+                  <br />
                   <strong>
                     {bestScore.score} / {bestScore.total}
                   </strong>
@@ -278,7 +287,8 @@ export default function ConjugaisonCE1() {
                     textAlign: "center",
                   }}
                 >
-                  🕐 Dernier <br />{" "}
+                  🕐 Dernier
+                  <br />
                   <strong style={{ color: "#fff" }}>
                     {lastScore.score} / {lastScore.total}
                   </strong>
@@ -286,7 +296,6 @@ export default function ConjugaisonCE1() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -375,7 +384,7 @@ export default function ConjugaisonCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le présent ! 🚀"
+              ? "Tu maîtrises parfaitement le futur et l'imparfait ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -389,7 +398,7 @@ export default function ConjugaisonCE1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

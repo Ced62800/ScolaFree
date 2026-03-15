@@ -9,28 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Le présent des verbes",
+  titre: "Les homophones grammaticaux",
   intro:
-    "On utilise le présent pour parler de ce qui se passe maintenant ou de ce qu'on fait habituellement. Apprends à conjuguer les verbes au présent !",
+    "Les homophones sont des mots qui se prononcent pareil mais qui s'écrivent différemment et n'ont pas le même sens. Il faut apprendre à les distinguer !",
   points: [
     {
-      titre: "Le présent, c'est maintenant",
+      titre: "a / à",
       texte:
-        "On utilise le présent pour une action qui se passe en ce moment ou une habitude. Des mots comme 'maintenant', 'aujourd'hui', 'tous les jours' accompagnent souvent le présent.",
-      exemple: "Je mange une pomme. · Il joue au foot tous les jours.",
-    },
-    {
-      titre: "Les terminaisons du présent (verbes en -er)",
-      texte:
-        "Pour les verbes en -er (comme chanter, jouer, manger), les terminaisons au présent sont : -e, -es, -e, -ons, -ez, -ent.",
+        "'a' est le verbe avoir (on peut remplacer par 'avait'). 'à' est une préposition (on ne peut pas le remplacer par 'avait').",
       exemple:
-        "Je chante · Tu chantes · Il chante · Nous chantons · Vous chantez · Ils chantent",
+        "Il a faim. → Il avait faim ✓ · Il va à l'école. → Il va avait l'école ✗",
     },
     {
-      titre: "Les verbes être et avoir au présent",
+      titre: "est / et",
       texte:
-        "Les verbes être et avoir sont irréguliers. Il faut les apprendre par cœur.",
-      exemple: "Je suis / Tu es / Il est · J'ai / Tu as / Il a",
+        "'est' est le verbe être (on peut remplacer par 'était'). 'et' est une conjonction qui relie deux mots (= aussi).",
+      exemple:
+        "Il est grand. → Il était grand ✓ · Paul et Marie jouent. → Paul aussi Marie jouent ✓",
+    },
+    {
+      titre: "on / ont",
+      texte:
+        "'on' est un pronom (on peut remplacer par 'il'). 'ont' est le verbe avoir au pluriel (on peut remplacer par 'avaient').",
+      exemple:
+        "On joue dehors. → Il joue dehors ✓ · Ils ont faim. → Ils avaient faim ✓",
     },
   ],
 };
@@ -38,96 +40,94 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Complète au présent : 'Je ___ au foot.' (jouer)",
-    options: ["joueras", "joues", "joue", "jouez"],
-    reponse: "joue",
-    explication: "Au présent avec 'je', on dit 'joue' (verbe en -er).",
+    question: "Complète : 'Il ___ mangé sa soupe.' (a ou à)",
+    options: ["à", "a"],
+    reponse: "a",
+    explication:
+      "'a' = verbe avoir. On peut dire 'il avait mangé' → c'est 'a'.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Complète au présent : 'Tu ___ une chanson.' (chanter)",
-    options: ["chanteras", "chantes", "chanta", "chantez"],
-    reponse: "chantes",
-    explication: "Au présent avec 'tu', on dit 'chantes'.",
+    question: "Complète : 'Elle va ___ l'école.' (a ou à)",
+    options: ["a", "à"],
+    reponse: "à",
+    explication:
+      "'à' est une préposition. On ne peut pas dire 'avait l'école'.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quelle phrase est au présent ?",
-    options: [
-      "Il chantera demain.",
-      "Nous partirons bientôt.",
-      "Elle lit un livre.",
-      "Tu viendras.",
-    ],
-    reponse: "Elle lit un livre.",
-    explication: "'lit' est au présent — l'action se passe maintenant.",
+    question: "Complète : 'Le chat ___ très grand.' (est ou et)",
+    options: ["et", "est"],
+    reponse: "est",
+    explication: "'est' = verbe être. On peut dire 'le chat était très grand'.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Complète au présent : 'Il ___ grand.' (être)",
-    options: ["sera", "était", "est", "soit"],
-    reponse: "est",
-    explication: "Au présent avec 'il', le verbe être donne 'est'.",
+    question: "Complète : 'Tom ___ Léa jouent ensemble.' (est ou et)",
+    options: ["est", "et"],
+    reponse: "et",
+    explication: "'et' relie deux mots. On peut dire 'Tom aussi Léa jouent'.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Complète au présent : 'Nous ___ dans le jardin.' (jouer)",
-    options: ["jouons", "jouez", "jouerons", "jouaient"],
-    reponse: "jouons",
-    explication: "Au présent avec 'nous', on dit 'jouons'.",
+    question: "Complète : '___ part à la mer.' (on ou ont)",
+    options: ["ont", "on"],
+    reponse: "on",
+    explication: "'on' = pronom. On peut dire 'il part à la mer'.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Complète au présent : 'Vous ___ vos devoirs.' (finir)",
-    options: ["finirez", "finissez", "finissait", "fini"],
-    reponse: "finissez",
-    explication: "Au présent avec 'vous', le verbe finir donne 'finissez'.",
+    question: "Complète : 'Ils ___ fini leurs devoirs.' (on ou ont)",
+    options: ["on", "ont"],
+    reponse: "ont",
+    explication: "'ont' = verbe avoir. On peut dire 'ils avaient fini'.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Complète au présent : 'J'___ un chien.' (avoir)",
-    options: ["aurai", "avais", "ai", "ait"],
-    reponse: "ai",
-    explication: "Au présent avec 'j'', le verbe avoir donne 'ai'.",
+    question: "Complète : 'Il ___ un beau vélo.' (a ou à)",
+    options: ["à", "a"],
+    reponse: "a",
+    explication: "'a' = verbe avoir. On peut dire 'il avait un beau vélo'.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Complète au présent : 'Ils ___ dans la cour.' (courir)",
-    options: ["couraient", "courront", "courent", "couru"],
-    reponse: "courent",
-    explication: "Au présent avec 'ils', le verbe courir donne 'courent'.",
+    question: "Complète : 'La robe ___ bleue ___ jolie.' (est/et)",
+    options: ["et / est", "est / et"],
+    reponse: "est / et",
+    explication: "'est' = verbe être, 'et' = relie deux adjectifs.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Quel mot indique que la phrase est au présent ?",
-    options: ["demain", "hier", "bientôt", "aujourd'hui"],
-    reponse: "aujourd'hui",
-    explication: "'aujourd'hui' indique que l'action se passe maintenant.",
+    question: "Complète : 'Ils ___ mangé ___ la cantine.' (ont/à)",
+    options: ["on / a", "ont / à", "on / à", "ont / a"],
+    reponse: "ont / à",
+    explication: "'ont' = verbe avoir (avaient), 'à' = préposition.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Complète au présent : 'Nous ___ contents.' (être)",
-    options: ["serons", "étions", "sommes", "soyons"],
-    reponse: "sommes",
-    explication: "Au présent avec 'nous', le verbe être donne 'sommes'.",
+    question: "Complète : '___ dirait qu'il ___ fatigué.' (on/est)",
+    options: ["ont / est", "on / et", "on / est", "ont / et"],
+    reponse: "on / est",
+    explication:
+      "'on' = pronom (il dirait), 'est' = verbe être (était fatigué).",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce1";
 const MATIERE = "francais";
-const THEME = "conjugaison";
+const THEME = "orthographe-2";
 
-export default function ConjugaisonCE1() {
+export default function OrthographeCE1Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -148,7 +148,6 @@ export default function ConjugaisonCE1() {
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
-
   const progression = Math.round((bonnes.length / questions.length) * 100);
 
   useEffect(() => {
@@ -172,7 +171,7 @@ export default function ConjugaisonCE1() {
           classe: CLASSE,
           matiere: MATIERE,
           theme: THEME,
-          score: score,
+          score,
           total: questions.length,
         });
         const [best, last] = await Promise.all([
@@ -206,7 +205,9 @@ export default function ConjugaisonCE1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -215,7 +216,7 @@ export default function ConjugaisonCE1() {
           <span className="breadcrumb-sep">›</span>
           <span>Français</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Conjugaison</span>
+          <span className="breadcrumb-active">Orthographe 2</span>
         </div>
       </div>
 
@@ -240,10 +241,9 @@ export default function ConjugaisonCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">⏰ Conjugaison · CE1</div>
+          <div className="lecon-badge">✏️ Orthographe 2 · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
@@ -259,7 +259,8 @@ export default function ConjugaisonCE1() {
                     textAlign: "center",
                   }}
                 >
-                  🏆 Meilleur <br />{" "}
+                  🏆 Meilleur
+                  <br />
                   <strong>
                     {bestScore.score} / {bestScore.total}
                   </strong>
@@ -278,7 +279,8 @@ export default function ConjugaisonCE1() {
                     textAlign: "center",
                   }}
                 >
-                  🕐 Dernier <br />{" "}
+                  🕐 Dernier
+                  <br />
                   <strong style={{ color: "#fff" }}>
                     {lastScore.score} / {lastScore.total}
                   </strong>
@@ -286,7 +288,6 @@ export default function ConjugaisonCE1() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -375,7 +376,7 @@ export default function ConjugaisonCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le présent ! 🚀"
+              ? "Tu maîtrises parfaitement les homophones ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -389,7 +390,7 @@ export default function ConjugaisonCE1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

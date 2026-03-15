@@ -9,29 +9,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les préfixes et les suffixes",
+  titre: "Les synonymes et les antonymes",
   intro:
-    "On peut créer de nouveaux mots en ajoutant des éléments au début (préfixe) ou à la fin (suffixe) d'un mot. C'est très utile pour comprendre le sens des mots nouveaux !",
+    "Les synonymes sont des mots qui ont le même sens. Les antonymes sont des mots qui ont le sens contraire. Les connaître permet de mieux s'exprimer !",
   points: [
     {
-      titre: "Les préfixes",
+      titre: "Les synonymes",
       texte:
-        "Un préfixe se place AVANT le mot. Il change son sens. 'in-', 'im-', 'dé-', 're-' sont des préfixes courants.",
-      exemple: "possible → impossible · faire → défaire · venir → revenir",
+        "Deux mots sont synonymes quand ils veulent dire la même chose. On peut les utiliser l'un à la place de l'autre.",
+      exemple: "content = joyeux · rapide = vite · beau = joli",
     },
     {
-      titre: "Les suffixes",
+      titre: "Les antonymes",
       texte:
-        "Un suffixe se place APRÈS le mot. Il change la nature ou le sens du mot. '-eur', '-tion', '-ette' sont des suffixes courants.",
-      exemple:
-        "chanter → chanteur · jardiner → jardinier · maison → maisonnette",
+        "Deux mots sont antonymes quand ils ont un sens contraire. L'antonyme est le contraire du mot.",
+      exemple: "grand ≠ petit · chaud ≠ froid · jour ≠ nuit",
     },
     {
-      titre: "Reconnaître le sens",
+      titre: "Pourquoi les utiliser ?",
       texte:
-        "En reconnaissant les préfixes et suffixes, on peut deviner le sens d'un mot inconnu !",
+        "Utiliser des synonymes enrichit notre façon de parler et d'écrire. Les antonymes nous aident à exprimer des contrastes et des oppositions.",
       exemple:
-        "in- = contraire → injuste = pas juste · re- = à nouveau → relire = lire à nouveau",
+        "Au lieu de 'il est bien', on peut dire 'il est excellent' ou 'il est formidable'.",
     },
   ],
 };
@@ -39,110 +38,89 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Quel est le préfixe dans 'impossible' ?",
-    options: ["im", "possible", "ible", "po"],
-    reponse: "im",
-    explication:
-      "'im-' est le préfixe — il signifie 'pas' : impossible = pas possible.",
+    question: "Quel est le synonyme de 'content' ?",
+    options: ["triste", "joyeux", "fâché", "fatigué"],
+    reponse: "joyeux",
+    explication: "'Content' et 'joyeux' veulent dire la même chose.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Que signifie le préfixe 're-' dans 'relire' ?",
-    options: ["avant", "à nouveau", "contraire", "après"],
-    reponse: "à nouveau",
-    explication: "'re-' signifie 'à nouveau' : relire = lire à nouveau.",
+    question: "Quel est l'antonyme de 'grand' ?",
+    options: ["gros", "fort", "petit", "long"],
+    reponse: "petit",
+    explication: "'Grand' et 'petit' sont des contraires.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quel mot contient un suffixe qui indique un métier ?",
-    options: ["maisonnette", "impossible", "boulanger", "refaire"],
-    reponse: "boulanger",
-    explication: "'-er' dans 'boulanger' indique un métier.",
+    question: "Quel est le synonyme de 'rapide' ?",
+    options: ["lent", "vite", "lourd", "calme"],
+    reponse: "vite",
+    explication: "'Rapide' et 'vite' veulent dire la même chose.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Que signifie 'défaire' ?",
-    options: [
-      "faire à nouveau",
-      "faire avant",
-      "faire le contraire de faire",
-      "bien faire",
-    ],
-    reponse: "faire le contraire de faire",
-    explication:
-      "'dé-' indique le contraire : défaire = faire le contraire de faire.",
-    niveau: "moyen",
+    question: "Quel est l'antonyme de 'chaud' ?",
+    options: ["tiède", "froid", "brûlant", "doux"],
+    reponse: "froid",
+    explication: "'Chaud' et 'froid' sont des contraires.",
+    niveau: "facile",
   },
   {
     id: 5,
-    question:
-      "Quel préfixe peut-on ajouter à 'heureux' pour former son contraire ?",
-    options: ["re-", "dé-", "in-", "sur-"],
-    reponse: "in-",
-    explication:
-      "'in-' + 'heureux' = 'inheureux' (malheureux). 'in-' indique le contraire.",
+    question: "Quel est le synonyme de 'beau' ?",
+    options: ["laid", "joli", "vieux", "petit"],
+    reponse: "joli",
+    explication: "'Beau' et 'joli' veulent dire la même chose.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Quel est le suffixe dans 'chanteur' ?",
-    options: ["chan", "chant", "eur", "teur"],
-    reponse: "eur",
-    explication:
-      "'-eur' est le suffixe — il indique la personne qui fait l'action.",
+    question: "Quel est l'antonyme de 'jour' ?",
+    options: ["matin", "soir", "nuit", "midi"],
+    reponse: "nuit",
+    explication: "'Jour' et 'nuit' sont des contraires.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Que signifie 'maisonnette' ?",
-    options: [
-      "grande maison",
-      "petite maison",
-      "belle maison",
-      "vieille maison",
-    ],
-    reponse: "petite maison",
-    explication: "Le suffixe '-ette' indique quelque chose de petit.",
+    question: "Quel mot est synonyme de 'fatigué' ?",
+    options: ["reposé", "épuisé", "content", "vif"],
+    reponse: "épuisé",
+    explication: "'Fatigué' et 'épuisé' veulent dire la même chose.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quel mot est formé avec le préfixe 're-' ?",
-    options: ["renard", "repas", "recommencer", "requin"],
-    reponse: "recommencer",
-    explication: "'re-' + 'commencer' = recommencer (commencer à nouveau).",
-    niveau: "difficile",
+    question: "Quel est l'antonyme de 'monter' ?",
+    options: ["avancer", "courir", "descendre", "sauter"],
+    reponse: "descendre",
+    explication: "'Monter' et 'descendre' sont des contraires.",
+    niveau: "moyen",
   },
   {
     id: 9,
-    question:
-      "Quel suffixe transforme un verbe en nom de métier ? 'jardiner → jardin___'",
-    options: ["-ier", "-tion", "-ette", "-eur"],
-    reponse: "-ier",
-    explication: "'-ier' transforme 'jardiner' en 'jardinier' (métier).",
+    question: "Parmi ces mots, lequel est synonyme de 'maison' ?",
+    options: ["jardin", "demeure", "rue", "école"],
+    reponse: "demeure",
+    explication: "'Maison' et 'demeure' veulent dire la même chose.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Que signifie 'prévisible' ? (pré- = avant, -ible = possible)",
-    options: [
-      "pas possible à voir",
-      "possible à voir à l'avance",
-      "très visible",
-      "déjà vu",
-    ],
-    reponse: "possible à voir à l'avance",
-    explication: "'pré-' = avant + 'visible' = possible à voir à l'avance.",
+    question: "Quel est l'antonyme de 'commencer' ?",
+    options: ["continuer", "avancer", "terminer", "chercher"],
+    reponse: "terminer",
+    explication: "'Commencer' et 'terminer' sont des contraires.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce1";
 const MATIERE = "francais";
-const THEME = "prefixes-suffixes";
+const THEME = "vocabulaire";
 
 export default function VocabulaireCE1() {
   const router = useRouter();
@@ -192,7 +170,6 @@ export default function VocabulaireCE1() {
           score: score,
           total: questions.length,
         });
-
         const [best, last] = await Promise.all([
           getBestScore(CLASSE, MATIERE, THEME),
           getLastScore(CLASSE, MATIERE, THEME),
@@ -393,12 +370,12 @@ export default function VocabulaireCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les préfixes et suffixes !"
+              ? "Tu maîtrises parfaitement les synonymes et antonymes ! 🚀"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
-                  ? "Encore quelques efforts !"
-                  : "Relis la leçon et réessaie !"}
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
