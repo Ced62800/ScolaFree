@@ -4,62 +4,62 @@ import { useRouter } from "next/navigation";
 
 const themes = [
   {
-    id: "numeration",
-    label: "Numération",
-    emoji: "🔢",
+    id: "multiplication",
+    label: "Multiplication",
+    emoji: "✖️",
     color: "#4f8ef7",
-    desc: "Les nombres jusqu'à 100",
+    desc: "Tables de 2, 3, 5 et 10",
     nb: 10,
   },
   {
-    id: "addition",
-    label: "Addition",
-    emoji: "➕",
+    id: "fractions",
+    label: "Fractions",
+    emoji: "🍕",
     color: "#2ec4b6",
-    desc: "L'addition posée",
+    desc: "La moitié, le tiers, le quart",
     nb: 10,
   },
   {
-    id: "soustraction",
-    label: "Soustraction",
-    emoji: "➖",
+    id: "grandeurs-mesures",
+    label: "Grandeurs et mesures",
+    emoji: "📏",
     color: "#ffd166",
-    desc: "La soustraction posée",
+    desc: "Longueurs, masses et durées",
     nb: 10,
   },
   {
-    id: "calcul-mental",
-    label: "Calcul Mental",
-    emoji: "🧠",
+    id: "geometrie",
+    label: "Géométrie",
+    emoji: "📐",
     color: "#ff6b6b",
-    desc: "Doubles, moitiés et compléments",
+    desc: "Formes, lignes et angles",
     nb: 10,
   },
 ];
 
-export default function MathsCE1() {
+export default function MathsCE1Page2() {
   const router = useRouter();
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/ce1")}
+          onClick={() => router.push("/cours/primaire/ce1/maths")}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Primaire</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CE1</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Mathématiques</span>
+          <span>Maths</span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Partie 2</span>
         </div>
       </div>
       <div className="cours-hero">
         <div className="cours-hero-icon">➕</div>
         <h1 className="cours-hero-title">Mathématiques — CE1</h1>
-        <p className="cours-hero-desc">Cours Élémentaire 1 · 7 ans</p>
+        <p className="cours-hero-desc">Partie 2 · Second semestre</p>
       </div>
       <div className="themes-grid">
         {themes.map((t) => (
@@ -82,7 +82,7 @@ export default function MathsCE1() {
       </div>
       <div style={{ marginTop: "40px", textAlign: "center" }}>
         <button
-          onClick={() => router.push("/cours/primaire/ce1/maths/bilan")}
+          onClick={() => router.push("/cours/primaire/ce1/maths/bilan-2")}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -98,31 +98,11 @@ export default function MathsCE1() {
             boxShadow: "0 4px 20px rgba(79,142,247,0.3)",
           }}
         >
-          🎯 Bilan Final CE1 Maths — 20 questions
+          🎯 Bilan Maths CE1 Partie 2 — 20 questions
         </button>
         <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
-          Teste toutes tes connaissances de Maths du CE1 !
+          Teste toutes tes connaissances de la partie 2 !
         </p>
-      </div>
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <button
-          onClick={() => router.push("/cours/primaire/ce1/maths/page-2")}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "10px",
-            background: "rgba(255,255,255,0.06)",
-            color: "#fff",
-            fontWeight: 700,
-            fontSize: "1rem",
-            padding: "14px 28px",
-            borderRadius: "16px",
-            border: "1px solid rgba(255,255,255,0.15)",
-            cursor: "pointer",
-          }}
-        >
-          📚 Cours suivants — Partie 2 →
-        </button>
       </div>
     </div>
   );

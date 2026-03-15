@@ -9,29 +9,27 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les nombres jusqu'à 100",
+  titre: "La soustraction posée",
   intro:
-    "En CE1, on apprend à lire, écrire et comprendre tous les nombres jusqu'à 100. Un nombre est composé de dizaines et d'unités.",
+    "La soustraction posée permet de soustraire des grands nombres en les écrivant en colonnes. On soustrait chiffre par chiffre en commençant par les unités !",
   points: [
     {
-      titre: "Dizaines et unités",
+      titre: "Poser une soustraction",
       texte:
-        "Un nombre à deux chiffres se lit de gauche à droite. Le chiffre de gauche représente les dizaines, celui de droite les unités. 1 dizaine = 10 unités.",
-      exemple: "47 = 4 dizaines + 7 unités · 30 = 3 dizaines + 0 unités",
+        "On aligne les chiffres par colonne : unités sous unités, dizaines sous dizaines. On commence toujours par soustraire les unités.",
+      exemple: "  37\n- 14\n----\n  23  (7-4=3 unités, 3-1=2 dizaines)",
     },
     {
-      titre: "Lire et écrire les nombres",
+      titre: "La retenue (emprunt)",
       texte:
-        "On dit d'abord les dizaines, puis les unités. Attention aux nombres de 11 à 16 qui ont des noms particuliers, et aux nombres avec un tiret.",
-      exemple:
-        "72 → soixante-douze · 85 → quatre-vingt-cinq · 91 → quatre-vingt-onze",
+        "Si le chiffre du haut est plus petit que celui du bas, on emprunte 1 dizaine au chiffre des dizaines.",
+      exemple: "  42\n- 17\n----\n  25  (12-7=5, 3-1=2 dizaines)",
     },
     {
-      titre: "Comparer et ranger",
+      titre: "Vérifier avec l'addition",
       texte:
-        "Pour comparer deux nombres, on regarde d'abord les dizaines. Si les dizaines sont égales, on regarde les unités.",
-      exemple:
-        "64 > 46 (6 dizaines > 4 dizaines) · 53 < 57 (même dizaines, 3 < 7)",
+        "On peut vérifier une soustraction avec une addition : résultat + nombre soustrait = nombre de départ.",
+      exemple: "37 - 14 = 23 · Vérif : 23 + 14 = 37 ✓",
     },
   ],
 };
@@ -39,102 +37,91 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Combien y a-t-il de dizaines dans 47 ?",
-    options: ["4", "7", "11", "47"],
-    reponse: "4",
-    explication: "47 = 4 dizaines + 7 unités.",
+    question: "37 − 14 = ?",
+    options: ["21", "22", "23", "24"],
+    reponse: "23",
+    explication: "37 − 14 : 7-4=3 unités, 3-1=2 dizaines → 23.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Comment s'écrit « soixante-cinq » en chiffres ?",
-    options: ["56", "65", "75", "55"],
-    reponse: "65",
-    explication: "Soixante = 6 dizaines, cinq = 5 unités → 65.",
+    question: "58 − 23 = ?",
+    options: ["33", "34", "35", "36"],
+    reponse: "35",
+    explication: "58 − 23 : 8-3=5 unités, 5-2=3 dizaines → 35.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quel nombre vient juste après 79 ?",
-    options: ["70", "78", "80", "90"],
-    reponse: "80",
-    explication: "Après 79 vient 80 — on change de dizaine.",
+    question: "46 − 20 = ?",
+    options: ["24", "25", "26", "27"],
+    reponse: "26",
+    explication: "46 − 20 : 6-0=6 unités, 4-2=2 dizaines → 26.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est le chiffre des unités dans 83 ?",
-    options: ["8", "3", "80", "83"],
-    reponse: "3",
-    explication: "Dans 83, le chiffre des unités est 3 (à droite).",
-    niveau: "facile",
+    question: "75 − 38 = ?",
+    options: ["35", "36", "37", "38"],
+    reponse: "37",
+    explication: "75 − 38 : 15-8=7 (emprunt), 6-3=3 dizaines → 37.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "Lequel de ces nombres est le plus grand ?",
-    options: ["67", "76", "66", "77"],
-    reponse: "77",
-    explication: "77 a 7 dizaines et 7 unités — c'est le plus grand.",
+    question: "62 − 25 = ?",
+    options: ["35", "36", "37", "38"],
+    reponse: "37",
+    explication: "62 − 25 : 12-5=7 (emprunt), 5-2=3 dizaines → 37.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Comment décompose-t-on 90 ?",
-    options: [
-      "9 unités",
-      "9 dizaines + 0 unités",
-      "0 dizaines + 9 unités",
-      "9 centaines",
-    ],
-    reponse: "9 dizaines + 0 unités",
-    explication: "90 = 9 dizaines + 0 unités.",
+    question: "Léa a 54 images. Elle en donne 27. Combien lui en reste-t-il ?",
+    options: ["25", "26", "27", "28"],
+    reponse: "27",
+    explication: "54 − 27 : 14-7=7 (emprunt), 4-2=2 dizaines → 27.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Range dans l'ordre croissant : 45, 54, 44, 55",
-    options: [
-      "44 – 45 – 54 – 55",
-      "55 – 54 – 45 – 44",
-      "44 – 54 – 45 – 55",
-      "45 – 44 – 55 – 54",
-    ],
-    reponse: "44 – 45 – 54 – 55",
-    explication:
-      "On commence par les plus petits : 44, 45 (4 dizaines), puis 54, 55 (5 dizaines).",
+    question: "80 − 45 = ?",
+    options: ["33", "34", "35", "36"],
+    reponse: "35",
+    explication: "80 − 45 : 10-5=5 (emprunt), 7-4=3 dizaines → 35.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quel nombre = 6 dizaines + 8 unités ?",
-    options: ["86", "68", "66", "88"],
-    reponse: "68",
-    explication: "6 dizaines = 60, 8 unités = 8 → 60 + 8 = 68.",
-    niveau: "moyen",
+    question: "91 − 36 = ?",
+    options: ["53", "54", "55", "56"],
+    reponse: "55",
+    explication: "91 − 36 : 11-6=5 (emprunt), 8-3=5 dizaines → 55.",
+    niveau: "difficile",
   },
   {
     id: 9,
-    question: "Comment s'écrit quatre-vingt-douze ?",
-    options: ["72", "82", "92", "62"],
-    reponse: "92",
-    explication: "Quatre-vingts = 80, douze = 12 → 80 + 12 = 92.",
+    question: "Tom avait 73 billes. Il en perd 48. Combien lui en reste-t-il ?",
+    options: ["23", "24", "25", "26"],
+    reponse: "25",
+    explication: "73 − 48 : 13-8=5 (emprunt), 6-4=2 dizaines → 25.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Entre 85 et 95, combien y a-t-il de nombres entiers ?",
-    options: ["8", "9", "10", "11"],
-    reponse: "9",
-    explication: "86, 87, 88, 89, 90, 91, 92, 93, 94 → 9 nombres.",
+    question: "100 − 37 = ?",
+    options: ["61", "62", "63", "64"],
+    reponse: "63",
+    explication: "100 − 37 = 63. Vérif : 63 + 37 = 100 ✓",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce1";
 const MATIERE = "maths";
-const THEME = "numeration";
+const THEME = "soustraction";
 
-export default function NumerationCE1() {
+export default function SoustractionCE1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -221,7 +208,7 @@ export default function NumerationCE1() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Numération</span>
+          <span className="breadcrumb-active">Soustraction</span>
         </div>
       </div>
 
@@ -246,7 +233,7 @@ export default function NumerationCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🔢 Numération · CE1</div>
+          <div className="lecon-badge">➖ Soustraction · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -381,7 +368,7 @@ export default function NumerationCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les nombres jusqu'à 100 ! 🚀"
+              ? "Tu maîtrises parfaitement la soustraction posée ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5

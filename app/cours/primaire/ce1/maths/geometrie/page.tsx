@@ -9,29 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les nombres jusqu'à 100",
+  titre: "Formes, lignes et angles",
   intro:
-    "En CE1, on apprend à lire, écrire et comprendre tous les nombres jusqu'à 100. Un nombre est composé de dizaines et d'unités.",
+    "La géométrie c'est l'étude des formes et des espaces. En CE1 on apprend à reconnaître les formes géométriques, les types de lignes et les angles droits.",
   points: [
     {
-      titre: "Dizaines et unités",
+      titre: "Les formes géométriques",
       texte:
-        "Un nombre à deux chiffres se lit de gauche à droite. Le chiffre de gauche représente les dizaines, celui de droite les unités. 1 dizaine = 10 unités.",
-      exemple: "47 = 4 dizaines + 7 unités · 30 = 3 dizaines + 0 unités",
+        "On reconnaît les formes par leur nombre de côtés et leurs propriétés. Le carré a 4 côtés égaux, le rectangle a 4 côtés (2 paires égales), le triangle a 3 côtés, le cercle n'a pas de côté.",
+      exemple:
+        "Carré : 4 côtés égaux · Rectangle : 2 côtés longs + 2 côtés courts · Triangle : 3 côtés",
     },
     {
-      titre: "Lire et écrire les nombres",
+      titre: "Les types de lignes",
       texte:
-        "On dit d'abord les dizaines, puis les unités. Attention aux nombres de 11 à 16 qui ont des noms particuliers, et aux nombres avec un tiret.",
+        "Une ligne droite ne courbe pas. Une ligne courbe est arrondie. Deux lignes parallèles ne se croisent jamais. Deux lignes perpendiculaires forment un angle droit.",
       exemple:
-        "72 → soixante-douze · 85 → quatre-vingt-cinq · 91 → quatre-vingt-onze",
+        "Les rails d'un train sont parallèles. Les bords d'une feuille sont perpendiculaires.",
     },
     {
-      titre: "Comparer et ranger",
+      titre: "L'angle droit",
       texte:
-        "Pour comparer deux nombres, on regarde d'abord les dizaines. Si les dizaines sont égales, on regarde les unités.",
+        "Un angle droit ressemble au coin d'une feuille de papier. On peut le vérifier avec l'équerre. Un carré et un rectangle ont 4 angles droits.",
       exemple:
-        "64 > 46 (6 dizaines > 4 dizaines) · 53 < 57 (même dizaines, 3 < 7)",
+        "Le coin d'une feuille A4 = angle droit · Les carreaux du sol = angles droits",
     },
   ],
 };
@@ -39,102 +40,97 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Combien y a-t-il de dizaines dans 47 ?",
-    options: ["4", "7", "11", "47"],
-    reponse: "4",
-    explication: "47 = 4 dizaines + 7 unités.",
+    question: "Combien de côtés a un triangle ?",
+    options: ["2", "3", "4", "5"],
+    reponse: "3",
+    explication: "Un triangle a 3 côtés et 3 sommets.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Comment s'écrit « soixante-cinq » en chiffres ?",
-    options: ["56", "65", "75", "55"],
-    reponse: "65",
-    explication: "Soixante = 6 dizaines, cinq = 5 unités → 65.",
+    question: "Quelle forme a 4 côtés tous égaux ?",
+    options: ["Rectangle", "Triangle", "Carré", "Cercle"],
+    reponse: "Carré",
+    explication: "Le carré a 4 côtés égaux et 4 angles droits.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quel nombre vient juste après 79 ?",
-    options: ["70", "78", "80", "90"],
-    reponse: "80",
-    explication: "Après 79 vient 80 — on change de dizaine.",
+    question: "Combien d'angles droits a un rectangle ?",
+    options: ["1", "2", "3", "4"],
+    reponse: "4",
+    explication:
+      "Un rectangle a 4 angles droits — comme les coins d'une feuille.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est le chiffre des unités dans 83 ?",
-    options: ["8", "3", "80", "83"],
-    reponse: "3",
-    explication: "Dans 83, le chiffre des unités est 3 (à droite).",
+    question: "Comment s'appellent deux lignes qui ne se croisent jamais ?",
+    options: ["Perpendiculaires", "Croisées", "Parallèles", "Courbes"],
+    reponse: "Parallèles",
+    explication:
+      "Deux lignes parallèles vont dans la même direction et ne se croisent jamais.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Lequel de ces nombres est le plus grand ?",
-    options: ["67", "76", "66", "77"],
-    reponse: "77",
-    explication: "77 a 7 dizaines et 7 unités — c'est le plus grand.",
+    question: "Quelle forme n'a pas de côté ?",
+    options: ["Carré", "Triangle", "Rectangle", "Cercle"],
+    reponse: "Cercle",
+    explication:
+      "Le cercle est une courbe fermée — il n'a pas de côté ni de sommet.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Comment décompose-t-on 90 ?",
-    options: [
-      "9 unités",
-      "9 dizaines + 0 unités",
-      "0 dizaines + 9 unités",
-      "9 centaines",
-    ],
-    reponse: "9 dizaines + 0 unités",
-    explication: "90 = 9 dizaines + 0 unités.",
+    question: "Quel instrument permet de vérifier un angle droit ?",
+    options: ["La règle", "Le compas", "L'équerre", "La calculatrice"],
+    reponse: "L'équerre",
+    explication:
+      "L'équerre est l'outil qui permet de tracer et vérifier les angles droits.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Range dans l'ordre croissant : 45, 54, 44, 55",
-    options: [
-      "44 – 45 – 54 – 55",
-      "55 – 54 – 45 – 44",
-      "44 – 54 – 45 – 55",
-      "45 – 44 – 55 – 54",
-    ],
-    reponse: "44 – 45 – 54 – 55",
-    explication:
-      "On commence par les plus petits : 44, 45 (4 dizaines), puis 54, 55 (5 dizaines).",
+    question:
+      "Un rectangle a deux côtés de 5 cm et deux côtés de 3 cm. Quel est son périmètre ?",
+    options: ["8 cm", "15 cm", "16 cm", "10 cm"],
+    reponse: "16 cm",
+    explication: "Périmètre = 5+5+3+3 = 16 cm.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quel nombre = 6 dizaines + 8 unités ?",
-    options: ["86", "68", "66", "88"],
-    reponse: "68",
-    explication: "6 dizaines = 60, 8 unités = 8 → 60 + 8 = 68.",
+    question: "Comment s'appellent deux lignes qui forment un angle droit ?",
+    options: ["Parallèles", "Perpendiculaires", "Courbes", "Obliques"],
+    reponse: "Perpendiculaires",
+    explication:
+      "Deux lignes perpendiculaires se croisent en formant un angle droit.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Comment s'écrit quatre-vingt-douze ?",
-    options: ["72", "82", "92", "62"],
-    reponse: "92",
-    explication: "Quatre-vingts = 80, douze = 12 → 80 + 12 = 92.",
+    question: "Combien de côtés égaux a un carré de 4 cm de côté ?",
+    options: ["1", "2", "3", "4"],
+    reponse: "4",
+    explication: "Un carré a 4 côtés tous égaux — ici 4 cm chacun.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Entre 85 et 95, combien y a-t-il de nombres entiers ?",
-    options: ["8", "9", "10", "11"],
-    reponse: "9",
-    explication: "86, 87, 88, 89, 90, 91, 92, 93, 94 → 9 nombres.",
+    question: "Quel est le périmètre d'un carré de 6 cm de côté ?",
+    options: ["12 cm", "18 cm", "24 cm", "36 cm"],
+    reponse: "24 cm",
+    explication: "Périmètre = 4 × 6 = 24 cm.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce1";
 const MATIERE = "maths";
-const THEME = "numeration";
+const THEME = "geometrie";
 
-export default function NumerationCE1() {
+export default function GeometrieCE1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -212,7 +208,9 @@ export default function NumerationCE1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -221,7 +219,7 @@ export default function NumerationCE1() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Numération</span>
+          <span className="breadcrumb-active">Géométrie</span>
         </div>
       </div>
 
@@ -246,7 +244,7 @@ export default function NumerationCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🔢 Numération · CE1</div>
+          <div className="lecon-badge">📐 Géométrie · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -381,7 +379,7 @@ export default function NumerationCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les nombres jusqu'à 100 ! 🚀"
+              ? "Tu maîtrises parfaitement la géométrie ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -395,7 +393,7 @@ export default function NumerationCE1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

@@ -9,29 +9,27 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les nombres jusqu'à 100",
+  titre: "Doubles, moitiés et compléments",
   intro:
-    "En CE1, on apprend à lire, écrire et comprendre tous les nombres jusqu'à 100. Un nombre est composé de dizaines et d'unités.",
+    "Le calcul mental permet de calculer rapidement dans sa tête. On apprend les doubles, les moitiés et les compléments à 10 et à 100 !",
   points: [
     {
-      titre: "Dizaines et unités",
+      titre: "Les doubles",
       texte:
-        "Un nombre à deux chiffres se lit de gauche à droite. Le chiffre de gauche représente les dizaines, celui de droite les unités. 1 dizaine = 10 unités.",
-      exemple: "47 = 4 dizaines + 7 unités · 30 = 3 dizaines + 0 unités",
+        "Le double d'un nombre c'est ce nombre additionné à lui-même. Connaître les doubles par cœur aide à calculer vite.",
+      exemple: "Double de 4 = 8 · Double de 7 = 14 · Double de 15 = 30",
     },
     {
-      titre: "Lire et écrire les nombres",
+      titre: "Les moitiés",
       texte:
-        "On dit d'abord les dizaines, puis les unités. Attention aux nombres de 11 à 16 qui ont des noms particuliers, et aux nombres avec un tiret.",
-      exemple:
-        "72 → soixante-douze · 85 → quatre-vingt-cinq · 91 → quatre-vingt-onze",
+        "La moitié c'est l'inverse du double. La moitié de 8 c'est 4 car 4+4=8.",
+      exemple: "Moitié de 10 = 5 · Moitié de 16 = 8 · Moitié de 20 = 10",
     },
     {
-      titre: "Comparer et ranger",
+      titre: "Les compléments à 10 et à 100",
       texte:
-        "Pour comparer deux nombres, on regarde d'abord les dizaines. Si les dizaines sont égales, on regarde les unités.",
-      exemple:
-        "64 > 46 (6 dizaines > 4 dizaines) · 53 < 57 (même dizaines, 3 < 7)",
+        "Le complément à 10 d'un nombre c'est ce qu'il faut ajouter pour arriver à 10. Le complément à 100 c'est ce qu'il faut pour arriver à 100.",
+      exemple: "Complément de 3 à 10 = 7 · Complément de 40 à 100 = 60",
     },
   ],
 };
@@ -39,102 +37,91 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Combien y a-t-il de dizaines dans 47 ?",
-    options: ["4", "7", "11", "47"],
-    reponse: "4",
-    explication: "47 = 4 dizaines + 7 unités.",
+    question: "Quel est le double de 6 ?",
+    options: ["10", "11", "12", "13"],
+    reponse: "12",
+    explication: "Double de 6 = 6 + 6 = 12.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Comment s'écrit « soixante-cinq » en chiffres ?",
-    options: ["56", "65", "75", "55"],
-    reponse: "65",
-    explication: "Soixante = 6 dizaines, cinq = 5 unités → 65.",
+    question: "Quelle est la moitié de 10 ?",
+    options: ["4", "5", "6", "7"],
+    reponse: "5",
+    explication: "Moitié de 10 = 5 car 5 + 5 = 10.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quel nombre vient juste après 79 ?",
-    options: ["70", "78", "80", "90"],
-    reponse: "80",
-    explication: "Après 79 vient 80 — on change de dizaine.",
+    question: "Quel est le complément de 3 à 10 ?",
+    options: ["5", "6", "7", "8"],
+    reponse: "7",
+    explication: "3 + 7 = 10. Le complément de 3 à 10 est 7.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est le chiffre des unités dans 83 ?",
-    options: ["8", "3", "80", "83"],
-    reponse: "3",
-    explication: "Dans 83, le chiffre des unités est 3 (à droite).",
+    question: "Quel est le double de 9 ?",
+    options: ["16", "17", "18", "19"],
+    reponse: "18",
+    explication: "Double de 9 = 9 + 9 = 18.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "Lequel de ces nombres est le plus grand ?",
-    options: ["67", "76", "66", "77"],
-    reponse: "77",
-    explication: "77 a 7 dizaines et 7 unités — c'est le plus grand.",
+    question: "Quelle est la moitié de 16 ?",
+    options: ["6", "7", "8", "9"],
+    reponse: "8",
+    explication: "Moitié de 16 = 8 car 8 + 8 = 16.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Comment décompose-t-on 90 ?",
-    options: [
-      "9 unités",
-      "9 dizaines + 0 unités",
-      "0 dizaines + 9 unités",
-      "9 centaines",
-    ],
-    reponse: "9 dizaines + 0 unités",
-    explication: "90 = 9 dizaines + 0 unités.",
+    question: "Quel est le complément de 40 à 100 ?",
+    options: ["50", "60", "70", "80"],
+    reponse: "60",
+    explication: "40 + 60 = 100. Le complément de 40 à 100 est 60.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Range dans l'ordre croissant : 45, 54, 44, 55",
-    options: [
-      "44 – 45 – 54 – 55",
-      "55 – 54 – 45 – 44",
-      "44 – 54 – 45 – 55",
-      "45 – 44 – 55 – 54",
-    ],
-    reponse: "44 – 45 – 54 – 55",
-    explication:
-      "On commence par les plus petits : 44, 45 (4 dizaines), puis 54, 55 (5 dizaines).",
+    question: "Quel est le double de 15 ?",
+    options: ["25", "28", "30", "32"],
+    reponse: "30",
+    explication: "Double de 15 = 15 + 15 = 30.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "Quel nombre = 6 dizaines + 8 unités ?",
-    options: ["86", "68", "66", "88"],
-    reponse: "68",
-    explication: "6 dizaines = 60, 8 unités = 8 → 60 + 8 = 68.",
+    question: "Quel est le complément de 7 à 10 ?",
+    options: ["1", "2", "3", "4"],
+    reponse: "3",
+    explication: "7 + 3 = 10. Le complément de 7 à 10 est 3.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "Comment s'écrit quatre-vingt-douze ?",
-    options: ["72", "82", "92", "62"],
-    reponse: "92",
-    explication: "Quatre-vingts = 80, douze = 12 → 80 + 12 = 92.",
+    question: "Quelle est la moitié de 24 ?",
+    options: ["10", "11", "12", "13"],
+    reponse: "12",
+    explication: "Moitié de 24 = 12 car 12 + 12 = 24.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Entre 85 et 95, combien y a-t-il de nombres entiers ?",
-    options: ["8", "9", "10", "11"],
-    reponse: "9",
-    explication: "86, 87, 88, 89, 90, 91, 92, 93, 94 → 9 nombres.",
+    question: "Quel est le complément de 65 à 100 ?",
+    options: ["25", "30", "35", "45"],
+    reponse: "35",
+    explication: "65 + 35 = 100. Le complément de 65 à 100 est 35.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce1";
 const MATIERE = "maths";
-const THEME = "numeration";
+const THEME = "calcul-mental";
 
-export default function NumerationCE1() {
+export default function CalculMentalCE1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -221,7 +208,7 @@ export default function NumerationCE1() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Numération</span>
+          <span className="breadcrumb-active">Calcul Mental</span>
         </div>
       </div>
 
@@ -246,7 +233,7 @@ export default function NumerationCE1() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🔢 Numération · CE1</div>
+          <div className="lecon-badge">🧠 Calcul Mental · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -381,7 +368,7 @@ export default function NumerationCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les nombres jusqu'à 100 ! 🚀"
+              ? "Tu es un(e) champion(ne) du calcul mental ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
