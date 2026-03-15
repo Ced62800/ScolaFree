@@ -129,7 +129,7 @@ const questions = [
 
 const CLASSE = "ce1";
 const MATIERE = "francais";
-const THEME = "le-verbe";
+const THEME = "grammaire";
 
 export default function GrammaireCE1() {
   const router = useRouter();
@@ -179,7 +179,6 @@ export default function GrammaireCE1() {
           score: score,
           total: questions.length,
         });
-
         const [best, last] = await Promise.all([
           getBestScore(CLASSE, MATIERE, THEME),
           getLastScore(CLASSE, MATIERE, THEME),
@@ -248,7 +247,6 @@ export default function GrammaireCE1() {
           <div className="lecon-badge">📝 Grammaire · CE1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
@@ -291,7 +289,6 @@ export default function GrammaireCE1() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -380,12 +377,12 @@ export default function GrammaireCE1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement le verbe !"
+              ? "Tu maîtrises parfaitement le verbe ! 🚀"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
-                  ? "Encore quelques efforts !"
-                  : "Relis la leçon et réessaie !"}
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

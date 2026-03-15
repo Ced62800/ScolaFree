@@ -1,9 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-// Intégration de la persistance des scores
-import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -64,14 +63,6 @@ const questions = [
   },
   {
     id: 7,
-    question: "Quel temps est utilisé : 'Demain, il pleuvra' ?",
-    options: ["passé", "présent", "futur", "on ne sait pas"],
-    reponse: "futur",
-    explication: "'pleuvra' est au futur.",
-    theme: "conjugaison",
-  },
-  {
-    id: 8,
     question: "Complète au présent : 'Tu ___ au foot.' (jouer)",
     options: ["joueras", "joues", "joua", "jouez"],
     reponse: "joues",
@@ -79,19 +70,27 @@ const questions = [
     theme: "conjugaison",
   },
   {
+    id: 8,
+    question: "Complète au présent : 'Il ___ grand.' (être)",
+    options: ["sera", "était", "est", "soit"],
+    reponse: "est",
+    explication: "Au présent avec 'il', le verbe être donne 'est'.",
+    theme: "conjugaison",
+  },
+  {
     id: 9,
-    question: "Complète au futur : 'Je ___ mes devoirs ce soir.' (faire)",
-    options: ["fais", "faisais", "ferai", "fait"],
-    reponse: "ferai",
-    explication: "Au futur avec 'je', on dit 'ferai'.",
+    question: "Complète au présent : 'Nous ___ contents.' (être)",
+    options: ["serons", "étions", "sommes", "soyons"],
+    reponse: "sommes",
+    explication: "Au présent avec 'nous', le verbe être donne 'sommes'.",
     theme: "conjugaison",
   },
   {
     id: 10,
-    question: "Complète au futur : 'Ils ___ le match.' (gagner)",
-    options: ["gagnent", "gagnaient", "gagneront", "gagnez"],
-    reponse: "gagneront",
-    explication: "Au futur avec 'ils', on ajoute -ront.",
+    question: "Quel mot indique que la phrase est au présent ?",
+    options: ["demain", "hier", "bientôt", "aujourd'hui"],
+    reponse: "aujourd'hui",
+    explication: "'aujourd'hui' indique que l'action se passe maintenant.",
     theme: "conjugaison",
   },
   // Orthographe (5 questions)
@@ -155,55 +154,45 @@ const questions = [
     explication: "'garçon' est masculin → 'un petit garçon'.",
     theme: "orthographe",
   },
-  // Vocabulaire (5 questions)
+  // Vocabulaire - Synonymes et antonymes (5 questions)
   {
     id: 16,
-    question: "Quel est le préfixe dans 'impossible' ?",
-    options: ["im", "possible", "ible", "po"],
-    reponse: "im",
-    explication: "'im-' signifie 'pas' : impossible = pas possible.",
+    question: "Quel est le synonyme de 'content' ?",
+    options: ["triste", "joyeux", "fâché", "fatigué"],
+    reponse: "joyeux",
+    explication: "'Content' et 'joyeux' veulent dire la même chose.",
     theme: "vocabulaire",
   },
   {
     id: 17,
-    question: "Que signifie le préfixe 're-' dans 'relire' ?",
-    options: ["avant", "à nouveau", "contraire", "après"],
-    reponse: "à nouveau",
-    explication: "'re-' signifie 'à nouveau' : relire = lire à nouveau.",
+    question: "Quel est l'antonyme de 'grand' ?",
+    options: ["gros", "fort", "petit", "long"],
+    reponse: "petit",
+    explication: "'Grand' et 'petit' sont des contraires.",
     theme: "vocabulaire",
   },
   {
     id: 18,
-    question: "Que signifie 'défaire' ?",
-    options: [
-      "faire à nouveau",
-      "faire avant",
-      "faire le contraire de faire",
-      "bien faire",
-    ],
-    reponse: "faire le contraire de faire",
-    explication: "'dé-' indique le contraire.",
+    question: "Quel est le synonyme de 'rapide' ?",
+    options: ["lent", "vite", "lourd", "calme"],
+    reponse: "vite",
+    explication: "'Rapide' et 'vite' veulent dire la même chose.",
     theme: "vocabulaire",
   },
   {
     id: 19,
-    question: "Quel est le suffixe dans 'chanteur' ?",
-    options: ["chan", "chant", "eur", "teur"],
-    reponse: "eur",
-    explication: "'-eur' indique la personne qui fait l'action.",
+    question: "Quel est l'antonyme de 'jour' ?",
+    options: ["matin", "soir", "nuit", "midi"],
+    reponse: "nuit",
+    explication: "'Jour' et 'nuit' sont des contraires.",
     theme: "vocabulaire",
   },
   {
     id: 20,
-    question: "Que signifie 'maisonnette' ?",
-    options: [
-      "grande maison",
-      "petite maison",
-      "belle maison",
-      "vieille maison",
-    ],
-    reponse: "petite maison",
-    explication: "Le suffixe '-ette' indique quelque chose de petit.",
+    question: "Quel est l'antonyme de 'commencer' ?",
+    options: ["continuer", "avancer", "terminer", "chercher"],
+    reponse: "terminer",
+    explication: "'Commencer' et 'terminer' sont des contraires.",
     theme: "vocabulaire",
   },
 ];
@@ -234,13 +223,11 @@ export default function BilanFinalCE1() {
     vocabulaire: 0,
   });
   const [totalScore, setTotalScore] = useState(0);
-
-  // États pour la persistance
   const [bestScore, setBestScore] = useState<any>(null);
   const [lastScore, setLastScore] = useState<any>(null);
   const isSaving = useRef(false);
+  const scoreRef = useRef(0);
 
-  // Charger les scores au montage
   useEffect(() => {
     const loadScores = async () => {
       const b = await getBestScore("ce1", "francais", "bilan");
@@ -267,22 +254,21 @@ export default function BilanFinalCE1() {
       const theme = shuffledQuestions[qIndex].theme;
       setScores((s) => ({ ...s, [theme]: s[theme] + 1 }));
       setTotalScore((s) => s + 1);
+      scoreRef.current += 1;
     }
   };
 
   const handleSuivant = async () => {
     if (qIndex + 1 >= shuffledQuestions.length) {
-      // Sauvegarde du score final
       if (!isSaving.current) {
         isSaving.current = true;
         await saveScore({
           classe: "ce1",
           matiere: "francais",
           theme: "bilan",
-          score: totalScore,
+          score: scoreRef.current,
           total: 20,
         });
-        // Rafraîchir les records
         const b = await getBestScore("ce1", "francais", "bilan");
         const l = await getLastScore("ce1", "francais", "bilan");
         setBestScore(b);
@@ -297,6 +283,7 @@ export default function BilanFinalCE1() {
 
   const handleRecommencer = () => {
     isSaving.current = false;
+    scoreRef.current = 0;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
@@ -325,9 +312,9 @@ export default function BilanFinalCE1() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CE1</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Français</span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Bilan Final</span>
         </div>
@@ -337,8 +324,6 @@ export default function BilanFinalCE1() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CE1</div>
           <h1 className="lecon-titre">Bilan Final — CE1 Français</h1>
-
-          {/* Affichage des records personnels */}
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
               {bestScore && (
@@ -346,7 +331,7 @@ export default function BilanFinalCE1() {
                   style={{
                     flex: 1,
                     padding: "12px",
-                    background: "rgba(46, 196, 182, 0.1)",
+                    background: "rgba(46,196,182,0.1)",
                     borderRadius: "12px",
                     border: "1px solid #2ec4b6",
                     textAlign: "center",
@@ -372,7 +357,7 @@ export default function BilanFinalCE1() {
                   style={{
                     flex: 1,
                     padding: "12px",
-                    background: "rgba(255, 255, 255, 0.05)",
+                    background: "rgba(255,255,255,0.05)",
                     borderRadius: "12px",
                     border: "1px solid rgba(255,255,255,0.1)",
                     textAlign: "center",
@@ -395,7 +380,6 @@ export default function BilanFinalCE1() {
               )}
             </div>
           )}
-
           <p className="lecon-intro">
             Ce bilan regroupe des questions sur les 4 thèmes du CE1 : Grammaire,
             Conjugaison, Orthographe et Vocabulaire.
@@ -508,19 +492,62 @@ export default function BilanFinalCE1() {
           <div className="resultat-score" style={{ color: mention.color }}>
             {totalScore} / 20
           </div>
-
-          {bestScore && totalScore < bestScore.score && (
-            <div
-              style={{
-                fontSize: "0.9rem",
-                color: "#888",
-                marginBottom: "15px",
-              }}
-            >
-              Record à battre : {bestScore.score}/20
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46,196,182,0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Meilleur
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255,255,255,0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
             </div>
           )}
-
           <div className="bilan-detail">
             <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (
