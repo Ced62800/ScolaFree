@@ -78,11 +78,48 @@ const questions = [
     niveau: "moyen",
   },
   {
+    id: 6,
+    question: "Comment écrit-on six mille soixante ?",
+    options: ["6 600", "6 060", "6 006", "6 606"],
+    reponse: "6 060",
+    explication: "Six mille → 6 000, soixante → 60. Donc 6 060.",
+    niveau: "moyen",
+  },
+  {
+    id: 7,
+    question: "Quelle est la valeur du chiffre 5 dans 5 320 ?",
+    options: ["5", "50", "500", "5 000"],
+    reponse: "5 000",
+    explication: "Le 5 est en position des milliers → il vaut 5 000.",
+    niveau: "moyen",
+  },
+  {
     id: 8,
     question: "8 milliers + 4 centaines + 0 dizaines + 7 unités ?",
     options: ["8 047", "8 407", "8 470", "8 740"],
     reponse: "8 407",
     explication: "8 000 + 400 + 0 + 7 = 8 407.",
+    niveau: "difficile",
+  },
+  {
+    id: 9,
+    question: "Quel nombre est compris entre 2 500 et 2 600 ?",
+    options: ["2 499", "2 650", "2 550", "2 601"],
+    reponse: "2 550",
+    explication: "2 550 est bien entre 2 500 et 2 600.",
+    niveau: "difficile",
+  },
+  {
+    id: 10,
+    question: "Range dans l'ordre croissant : 4 010, 4 001, 4 100, 4 000.",
+    options: [
+      "4 000 < 4 001 < 4 010 < 4 100",
+      "4 001 < 4 000 < 4 010 < 4 100",
+      "4 000 < 4 010 < 4 001 < 4 100",
+      "4 100 < 4 010 < 4 001 < 4 000",
+    ],
+    reponse: "4 000 < 4 001 < 4 010 < 4 100",
+    explication: "On compare centaine par centaine, puis dizaine, puis unité.",
     niveau: "difficile",
   },
 ];
@@ -256,7 +293,11 @@ export default function NumerationCE2() {
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
-            {questions[qIndex].niveau === "facile" ? "🟢 Facile" : "🟡 Moyen"}
+            {questions[qIndex].niveau === "facile"
+              ? "🟢 Facile"
+              : questions[qIndex].niveau === "moyen"
+                ? "🟡 Moyen"
+                : "🔴 Difficile"}
           </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
@@ -299,15 +340,27 @@ export default function NumerationCE2() {
         </div>
       )}
 
-      {/* Étape Fini identique au code corrigé précédent */}
       {etape === "fini" && (
         <div className="resultat-wrapper">
-          <div className="resultat-icon">{score >= 4 ? "🏆" : "👍"}</div>
+          <div className="resultat-icon">
+            {score >= 8 ? "🏆" : score >= 5 ? "⭐" : "👍"}
+          </div>
           <h2 className="resultat-titre">
-            {score >= 4 ? "Parfait !" : "Bien joué !"}
+            {score >= 8
+              ? "Excellent !"
+              : score >= 5
+                ? "Bien joué !"
+                : "Continue !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
+          </div>
+          <div className="resultat-desc">
+            {score >= 8
+              ? "Excellent travail, tu maîtrises la numération ! 🚀"
+              : score >= 5
+                ? "Bon travail, continue à t'entraîner !"
+                : "Reprends la leçon et réessaie, tu vas y arriver !"}
           </div>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
