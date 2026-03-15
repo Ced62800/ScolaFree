@@ -117,11 +117,11 @@ export default function PrimairePage() {
                     ? c.color
                     : isAdmin
                       ? c.color
-                      : "#666",
+                      : "#888",
                   position: "relative",
-                  opacity: estBloquee ? 0.55 : 1,
+                  opacity: estBloquee ? 0.75 : 1,
                   filter: estBloquee
-                    ? "grayscale(50%) brightness(0.7)"
+                    ? "grayscale(30%) brightness(0.85)"
                     : "none",
                   boxShadow: estMaClasse ? `0 0 24px ${c.color}55` : "none",
                   border: estMaClasse
@@ -133,7 +133,6 @@ export default function PrimairePage() {
                 } as React.CSSProperties
               }
             >
-              {/* Badge Ma classe — uniquement pour les élèves */}
               {estMaClasse && (
                 <div
                   style={{
@@ -155,7 +154,6 @@ export default function PrimairePage() {
                 </div>
               )}
 
-              {/* Badge Admin — uniquement pour les admins */}
               {isAdmin && (
                 <div
                   style={{
@@ -177,7 +175,6 @@ export default function PrimairePage() {
                 </div>
               )}
 
-              {/* Badge Autre classe */}
               {estBloquee && (
                 <div
                   style={{
@@ -186,12 +183,12 @@ export default function PrimairePage() {
                     left: "50%",
                     transform: "translateX(-50%)",
                     background: "rgba(255,255,255,0.07)",
-                    color: "#777",
+                    color: "#999",
                     fontSize: "0.85rem",
                     fontWeight: 700,
                     padding: "6px 16px",
                     borderRadius: "20px",
-                    border: "1px solid rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.15)",
                     whiteSpace: "nowrap",
                   }}
                 >
@@ -202,19 +199,19 @@ export default function PrimairePage() {
               <div className="theme-emoji">{c.emoji}</div>
               <div
                 className="theme-label"
-                style={{ color: estBloquee ? "#888" : "#fff" }}
+                style={{ color: estBloquee ? "#aaa" : "#fff" }}
               >
                 {c.label}
               </div>
               <div
                 className="theme-desc"
-                style={{ color: estBloquee ? "#666" : "#aaa" }}
+                style={{ color: estBloquee ? "#888" : "#aaa" }}
               >
                 {c.desc}
               </div>
               <div
                 className="theme-arrow"
-                style={{ color: estMaClasse || isAdmin ? c.color : "#666" }}
+                style={{ color: estMaClasse || isAdmin ? c.color : "#888" }}
               >
                 {estBloquee ? "🔒" : "Accéder →"}
               </div>
