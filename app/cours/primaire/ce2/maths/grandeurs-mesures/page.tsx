@@ -9,27 +9,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les tables de multiplication",
+  titre: "Grandeurs et mesures",
   intro:
-    "La multiplication est une addition répétée. Connaître ses tables par cœur permet de calculer beaucoup plus vite !",
+    "Mesurer c'est comparer une grandeur à une unité. On mesure des longueurs (cm, m), des masses (g, kg) et des durées (minutes, heures).",
   points: [
     {
-      titre: "Qu'est-ce que multiplier ?",
+      titre: "Les longueurs",
       texte:
-        "Multiplier c'est additionner plusieurs fois le même nombre. 3 × 4 veut dire : 3 fois 4, c'est-à-dire 4 + 4 + 4 = 12.",
-      exemple: "3 × 4 = 12 · 5 × 6 = 30 · 2 × 8 = 16",
-    },
-    {
-      titre: "Les tables à connaître",
-      texte:
-        "En CE2, on apprend les tables de 2, 3, 4, 5, 6, 7, 8, 9 et 10. La table de 1 est facile (1 × n = n) et celle de 10 aussi (10 × n = n0).",
+        "On mesure les longueurs en millimètres (mm), centimètres (cm), mètres (m) et kilomètres (km). 1 m = 100 cm · 1 cm = 10 mm.",
       exemple:
-        "Table de 3 : 3×1=3, 3×2=6, 3×3=9, 3×4=12... · Table de 5 : 5×1=5, 5×2=10...",
+        "Une règle mesure 30 cm. · Un terrain de foot mesure environ 100 m.",
     },
     {
-      titre: "La commutativité",
-      texte: "On peut changer l'ordre des facteurs, le résultat est le même !",
-      exemple: "3 × 7 = 7 × 3 = 21 · 4 × 6 = 6 × 4 = 24",
+      titre: "Les masses",
+      texte:
+        "On mesure les masses en grammes (g) et kilogrammes (kg). 1 kg = 1 000 g.",
+      exemple: "Un œuf pèse environ 60 g. · Un sac de farine pèse 1 kg.",
+    },
+    {
+      titre: "Les durées",
+      texte:
+        "On mesure les durées en secondes, minutes et heures. 1 heure = 60 minutes · 1 minute = 60 secondes.",
+      exemple: "Une récréation dure 15 min. · Un film dure environ 1 h 30 min.",
     },
   ],
 };
@@ -37,91 +38,94 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "3 × 4 = ?",
-    options: ["10", "12", "14", "7"],
-    reponse: "12",
-    explication: "3 × 4 = 4 + 4 + 4 = 12.",
+    question: "Combien de centimètres dans 1 mètre ?",
+    options: ["10", "100", "1000", "50"],
+    reponse: "100",
+    explication: "1 m = 100 cm.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "5 × 6 = ?",
-    options: ["25", "30", "35", "11"],
-    reponse: "30",
-    explication: "5 × 6 = 30.",
+    question: "Combien de grammes dans 1 kilogramme ?",
+    options: ["100", "500", "1000", "10"],
+    reponse: "1000",
+    explication: "1 kg = 1 000 g.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "2 × 9 = ?",
-    options: ["16", "18", "20", "11"],
-    reponse: "18",
-    explication: "2 × 9 = 9 + 9 = 18.",
+    question: "Combien de minutes dans 1 heure ?",
+    options: ["30", "60", "100", "24"],
+    reponse: "60",
+    explication: "1 heure = 60 minutes.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "10 × 7 = ?",
-    options: ["17", "70", "700", "77"],
-    reponse: "70",
-    explication: "10 × 7 = 70 (on ajoute un zéro).",
+    question: "Clara mesure 1 m 35 cm. En centimètres, cela fait…",
+    options: ["135 cm", "1035 cm", "35 cm", "235 cm"],
+    reponse: "135 cm",
+    explication: "1 m = 100 cm + 35 cm = 135 cm.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "4 × 8 = ?",
-    options: ["28", "30", "32", "36"],
-    reponse: "32",
-    explication: "4 × 8 = 32.",
+    question: "Un sac pèse 2 500 g. En kilogrammes ?",
+    options: ["2 kg", "2,5 kg", "25 kg", "0,25 kg"],
+    reponse: "2,5 kg",
+    explication: "2 500 g = 2 kg + 500 g = 2,5 kg.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "6 × 7 = ?",
-    options: ["36", "40", "42", "48"],
-    reponse: "42",
-    explication: "6 × 7 = 42.",
+    question:
+      "Un film commence à 14h00 et finit à 15h30. Combien de temps dure-t-il ?",
+    options: ["1 h", "1 h 15", "1 h 30", "2 h"],
+    reponse: "1 h 30",
+    explication: "De 14h00 à 15h30 = 1 heure et 30 minutes.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "9 × 8 = ?",
-    options: ["63", "72", "81", "56"],
-    reponse: "72",
-    explication: "9 × 8 = 72.",
+    question: "Convertis 3 km en mètres.",
+    options: ["300 m", "3 000 m", "30 m", "30 000 m"],
+    reponse: "3 000 m",
+    explication: "1 km = 1 000 m → 3 km = 3 000 m.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "5 boîtes contiennent chacune 8 crayons. Combien en tout ?",
-    options: ["35", "38", "40", "45"],
-    reponse: "40",
-    explication: "5 × 8 = 40 crayons.",
+    question: "Quelle unité utilise-t-on pour peser une pomme ?",
+    options: ["km", "m", "g", "L"],
+    reponse: "g",
+    explication: "Une pomme pèse environ 150 g — on utilise les grammes.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "7 × 7 = ?",
-    options: ["42", "46", "49", "56"],
-    reponse: "49",
-    explication: "7 × 7 = 49.",
+    question:
+      "Tom marche 45 minutes le matin et 30 minutes le soir. Combien en tout ?",
+    options: ["1 h 10", "1 h 15", "1 h 20", "1 h 30"],
+    reponse: "1 h 15",
+    explication: "45 + 30 = 75 minutes = 1 heure et 15 minutes.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Si 6 × 8 = 48, combien font 8 × 6 ?",
-    options: ["42", "46", "48", "56"],
-    reponse: "48",
-    explication: "La multiplication est commutative : 6 × 8 = 8 × 6 = 48.",
+    question:
+      "Une piscine fait 25 m. Paul nage 8 longueurs. Quelle distance a-t-il parcourue ?",
+    options: ["150 m", "175 m", "200 m", "225 m"],
+    reponse: "200 m",
+    explication: "8 × 25 m = 200 m.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce2";
 const MATIERE = "maths";
-const THEME = "multiplication";
+const THEME = "grandeurs-mesures";
 
-export default function MultiplicationCE2() {
+export default function GrandeursMesuresCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -199,7 +203,9 @@ export default function MultiplicationCE2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -208,7 +214,7 @@ export default function MultiplicationCE2() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Multiplication</span>
+          <span className="breadcrumb-active">Grandeurs et mesures</span>
         </div>
       </div>
 
@@ -233,7 +239,7 @@ export default function MultiplicationCE2() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✖️ Multiplication · CE2</div>
+          <div className="lecon-badge">📏 Grandeurs et mesures · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -368,12 +374,12 @@ export default function MultiplicationCE2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les tables ! 🚀"
+              ? "Tu maîtrises parfaitement les mesures ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
                   ? "Encore quelques efforts et tu y seras !"
-                  : "Entraîne-toi encore sur les tables !"}
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -382,7 +388,7 @@ export default function MultiplicationCE2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

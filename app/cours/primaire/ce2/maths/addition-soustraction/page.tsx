@@ -9,27 +9,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les tables de multiplication",
+  titre: "Addition et soustraction posées",
   intro:
-    "La multiplication est une addition répétée. Connaître ses tables par cœur permet de calculer beaucoup plus vite !",
+    "En CE2, on pose les additions et soustractions en colonnes pour calculer avec des grands nombres. On commence toujours par les unités !",
   points: [
     {
-      titre: "Qu'est-ce que multiplier ?",
+      titre: "L'addition posée avec retenue",
       texte:
-        "Multiplier c'est additionner plusieurs fois le même nombre. 3 × 4 veut dire : 3 fois 4, c'est-à-dire 4 + 4 + 4 = 12.",
-      exemple: "3 × 4 = 12 · 5 × 6 = 30 · 2 × 8 = 16",
-    },
-    {
-      titre: "Les tables à connaître",
-      texte:
-        "En CE2, on apprend les tables de 2, 3, 4, 5, 6, 7, 8, 9 et 10. La table de 1 est facile (1 × n = n) et celle de 10 aussi (10 × n = n0).",
+        "On aligne les chiffres par colonne. Si la somme dépasse 9, on pose le chiffre des unités et on retient 1 pour la colonne suivante.",
       exemple:
-        "Table de 3 : 3×1=3, 3×2=6, 3×3=9, 3×4=12... · Table de 5 : 5×1=5, 5×2=10...",
+        "  345\n+ 278\n-----\n  623  (5+8=13 → pose 3, retenue 1 · 4+7+1=12 → pose 2, retenue 1 · 3+2+1=6)",
     },
     {
-      titre: "La commutativité",
-      texte: "On peut changer l'ordre des facteurs, le résultat est le même !",
-      exemple: "3 × 7 = 7 × 3 = 21 · 4 × 6 = 6 × 4 = 24",
+      titre: "La soustraction posée avec emprunt",
+      texte:
+        "Si le chiffre du haut est plus petit que celui du bas, on emprunte 1 à la colonne suivante.",
+      exemple: "  521\n- 347\n-----\n  174  (11-7=4, 11-4=7 emprunt, 4-3=1)",
+    },
+    {
+      titre: "Vérifier son calcul",
+      texte:
+        "On vérifie une addition en changeant l'ordre. On vérifie une soustraction avec l'addition.",
+      exemple: "345 + 278 = 623 → 623 - 278 = 345 ✓",
     },
   ],
 };
@@ -37,91 +38,97 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "3 × 4 = ?",
-    options: ["10", "12", "14", "7"],
-    reponse: "12",
-    explication: "3 × 4 = 4 + 4 + 4 = 12.",
+    question: "234 + 152 = ?",
+    options: ["376", "386", "396", "366"],
+    reponse: "386",
+    explication: "234 + 152 : 4+2=6, 3+5=8, 2+1=3 → 386.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "5 × 6 = ?",
-    options: ["25", "30", "35", "11"],
-    reponse: "30",
-    explication: "5 × 6 = 30.",
+    question: "487 − 253 = ?",
+    options: ["224", "234", "244", "214"],
+    reponse: "234",
+    explication: "487 − 253 : 7-3=4, 8-5=3, 4-2=2 → 234.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "2 × 9 = ?",
-    options: ["16", "18", "20", "11"],
-    reponse: "18",
-    explication: "2 × 9 = 9 + 9 = 18.",
-    niveau: "facile",
+    question: "356 + 278 = ?",
+    options: ["624", "634", "644", "614"],
+    reponse: "634",
+    explication:
+      "356 + 278 : 6+8=14 (pose 4, retenue 1) · 5+7+1=13 (pose 3, retenue 1) · 3+2+1=6 → 634.",
+    niveau: "moyen",
   },
   {
     id: 4,
-    question: "10 × 7 = ?",
-    options: ["17", "70", "700", "77"],
-    reponse: "70",
-    explication: "10 × 7 = 70 (on ajoute un zéro).",
-    niveau: "facile",
+    question: "521 − 347 = ?",
+    options: ["164", "174", "184", "194"],
+    reponse: "174",
+    explication: "521 − 347 = 174.",
+    niveau: "moyen",
   },
   {
     id: 5,
-    question: "4 × 8 = ?",
-    options: ["28", "30", "32", "36"],
-    reponse: "32",
-    explication: "4 × 8 = 32.",
+    question:
+      "Une école a 245 filles et 318 garçons. Combien d'élèves en tout ?",
+    options: ["553", "563", "573", "543"],
+    reponse: "563",
+    explication: "245 + 318 = 563 élèves.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "6 × 7 = ?",
-    options: ["36", "40", "42", "48"],
-    reponse: "42",
-    explication: "6 × 7 = 42.",
+    question: "689 + 247 = ?",
+    options: ["926", "936", "946", "916"],
+    reponse: "936",
+    explication:
+      "689 + 247 : 9+7=16 (pose 6, retenue 1) · 8+4+1=13 (pose 3, retenue 1) · 6+2+1=9 → 936.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "9 × 8 = ?",
-    options: ["63", "72", "81", "56"],
-    reponse: "72",
-    explication: "9 × 8 = 72.",
+    question: "800 − 456 = ?",
+    options: ["334", "344", "354", "364"],
+    reponse: "344",
+    explication: "800 − 456 = 344.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "5 boîtes contiennent chacune 8 crayons. Combien en tout ?",
-    options: ["35", "38", "40", "45"],
-    reponse: "40",
-    explication: "5 × 8 = 40 crayons.",
-    niveau: "moyen",
+    question:
+      "Un libraire avait 523 livres. Il en vend 278. Combien lui en reste-t-il ?",
+    options: ["235", "245", "255", "265"],
+    reponse: "245",
+    explication: "523 − 278 = 245 livres.",
+    niveau: "difficile",
   },
   {
     id: 9,
-    question: "7 × 7 = ?",
-    options: ["42", "46", "49", "56"],
-    reponse: "49",
-    explication: "7 × 7 = 49.",
+    question: "457 + 386 = ?",
+    options: ["833", "843", "853", "823"],
+    reponse: "843",
+    explication:
+      "457 + 386 : 7+6=13 (pose 3, retenue 1) · 5+8+1=14 (pose 4, retenue 1) · 4+3+1=8 → 843.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Si 6 × 8 = 48, combien font 8 × 6 ?",
-    options: ["42", "46", "48", "56"],
-    reponse: "48",
-    explication: "La multiplication est commutative : 6 × 8 = 8 × 6 = 48.",
+    question:
+      "Léa a économisé 625 €. Elle achète un vélo à 389 €. Combien lui reste-t-il ?",
+    options: ["226", "236", "246", "256"],
+    reponse: "236",
+    explication: "625 − 389 = 236 €.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce2";
 const MATIERE = "maths";
-const THEME = "multiplication";
+const THEME = "addition-soustraction";
 
-export default function MultiplicationCE2() {
+export default function AdditionSoustractionCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -199,7 +206,9 @@ export default function MultiplicationCE2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -208,7 +217,7 @@ export default function MultiplicationCE2() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Multiplication</span>
+          <span className="breadcrumb-active">Addition et soustraction</span>
         </div>
       </div>
 
@@ -233,7 +242,7 @@ export default function MultiplicationCE2() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✖️ Multiplication · CE2</div>
+          <div className="lecon-badge">➕ Addition et soustraction · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -368,12 +377,12 @@ export default function MultiplicationCE2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les tables ! 🚀"
+              ? "Tu maîtrises parfaitement les opérations posées ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
                   ? "Encore quelques efforts et tu y seras !"
-                  : "Entraîne-toi encore sur les tables !"}
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -382,7 +391,7 @@ export default function MultiplicationCE2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

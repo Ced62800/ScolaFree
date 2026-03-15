@@ -9,27 +9,27 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les tables de multiplication",
+  titre: "Introduction à la division",
   intro:
-    "La multiplication est une addition répétée. Connaître ses tables par cœur permet de calculer beaucoup plus vite !",
+    "La division permet de partager équitablement une quantité en plusieurs groupes égaux. C'est l'opération inverse de la multiplication !",
   points: [
     {
-      titre: "Qu'est-ce que multiplier ?",
+      titre: "Diviser, c'est partager",
       texte:
-        "Multiplier c'est additionner plusieurs fois le même nombre. 3 × 4 veut dire : 3 fois 4, c'est-à-dire 4 + 4 + 4 = 12.",
-      exemple: "3 × 4 = 12 · 5 × 6 = 30 · 2 × 8 = 16",
+        "Diviser 12 par 3, c'est partager 12 en 3 groupes égaux. On utilise le signe ÷ (ou /). Le résultat s'appelle le quotient.",
+      exemple: "12 ÷ 3 = 4 · On partage 12 en 3 groupes de 4.",
     },
     {
-      titre: "Les tables à connaître",
+      titre: "Lien avec la multiplication",
       texte:
-        "En CE2, on apprend les tables de 2, 3, 4, 5, 6, 7, 8, 9 et 10. La table de 1 est facile (1 × n = n) et celle de 10 aussi (10 × n = n0).",
-      exemple:
-        "Table de 3 : 3×1=3, 3×2=6, 3×3=9, 3×4=12... · Table de 5 : 5×1=5, 5×2=10...",
+        "La division et la multiplication sont liées. Si 3 × 4 = 12, alors 12 ÷ 3 = 4 et 12 ÷ 4 = 3.",
+      exemple: "20 ÷ 5 = 4 car 5 × 4 = 20 · 18 ÷ 6 = 3 car 6 × 3 = 18",
     },
     {
-      titre: "La commutativité",
-      texte: "On peut changer l'ordre des facteurs, le résultat est le même !",
-      exemple: "3 × 7 = 7 × 3 = 21 · 4 × 6 = 6 × 4 = 24",
+      titre: "Le reste",
+      texte:
+        "Quand on ne peut pas partager exactement, il y a un reste. Le reste est toujours plus petit que le diviseur.",
+      exemple: "13 ÷ 4 = 3 reste 1 (car 4 × 3 = 12, et 13 - 12 = 1)",
     },
   ],
 };
@@ -37,91 +37,93 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "3 × 4 = ?",
-    options: ["10", "12", "14", "7"],
-    reponse: "12",
-    explication: "3 × 4 = 4 + 4 + 4 = 12.",
+    question: "12 ÷ 3 = ?",
+    options: ["3", "4", "5", "6"],
+    reponse: "4",
+    explication: "12 ÷ 3 = 4 car 3 × 4 = 12.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "5 × 6 = ?",
-    options: ["25", "30", "35", "11"],
-    reponse: "30",
-    explication: "5 × 6 = 30.",
+    question: "20 ÷ 5 = ?",
+    options: ["3", "4", "5", "6"],
+    reponse: "4",
+    explication: "20 ÷ 5 = 4 car 5 × 4 = 20.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "2 × 9 = ?",
-    options: ["16", "18", "20", "11"],
-    reponse: "18",
-    explication: "2 × 9 = 9 + 9 = 18.",
+    question: "On partage 15 bonbons en 3 parts égales. Combien par part ?",
+    options: ["4", "5", "6", "3"],
+    reponse: "5",
+    explication: "15 ÷ 3 = 5 car 3 × 5 = 15.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "10 × 7 = ?",
-    options: ["17", "70", "700", "77"],
-    reponse: "70",
-    explication: "10 × 7 = 70 (on ajoute un zéro).",
+    question: "18 ÷ 6 = ?",
+    options: ["2", "3", "4", "6"],
+    reponse: "3",
+    explication: "18 ÷ 6 = 3 car 6 × 3 = 18.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "4 × 8 = ?",
-    options: ["28", "30", "32", "36"],
-    reponse: "32",
-    explication: "4 × 8 = 32.",
+    question: "24 ÷ 4 = ?",
+    options: ["4", "5", "6", "8"],
+    reponse: "6",
+    explication: "24 ÷ 4 = 6 car 4 × 6 = 24.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "6 × 7 = ?",
-    options: ["36", "40", "42", "48"],
-    reponse: "42",
-    explication: "6 × 7 = 42.",
+    question: "30 élèves forment des groupes de 5. Combien de groupes ?",
+    options: ["4", "5", "6", "7"],
+    reponse: "6",
+    explication: "30 ÷ 5 = 6 groupes.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "9 × 8 = ?",
-    options: ["63", "72", "81", "56"],
-    reponse: "72",
-    explication: "9 × 8 = 72.",
+    question: "35 ÷ 7 = ?",
+    options: ["4", "5", "6", "7"],
+    reponse: "5",
+    explication: "35 ÷ 7 = 5 car 7 × 5 = 35.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "5 boîtes contiennent chacune 8 crayons. Combien en tout ?",
-    options: ["35", "38", "40", "45"],
-    reponse: "40",
-    explication: "5 × 8 = 40 crayons.",
+    question: "13 ÷ 4 = ? (avec reste)",
+    options: ["3 reste 0", "3 reste 1", "4 reste 0", "2 reste 5"],
+    reponse: "3 reste 1",
+    explication: "4 × 3 = 12, et 13 - 12 = 1. Donc 13 ÷ 4 = 3 reste 1.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "7 × 7 = ?",
-    options: ["42", "46", "49", "56"],
-    reponse: "49",
-    explication: "7 × 7 = 49.",
+    question: "48 ÷ 8 = ?",
+    options: ["4", "5", "6", "7"],
+    reponse: "6",
+    explication: "48 ÷ 8 = 6 car 8 × 6 = 48.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Si 6 × 8 = 48, combien font 8 × 6 ?",
-    options: ["42", "46", "48", "56"],
-    reponse: "48",
-    explication: "La multiplication est commutative : 6 × 8 = 8 × 6 = 48.",
+    question:
+      "On a 25 images à répartir en 4 albums égaux. Combien par album et combien de reste ?",
+    options: ["5 reste 5", "6 reste 1", "6 reste 0", "5 reste 0"],
+    reponse: "6 reste 1",
+    explication:
+      "4 × 6 = 24, et 25 - 24 = 1. Donc 6 images par album, reste 1.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce2";
 const MATIERE = "maths";
-const THEME = "multiplication";
+const THEME = "division";
 
-export default function MultiplicationCE2() {
+export default function DivisionCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -208,7 +210,7 @@ export default function MultiplicationCE2() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Multiplication</span>
+          <span className="breadcrumb-active">Division</span>
         </div>
       </div>
 
@@ -233,7 +235,7 @@ export default function MultiplicationCE2() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✖️ Multiplication · CE2</div>
+          <div className="lecon-badge">➗ Division · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -368,12 +370,12 @@ export default function MultiplicationCE2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les tables ! 🚀"
+              ? "Tu maîtrises parfaitement la division ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
                   ? "Encore quelques efforts et tu y seras !"
-                  : "Entraîne-toi encore sur les tables !"}
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>

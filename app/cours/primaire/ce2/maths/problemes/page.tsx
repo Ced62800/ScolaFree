@@ -9,27 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les tables de multiplication",
+  titre: "Résoudre des problèmes",
   intro:
-    "La multiplication est une addition répétée. Connaître ses tables par cœur permet de calculer beaucoup plus vite !",
+    "Résoudre un problème, c'est comprendre la situation, choisir la bonne opération et calculer. On suit toujours les mêmes étapes !",
   points: [
     {
-      titre: "Qu'est-ce que multiplier ?",
+      titre: "Les étapes pour résoudre un problème",
       texte:
-        "Multiplier c'est additionner plusieurs fois le même nombre. 3 × 4 veut dire : 3 fois 4, c'est-à-dire 4 + 4 + 4 = 12.",
-      exemple: "3 × 4 = 12 · 5 × 6 = 30 · 2 × 8 = 16",
-    },
-    {
-      titre: "Les tables à connaître",
-      texte:
-        "En CE2, on apprend les tables de 2, 3, 4, 5, 6, 7, 8, 9 et 10. La table de 1 est facile (1 × n = n) et celle de 10 aussi (10 × n = n0).",
+        "1. Je lis le problème. 2. Je comprends ce qu'on me demande. 3. Je choisis l'opération (+, -, ×, ÷). 4. Je calcule. 5. Je vérifie si la réponse est logique.",
       exemple:
-        "Table de 3 : 3×1=3, 3×2=6, 3×3=9, 3×4=12... · Table de 5 : 5×1=5, 5×2=10...",
+        "On me demande un total → addition · On me demande ce qui reste → soustraction",
     },
     {
-      titre: "La commutativité",
-      texte: "On peut changer l'ordre des facteurs, le résultat est le même !",
-      exemple: "3 × 7 = 7 × 3 = 21 · 4 × 6 = 6 × 4 = 24",
+      titre: "Les mots clés",
+      texte:
+        "'En tout', 'au total', 'ensemble' → addition. 'Reste', 'de moins', 'différence' → soustraction. 'Fois', 'chacun' → multiplication. 'Partager', 'répartir' → division.",
+      exemple:
+        "Il reste 5 bonbons → soustraction · Chaque élève a 3 crayons → multiplication",
+    },
+    {
+      titre: "Les problèmes à deux étapes",
+      texte:
+        "Certains problèmes nécessitent deux calculs. On résout d'abord la première étape, puis on utilise ce résultat pour la deuxième.",
+      exemple:
+        "Tom achète 3 cahiers à 2 € et un stylo à 1,50 €. Total = (3×2) + 1,50 = 7,50 €",
     },
   ],
 };
@@ -37,91 +40,100 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "3 × 4 = ?",
-    options: ["10", "12", "14", "7"],
-    reponse: "12",
-    explication: "3 × 4 = 4 + 4 + 4 = 12.",
+    question:
+      "Une boîte contient 24 crayons. On en distribue 9. Combien en reste-t-il ?",
+    options: ["13", "14", "15", "16"],
+    reponse: "15",
+    explication: "24 − 9 = 15 crayons restants.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "5 × 6 = ?",
-    options: ["25", "30", "35", "11"],
-    reponse: "30",
-    explication: "5 × 6 = 30.",
+    question:
+      "Léa a 35 billes. Elle en gagne 18. Combien en a-t-elle maintenant ?",
+    options: ["51", "52", "53", "54"],
+    reponse: "53",
+    explication: "35 + 18 = 53 billes.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "2 × 9 = ?",
-    options: ["16", "18", "20", "11"],
-    reponse: "18",
-    explication: "2 × 9 = 9 + 9 = 18.",
+    question: "6 élèves ont chacun 7 bonbons. Combien en tout ?",
+    options: ["36", "40", "42", "48"],
+    reponse: "42",
+    explication: "6 × 7 = 42 bonbons.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "10 × 7 = ?",
-    options: ["17", "70", "700", "77"],
-    reponse: "70",
-    explication: "10 × 7 = 70 (on ajoute un zéro).",
+    question:
+      "On répartit 32 images entre 4 enfants. Combien chacun en reçoit-il ?",
+    options: ["6", "7", "8", "9"],
+    reponse: "8",
+    explication: "32 ÷ 4 = 8 images par enfant.",
     niveau: "facile",
   },
   {
     id: 5,
-    question: "4 × 8 = ?",
-    options: ["28", "30", "32", "36"],
-    reponse: "32",
-    explication: "4 × 8 = 32.",
+    question:
+      "Une école a 245 filles et 318 garçons. Combien d'élèves en tout ?",
+    options: ["553", "563", "573", "583"],
+    reponse: "563",
+    explication: "245 + 318 = 563 élèves.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "6 × 7 = ?",
-    options: ["36", "40", "42", "48"],
-    reponse: "42",
-    explication: "6 × 7 = 42.",
+    question:
+      "Tom a 150 €. Il achète un livre à 23 € et un jeu à 47 €. Combien lui reste-t-il ?",
+    options: ["70 €", "75 €", "80 €", "85 €"],
+    reponse: "80 €",
+    explication: "23 + 47 = 70 €. 150 − 70 = 80 € restants.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "9 × 8 = ?",
-    options: ["63", "72", "81", "56"],
-    reponse: "72",
-    explication: "9 × 8 = 72.",
+    question:
+      "Une boulangerie vend 125 pains le matin et 87 l'après-midi. Combien en tout ?",
+    options: ["202", "212", "222", "232"],
+    reponse: "212",
+    explication: "125 + 87 = 212 pains.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "5 boîtes contiennent chacune 8 crayons. Combien en tout ?",
-    options: ["35", "38", "40", "45"],
-    reponse: "40",
-    explication: "5 × 8 = 40 crayons.",
+    question:
+      "5 paquets contiennent chacun 8 bonbons. On en mange 12. Combien reste-t-il ?",
+    options: ["26", "28", "30", "32"],
+    reponse: "28",
+    explication: "5 × 8 = 40 bonbons. 40 − 12 = 28 restants.",
     niveau: "moyen",
   },
   {
     id: 9,
-    question: "7 × 7 = ?",
-    options: ["42", "46", "49", "56"],
-    reponse: "49",
-    explication: "7 × 7 = 49.",
+    question:
+      "Un train a 346 passagers. À la gare, 127 descendent et 89 montent. Combien y a-t-il de passagers ?",
+    options: ["298", "308", "318", "328"],
+    reponse: "308",
+    explication: "346 − 127 = 219. 219 + 89 = 308 passagers.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Si 6 × 8 = 48, combien font 8 × 6 ?",
-    options: ["42", "46", "48", "56"],
-    reponse: "48",
-    explication: "La multiplication est commutative : 6 × 8 = 8 × 6 = 48.",
+    question:
+      "Chaque élève lit 15 pages par jour. En 6 jours, combien de pages lit-il ?",
+    options: ["80", "85", "90", "95"],
+    reponse: "90",
+    explication: "15 × 6 = 90 pages.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "ce2";
 const MATIERE = "maths";
-const THEME = "multiplication";
+const THEME = "problemes";
 
-export default function MultiplicationCE2() {
+export default function ProblemesCE2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -199,7 +211,9 @@ export default function MultiplicationCE2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -208,7 +222,7 @@ export default function MultiplicationCE2() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Multiplication</span>
+          <span className="breadcrumb-active">Problèmes</span>
         </div>
       </div>
 
@@ -233,7 +247,7 @@ export default function MultiplicationCE2() {
 
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">✖️ Multiplication · CE2</div>
+          <div className="lecon-badge">🧩 Problèmes · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -368,12 +382,12 @@ export default function MultiplicationCE2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les tables ! 🚀"
+              ? "Tu es un(e) expert(e) des problèmes ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
                   ? "Encore quelques efforts et tu y seras !"
-                  : "Entraîne-toi encore sur les tables !"}
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -382,7 +396,7 @@ export default function MultiplicationCE2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

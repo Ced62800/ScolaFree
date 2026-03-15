@@ -9,28 +9,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les nombres jusqu'à 10 000",
+  titre: "Les nombres jusqu'à 1000",
   intro:
-    "En CE2, on apprend à lire, écrire et comprendre les nombres jusqu'à 10 000. Un nombre peut avoir des milliers, des centaines, des dizaines et des unités.",
+    "En CE2, on apprend à lire, écrire et comprendre les nombres jusqu'à 1000. Un nombre est composé de centaines, de dizaines et d'unités.",
   points: [
     {
-      titre: "Les milliers",
+      titre: "Centaines, dizaines et unités",
       texte:
-        "Un nombre à 4 chiffres se décompose en milliers, centaines, dizaines et unités. 1 millier = 10 centaines = 100 dizaines = 1 000 unités.",
-      exemple: "3 542 = 3 milliers + 5 centaines + 4 dizaines + 2 unités.",
+        "Un nombre à trois chiffres se décompose en centaines, dizaines et unités. 1 centaine = 10 dizaines = 100 unités.",
+      exemple: "352 = 3 centaines + 5 dizaines + 2 unités · 700 = 7 centaines",
     },
     {
-      titre: "Lire et écrire les grands nombres",
+      titre: "Lire et écrire les nombres",
       texte:
-        "On lit d'abord les milliers, puis les centaines, puis les dizaines, puis les unités. On peut écrire un espace entre les milliers et les centaines.",
-      exemple:
-        "7 308 → « sept mille trois cent huit ». 5 000 → « cinq mille ».",
+        "On lit d'abord les centaines, puis les dizaines, puis les unités.",
+      exemple: "537 → cinq cent trente-sept · 804 → huit cent quatre",
     },
     {
       titre: "Comparer et ranger",
       texte:
-        "Pour comparer, on regarde d'abord les milliers, puis les centaines, etc. Un nombre avec plus de milliers est toujours plus grand.",
-      exemple: "4 521 > 3 999 car 4 milliers > 3 milliers.",
+        "Pour comparer, on regarde d'abord les centaines, puis les dizaines, puis les unités.",
+      exemple:
+        "482 > 389 (4 centaines > 3 centaines) · 215 < 251 (même centaines, 1d < 5d)",
     },
   ],
 };
@@ -38,88 +38,87 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Combien y a-t-il de milliers dans 5 000 ?",
-    options: ["5", "50", "500", "5 000"],
-    reponse: "5",
-    explication: "5 000 = 5 milliers.",
+    question: "Combien y a-t-il de centaines dans 352 ?",
+    options: ["2", "3", "5", "35"],
+    reponse: "3",
+    explication: "352 = 3 centaines + 5 dizaines + 2 unités.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Comment s'écrit « quatre mille deux cent trente-six » ?",
-    options: ["4 326", "4 236", "4 263", "4 362"],
-    reponse: "4 236",
-    explication: "Quatre mille → 4 000, deux cent → 200, trente-six → 36.",
+    question: "Comment s'écrit « quatre cent vingt-six » ?",
+    options: ["462", "426", "406", "624"],
+    reponse: "426",
+    explication: "4 centaines + 2 dizaines + 6 unités = 426.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Quel nombre vient juste après 3 999 ?",
-    options: ["3 998", "4 000", "3 990", "4 001"],
-    reponse: "4 000",
-    explication: "Après 3 999 vient 4 000.",
+    question: "Quel nombre vient juste après 199 ?",
+    options: ["200", "198", "210", "190"],
+    reponse: "200",
+    explication: "Après 199 vient 200.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "Quel est le chiffre des milliers dans 7 485 ?",
-    options: ["4", "5", "7", "8"],
-    reponse: "7",
-    explication:
-      "Le chiffre des milliers est le quatrième en partant de la droite.",
-    niveau: "moyen",
+    question: "Quel est le chiffre des dizaines dans 748 ?",
+    options: ["7", "8", "4", "74"],
+    reponse: "4",
+    explication: "748 = 7 centaines + 4 dizaines + 8 unités.",
+    niveau: "facile",
   },
   {
     id: 5,
     question: "Lequel de ces nombres est le plus grand ?",
-    options: ["3 999", "4 001", "3 998", "4 000"],
-    reponse: "4 001",
-    explication: "4 001 possède 4 milliers alors que les autres en ont 3.",
+    options: ["389", "401", "399", "398"],
+    reponse: "401",
+    explication: "401 a 4 centaines — c'est le plus grand.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "Comment écrit-on six mille soixante ?",
-    options: ["6 600", "6 060", "6 006", "6 606"],
-    reponse: "6 060",
-    explication: "Six mille → 6 000, soixante → 60. Donc 6 060.",
+    question: "Comment décompose-t-on 605 ?",
+    options: ["6c + 5u", "6c + 0d + 5u", "60d + 5u", "6d + 5u"],
+    reponse: "6c + 0d + 5u",
+    explication: "605 = 6 centaines + 0 dizaines + 5 unités.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Quelle est la valeur du chiffre 5 dans 5 320 ?",
-    options: ["5", "50", "500", "5 000"],
-    reponse: "5 000",
-    explication: "Le 5 est en position des milliers → il vaut 5 000.",
+    question: "Range dans l'ordre croissant : 512, 215, 521, 251",
+    options: [
+      "215 – 251 – 512 – 521",
+      "521 – 512 – 251 – 215",
+      "215 – 512 – 251 – 521",
+      "251 – 215 – 521 – 512",
+    ],
+    reponse: "215 – 251 – 512 – 521",
+    explication: "On compare d'abord les centaines : 2 < 5.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "8 milliers + 4 centaines + 0 dizaines + 7 unités ?",
-    options: ["8 047", "8 407", "8 470", "8 740"],
-    reponse: "8 407",
-    explication: "8 000 + 400 + 0 + 7 = 8 407.",
-    niveau: "difficile",
+    question: "Quel nombre = 7 centaines + 3 dizaines + 9 unités ?",
+    options: ["739", "793", "937", "379"],
+    reponse: "739",
+    explication: "700 + 30 + 9 = 739.",
+    niveau: "moyen",
   },
   {
     id: 9,
-    question: "Quel nombre est compris entre 2 500 et 2 600 ?",
-    options: ["2 499", "2 650", "2 550", "2 601"],
-    reponse: "2 550",
-    explication: "2 550 est bien entre 2 500 et 2 600.",
+    question: "Comment s'écrit neuf cent quatre-vingt-dix-neuf ?",
+    options: ["909", "919", "990", "999"],
+    reponse: "999",
+    explication: "9 centaines + 9 dizaines + 9 unités = 999.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Range dans l'ordre croissant : 4 010, 4 001, 4 100, 4 000.",
-    options: [
-      "4 000 < 4 001 < 4 010 < 4 100",
-      "4 001 < 4 000 < 4 010 < 4 100",
-      "4 000 < 4 010 < 4 001 < 4 100",
-      "4 100 < 4 010 < 4 001 < 4 000",
-    ],
-    reponse: "4 000 < 4 001 < 4 010 < 4 100",
-    explication: "On compare centaine par centaine, puis dizaine, puis unité.",
+    question: "Quel nombre est entre 500 et 600 ?",
+    options: ["499", "601", "550", "650"],
+    reponse: "550",
+    explication: "550 est bien entre 500 et 600.",
     niveau: "difficile",
   },
 ];
@@ -154,7 +153,7 @@ export default function NumerationCE2() {
   useEffect(() => {
     getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
     getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
-  }, [etape]);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -175,6 +174,12 @@ export default function NumerationCE2() {
           score,
           total: questions.length,
         });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
       }
       setEtape("fini");
     } else {
@@ -192,6 +197,9 @@ export default function NumerationCE2() {
     setBonnes([]);
   };
 
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+
   return (
     <div className="cours-page">
       <div className="cours-header">
@@ -202,9 +210,10 @@ export default function NumerationCE2() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>{CLASSE.toUpperCase()}</span>{" "}
+          <span>CE2</span>
           <span className="breadcrumb-sep">›</span>
-          <span>Maths</span> <span className="breadcrumb-sep">›</span>
+          <span>Maths</span>
+          <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Numération</span>
         </div>
       </div>
@@ -216,7 +225,7 @@ export default function NumerationCE2() {
               Question {qIndex + 1} / {questions.length}
             </span>
             <span>
-              {score} bonne{score > 1 ? "s" : ""}
+              {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}
             </span>
           </div>
           <div className="progression-bar">
@@ -232,60 +241,64 @@ export default function NumerationCE2() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🔢 Numération · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
-
-          <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-            {bestScore && (
-              <div
-                style={{
-                  flex: 1,
-                  background: "rgba(79,142,247,0.1)",
-                  border: "1px solid rgba(79,142,247,0.3)",
-                  borderRadius: "12px",
-                  padding: "10px",
-                  textAlign: "center",
-                  color: "#4f8ef7",
-                }}
-              >
-                🏆 Meilleur :{" "}
-                <strong>
-                  {bestScore.score}/{bestScore.total}
-                </strong>
-              </div>
-            )}
-            {lastScore && (
-              <div
-                style={{
-                  flex: 1,
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "12px",
-                  padding: "10px",
-                  textAlign: "center",
-                  color: "#aaa",
-                }}
-              >
-                ⏱️ Dernier :{" "}
-                <strong>
-                  {lastScore.score}/{lastScore.total}
-                </strong>
-              </div>
-            )}
-          </div>
-
           <p className="lecon-intro">{lecon.intro}</p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
                 <div className="lecon-point-titre">{p.titre}</div>
                 <div className="lecon-point-texte">{p.texte}</div>
                 <div className="lecon-point-exemple">
-                  <span className="exemple-label">Exemple :</span> {p.exemple}
+                  <span className="exemple-label">Exemples :</span> {p.exemple}
                 </div>
               </div>
             ))}
           </div>
           <button className="lecon-btn" onClick={() => setEtape("qcm")}>
-            Démarrer les exercices →
+            Je suis prêt(e) — Passer aux exercices →
           </button>
         </div>
       )}
@@ -293,49 +306,51 @@ export default function NumerationCE2() {
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
-            {questions[qIndex].niveau === "facile"
-              ? "🟢 Facile"
-              : questions[qIndex].niveau === "moyen"
-                ? "🟡 Moyen"
-                : "🔴 Difficile"}
+            {niveauLabel(questions[qIndex].niveau)}
           </div>
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
-            {shuffledOptions.map((opt, idx) => (
-              <button
-                key={idx}
-                className={`qcm-option ${selected ? (opt === questions[qIndex].reponse ? "correct" : opt === selected ? "incorrect" : "disabled") : ""}`}
-                onClick={() => handleReponse(opt)}
-              >
-                {opt}
-              </button>
-            ))}
+            {shuffledOptions.map((opt) => {
+              let className = "qcm-option";
+              if (selected) {
+                if (opt === questions[qIndex].reponse) className += " correct";
+                else if (opt === selected) className += " incorrect";
+                else className += " disabled";
+              }
+              return (
+                <button
+                  key={opt}
+                  className={className}
+                  onClick={() => handleReponse(opt)}
+                >
+                  {opt}
+                </button>
+              );
+            })}
           </div>
-
           {selected && (
-            <>
-              <div
-                className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
-              >
-                <p>
-                  <strong>
-                    {selected === questions[qIndex].reponse
-                      ? "Bravo !"
-                      : "Oups..."}
-                  </strong>
-                </p>
+            <div
+              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
+            >
+              <div className="feedback-icon">
+                {selected === questions[qIndex].reponse ? "✅" : "❌"}
+              </div>
+              <div className="feedback-texte">
+                <strong>
+                  {selected === questions[qIndex].reponse
+                    ? "Bravo !"
+                    : "Pas tout à fait..."}
+                </strong>
                 <p>{questions[qIndex].explication}</p>
               </div>
-              <button
-                className="lecon-btn"
-                style={{ marginTop: "15px" }}
-                onClick={handleSuivant}
-              >
-                {qIndex + 1 >= questions.length
-                  ? "Voir mon résultat →"
-                  : "Continuer →"}
-              </button>
-            </>
+            </div>
+          )}
+          {selected && (
+            <button className="lecon-btn" onClick={handleSuivant}>
+              {qIndex + 1 >= questions.length
+                ? "Voir mon résultat →"
+                : "Question suivante →"}
+            </button>
           )}
         </div>
       )}
@@ -343,25 +358,29 @@ export default function NumerationCE2() {
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
-            {score >= 8 ? "🏆" : score >= 5 ? "⭐" : "👍"}
+            {score >= 9 ? "🏆" : score >= 7 ? "⭐" : score >= 5 ? "👍" : "💪"}
           </div>
           <h2 className="resultat-titre">
-            {score >= 8
+            {score >= 9
               ? "Excellent !"
-              : score >= 5
+              : score >= 7
                 ? "Bien joué !"
-                : "Continue !"}
+                : score >= 5
+                  ? "Assez bien !"
+                  : "À revoir !"}
           </h2>
           <div className="resultat-score">
             {score} / {questions.length}
           </div>
-          <div className="resultat-desc">
-            {score >= 8
-              ? "Excellent travail, tu maîtrises la numération ! 🚀"
-              : score >= 5
-                ? "Bon travail, continue à t'entraîner !"
-                : "Reprends la leçon et réessaie, tu vas y arriver !"}
-          </div>
+          <p className="resultat-desc">
+            {score >= 9
+              ? "Tu maîtrises parfaitement les nombres jusqu'à 1000 ! 🚀"
+              : score >= 7
+                ? "Tu as bien compris l'essentiel, continue !"
+                : score >= 5
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
+          </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
               🔄 Recommencer
@@ -372,7 +391,7 @@ export default function NumerationCE2() {
                 router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
               }
             >
-              Autres thèmes
+              Retour aux thèmes →
             </button>
           </div>
         </div>
