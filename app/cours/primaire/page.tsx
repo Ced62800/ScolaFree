@@ -102,7 +102,7 @@ export default function PrimairePage() {
         style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
       >
         {classes.map((c) => {
-          const estMaClasse = !chargement && maClasse === c.id;
+          const estMaClasse = !chargement && !isAdmin && maClasse === c.id;
           const estBloquee =
             !chargement && !isAdmin && maClasse !== null && !estMaClasse;
 
@@ -129,12 +129,11 @@ export default function PrimairePage() {
                     : "2px solid rgba(255,255,255,0.06)",
                   cursor: chargement || estBloquee ? "not-allowed" : "pointer",
                   transition: "all 0.2s",
-                  paddingTop:
-                    estMaClasse || estBloquee || isAdmin ? "44px" : undefined,
+                  paddingTop: "44px",
                 } as React.CSSProperties
               }
             >
-              {/* Badge Ma classe — INTÉRIEUR de la carte en haut */}
+              {/* Badge Ma classe — uniquement pour les élèves */}
               {estMaClasse && (
                 <div
                   style={{
@@ -150,14 +149,13 @@ export default function PrimairePage() {
                     borderRadius: "20px",
                     boxShadow: `0 4px 14px ${c.color}88`,
                     whiteSpace: "nowrap",
-                    letterSpacing: "0.02em",
                   }}
                 >
                   ⭐ Ma classe
                 </div>
               )}
 
-              {/* Badge Admin */}
+              {/* Badge Admin — uniquement pour les admins */}
               {isAdmin && (
                 <div
                   style={{
