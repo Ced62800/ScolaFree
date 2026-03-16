@@ -18,7 +18,7 @@ const matieres = [
     label: "Mathématiques",
     emoji: "➕",
     color: "#2ec4b6",
-    desc: "Numération, Calcul, Fractions, Proportionnalité",
+    desc: "Grands nombres, Multiplication, Division, Décimaux",
     dispo: true,
   },
   {
@@ -45,10 +45,10 @@ const themesParMatiere: Record<string, { id: string; label: string }[]> = {
     { id: "decrire-quelquun", label: "Describing People 👤" },
   ],
   maths: [
-    { id: "decimaux", label: "Décimaux" },
-    { id: "fractions", label: "Fractions" },
+    { id: "grands-nombres", label: "Grands nombres" },
+    { id: "multiplication", label: "Multiplication" },
     { id: "division", label: "Division" },
-    { id: "proportionnalite", label: "Proportionnalité" },
+    { id: "decimaux", label: "Décimaux" },
   ],
   francais: [
     { id: "grammaire", label: "Grammaire" },
@@ -136,7 +136,6 @@ export default function CM1Page() {
         ))}
       </div>
 
-      {/* CITATION EN BAS À LA PLACE DES STATS */}
       <div
         style={{
           marginTop: "60px",
