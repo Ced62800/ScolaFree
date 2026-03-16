@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -10,7 +11,7 @@ function shuffleArray<T>(array: T[]): T[] {
 const lecon = {
   titre: "L'accord du participe passé",
   intro:
-    "Le participe passé s'accorde selon l'auxiliaire utilisé. Avec 'être', il s'accorde avec le sujet. Avec 'avoir', il s'accorde avec le complément d'objet direct s'il est placé avant.",
+    "Le participe passé s'accorde selon l'auxiliaire utilisé. Avec 'être', il s'accorde avec le sujet. Avec 'avoir', il s'accorde avec le COD s'il est placé avant.",
   points: [
     {
       titre: "Accord avec 'être'",
@@ -23,7 +24,7 @@ const lecon = {
       texte:
         "Avec l'auxiliaire 'avoir', le participe passé ne s'accorde PAS avec le sujet. Il s'accorde avec le COD seulement s'il est placé AVANT le verbe.",
       exemple:
-        "Elle a mangé une pomme. (pas d'accord) · La pomme qu'elle a mangée. (accord car 'que' = COD avant)",
+        "Elle a mangé une pomme. (pas d'accord) · La pomme qu'elle a mangée. (accord car COD avant)",
     },
     {
       titre: "Cas particuliers",
@@ -45,8 +46,7 @@ const questions = [
       "Elle est parties.",
     ],
     reponse: "Elle est partie.",
-    explication:
-      "Avec 'être', le participe s'accorde avec le sujet féminin singulier → 'partie'.",
+    explication: "Sujet féminin singulier → 'partie'.",
     niveau: "facile",
   },
   {
@@ -59,7 +59,7 @@ const questions = [
       "Ils sont arrivées.",
     ],
     reponse: "Ils sont arrivés.",
-    explication: "Sujet masculin pluriel → 'arrivés' (avec -s).",
+    explication: "Sujet masculin pluriel → 'arrivés'.",
     niveau: "facile",
   },
   {
@@ -81,7 +81,7 @@ const questions = [
     options: ["écrit", "écrits", "écrite", "écrites"],
     reponse: "écrites",
     explication:
-      "'que' remplace 'lettres' (féminin pluriel), placé avant → accord : 'écrites'.",
+      "'que' remplace 'lettres' (féminin pluriel), placé avant → 'écrites'.",
     niveau: "moyen",
   },
   {
@@ -94,8 +94,7 @@ const questions = [
       "Elles se sont blessées.",
     ],
     reponse: "Elles se sont blessées.",
-    explication:
-      "Verbe pronominal avec 'être' : accord avec le sujet féminin pluriel → 'blessées'.",
+    explication: "Verbe pronominal, sujet féminin pluriel → 'blessées'.",
     niveau: "moyen",
   },
   {
@@ -103,8 +102,7 @@ const questions = [
     question: "Complète : 'La chanson qu'elle a ___.' (chanter)",
     options: ["chanté", "chantés", "chantée", "chantées"],
     reponse: "chantée",
-    explication:
-      "'que' remplace 'chanson' (féminin singulier), placé avant → 'chantée'.",
+    explication: "'que' remplace 'chanson' (féminin singulier) → 'chantée'.",
     niveau: "moyen",
   },
   {
@@ -117,8 +115,7 @@ const questions = [
       "Nous avons mangées.",
     ],
     reponse: "Nous avons mangé.",
-    explication:
-      "Avec 'avoir', pas d'accord avec le sujet : 'mangé' reste invariable.",
+    explication: "Avec 'avoir', pas d'accord avec le sujet.",
     niveau: "moyen",
   },
   {
@@ -126,8 +123,7 @@ const questions = [
     question: "Complète : 'Les enfants que j'ai ___.' (voir)",
     options: ["vu", "vus", "vue", "vues"],
     reponse: "vus",
-    explication:
-      "'que' remplace 'enfants' (masculin pluriel), placé avant → 'vus'.",
+    explication: "'que' remplace 'enfants' (masculin pluriel) → 'vus'.",
     niveau: "difficile",
   },
   {
@@ -140,8 +136,7 @@ const questions = [
       "Elle s'est lavées les mains.",
     ],
     reponse: "Elle s'est lavé les mains.",
-    explication:
-      "Le COD 'les mains' est après le verbe → pas d'accord : 'lavé'.",
+    explication: "Le COD 'les mains' est après le verbe → pas d'accord.",
     niveau: "difficile",
   },
   {
@@ -149,17 +144,14 @@ const questions = [
     question: "Complète : 'Les livres qu'ils ont ___.' (lire)",
     options: ["lu", "lus", "lue", "lues"],
     reponse: "lus",
-    explication:
-      "'que' remplace 'livres' (masculin pluriel), placé avant → 'lus'.",
+    explication: "'que' remplace 'livres' (masculin pluriel) → 'lus'.",
     niveau: "difficile",
   },
 ];
 
-const niveauLabel = (n: string) => {
-  if (n === "facile") return "🟢 Facile";
-  if (n === "moyen") return "🟡 Moyen";
-  return "🔴 Difficile";
-};
+const CLASSE = "cm2";
+const MATIERE = "francais";
+const THEME = "orthographe";
 
 export default function OrthographeCM2() {
   const router = useRouter();
@@ -168,12 +160,26 @@ export default function OrthographeCM2() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -183,35 +189,55 @@ export default function OrthographeCM2() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
   };
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm2/francais")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CM2</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Français</span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Orthographe</span>
         </div>
@@ -239,6 +265,50 @@ export default function OrthographeCM2() {
           <div className="lecon-badge">✏️ Orthographe · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -325,12 +395,12 @@ export default function OrthographeCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement l'accord du participe passé !"
+              ? "Tu maîtrises l'accord du participe passé ! 🚀"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
                   ? "Encore quelques efforts et tu y seras !"
-                  : "Relis la leçon et réessaie !"}
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -338,7 +408,9 @@ export default function OrthographeCM2() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm2/francais")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>

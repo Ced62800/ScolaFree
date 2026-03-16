@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -76,8 +77,7 @@ const questions = [
       "Quelle figure de style est utilisée : 'Ses yeux sont des étoiles' ?",
     options: ["comparaison", "métaphore", "personnification", "répétition"],
     reponse: "métaphore",
-    explication:
-      "Pas de mot outil — on affirme directement que ses yeux SONT des étoiles.",
+    explication: "Pas de mot outil — on affirme que ses yeux SONT des étoiles.",
     niveau: "moyen",
   },
   {
@@ -138,20 +138,17 @@ const questions = [
   {
     id: 10,
     question:
-      "Dans 'Les arbres tendent leurs bras vers le ciel', quelle figure de style est utilisée ?",
+      "Dans 'Les arbres tendent leurs bras vers le ciel', quelle figure est utilisée ?",
     options: ["comparaison", "métaphore", "personnification", "exagération"],
     reponse: "personnification",
-    explication:
-      "'tendent leurs bras' attribue une action humaine aux arbres → personnification.",
+    explication: "'tendent leurs bras' attribue une action humaine aux arbres.",
     niveau: "difficile",
   },
 ];
 
-const niveauLabel = (n: string) => {
-  if (n === "facile") return "🟢 Facile";
-  if (n === "moyen") return "🟡 Moyen";
-  return "🔴 Difficile";
-};
+const CLASSE = "cm2";
+const MATIERE = "francais";
+const THEME = "vocabulaire";
 
 export default function VocabulaireCM2() {
   const router = useRouter();
@@ -160,12 +157,26 @@ export default function VocabulaireCM2() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
     [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
+
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -175,35 +186,55 @@ export default function VocabulaireCM2() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
   };
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm2/francais")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span>
-          <span className="breadcrumb-sep">›</span>
           <span>CM2</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Français</span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Vocabulaire</span>
         </div>
@@ -231,6 +262,50 @@ export default function VocabulaireCM2() {
           <div className="lecon-badge">📚 Vocabulaire · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -317,12 +392,12 @@ export default function VocabulaireCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les figures de style !"
+              ? "Tu maîtrises parfaitement les figures de style ! 🚀"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
                   ? "Encore quelques efforts et tu y seras !"
-                  : "Relis la leçon et réessaie !"}
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -330,7 +405,9 @@ export default function VocabulaireCM2() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm2/francais")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>

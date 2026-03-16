@@ -210,7 +210,7 @@ const questions = [
   {
     id: 20,
     question:
-      "Dans 'Les arbres tendent leurs bras vers le ciel', quelle figure de style est utilisée ?",
+      "Dans 'Les arbres tendent leurs bras vers le ciel', quelle figure est utilisée ?",
     options: ["comparaison", "métaphore", "personnification", "exagération"],
     reponse: "personnification",
     explication: "'tendent leurs bras' = action humaine attribuée aux arbres.",
@@ -244,22 +244,19 @@ export default function BilanFinalCM2() {
     vocabulaire: 0,
   });
   const [totalScore, setTotalScore] = useState(0);
-
-  // États pour la persistance
   const [bestScore, setBestScore] = useState<any>(null);
   const [lastScore, setLastScore] = useState<any>(null);
   const isSaving = useRef(false);
   const scoreRef = useRef(0);
 
-  // Charger les scores au montage
   useEffect(() => {
-    const loadScores = async () => {
+    const load = async () => {
       const b = await getBestScore("cm2", "francais", "bilan");
       const l = await getLastScore("cm2", "francais", "bilan");
       setBestScore(b);
       setLastScore(l);
     };
-    loadScores();
+    load();
   }, []);
 
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
@@ -267,7 +264,6 @@ export default function BilanFinalCM2() {
     if (!shuffledQuestions[qIndex]) return [];
     return shuffleArray(shuffledQuestions[qIndex].options);
   }, [qIndex, shuffledQuestions]);
-
   const progression = Math.round((qIndex / questions.length) * 100);
 
   const handleReponse = (option: string) => {
@@ -293,7 +289,6 @@ export default function BilanFinalCM2() {
           score: scoreRef.current,
           total: 20,
         });
-        // Rafraîchir les données locales
         const b = await getBestScore("cm2", "francais", "bilan");
         const l = await getLastScore("cm2", "francais", "bilan");
         setBestScore(b);
@@ -337,8 +332,10 @@ export default function BilanFinalCM2() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Français</span> <span className="breadcrumb-sep">›</span>{" "}
-          <span>CM2</span> <span className="breadcrumb-sep">›</span>{" "}
+          <span>CM2</span>
+          <span className="breadcrumb-sep">›</span>
+          <span>Français</span>
+          <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Bilan Final</span>
         </div>
       </div>
@@ -347,8 +344,6 @@ export default function BilanFinalCM2() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CM2</div>
           <h1 className="lecon-titre">Bilan Final — CM2 Français</h1>
-
-          {/* Records personnels */}
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
               {bestScore && (
@@ -356,7 +351,7 @@ export default function BilanFinalCM2() {
                   style={{
                     flex: 1,
                     padding: "12px",
-                    background: "rgba(46, 196, 182, 0.1)",
+                    background: "rgba(46,196,182,0.1)",
                     borderRadius: "12px",
                     border: "1px solid #2ec4b6",
                     textAlign: "center",
@@ -382,7 +377,7 @@ export default function BilanFinalCM2() {
                   style={{
                     flex: 1,
                     padding: "12px",
-                    background: "rgba(255, 255, 255, 0.05)",
+                    background: "rgba(255,255,255,0.05)",
                     borderRadius: "12px",
                     border: "1px solid rgba(255,255,255,0.1)",
                     textAlign: "center",
@@ -405,7 +400,6 @@ export default function BilanFinalCM2() {
               )}
             </div>
           )}
-
           <p className="lecon-intro">
             Prêt pour le grand test final avant le collège ?
           </p>
@@ -517,19 +511,62 @@ export default function BilanFinalCM2() {
           <div className="resultat-score" style={{ color: mention.color }}>
             {totalScore} / 20
           </div>
-
-          {bestScore && totalScore < bestScore.score && (
-            <div
-              style={{
-                fontSize: "0.9rem",
-                color: "#888",
-                marginBottom: "15px",
-              }}
-            >
-              Record à battre : {bestScore.score}/20
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46,196,182,0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Meilleur
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255,255,255,0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
             </div>
           )}
-
           <div className="bilan-detail">
             <h3 className="bilan-detail-titre">Détail par thème</h3>
             {Object.entries(scores).map(([theme, score]) => (
@@ -565,7 +602,7 @@ export default function BilanFinalCM2() {
               className="lecon-btn"
               onClick={() => router.push("/cours/primaire/cm2/francais")}
             >
-              Retour aux thèmes
+              Retour aux thèmes →
             </button>
           </div>
         </div>

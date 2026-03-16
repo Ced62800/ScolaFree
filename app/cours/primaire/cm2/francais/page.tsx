@@ -104,6 +104,26 @@ export default function FrancaisCM2() {
           Teste toutes tes connaissances du CM2 en une seule fois !
         </p>
       </div>
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <button
+          onClick={() => router.push("/cours/primaire/cm2/francais/page-2")}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            background: "rgba(255,255,255,0.06)",
+            color: "#fff",
+            fontWeight: 700,
+            fontSize: "1rem",
+            padding: "14px 28px",
+            borderRadius: "16px",
+            border: "1px solid rgba(255,255,255,0.15)",
+            cursor: "pointer",
+          }}
+        >
+          📚 Cours suivants — Partie 2 →
+        </button>
+      </div>
     </div>
   );
 }
