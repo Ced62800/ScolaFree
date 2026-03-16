@@ -9,28 +9,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "La division posée",
+  titre: "Résoudre des problèmes",
   intro:
-    "En CM1, on apprend à poser et effectuer une division euclidienne. On trouve un quotient et un reste.",
+    "En CM1, on résout des problèmes à plusieurs étapes en utilisant les quatre opérations. L'essentiel est de bien lire, comprendre ce qu'on cherche, et choisir la bonne opération.",
   points: [
     {
-      titre: "Vocabulaire de la division",
+      titre: "Les étapes de résolution",
       texte:
-        "Dans une division, le nombre qu'on divise s'appelle le dividende, celui par lequel on divise s'appelle le diviseur, le résultat s'appelle le quotient et ce qui reste s'appelle le reste.",
+        "1. Je lis et je comprends. 2. Je repère les données et ce qu'on cherche. 3. Je choisis l'opération. 4. Je calcule. 5. Je vérifie si c'est logique.",
+      exemple: "Total → + · Reste → − · Chacun → × ou ÷",
+    },
+    {
+      titre: "Problèmes à deux étapes",
+      texte:
+        "Certains problèmes nécessitent deux calculs successifs. Le résultat du premier calcul sert à faire le deuxième.",
       exemple:
-        "84 ÷ 7 = 12. Dividende = 84, diviseur = 7, quotient = 12, reste = 0.",
+        "Tom achète 3 stylos à 1,50 € et 2 cahiers à 2,25 €. Total = (3×1,50) + (2×2,25) = 4,50 + 4,50 = 9 €",
     },
     {
-      titre: "La division euclidienne",
+      titre: "Problèmes avec décimaux et fractions",
       texte:
-        "Quand la division n'est pas exacte, il y a un reste. Le reste est toujours inférieur au diviseur. On écrit : dividende = diviseur × quotient + reste.",
-      exemple: "29 ÷ 4 = 7, reste 1. Car 4 × 7 = 28, et 29 − 28 = 1.",
-    },
-    {
-      titre: "Vérifier une division",
-      texte:
-        "Pour vérifier une division, on multiplie le quotient par le diviseur et on ajoute le reste. On doit retrouver le dividende.",
-      exemple: "38 ÷ 5 = 7, reste 3. Vérification : 5 × 7 + 3 = 35 + 3 = 38 ✓",
+        "En CM1, les problèmes peuvent inclure des prix en euros (décimaux) ou des partages (fractions).",
+      exemple:
+        "Une bouteille de 1,5 L est partagée en 3. Chaque part = 1,5 ÷ 3 = 0,5 L.",
     },
   ],
 };
@@ -38,93 +39,99 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Combien font 42 ÷ 6 ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "42 ÷ 6 = 7 car 6 × 7 = 42.",
+    question: "Un livre coûte 8,50 €. Paul en achète 3. Combien paie-t-il ?",
+    options: ["24,50 €", "25,00 €", "25,50 €", "26,00 €"],
+    reponse: "25,50 €",
+    explication: "3 × 8,50 = 25,50 €.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Combien font 56 ÷ 8 ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "56 ÷ 8 = 7 car 8 × 7 = 56.",
+    question: "Léa a 50 €. Elle dépense 23,75 €. Combien lui reste-t-il ?",
+    options: ["25,25 €", "26,00 €", "26,25 €", "27,00 €"],
+    reponse: "26,25 €",
+    explication: "50,00 − 23,75 = 26,25 €.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Dans la division 85 ÷ 5, quel est le quotient ?",
-    options: ["15", "16", "17", "18"],
-    reponse: "17",
-    explication: "85 ÷ 5 = 17 car 5 × 17 = 85.",
+    question:
+      "Une classe de 28 élèves est répartie en groupes de 4. Combien de groupes ?",
+    options: ["6", "7", "8", "9"],
+    reponse: "7",
+    explication: "28 ÷ 4 = 7 groupes.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "29 ÷ 4, quel est le reste ?",
-    options: ["0", "1", "2", "3"],
-    reponse: "1",
-    explication: "4 × 7 = 28. 29 − 28 = 1. Le reste est 1.",
+    question:
+      "Un train roule à 180 km/h. En 2h30, quelle distance parcourt-il ?",
+    options: ["360 km", "400 km", "420 km", "450 km"],
+    reponse: "450 km",
+    explication: "2h30 = 2,5h. 180 × 2,5 = 450 km.",
     niveau: "moyen",
   },
   {
     id: 5,
-    question: "38 ÷ 5, quel est le quotient ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "5 × 7 = 35 ≤ 38 < 40 = 5 × 8. Le quotient est 7.",
+    question:
+      "Tom achète 3 stylos à 1,50 € et 2 cahiers à 2,25 €. Combien dépense-t-il ?",
+    options: ["8,50 €", "9,00 €", "9,50 €", "10,00 €"],
+    reponse: "9,00 €",
+    explication: "3×1,50 = 4,50 € · 2×2,25 = 4,50 € · Total = 9,00 €.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "63 ÷ 9 = ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "63 ÷ 9 = 7 car 9 × 7 = 63.",
+    question:
+      "Une bouteille de 1,5 L est partagée en 3 parts égales. Quelle est chaque part ?",
+    options: ["0,3 L", "0,5 L", "0,6 L", "0,75 L"],
+    reponse: "0,5 L",
+    explication: "1,5 ÷ 3 = 0,5 L.",
     niveau: "moyen",
   },
   {
     id: 7,
     question:
-      "On répartit 47 billes en groupes de 5. Combien de groupes complets peut-on faire ?",
-    options: ["8", "9", "10", "11"],
-    reponse: "9",
-    explication: "47 ÷ 5 = 9, reste 2. On peut faire 9 groupes complets.",
+      "Une école a 245 filles et 318 garçons. Combien d'élèves en tout ?",
+    options: ["553", "563", "573", "583"],
+    reponse: "563",
+    explication: "245 + 318 = 563 élèves.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "96 ÷ 8 = ?",
-    options: ["10", "11", "12", "13"],
-    reponse: "12",
-    explication: "96 ÷ 8 = 12 car 8 × 12 = 96.",
+    question:
+      "Un rectangle mesure 12,5 cm de long et 4,5 cm de large. Quel est son périmètre ?",
+    options: ["32 cm", "34 cm", "36 cm", "38 cm"],
+    reponse: "34 cm",
+    explication: "Périmètre = 2 × (12,5 + 4,5) = 2 × 17 = 34 cm.",
     niveau: "difficile",
   },
   {
     id: 9,
-    question: "Dans 75 ÷ 6, quel est le reste ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "3",
-    explication: "6 × 12 = 72. 75 − 72 = 3. Le reste est 3.",
+    question:
+      "Paul gagne 120 € par semaine. En 4 semaines, il dépense 345 €. Combien lui reste-t-il ?",
+    options: ["125 €", "135 €", "145 €", "155 €"],
+    reponse: "135 €",
+    explication: "4 × 120 = 480 €. 480 − 345 = 135 €.",
     niveau: "difficile",
   },
   {
     id: 10,
     question:
-      "On veut répartir 100 élèves en groupes de 7. Combien d'élèves ne seront pas dans un groupe complet ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication: "100 ÷ 7 = 14, reste 2. Car 7 × 14 = 98 et 100 − 98 = 2.",
+      "Une corde de 7,2 m est coupée en morceaux de 0,9 m. Combien de morceaux obtient-on ?",
+    options: ["6", "7", "8", "9"],
+    reponse: "8",
+    explication: "7,2 ÷ 0,9 = 8 morceaux.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm1";
 const MATIERE = "maths";
-const THEME = "division";
+const THEME = "problemes";
 
-export default function DivisionCM1() {
+export default function ProblemesCM1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -202,7 +209,9 @@ export default function DivisionCM1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -211,7 +220,7 @@ export default function DivisionCM1() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Division posée</span>
+          <span className="breadcrumb-active">Problèmes</span>
         </div>
       </div>
       {etape === "qcm" && (
@@ -234,7 +243,7 @@ export default function DivisionCM1() {
       )}
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">➗ Division posée · CM1</div>
+          <div className="lecon-badge">🧩 Problèmes · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -367,7 +376,7 @@ export default function DivisionCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement la division posée ! 🚀"
+              ? "Tu es un(e) expert(e) des problèmes ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -381,7 +390,7 @@ export default function DivisionCM1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

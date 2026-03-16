@@ -9,28 +9,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "La division posée",
+  titre: "La multiplication posée",
   intro:
-    "En CM1, on apprend à poser et effectuer une division euclidienne. On trouve un quotient et un reste.",
+    "En CM1, on apprend à multiplier des grands nombres en posant l'opération. On multiplie chiffre par chiffre en commençant par les unités, en gérant les retenues.",
   points: [
     {
-      titre: "Vocabulaire de la division",
+      titre: "Multiplier par un nombre à 1 chiffre",
       texte:
-        "Dans une division, le nombre qu'on divise s'appelle le dividende, celui par lequel on divise s'appelle le diviseur, le résultat s'appelle le quotient et ce qui reste s'appelle le reste.",
+        "On pose le multiplicateur sous le nombre. On multiplie chaque chiffre de droite à gauche. Si le résultat dépasse 9, on pose les unités et on retient les dizaines.",
       exemple:
-        "84 ÷ 7 = 12. Dividende = 84, diviseur = 7, quotient = 12, reste = 0.",
+        "  347\n×   4\n-----\n1 388  (4×7=28→pose 8 ret.2 · 4×4+2=18→pose 8 ret.1 · 4×3+1=13)",
     },
     {
-      titre: "La division euclidienne",
+      titre: "Multiplier par un nombre à 2 chiffres",
       texte:
-        "Quand la division n'est pas exacte, il y a un reste. Le reste est toujours inférieur au diviseur. On écrit : dividende = diviseur × quotient + reste.",
-      exemple: "29 ÷ 4 = 7, reste 1. Car 4 × 7 = 28, et 29 − 28 = 1.",
+        "On effectue deux multiplications partielles. La deuxième ligne est décalée d'un rang vers la gauche (on multiplie par les dizaines).",
+      exemple:
+        "   23\n×  14\n-----\n   92  (23×4)\n+ 230  (23×10)\n-----\n  322",
     },
     {
-      titre: "Vérifier une division",
+      titre: "Vérifier son calcul",
       texte:
-        "Pour vérifier une division, on multiplie le quotient par le diviseur et on ajoute le reste. On doit retrouver le dividende.",
-      exemple: "38 ÷ 5 = 7, reste 3. Vérification : 5 × 7 + 3 = 35 + 3 = 38 ✓",
+        "On peut vérifier en estimant le résultat. Par exemple, 347 × 4 ≈ 350 × 4 = 1 400 → notre résultat 1 388 est cohérent.",
+      exemple: "23 × 14 ≈ 20 × 15 = 300 → 322 est cohérent ✓",
     },
   ],
 };
@@ -38,93 +39,92 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Combien font 42 ÷ 6 ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "42 ÷ 6 = 7 car 6 × 7 = 42.",
+    question: "5 × 6 = ?",
+    options: ["25", "30", "35", "11"],
+    reponse: "30",
+    explication: "5 × 6 = 30.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Combien font 56 ÷ 8 ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "56 ÷ 8 = 7 car 8 × 7 = 56.",
+    question: "12 × 4 = ?",
+    options: ["44", "46", "48", "52"],
+    reponse: "48",
+    explication: "12 × 4 = 48.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Dans la division 85 ÷ 5, quel est le quotient ?",
-    options: ["15", "16", "17", "18"],
-    reponse: "17",
-    explication: "85 ÷ 5 = 17 car 5 × 17 = 85.",
+    question: "25 × 3 = ?",
+    options: ["65", "70", "75", "80"],
+    reponse: "75",
+    explication: "25 × 3 = 75.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "29 ÷ 4, quel est le reste ?",
-    options: ["0", "1", "2", "3"],
-    reponse: "1",
-    explication: "4 × 7 = 28. 29 − 28 = 1. Le reste est 1.",
-    niveau: "moyen",
+    question: "100 × 7 = ?",
+    options: ["70", "700", "7 000", "17"],
+    reponse: "700",
+    explication: "100 × 7 = 700 (on ajoute deux zéros).",
+    niveau: "facile",
   },
   {
     id: 5,
-    question: "38 ÷ 5, quel est le quotient ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "5 × 7 = 35 ≤ 38 < 40 = 5 × 8. Le quotient est 7.",
+    question: "347 × 4 = ?",
+    options: ["1 378", "1 388", "1 398", "1 488"],
+    reponse: "1 388",
+    explication: "347 × 4 = 1 388.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "63 ÷ 9 = ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "63 ÷ 9 = 7 car 9 × 7 = 63.",
+    question: "23 × 14 = ?",
+    options: ["302", "312", "322", "332"],
+    reponse: "322",
+    explication: "23 × 14 = 322.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question:
-      "On répartit 47 billes en groupes de 5. Combien de groupes complets peut-on faire ?",
-    options: ["8", "9", "10", "11"],
-    reponse: "9",
-    explication: "47 ÷ 5 = 9, reste 2. On peut faire 9 groupes complets.",
+    question: "45 × 20 = ?",
+    options: ["800", "850", "900", "950"],
+    reponse: "900",
+    explication: "45 × 20 = 45 × 2 × 10 = 90 × 10 = 900.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "96 ÷ 8 = ?",
-    options: ["10", "11", "12", "13"],
-    reponse: "12",
-    explication: "96 ÷ 8 = 12 car 8 × 12 = 96.",
-    niveau: "difficile",
+    question:
+      "Une boîte contient 24 chocolats. Il y a 15 boîtes. Combien de chocolats en tout ?",
+    options: ["340", "350", "360", "370"],
+    reponse: "360",
+    explication: "24 × 15 = 360 chocolats.",
+    niveau: "moyen",
   },
   {
     id: 9,
-    question: "Dans 75 ÷ 6, quel est le reste ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "3",
-    explication: "6 × 12 = 72. 75 − 72 = 3. Le reste est 3.",
+    question: "132 × 6 = ?",
+    options: ["782", "792", "802", "812"],
+    reponse: "792",
+    explication: "132 × 6 = 792.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question:
-      "On veut répartir 100 élèves en groupes de 7. Combien d'élèves ne seront pas dans un groupe complet ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication: "100 ÷ 7 = 14, reste 2. Car 7 × 14 = 98 et 100 − 98 = 2.",
+    question: "36 × 25 = ?",
+    options: ["880", "890", "900", "910"],
+    reponse: "900",
+    explication: "36 × 25 = 900.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm1";
 const MATIERE = "maths";
-const THEME = "division";
+const THEME = "multiplication";
 
-export default function DivisionCM1() {
+export default function MultiplicationCM1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -211,7 +211,7 @@ export default function DivisionCM1() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Division posée</span>
+          <span className="breadcrumb-active">Multiplication posée</span>
         </div>
       </div>
       {etape === "qcm" && (
@@ -234,7 +234,7 @@ export default function DivisionCM1() {
       )}
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">➗ Division posée · CM1</div>
+          <div className="lecon-badge">✖️ Multiplication posée · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -367,7 +367,7 @@ export default function DivisionCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement la division posée ! 🚀"
+              ? "Tu maîtrises la multiplication posée ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5

@@ -9,28 +9,27 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "La division posée",
+  titre: "Additionner et soustraire des décimaux",
   intro:
-    "En CM1, on apprend à poser et effectuer une division euclidienne. On trouve un quotient et un reste.",
+    "Pour additionner ou soustraire des nombres décimaux, on aligne les virgules en colonnes. On opère chiffre par chiffre comme avec les entiers.",
   points: [
     {
-      titre: "Vocabulaire de la division",
+      titre: "Addition de décimaux",
       texte:
-        "Dans une division, le nombre qu'on divise s'appelle le dividende, celui par lequel on divise s'appelle le diviseur, le résultat s'appelle le quotient et ce qui reste s'appelle le reste.",
-      exemple:
-        "84 ÷ 7 = 12. Dividende = 84, diviseur = 7, quotient = 12, reste = 0.",
+        "On pose les nombres en alignant les virgules. On peut ajouter des zéros pour avoir le même nombre de décimales. On additionne de droite à gauche.",
+      exemple: "  3,45\n+ 2,30\n------\n  5,75  ·  12,5 + 3,75 = 16,25",
     },
     {
-      titre: "La division euclidienne",
+      titre: "Soustraction de décimaux",
       texte:
-        "Quand la division n'est pas exacte, il y a un reste. Le reste est toujours inférieur au diviseur. On écrit : dividende = diviseur × quotient + reste.",
-      exemple: "29 ÷ 4 = 7, reste 1. Car 4 × 7 = 28, et 29 − 28 = 1.",
+        "Même principe : on aligne les virgules. On peut compléter avec des zéros si nécessaire.",
+      exemple: "  8,70\n- 3,45\n------\n  5,25  ·  10,0 − 4,5 = 5,5",
     },
     {
-      titre: "Vérifier une division",
+      titre: "Vérifier son résultat",
       texte:
-        "Pour vérifier une division, on multiplie le quotient par le diviseur et on ajoute le reste. On doit retrouver le dividende.",
-      exemple: "38 ÷ 5 = 7, reste 3. Vérification : 5 × 7 + 3 = 35 + 3 = 38 ✓",
+        "On peut estimer le résultat pour vérifier. Par exemple, 3,45 + 2,3 ≈ 3 + 2 = 5 → notre résultat 5,75 est cohérent.",
+      exemple: "12,5 − 3,75 ≈ 12 − 4 = 8 → résultat 8,75 cohérent ✓",
     },
   ],
 };
@@ -38,93 +37,93 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Combien font 42 ÷ 6 ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "42 ÷ 6 = 7 car 6 × 7 = 42.",
+    question: "3,5 + 2,4 = ?",
+    options: ["5,7", "5,8", "5,9", "6,0"],
+    reponse: "5,9",
+    explication: "3,5 + 2,4 = 5,9.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Combien font 56 ÷ 8 ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "56 ÷ 8 = 7 car 8 × 7 = 56.",
+    question: "7,8 − 3,2 = ?",
+    options: ["4,4", "4,5", "4,6", "4,7"],
+    reponse: "4,6",
+    explication: "7,8 − 3,2 = 4,6.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Dans la division 85 ÷ 5, quel est le quotient ?",
-    options: ["15", "16", "17", "18"],
-    reponse: "17",
-    explication: "85 ÷ 5 = 17 car 5 × 17 = 85.",
+    question: "1,5 + 2,5 = ?",
+    options: ["3,5", "4,0", "4,5", "3,0"],
+    reponse: "4,0",
+    explication: "1,5 + 2,5 = 4,0.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "29 ÷ 4, quel est le reste ?",
-    options: ["0", "1", "2", "3"],
-    reponse: "1",
-    explication: "4 × 7 = 28. 29 − 28 = 1. Le reste est 1.",
-    niveau: "moyen",
+    question: "10,0 − 4,5 = ?",
+    options: ["5,0", "5,5", "6,0", "6,5"],
+    reponse: "5,5",
+    explication: "10,0 − 4,5 = 5,5.",
+    niveau: "facile",
   },
   {
     id: 5,
-    question: "38 ÷ 5, quel est le quotient ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "5 × 7 = 35 ≤ 38 < 40 = 5 × 8. Le quotient est 7.",
+    question: "3,45 + 2,30 = ?",
+    options: ["5,65", "5,70", "5,75", "5,80"],
+    reponse: "5,75",
+    explication: "3,45 + 2,30 = 5,75.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "63 ÷ 9 = ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "63 ÷ 9 = 7 car 9 × 7 = 63.",
+    question: "8,70 − 3,45 = ?",
+    options: ["5,15", "5,20", "5,25", "5,30"],
+    reponse: "5,25",
+    explication: "8,70 − 3,45 = 5,25.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question:
-      "On répartit 47 billes en groupes de 5. Combien de groupes complets peut-on faire ?",
-    options: ["8", "9", "10", "11"],
-    reponse: "9",
-    explication: "47 ÷ 5 = 9, reste 2. On peut faire 9 groupes complets.",
+    question: "12,5 + 3,75 = ?",
+    options: ["16,15", "16,20", "16,25", "16,30"],
+    reponse: "16,25",
+    explication: "12,5 + 3,75 = 16,25.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "96 ÷ 8 = ?",
-    options: ["10", "11", "12", "13"],
-    reponse: "12",
-    explication: "96 ÷ 8 = 12 car 8 × 12 = 96.",
-    niveau: "difficile",
+    question:
+      "Tom mesure 1,35 m et grandit de 0,08 m. Quelle est sa nouvelle taille ?",
+    options: ["1,40 m", "1,43 m", "1,45 m", "1,48 m"],
+    reponse: "1,43 m",
+    explication: "1,35 + 0,08 = 1,43 m.",
+    niveau: "moyen",
   },
   {
     id: 9,
-    question: "Dans 75 ÷ 6, quel est le reste ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "3",
-    explication: "6 × 12 = 72. 75 − 72 = 3. Le reste est 3.",
+    question: "15,60 − 8,75 = ?",
+    options: ["6,75", "6,80", "6,85", "6,90"],
+    reponse: "6,85",
+    explication: "15,60 − 8,75 = 6,85.",
     niveau: "difficile",
   },
   {
     id: 10,
     question:
-      "On veut répartir 100 élèves en groupes de 7. Combien d'élèves ne seront pas dans un groupe complet ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication: "100 ÷ 7 = 14, reste 2. Car 7 × 14 = 98 et 100 − 98 = 2.",
+      "Léa a 20 €. Elle achète un livre à 7,50 € et un stylo à 1,25 €. Combien lui reste-t-il ?",
+    options: ["10,75 €", "11,00 €", "11,25 €", "11,50 €"],
+    reponse: "11,25 €",
+    explication: "7,50 + 1,25 = 8,75 €. 20,00 − 8,75 = 11,25 €.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm1";
 const MATIERE = "maths";
-const THEME = "division";
+const THEME = "addition-decimaux";
 
-export default function DivisionCM1() {
+export default function AdditionDecimauxCM1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -202,7 +201,9 @@ export default function DivisionCM1() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -211,7 +212,7 @@ export default function DivisionCM1() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Division posée</span>
+          <span className="breadcrumb-active">Opérations décimales</span>
         </div>
       </div>
       {etape === "qcm" && (
@@ -234,7 +235,7 @@ export default function DivisionCM1() {
       )}
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">➗ Division posée · CM1</div>
+          <div className="lecon-badge">➕ Opérations décimales · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -367,7 +368,7 @@ export default function DivisionCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement la division posée ! 🚀"
+              ? "Tu maîtrises les opérations sur les décimaux ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -381,7 +382,7 @@ export default function DivisionCM1() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

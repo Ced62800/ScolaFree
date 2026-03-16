@@ -9,201 +9,201 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const questions = [
-  // Grands nombres (5)
+  // Fractions (5)
   {
     id: 1,
-    theme: "grands-nombres",
-    question: "Comment s'écrit « deux cent mille » ?",
-    options: ["20 000", "200 000", "2 000 000", "20 000 000"],
-    reponse: "200 000",
-    explication: "200 000 = deux cent mille.",
+    theme: "fractions",
+    question: "Quelle fraction est équivalente à 1/2 ?",
+    options: ["2/3", "2/4", "3/4", "1/4"],
+    reponse: "2/4",
+    explication: "1/2 = 2/4 car on multiplie par 2.",
   },
   {
     id: 2,
-    theme: "grands-nombres",
-    question: "Quel est le chiffre des dizaines de milliers dans 347 826 ?",
-    options: ["3", "4", "7", "8"],
-    reponse: "4",
-    explication: "347 826 : 3=centaines de milliers, 4=dizaines de milliers...",
+    theme: "fractions",
+    question: "Que vaut 3/10 en nombre décimal ?",
+    options: ["3", "0,3", "0,03", "30"],
+    reponse: "0,3",
+    explication: "3/10 = 0,3 (3 dixièmes).",
   },
   {
     id: 3,
-    theme: "grands-nombres",
-    question: "Quel nombre vient juste après 99 999 ?",
-    options: ["99 998", "100 000", "100 001", "999 999"],
-    reponse: "100 000",
-    explication: "Après 99 999 vient 100 000 (cent mille).",
+    theme: "fractions",
+    question: "2/6 + 3/6 = ?",
+    options: ["5/6", "5/12", "6/6", "1/6"],
+    reponse: "5/6",
+    explication: "2 + 3 = 5, on garde 6 → 5/6.",
   },
   {
     id: 4,
-    theme: "grands-nombres",
-    question: "Lequel est le plus grand ?",
-    options: ["98 765", "100 001", "99 999", "98 999"],
-    reponse: "100 001",
-    explication:
-      "100 001 a 6 chiffres, les autres en ont 5 → 100 001 est le plus grand.",
+    theme: "fractions",
+    question: "Que vaut 25/100 en nombre décimal ?",
+    options: ["2,5", "0,25", "25", "0,025"],
+    reponse: "0,25",
+    explication: "25/100 = 0,25 (25 centièmes).",
   },
   {
     id: 5,
-    theme: "grands-nombres",
-    question:
-      "Quel nombre = 3 centaines de milliers + 5 dizaines de milliers + 2 milliers ?",
-    options: ["352 000", "350 200", "305 200", "325 000"],
-    reponse: "352 000",
-    explication: "300 000 + 50 000 + 2 000 = 352 000.",
+    theme: "fractions",
+    question: "Laquelle est la plus grande : 3/8 ou 5/8 ?",
+    options: ["3/8", "5/8", "Elles sont égales", "On ne peut pas savoir"],
+    reponse: "5/8",
+    explication: "Même dénominateur : 5 > 3 → 5/8 > 3/8.",
   },
-  // Multiplication (5)
+  // Proportionnalité (5)
   {
     id: 6,
-    theme: "multiplication",
-    question: "6 × 7 = ?",
-    options: ["36", "40", "42", "48"],
-    reponse: "42",
-    explication: "6 × 7 = 42.",
+    theme: "proportionnalite",
+    question: "1 cahier coûte 2 €. Combien coûtent 4 cahiers ?",
+    options: ["6 €", "8 €", "10 €", "4 €"],
+    reponse: "8 €",
+    explication: "4 × 2 = 8 €.",
   },
   {
     id: 7,
-    theme: "multiplication",
-    question: "25 × 3 = ?",
-    options: ["65", "70", "75", "80"],
-    reponse: "75",
-    explication: "25 × 3 = 75.",
+    theme: "proportionnalite",
+    question: "3 kg de carottes coûtent 6 €. Combien coûtent 7 kg ?",
+    options: ["12 €", "14 €", "16 €", "18 €"],
+    reponse: "14 €",
+    explication: "1 kg = 2 €. 7 kg = 14 €.",
   },
   {
     id: 8,
-    theme: "multiplication",
-    question: "347 × 4 = ?",
-    options: ["1 378", "1 388", "1 398", "1 488"],
-    reponse: "1 388",
-    explication: "347 × 4 = 1 388.",
+    theme: "proportionnalite",
+    question: "Une voiture roule à 80 km/h. En 2 heures, quelle distance ?",
+    options: ["80 km", "120 km", "160 km", "40 km"],
+    reponse: "160 km",
+    explication: "80 × 2 = 160 km.",
   },
   {
     id: 9,
-    theme: "multiplication",
-    question: "23 × 14 = ?",
-    options: ["302", "312", "322", "332"],
-    reponse: "322",
-    explication: "23 × 14 = 322.",
+    theme: "proportionnalite",
+    question:
+      "Dans ce tableau : 4 → 12, 6 → ? Quelle est la valeur manquante ?",
+    options: ["16", "18", "20", "24"],
+    reponse: "18",
+    explication: "Coefficient = 3. 6 × 3 = 18.",
   },
   {
     id: 10,
-    theme: "multiplication",
+    theme: "proportionnalite",
     question:
-      "Une boîte contient 24 chocolats. Il y a 15 boîtes. Combien en tout ?",
-    options: ["340", "350", "360", "370"],
-    reponse: "360",
-    explication: "24 × 15 = 360 chocolats.",
+      "Une voiture parcourt 240 km en 3 heures. Quelle est sa vitesse ?",
+    options: ["60 km/h", "70 km/h", "80 km/h", "90 km/h"],
+    reponse: "80 km/h",
+    explication: "240 ÷ 3 = 80 km/h.",
   },
-  // Division (5)
+  // Addition décimaux (5)
   {
     id: 11,
-    theme: "division",
-    question: "Combien font 56 ÷ 8 ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "56 ÷ 8 = 7 car 8 × 7 = 56.",
+    theme: "addition-decimaux",
+    question: "3,45 + 2,30 = ?",
+    options: ["5,65", "5,70", "5,75", "5,80"],
+    reponse: "5,75",
+    explication: "3,45 + 2,30 = 5,75.",
   },
   {
     id: 12,
-    theme: "division",
-    question: "29 ÷ 4, quel est le reste ?",
-    options: ["0", "1", "2", "3"],
-    reponse: "1",
-    explication: "4 × 7 = 28. 29 − 28 = 1. Le reste est 1.",
+    theme: "addition-decimaux",
+    question: "8,70 − 3,45 = ?",
+    options: ["5,15", "5,20", "5,25", "5,30"],
+    reponse: "5,25",
+    explication: "8,70 − 3,45 = 5,25.",
   },
   {
     id: 13,
-    theme: "division",
-    question: "96 ÷ 8 = ?",
-    options: ["10", "11", "12", "13"],
-    reponse: "12",
-    explication: "96 ÷ 8 = 12 car 8 × 12 = 96.",
+    theme: "addition-decimaux",
+    question: "12,5 + 3,75 = ?",
+    options: ["16,15", "16,20", "16,25", "16,30"],
+    reponse: "16,25",
+    explication: "12,5 + 3,75 = 16,25.",
   },
   {
     id: 14,
-    theme: "division",
-    question:
-      "On répartit 47 billes en groupes de 5. Combien de groupes complets ?",
-    options: ["8", "9", "10", "11"],
-    reponse: "9",
-    explication: "47 ÷ 5 = 9, reste 2. On peut faire 9 groupes complets.",
+    theme: "addition-decimaux",
+    question: "10,0 − 4,5 = ?",
+    options: ["5,0", "5,5", "6,0", "6,5"],
+    reponse: "5,5",
+    explication: "10,0 − 4,5 = 5,5.",
   },
   {
     id: 15,
-    theme: "division",
-    question: "Dans 75 ÷ 6, quel est le reste ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "3",
-    explication: "6 × 12 = 72. 75 − 72 = 3. Le reste est 3.",
+    theme: "addition-decimaux",
+    question: "15,60 − 8,75 = ?",
+    options: ["6,75", "6,80", "6,85", "6,90"],
+    reponse: "6,85",
+    explication: "15,60 − 8,75 = 6,85.",
   },
-  // Décimaux (5)
+  // Problèmes (5)
   {
     id: 16,
-    theme: "decimaux",
-    question: "Quel chiffre est au rang des dixièmes dans 6,35 ?",
-    options: ["6", "3", "5", "35"],
-    reponse: "3",
-    explication: "6,35 : partie entière = 6, dixièmes = 3, centièmes = 5.",
+    theme: "problemes",
+    question: "Un livre coûte 8,50 €. Paul en achète 3. Combien paie-t-il ?",
+    options: ["24,50 €", "25,00 €", "25,50 €", "26,00 €"],
+    reponse: "25,50 €",
+    explication: "3 × 8,50 = 25,50 €.",
   },
   {
     id: 17,
-    theme: "decimaux",
-    question: "Lequel est le plus grand : 4,25 ou 4,3 ?",
-    options: ["4,25", "4,3", "Ils sont égaux", "On ne peut pas savoir"],
-    reponse: "4,3",
-    explication: "4,3 = 4,30. Au rang des dixièmes : 3 > 2, donc 4,3 > 4,25.",
+    theme: "problemes",
+    question: "Léa a 50 €. Elle dépense 23,75 €. Combien lui reste-t-il ?",
+    options: ["25,25 €", "26,00 €", "26,25 €", "27,00 €"],
+    reponse: "26,25 €",
+    explication: "50,00 − 23,75 = 26,25 €.",
   },
   {
     id: 18,
-    theme: "decimaux",
-    question: "Que vaut 2 unités + 4 dixièmes + 5 centièmes ?",
-    options: ["2,45", "24,5", "2,54", "245"],
-    reponse: "2,45",
-    explication: "2 unités + 4 dixièmes + 5 centièmes = 2,45.",
+    theme: "problemes",
+    question:
+      "Tom achète 3 stylos à 1,50 € et 2 cahiers à 2,25 €. Combien dépense-t-il ?",
+    options: ["8,50 €", "9,00 €", "9,50 €", "10,00 €"],
+    reponse: "9,00 €",
+    explication: "3×1,50 + 2×2,25 = 4,50 + 4,50 = 9,00 €.",
   },
   {
     id: 19,
-    theme: "decimaux",
-    question: "Entre 7,4 et 7,5, quel nombre peut-on trouver ?",
-    options: ["7,6", "7,45", "7,3", "8,0"],
-    reponse: "7,45",
-    explication: "7,45 est entre 7,40 et 7,50.",
+    theme: "problemes",
+    question:
+      "Une classe de 28 élèves est répartie en groupes de 4. Combien de groupes ?",
+    options: ["6", "7", "8", "9"],
+    reponse: "7",
+    explication: "28 ÷ 4 = 7 groupes.",
   },
   {
     id: 20,
-    theme: "decimaux",
+    theme: "problemes",
     question:
-      "Quel nombre décimal correspond à « huit unités et trois centièmes » ?",
-    options: ["8,3", "8,03", "83", "0,83"],
-    reponse: "8,03",
-    explication: "8 unités + 0 dixième + 3 centièmes = 8,03.",
+      "Paul gagne 120 € par semaine. En 4 semaines, il dépense 345 €. Combien lui reste-t-il ?",
+    options: ["125 €", "135 €", "145 €", "155 €"],
+    reponse: "135 €",
+    explication: "4 × 120 = 480 €. 480 − 345 = 135 €.",
   },
 ];
 
 const themeLabels: Record<string, string> = {
-  "grands-nombres": "🔢 Grands nombres",
-  multiplication: "✖️ Multiplication",
-  division: "➗ Division",
-  decimaux: "🔵 Décimaux",
+  fractions: "🍕 Fractions",
+  proportionnalite: "📊 Proportionnalité",
+  "addition-decimaux": "➕ Opérations décimales",
+  problemes: "🧩 Problèmes",
 };
 
 const themeColors: Record<string, string> = {
-  "grands-nombres": "#4f8ef7",
-  multiplication: "#2ec4b6",
-  division: "#ffd166",
-  decimaux: "#ff6b6b",
+  fractions: "#4f8ef7",
+  proportionnalite: "#2ec4b6",
+  "addition-decimaux": "#ffd166",
+  problemes: "#ff6b6b",
 };
 
-export default function BilanCM1Maths() {
+export default function BilanMathsCM1Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"intro" | "qcm" | "fini">("intro");
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<string, number>>({
-    "grands-nombres": 0,
-    multiplication: 0,
-    division: 0,
-    decimaux: 0,
+    fractions: 0,
+    proportionnalite: 0,
+    "addition-decimaux": 0,
+    problemes: 0,
   });
   const [totalScore, setTotalScore] = useState(0);
   const [bestScore, setBestScore] = useState<any>(null);
@@ -213,10 +213,10 @@ export default function BilanCM1Maths() {
 
   useEffect(() => {
     const load = async () => {
-      const best = await getBestScore("cm1", "maths", "bilan");
-      const last = await getLastScore("cm1", "maths", "bilan");
-      setBestScore(best);
-      setLastScore(last);
+      const b = await getBestScore("cm1", "maths", "bilan-2");
+      const l = await getLastScore("cm1", "maths", "bilan-2");
+      setBestScore(b);
+      setLastScore(l);
     };
     load();
   }, []);
@@ -247,14 +247,14 @@ export default function BilanCM1Maths() {
         await saveScore({
           classe: "cm1",
           matiere: "maths",
-          theme: "bilan",
+          theme: "bilan-2",
           score: scoreRef.current,
           total: 20,
         });
-        const best = await getBestScore("cm1", "maths", "bilan");
-        const last = await getLastScore("cm1", "maths", "bilan");
-        setBestScore(best);
-        setLastScore(last);
+        const b = await getBestScore("cm1", "maths", "bilan-2");
+        const l = await getLastScore("cm1", "maths", "bilan-2");
+        setBestScore(b);
+        setLastScore(l);
       }
       setEtape("fini");
     } else {
@@ -270,10 +270,10 @@ export default function BilanCM1Maths() {
     setQIndex(0);
     setSelected(null);
     setScores({
-      "grands-nombres": 0,
-      multiplication: 0,
-      division: 0,
-      decimaux: 0,
+      fractions: 0,
+      proportionnalite: 0,
+      "addition-decimaux": 0,
+      problemes: 0,
     });
     setTotalScore(0);
   };
@@ -295,7 +295,7 @@ export default function BilanCM1Maths() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm1/maths")}
+          onClick={() => router.push("/cours/primaire/cm1/maths/page-2")}
         >
           ← Retour
         </button>
@@ -304,14 +304,14 @@ export default function BilanCM1Maths() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Bilan Final</span>
+          <span className="breadcrumb-active">Bilan Partie 2</span>
         </div>
       </div>
 
       {etape === "intro" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🎯 Bilan Final · CM1 Maths</div>
-          <h1 className="lecon-titre">Bilan Final — CM1 Mathématiques</h1>
+          <div className="lecon-badge">🎯 Bilan Partie 2 · CM1 Maths</div>
+          <h1 className="lecon-titre">Bilan Maths CM1 — Partie 2</h1>
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
               {bestScore && (
@@ -351,25 +351,24 @@ export default function BilanCM1Maths() {
             </div>
           )}
           <p className="lecon-intro">
-            Ce bilan regroupe des questions sur les 4 thèmes de Maths CM1 partie
-            1.
+            Ce bilan regroupe les 4 thèmes de Maths CM1 partie 2.
           </p>
           <div className="bilan-info-grid">
             <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
-              <span>🔢</span>
-              <span>5 questions de Grands nombres</span>
+              <span>🍕</span>
+              <span>5 questions de Fractions</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
-              <span>✖️</span>
-              <span>5 questions de Multiplication</span>
+              <span>📊</span>
+              <span>5 questions de Proportionnalité</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
-              <span>➗</span>
-              <span>5 questions de Division</span>
+              <span>➕</span>
+              <span>5 questions d'Opérations décimales</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
-              <span>🔵</span>
-              <span>5 questions de Décimaux</span>
+              <span>🧩</span>
+              <span>5 questions de Problèmes</span>
             </div>
           </div>
           <div className="bilan-score-info">
@@ -520,7 +519,7 @@ export default function BilanCM1Maths() {
           </div>
           <p className="resultat-desc">
             {totalScore >= 18
-              ? "Bravo, tu es un(e) champion(ne) des maths ! 🚀"
+              ? "Bravo, tu maîtrises les maths CM1 partie 2 ! 🚀"
               : totalScore >= 14
                 ? "Très bon niveau !"
                 : totalScore >= 10
@@ -533,7 +532,7 @@ export default function BilanCM1Maths() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm1/maths")}
+              onClick={() => router.push("/cours/primaire/cm1/maths/page-2")}
             >
               Retour aux thèmes →
             </button>

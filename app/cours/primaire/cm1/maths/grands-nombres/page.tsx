@@ -9,28 +9,30 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "La division posée",
+  titre: "Les grands nombres jusqu'à 1 000 000",
   intro:
-    "En CM1, on apprend à poser et effectuer une division euclidienne. On trouve un quotient et un reste.",
+    "En CM1, on travaille avec des nombres pouvant aller jusqu'à un million. On apprend à les lire, les écrire et les décomposer en millions, centaines de milliers, dizaines de milliers, milliers, centaines, dizaines et unités.",
   points: [
     {
-      titre: "Vocabulaire de la division",
+      titre: "La classe des milliers",
       texte:
-        "Dans une division, le nombre qu'on divise s'appelle le dividende, celui par lequel on divise s'appelle le diviseur, le résultat s'appelle le quotient et ce qui reste s'appelle le reste.",
+        "Un nombre à 6 chiffres se décompose en deux classes : la classe des milliers (centaines, dizaines, unités de milliers) et la classe des unités (centaines, dizaines, unités).",
       exemple:
-        "84 ÷ 7 = 12. Dividende = 84, diviseur = 7, quotient = 12, reste = 0.",
+        "345 678 = 345 milliers + 678 unités · 3c.mill + 4d.mill + 5u.mill + 6c + 7d + 8u",
     },
     {
-      titre: "La division euclidienne",
+      titre: "Lire et écrire les grands nombres",
       texte:
-        "Quand la division n'est pas exacte, il y a un reste. Le reste est toujours inférieur au diviseur. On écrit : dividende = diviseur × quotient + reste.",
-      exemple: "29 ÷ 4 = 7, reste 1. Car 4 × 7 = 28, et 29 − 28 = 1.",
+        "On lit par tranche de 3 chiffres en partant de la droite. On sépare les tranches par une espace.",
+      exemple:
+        "1 000 000 → un million · 250 000 → deux cent cinquante mille · 47 320 → quarante-sept mille trois cent vingt",
     },
     {
-      titre: "Vérifier une division",
+      titre: "Comparer et ranger",
       texte:
-        "Pour vérifier une division, on multiplie le quotient par le diviseur et on ajoute le reste. On doit retrouver le dividende.",
-      exemple: "38 ÷ 5 = 7, reste 3. Vérification : 5 × 7 + 3 = 35 + 3 = 38 ✓",
+        "Pour comparer deux grands nombres, on regarde d'abord le nombre de chiffres, puis chiffre par chiffre de gauche à droite.",
+      exemple:
+        "425 000 > 98 000 (6 chiffres > 5 chiffres) · 345 678 > 345 234 (même jusqu'au 4e chiffre, 6 > 2)",
     },
   ],
 };
@@ -38,93 +40,107 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Combien font 42 ÷ 6 ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "42 ÷ 6 = 7 car 6 × 7 = 42.",
+    question: "Comment s'écrit « deux cent mille » ?",
+    options: ["20 000", "200 000", "2 000 000", "20 000 000"],
+    reponse: "200 000",
+    explication: "200 000 = deux cent mille.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "Combien font 56 ÷ 8 ?",
-    options: ["6", "7", "8", "9"],
+    question: "Combien de chiffres a le nombre un million ?",
+    options: ["5", "6", "7", "8"],
     reponse: "7",
-    explication: "56 ÷ 8 = 7 car 8 × 7 = 56.",
+    explication: "1 000 000 a 7 chiffres.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "Dans la division 85 ÷ 5, quel est le quotient ?",
-    options: ["15", "16", "17", "18"],
-    reponse: "17",
-    explication: "85 ÷ 5 = 17 car 5 × 17 = 85.",
+    question: "Quel nombre vient juste après 99 999 ?",
+    options: ["99 998", "100 000", "100 001", "999 999"],
+    reponse: "100 000",
+    explication: "Après 99 999 vient 100 000 (cent mille).",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "29 ÷ 4, quel est le reste ?",
-    options: ["0", "1", "2", "3"],
-    reponse: "1",
-    explication: "4 × 7 = 28. 29 − 28 = 1. Le reste est 1.",
-    niveau: "moyen",
+    question: "Quel est le chiffre des dizaines de milliers dans 347 826 ?",
+    options: ["3", "4", "7", "8"],
+    reponse: "4",
+    explication:
+      "347 826 : 3=centaines de milliers, 4=dizaines de milliers, 7=milliers...",
+    niveau: "facile",
   },
   {
     id: 5,
-    question: "38 ÷ 5, quel est le quotient ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "5 × 7 = 35 ≤ 38 < 40 = 5 × 8. Le quotient est 7.",
+    question: "Lequel est le plus grand ?",
+    options: ["98 765", "100 001", "99 999", "98 999"],
+    reponse: "100 001",
+    explication:
+      "100 001 a 6 chiffres, les autres en ont 5 → 100 001 est le plus grand.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "63 ÷ 9 = ?",
-    options: ["6", "7", "8", "9"],
-    reponse: "7",
-    explication: "63 ÷ 9 = 7 car 9 × 7 = 63.",
+    question: "Comment s'écrit « quatre cent cinquante mille deux cents » ?",
+    options: ["45 200", "450 200", "4 500 200", "45 020"],
+    reponse: "450 200",
+    explication: "450 000 + 200 = 450 200.",
     niveau: "moyen",
   },
   {
     id: 7,
     question:
-      "On répartit 47 billes en groupes de 5. Combien de groupes complets peut-on faire ?",
-    options: ["8", "9", "10", "11"],
-    reponse: "9",
-    explication: "47 ÷ 5 = 9, reste 2. On peut faire 9 groupes complets.",
+      "Range dans l'ordre croissant : 250 000 · 25 000 · 2 500 000 · 2 500",
+    options: [
+      "2 500 – 25 000 – 250 000 – 2 500 000",
+      "2 500 000 – 250 000 – 25 000 – 2 500",
+      "25 000 – 2 500 – 250 000 – 2 500 000",
+      "2 500 – 250 000 – 25 000 – 2 500 000",
+    ],
+    reponse: "2 500 – 25 000 – 250 000 – 2 500 000",
+    explication:
+      "On range du plus petit au plus grand selon le nombre de chiffres.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "96 ÷ 8 = ?",
-    options: ["10", "11", "12", "13"],
-    reponse: "12",
-    explication: "96 ÷ 8 = 12 car 8 × 12 = 96.",
-    niveau: "difficile",
+    question:
+      "Quel nombre = 3 centaines de milliers + 5 dizaines de milliers + 2 milliers ?",
+    options: ["352 000", "350 200", "352 000", "305 200"],
+    reponse: "352 000",
+    explication: "300 000 + 50 000 + 2 000 = 352 000.",
+    niveau: "moyen",
   },
   {
     id: 9,
-    question: "Dans 75 ÷ 6, quel est le reste ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "3",
-    explication: "6 × 12 = 72. 75 − 72 = 3. Le reste est 3.",
+    question: "Comment lit-on 607 050 ?",
+    options: [
+      "Six cent sept mille cinquante",
+      "Six millions sept cent cinquante",
+      "Soixante-sept mille cinquante",
+      "Six cent soixante-dix mille",
+    ],
+    reponse: "Six cent sept mille cinquante",
+    explication:
+      "607 050 = 607 milliers + 050 unités = six cent sept mille cinquante.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question:
-      "On veut répartir 100 élèves en groupes de 7. Combien d'élèves ne seront pas dans un groupe complet ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication: "100 ÷ 7 = 14, reste 2. Car 7 × 14 = 98 et 100 − 98 = 2.",
+    question: "Quel nombre est entre 500 000 et 600 000 ?",
+    options: ["499 999", "600 001", "550 000", "650 000"],
+    reponse: "550 000",
+    explication: "550 000 est bien entre 500 000 et 600 000.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm1";
 const MATIERE = "maths";
-const THEME = "division";
+const THEME = "grands-nombres";
 
-export default function DivisionCM1() {
+export default function GrandsNombresCM1() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -211,7 +227,7 @@ export default function DivisionCM1() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Division posée</span>
+          <span className="breadcrumb-active">Grands nombres</span>
         </div>
       </div>
       {etape === "qcm" && (
@@ -234,7 +250,7 @@ export default function DivisionCM1() {
       )}
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">➗ Division posée · CM1</div>
+          <div className="lecon-badge">🔢 Grands nombres · CM1</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -367,7 +383,7 @@ export default function DivisionCM1() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement la division posée ! 🚀"
+              ? "Tu maîtrises les grands nombres ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
