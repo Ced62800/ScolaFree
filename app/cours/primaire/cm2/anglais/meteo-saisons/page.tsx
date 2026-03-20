@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -130,8 +131,9 @@ const questions = [
   },
 ];
 
-const niveauLabel = (n: string) =>
-  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+const CLASSE = "cm2";
+const MATIERE = "anglais";
+const THEME = "meteo-saisons";
 
 export default function MeteoSaisonsCM2() {
   const router = useRouter();
@@ -140,14 +142,24 @@ export default function MeteoSaisonsCM2() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
-  const [session, setSession] = useState(0);
-
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
-    [qIndex, session],
+    [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
-
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
   const handleReponse = (option: string) => {
     if (selected) return;
     setSelected(option);
@@ -155,30 +167,47 @@ export default function MeteoSaisonsCM2() {
     if (correct) setScore((s) => s + 1);
     setBonnes((b) => [...b, correct]);
   };
-
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
-
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
-    setSession((s) => s + 1);
   };
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm2/anglais")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
@@ -190,7 +219,6 @@ export default function MeteoSaisonsCM2() {
           <span className="breadcrumb-active">Weather & Seasons</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -209,12 +237,55 @@ export default function MeteoSaisonsCM2() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">🌤️ Weather & Seasons · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -231,7 +302,6 @@ export default function MeteoSaisonsCM2() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
@@ -240,16 +310,16 @@ export default function MeteoSaisonsCM2() {
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
-              let className = "qcm-option";
+              let cn = "qcm-option";
               if (selected) {
-                if (opt === questions[qIndex].reponse) className += " correct";
-                else if (opt === selected) className += " incorrect";
-                else className += " disabled";
+                if (opt === questions[qIndex].reponse) cn += " correct";
+                else if (opt === selected) cn += " incorrect";
+                else cn += " disabled";
               }
               return (
                 <button
                   key={opt}
-                  className={className}
+                  className={cn}
                   onClick={() => handleReponse(opt)}
                 >
                   {opt}
@@ -283,7 +353,6 @@ export default function MeteoSaisonsCM2() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
@@ -303,7 +372,7 @@ export default function MeteoSaisonsCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement la météo et les saisons en anglais !"
+              ? "Tu maîtrises parfaitement la météo et les saisons en anglais ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel !"
                 : score >= 5
@@ -316,7 +385,9 @@ export default function MeteoSaisonsCM2() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm2/anglais")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>

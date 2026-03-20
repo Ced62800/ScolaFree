@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -23,7 +24,7 @@ const lecon = {
       titre: "Directions — Les directions",
       texte: "To give directions, use these expressions.",
       exemple:
-        "Turn left. (Tourne à gauche.) | Turn right. (Tourne à droite.) | Go straight on. (Vas tout droit.) | Take the first street. | It's opposite... (C'est en face de...) | It's next to... (C'est à côté de...)",
+        "Turn left. (Tourne à gauche.) | Turn right. (Tourne à droite.) | Go straight on. (Vas tout droit.) | It's opposite... (C'est en face de...) | It's next to... (C'est à côté de...)",
     },
     {
       titre: "Asking for directions — Demander son chemin",
@@ -40,8 +41,7 @@ const questions = [
     question: "Where do you borrow books? 📚",
     options: ["a bakery", "a bank", "a library", "a cinema"],
     reponse: "a library",
-    explication:
-      "A library is where you borrow books. / Une bibliothèque est l'endroit où on emprunte des livres.",
+    explication: "A library is where you borrow books. / Une bibliothèque.",
     niveau: "facile",
   },
   {
@@ -62,8 +62,7 @@ const questions = [
     question: "Where do you buy bread? 🥖",
     options: ["a supermarket", "a post office", "a bank", "a bakery"],
     reponse: "a bakery",
-    explication:
-      "A bakery is where you buy bread. / Une boulangerie est l'endroit où on achète du pain.",
+    explication: "A bakery is where you buy bread. / Une boulangerie.",
     niveau: "facile",
   },
   {
@@ -111,7 +110,7 @@ const questions = [
     options: ["a school", "a park", "a cinema", "a hospital"],
     reponse: "a hospital",
     explication:
-      "Sick people go to a hospital. / Les personnes malades vont à l'hôpital.",
+      "Sick people go to a hospital. / Les malades vont à l'hôpital.",
     niveau: "moyen",
   },
   {
@@ -139,7 +138,7 @@ const questions = [
   {
     id: 10,
     question:
-      "The directions say: 'Go straight on, then turn right.' Where do you end up?",
+      "The directions say: 'Go straight on, then turn right.' What does it mean?",
     options: [
       "Tu tournes à gauche, puis vas tout droit.",
       "Tu vas tout droit, puis tu tournes à droite.",
@@ -153,8 +152,9 @@ const questions = [
   },
 ];
 
-const niveauLabel = (n: string) =>
-  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+const CLASSE = "cm2";
+const MATIERE = "anglais";
+const THEME = "ville-directions";
 
 export default function VilleDirectionsCM2() {
   const router = useRouter();
@@ -163,14 +163,24 @@ export default function VilleDirectionsCM2() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
-  const [session, setSession] = useState(0);
-
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
-    [qIndex, session],
+    [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
-
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
   const handleReponse = (option: string) => {
     if (selected) return;
     setSelected(option);
@@ -178,30 +188,47 @@ export default function VilleDirectionsCM2() {
     if (correct) setScore((s) => s + 1);
     setBonnes((b) => [...b, correct]);
   };
-
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
-
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
-    setSession((s) => s + 1);
   };
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm2/anglais")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
@@ -213,7 +240,6 @@ export default function VilleDirectionsCM2() {
           <span className="breadcrumb-active">In the Town & Directions</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -232,12 +258,55 @@ export default function VilleDirectionsCM2() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">🏙️ In the Town & Directions · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -254,7 +323,6 @@ export default function VilleDirectionsCM2() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
@@ -263,16 +331,16 @@ export default function VilleDirectionsCM2() {
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
-              let className = "qcm-option";
+              let cn = "qcm-option";
               if (selected) {
-                if (opt === questions[qIndex].reponse) className += " correct";
-                else if (opt === selected) className += " incorrect";
-                else className += " disabled";
+                if (opt === questions[qIndex].reponse) cn += " correct";
+                else if (opt === selected) cn += " incorrect";
+                else cn += " disabled";
               }
               return (
                 <button
                   key={opt}
-                  className={className}
+                  className={cn}
                   onClick={() => handleReponse(opt)}
                 >
                   {opt}
@@ -306,7 +374,6 @@ export default function VilleDirectionsCM2() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
@@ -326,7 +393,7 @@ export default function VilleDirectionsCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu connais parfaitement la ville et les directions en anglais !"
+              ? "Tu connais parfaitement la ville et les directions en anglais ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel !"
                 : score >= 5
@@ -339,7 +406,9 @@ export default function VilleDirectionsCM2() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm2/anglais")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>
