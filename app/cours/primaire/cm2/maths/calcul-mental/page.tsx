@@ -9,27 +9,27 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Fractions supérieures à 1",
+  titre: "Calcul mental et opérations rapides",
   intro:
-    "En CM2, on travaille avec des fractions dont le numérateur est plus grand que le dénominateur. Ces fractions valent plus d'un entier et peuvent s'écrire comme des nombres mixtes.",
+    "Le calcul mental permet de trouver rapidement un résultat sans poser l'opération. On utilise des astuces : décomposer les nombres, utiliser les doubles, arrondir puis ajuster.",
   points: [
     {
-      titre: "Fractions supérieures à 1",
+      titre: "Astuces pour additionner et soustraire",
       texte:
-        "Quand le numérateur est plus grand que le dénominateur, la fraction vaut plus d'un entier. On peut la convertir en nombre mixte (entier + fraction).",
-      exemple: "7/3 = 2 entiers + 1/3 = 2 et 1/3. Car 3 × 2 = 6 et 7 − 6 = 1.",
+        "On peut décomposer : 48 + 37 = 48 + 30 + 7 = 78 + 7 = 85. Pour soustraire, on peut arrondir puis ajuster : 83 - 29 = 83 - 30 + 1 = 54.",
+      exemple: "67 + 45 = 67 + 40 + 5 = 112. 92 - 38 = 92 - 40 + 2 = 54.",
     },
     {
-      titre: "Addition et soustraction de fractions (même dénominateur)",
+      titre: "Multiplier par 10, 100, 1000",
       texte:
-        "Pour additionner ou soustraire des fractions avec le même dénominateur, on opère sur les numérateurs et on garde le dénominateur.",
-      exemple: "5/8 + 6/8 = 11/8. 9/5 − 3/5 = 6/5.",
+        "Multiplier par 10 : on ajoute un zéro. Par 100 : deux zéros. Par 1000 : trois zéros. Pour les décimaux, on décale la virgule.",
+      exemple: "3,4 × 10 = 34. 2,5 × 100 = 250. 0,7 × 1000 = 700.",
     },
     {
-      titre: "Comparer des fractions supérieures à 1",
+      titre: "Estimer et vérifier",
       texte:
-        "On compare d'abord la partie entière. Si elle est égale, on compare les parties fractionnaires.",
-      exemple: "11/4 = 2 et 3/4. 9/4 = 2 et 1/4. Donc 11/4 > 9/4.",
+        "Arrondir les nombres pour estimer le résultat, puis vérifier si le résultat exact est cohérent.",
+      exemple: "248 × 4 ≈ 250 × 4 = 1000 → résultat exact 992 est cohérent ✓",
     },
   ],
 };
@@ -37,92 +37,93 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Que vaut 5/2 ?",
-    options: ["Moins de 1", "Exactement 1", "Entre 1 et 2", "Plus de 2"],
-    reponse: "Plus de 2",
-    explication: "5/2 = 2 entiers + 1/2 = 2,5. C'est plus de 2.",
+    question: "48 + 37 = ?",
+    options: ["83", "84", "85", "86"],
+    reponse: "85",
+    explication: "48 + 30 + 7 = 78 + 7 = 85.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "3/4 + 5/4 = ?",
-    options: ["8/8", "8/4", "6/4", "2/4"],
-    reponse: "8/4",
-    explication: "3 + 5 = 8, on garde 4. Résultat : 8/4 = 2 entiers.",
+    question: "3,4 × 10 = ?",
+    options: ["0,34", "34", "340", "3,40"],
+    reponse: "34",
+    explication: "Multiplier par 10 → on décale la virgule d'un rang : 34.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "7/3, combien d'entiers peut-on former ?",
-    options: ["1", "2", "3", "7"],
-    reponse: "2",
-    explication: "3 × 2 = 6 ≤ 7 < 9 = 3 × 3. On peut former 2 entiers.",
+    question: "83 − 29 = ?",
+    options: ["52", "53", "54", "55"],
+    reponse: "54",
+    explication: "83 - 30 + 1 = 53 + 1 = 54.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "5/8 + 6/8 = ?",
-    options: ["11/8", "11/16", "1/8", "10/8"],
-    reponse: "11/8",
-    explication: "5 + 6 = 11, on garde 8. Résultat : 11/8.",
+    question: "2,5 × 100 = ?",
+    options: ["25", "250", "2500", "0,25"],
+    reponse: "250",
+    explication:
+      "Multiplier par 100 → on décale la virgule de deux rangs : 250.",
     niveau: "moyen",
   },
   {
     id: 5,
-    question: "11/4, quelle est la partie entière ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication: "4 × 2 = 8 ≤ 11 < 12 = 4 × 3. La partie entière est 2.",
+    question: "67 + 45 = ?",
+    options: ["110", "111", "112", "113"],
+    reponse: "112",
+    explication: "67 + 40 + 5 = 107 + 5 = 112.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "9/5 − 3/5 = ?",
-    options: ["6/5", "6/10", "12/5", "3/5"],
-    reponse: "6/5",
-    explication: "9 − 3 = 6, on garde 5. Résultat : 6/5.",
+    question: "0,7 × 1000 = ?",
+    options: ["7", "70", "700", "7000"],
+    reponse: "700",
+    explication:
+      "Multiplier par 1000 → on décale la virgule de trois rangs : 700.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Laquelle est la plus grande : 11/4 ou 9/4 ?",
-    options: ["11/4", "9/4", "Elles sont égales", "On ne peut pas savoir"],
-    reponse: "11/4",
-    explication: "Même dénominateur : 11 > 9, donc 11/4 > 9/4.",
+    question: "248 × 4, quelle estimation est la plus proche ?",
+    options: ["800", "900", "1000", "1100"],
+    reponse: "1000",
+    explication: "250 × 4 = 1000. Le résultat exact 992 est proche de 1000.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "7/3 s'écrit comme nombre mixte : ?",
-    options: ["1 et 1/3", "2 et 1/3", "2 et 2/3", "3 et 1/3"],
-    reponse: "2 et 1/3",
-    explication: "3 × 2 = 6. 7 − 6 = 1. Donc 7/3 = 2 et 1/3.",
+    question: "156 + 247 = ?",
+    options: ["393", "400", "403", "413"],
+    reponse: "403",
+    explication: "156 + 247 = 156 + 200 + 47 = 356 + 47 = 403.",
     niveau: "difficile",
   },
   {
     id: 9,
-    question: "4/6 + 7/6 = ?",
-    options: ["11/6", "11/12", "3/6", "12/6"],
-    reponse: "11/6",
-    explication: "4 + 7 = 11, on garde 6. Résultat : 11/6.",
+    question: "5,25 × 100 = ?",
+    options: ["52,5", "525", "5250", "0,0525"],
+    reponse: "525",
+    explication: "5,25 × 100 = 525.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question:
-      "Une recette nécessite 3/4 de litre pour un gâteau. Pour 3 gâteaux, combien faut-il ?",
-    options: ["6/4", "9/4", "3/12", "12/4"],
-    reponse: "9/4",
-    explication: "3 × 3/4 = 9/4 litres = 2 litres et 1/4.",
+    question: "750 − 384 = ?",
+    options: ["356", "366", "376", "386"],
+    reponse: "366",
+    explication: "750 - 400 + 16 = 350 + 16 = 366.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm2";
 const MATIERE = "maths";
-const THEME = "fractions";
+const THEME = "calcul-mental";
 
-export default function FractionsCM2() {
+export default function CalculMentalCM2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -194,7 +195,9 @@ export default function FractionsCM2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -203,7 +206,7 @@ export default function FractionsCM2() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Fractions</span>
+          <span className="breadcrumb-active">Calcul mental</span>
         </div>
       </div>
       {etape === "qcm" && (
@@ -226,7 +229,7 @@ export default function FractionsCM2() {
       )}
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🍕 Fractions · CM2</div>
+          <div className="lecon-badge">🧮 Calcul mental · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -359,7 +362,7 @@ export default function FractionsCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les fractions ! 🚀"
+              ? "Tu es un(e) champion(ne) du calcul mental ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -373,7 +376,7 @@ export default function FractionsCM2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

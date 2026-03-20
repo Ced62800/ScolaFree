@@ -1,7 +1,8 @@
 "use client";
 
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -22,16 +23,16 @@ const lecon = {
     {
       titre: "Le cercle",
       texte:
-        "Le cercle est défini par son centre et son rayon. Le diamètre = 2 × rayon. Le périmètre du cercle (circonférence) ≈ 3,14 × diamètre. L'aire ≈ 3,14 × rayon × rayon.",
+        "Le cercle est défini par son centre et son rayon. Le diamètre = 2 × rayon. La circonférence ≈ 3,14 × diamètre. L'aire ≈ 3,14 × rayon × rayon.",
       exemple:
         "Cercle de rayon 5 cm : diamètre = 10 cm. Circonférence ≈ 3,14 × 10 = 31,4 cm.",
     },
     {
       titre: "Volume du cube et du pavé droit",
       texte:
-        "Le volume d'un cube = côté × côté × côté. Le volume d'un pavé droit = longueur × largeur × hauteur. L'unité de volume est le cm³ ou m³.",
+        "Le volume d'un cube = côté × côté × côté. Le volume d'un pavé droit = longueur × largeur × hauteur.",
       exemple:
-        "Cube de côté 3 cm : volume = 3 × 3 × 3 = 27 cm³. Pavé 4 × 3 × 2 : volume = 24 cm³.",
+        "Cube de côté 3 cm : volume = 27 cm³. Pavé 4 × 3 × 2 : volume = 24 cm³.",
     },
   ],
 };
@@ -67,7 +68,7 @@ const questions = [
       "Quelle est l'aire d'un triangle de base 8 cm et de hauteur 5 cm ?",
     options: ["13 cm²", "20 cm²", "40 cm²", "16 cm²"],
     reponse: "20 cm²",
-    explication: "Aire = (base × hauteur) ÷ 2 = (8 × 5) ÷ 2 = 40 ÷ 2 = 20 cm².",
+    explication: "Aire = (8 × 5) ÷ 2 = 20 cm².",
     niveau: "moyen",
   },
   {
@@ -92,22 +93,20 @@ const questions = [
     question: "Quelle est l'aire d'un carré de côté 7 cm ?",
     options: ["14 cm²", "28 cm²", "49 cm²", "42 cm²"],
     reponse: "49 cm²",
-    explication: "Aire = côté × côté = 7 × 7 = 49 cm².",
+    explication: "Aire = 7 × 7 = 49 cm².",
     niveau: "moyen",
   },
   {
     id: 8,
-    question:
-      "Un cercle a un rayon de 6 cm. Quelle est son aire approximative ? (π ≈ 3,14)",
+    question: "Un cercle a un rayon de 6 cm. Quelle est son aire ? (π ≈ 3,14)",
     options: ["18,84 cm²", "37,68 cm²", "113,04 cm²", "75,36 cm²"],
     reponse: "113,04 cm²",
-    explication: "Aire = π × r² ≈ 3,14 × 6 × 6 = 3,14 × 36 = 113,04 cm².",
+    explication: "Aire = 3,14 × 6 × 6 = 113,04 cm².",
     niveau: "difficile",
   },
   {
     id: 9,
-    question:
-      "Une piscine rectangulaire mesure 10 m × 5 m × 2 m. Quel est son volume ?",
+    question: "Une piscine mesure 10 m × 5 m × 2 m. Quel est son volume ?",
     options: ["50 m³", "70 m³", "100 m³", "17 m³"],
     reponse: "100 m³",
     explication: "Volume = 10 × 5 × 2 = 100 m³.",
@@ -115,17 +114,17 @@ const questions = [
   },
   {
     id: 10,
-    question:
-      "Quelle est l'aire d'un triangle rectangle de base 9 cm et hauteur 4 cm ?",
+    question: "Quelle est l'aire d'un triangle de base 9 cm et hauteur 4 cm ?",
     options: ["13 cm²", "18 cm²", "36 cm²", "72 cm²"],
     reponse: "18 cm²",
-    explication: "Aire = (base × hauteur) ÷ 2 = (9 × 4) ÷ 2 = 36 ÷ 2 = 18 cm².",
+    explication: "Aire = (9 × 4) ÷ 2 = 18 cm².",
     niveau: "difficile",
   },
 ];
 
-const niveauLabel = (n: string) =>
-  n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
+const CLASSE = "cm2";
+const MATIERE = "maths";
+const THEME = "geometrie";
 
 export default function GeometrieCM2() {
   const router = useRouter();
@@ -134,14 +133,24 @@ export default function GeometrieCM2() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
-  const [session, setSession] = useState(0);
-
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
   const shuffledOptions = useMemo(
     () => shuffleArray(questions[qIndex].options),
-    [qIndex, session],
+    [qIndex],
   );
   const progression = Math.round((bonnes.length / questions.length) * 100);
-
+  useEffect(() => {
+    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+  }, []);
   const handleReponse = (option: string) => {
     if (selected) return;
     setSelected(option);
@@ -149,30 +158,47 @@ export default function GeometrieCM2() {
     if (correct) setScore((s) => s + 1);
     setBonnes((b) => [...b, correct]);
   };
-
-  const handleSuivant = () => {
-    if (qIndex + 1 >= questions.length) setEtape("fini");
-    else {
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= questions.length) {
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score,
+          total: questions.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
-
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
     setScore(0);
     setBonnes([]);
-    setSession((s) => s + 1);
   };
+  const niveauLabel = (n: string) =>
+    n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm2/maths")}
+          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
         >
           ← Retour
         </button>
@@ -184,7 +210,6 @@ export default function GeometrieCM2() {
           <span className="breadcrumb-active">Géométrie</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -203,12 +228,55 @@ export default function GeometrieCM2() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">📐 Géométrie · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -225,7 +293,6 @@ export default function GeometrieCM2() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
@@ -234,16 +301,16 @@ export default function GeometrieCM2() {
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
-              let className = "qcm-option";
+              let cn = "qcm-option";
               if (selected) {
-                if (opt === questions[qIndex].reponse) className += " correct";
-                else if (opt === selected) className += " incorrect";
-                else className += " disabled";
+                if (opt === questions[qIndex].reponse) cn += " correct";
+                else if (opt === selected) cn += " incorrect";
+                else cn += " disabled";
               }
               return (
                 <button
                   key={opt}
-                  className={className}
+                  className={cn}
                   onClick={() => handleReponse(opt)}
                 >
                   {opt}
@@ -277,7 +344,6 @@ export default function GeometrieCM2() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
@@ -297,12 +363,12 @@ export default function GeometrieCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement la géométrie !"
+              ? "Tu maîtrises la géométrie ! 🚀"
               : score >= 7
-                ? "Tu as bien compris l'essentiel."
+                ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
-                  ? "Encore quelques efforts !"
-                  : "Relis la leçon et réessaie !"}
+                  ? "Encore quelques efforts et tu y seras !"
+                  : "Relis la leçon et réessaie, tu vas y arriver !"}
           </p>
           <div className="resultat-actions">
             <button className="lecon-btn-outline" onClick={handleRecommencer}>
@@ -310,7 +376,9 @@ export default function GeometrieCM2() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm2/maths")}
+              onClick={() =>
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+              }
             >
               Retour aux thèmes →
             </button>

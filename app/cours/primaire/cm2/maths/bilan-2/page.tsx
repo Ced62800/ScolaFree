@@ -9,196 +9,196 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const questions = [
-  // Décimaux (5)
+  // Pourcentages (5)
   {
     id: 1,
-    theme: "decimaux",
-    question: "3,4 + 2,1 = ?",
-    options: ["5,4", "5,5", "5,6", "6,5"],
-    reponse: "5,5",
-    explication: "3,4 + 2,1 = 5,5.",
+    theme: "pourcentages",
+    question: "Combien font 10% de 80 ?",
+    options: ["4", "8", "10", "16"],
+    reponse: "8",
+    explication: "10% de 80 = 80 × 10 ÷ 100 = 8.",
   },
   {
     id: 2,
-    theme: "decimaux",
-    question: "4,25 + 1,3 = ?",
-    options: ["4,55", "5,25", "5,55", "5,65"],
-    reponse: "5,55",
-    explication: "4,25 + 1,30 = 5,55.",
+    theme: "pourcentages",
+    question: "Combien font 25% de 40 ?",
+    options: ["5", "8", "10", "15"],
+    reponse: "10",
+    explication: "25% = le quart. 40 ÷ 4 = 10.",
   },
   {
     id: 3,
-    theme: "decimaux",
-    question: "8,4 − 3,65 = ?",
-    options: ["4,65", "4,75", "5,25", "4,85"],
-    reponse: "4,75",
-    explication: "8,40 − 3,65 = 4,75.",
+    theme: "pourcentages",
+    question: "Un article coûte 60 €. Réduction de 10%. Prix final ?",
+    options: ["50 €", "54 €", "56 €", "58 €"],
+    reponse: "54 €",
+    explication: "10% de 60 = 6 €. Prix = 60 - 6 = 54 €.",
   },
   {
     id: 4,
-    theme: "decimaux",
-    question: "2,35 × 3 = ?",
-    options: ["6,05", "7,05", "7,15", "6,95"],
-    reponse: "7,05",
-    explication: "235 × 3 = 705 → 7,05.",
+    theme: "pourcentages",
+    question: "3/4 exprimé en pourcentage = ?",
+    options: ["34%", "43%", "75%", "25%"],
+    reponse: "75%",
+    explication: "3 ÷ 4 = 0,75 = 75%.",
   },
   {
     id: 5,
-    theme: "decimaux",
-    question: "Tom a 20 € et dépense 12,75 €. Combien lui reste-t-il ?",
-    options: ["7,15 €", "7,25 €", "7,35 €", "8,25 €"],
-    reponse: "7,25 €",
-    explication: "20,00 − 12,75 = 7,25 €.",
+    theme: "pourcentages",
+    question: "Dans une classe de 30 élèves, 60% sont des filles. Combien ?",
+    options: ["12", "15", "18", "20"],
+    reponse: "18",
+    explication: "60% de 30 = 18 filles.",
   },
-  // Fractions (5)
+  // Proportionnalité (5)
   {
     id: 6,
-    theme: "fractions",
-    question: "3/4 + 5/4 = ?",
-    options: ["8/8", "8/4", "6/4", "2/4"],
-    reponse: "8/4",
-    explication: "3 + 5 = 8, on garde 4. 8/4 = 2 entiers.",
+    theme: "proportionnalite",
+    question: "1 cahier coûte 3 €. Combien coûtent 4 cahiers ?",
+    options: ["9 €", "12 €", "15 €", "7 €"],
+    reponse: "12 €",
+    explication: "4 × 3 = 12 €.",
   },
   {
     id: 7,
-    theme: "fractions",
-    question: "Dans 7/3, combien d'entiers complets peut-on former ?",
-    options: ["1", "2", "3", "7"],
-    reponse: "2",
-    explication: "3 × 2 = 6, il reste 1/3. On a 2 entiers.",
+    theme: "proportionnalite",
+    question: "Une voiture roule à 90 km/h. En 2h, quelle distance ?",
+    options: ["90 km", "150 km", "180 km", "270 km"],
+    reponse: "180 km",
+    explication: "90 × 2 = 180 km.",
   },
   {
     id: 8,
-    theme: "fractions",
-    question: "5/8 + 6/8 = ?",
-    options: ["11/8", "11/16", "1/8", "10/8"],
-    reponse: "11/8",
-    explication: "5 + 6 = 11, on garde 8.",
+    theme: "proportionnalite",
+    question: "4 kg de pommes coûtent 8 €. Combien coûtent 7 kg ?",
+    options: ["12 €", "14 €", "16 €", "18 €"],
+    reponse: "14 €",
+    explication: "1 kg = 2 €. 7 kg = 14 €.",
   },
   {
     id: 9,
-    theme: "fractions",
-    question: "9/5 − 3/5 = ?",
-    options: ["6/5", "6/10", "12/5", "3/5"],
-    reponse: "6/5",
-    explication: "9 − 3 = 6, on garde 5.",
+    theme: "proportionnalite",
+    question: "Tableau : 5 → 15, 8 → ? Valeur manquante ?",
+    options: ["20", "24", "25", "30"],
+    reponse: "24",
+    explication: "Coefficient = 3. 8 × 3 = 24.",
   },
   {
     id: 10,
-    theme: "fractions",
-    question: "7/3 s'écrit sous forme de nombre mixte : ?",
-    options: ["1 + 1/3", "2 + 1/3", "2 + 2/3", "3 + 1/3"],
-    reponse: "2 + 1/3",
-    explication: "7 = (3 × 2) + 1. Donc 7/3 = 2 + 1/3.",
+    theme: "proportionnalite",
+    question: "Une voiture parcourt 300 km en 4h. Quelle est sa vitesse ?",
+    options: ["65 km/h", "70 km/h", "75 km/h", "80 km/h"],
+    reponse: "75 km/h",
+    explication: "300 ÷ 4 = 75 km/h.",
   },
-  // Géométrie (5)
+  // Problèmes (5)
   {
     id: 11,
-    theme: "geometrie",
-    question: "Aire d'un rectangle de 6 cm × 4 cm ?",
-    options: ["20 cm²", "24 cm²", "28 cm²", "10 cm²"],
-    reponse: "24 cm²",
-    explication: "Aire = 6 × 4 = 24 cm².",
+    theme: "problemes",
+    question: "Un livre coûte 12,50 €. Paul en achète 3. Combien paie-t-il ?",
+    options: ["35,50 €", "37,50 €", "38,50 €", "39,50 €"],
+    reponse: "37,50 €",
+    explication: "3 × 12,50 = 37,50 €.",
   },
   {
     id: 12,
-    theme: "geometrie",
-    question: "Diamètre d'un cercle de rayon 7 cm ?",
-    options: ["3,5 cm", "7 cm", "14 cm", "21 cm"],
-    reponse: "14 cm",
-    explication: "Diamètre = 2 × 7 = 14 cm.",
+    theme: "problemes",
+    question: "Tom achète 4 stylos à 1,25 € et 3 cahiers à 2,50 €. Combien ?",
+    options: ["11,50 €", "12,00 €", "12,50 €", "13,00 €"],
+    reponse: "12,50 €",
+    explication: "4×1,25 + 3×2,50 = 5 + 7,50 = 12,50 €.",
   },
   {
     id: 13,
-    theme: "geometrie",
-    question: "Aire d'un triangle : base = 8 cm, hauteur = 5 cm ?",
-    options: ["13 cm²", "20 cm²", "40 cm²", "16 cm²"],
-    reponse: "20 cm²",
-    explication: "(8 × 5) ÷ 2 = 20 cm².",
+    theme: "problemes",
+    question: "Un vêtement coûte 60 €. Soldé à -20%. Prix final ?",
+    options: ["42 €", "44 €", "46 €", "48 €"],
+    reponse: "48 €",
+    explication: "20% de 60 = 12 €. Prix = 60 - 12 = 48 €.",
   },
   {
     id: 14,
-    theme: "geometrie",
-    question: "Volume d'un pavé droit : 5 cm × 3 cm × 2 cm ?",
-    options: ["10 cm³", "20 cm³", "30 cm³", "25 cm³"],
-    reponse: "30 cm³",
-    explication: "5 × 3 × 2 = 30 cm³.",
+    theme: "problemes",
+    question: "Paul gagne 150 €/semaine. En 5 semaines, dépense 480 €. Reste ?",
+    options: ["240 €", "250 €", "260 €", "270 €"],
+    reponse: "270 €",
+    explication: "5 × 150 = 750 €. 750 - 480 = 270 €.",
   },
   {
     id: 15,
-    theme: "geometrie",
-    question: "Circonférence d'un cercle de diamètre 10 cm ? (π ≈ 3,14)",
-    options: ["31,4 cm", "314 cm", "15,7 cm", "62,8 cm"],
-    reponse: "31,4 cm",
-    explication: "3,14 × 10 = 31,4 cm.",
+    theme: "problemes",
+    question: "Une corde de 9,6 m est coupée en morceaux de 0,8 m. Combien ?",
+    options: ["10", "11", "12", "14"],
+    reponse: "12",
+    explication: "9,6 ÷ 0,8 = 12 morceaux.",
   },
-  // Statistiques (5)
+  // Calcul mental (5)
   {
     id: 16,
-    theme: "statistiques",
-    question: "Moyenne de 4, 6 et 8 ?",
-    options: ["5", "6", "7", "8"],
-    reponse: "6",
-    explication: "(4 + 6 + 8) ÷ 3 = 6.",
+    theme: "calcul-mental",
+    question: "48 + 37 = ?",
+    options: ["83", "84", "85", "86"],
+    reponse: "85",
+    explication: "48 + 30 + 7 = 85.",
   },
   {
     id: 17,
-    theme: "statistiques",
-    question: "Léa a eu 10, 12 et 14. Quelle est sa moyenne ?",
-    options: ["11", "12", "13", "14"],
-    reponse: "12",
-    explication: "(10 + 12 + 14) ÷ 3 = 12.",
+    theme: "calcul-mental",
+    question: "3,4 × 10 = ?",
+    options: ["0,34", "34", "340", "3,40"],
+    reponse: "34",
+    explication: "Multiplier par 10 → virgule décalée : 34.",
   },
   {
     id: 18,
-    theme: "statistiques",
-    question: "Températures : 15°, 18°, 12°, 20°, 15°. Moyenne ?",
-    options: ["14°", "15°", "16°", "17°"],
-    reponse: "16°",
-    explication: "80 ÷ 5 = 16°.",
+    theme: "calcul-mental",
+    question: "83 − 29 = ?",
+    options: ["52", "53", "54", "55"],
+    reponse: "54",
+    explication: "83 - 30 + 1 = 54.",
   },
   {
     id: 19,
-    theme: "statistiques",
-    question: "Moyenne de 13 sur 5 épreuves. Total des points ?",
-    options: ["55", "60", "65", "70"],
-    reponse: "65",
-    explication: "13 × 5 = 65.",
+    theme: "calcul-mental",
+    question: "2,5 × 100 = ?",
+    options: ["25", "250", "2500", "0,25"],
+    reponse: "250",
+    explication: "2,5 × 100 = 250.",
   },
   {
     id: 20,
-    theme: "statistiques",
-    question: "Moyenne de 8, 12, 10 et x est 10. Que vaut x ?",
-    options: ["8", "10", "12", "14"],
-    reponse: "10",
-    explication: "Total = 40. 8+12+10 = 30. x = 10.",
+    theme: "calcul-mental",
+    question: "156 + 247 = ?",
+    options: ["393", "400", "403", "413"],
+    reponse: "403",
+    explication: "156 + 200 + 47 = 403.",
   },
 ];
 
 const themeLabels: Record<string, string> = {
-  decimaux: "🔢 Décimaux",
-  fractions: "🍕 Fractions",
-  geometrie: "📐 Géométrie",
-  statistiques: "📊 Statistiques",
+  pourcentages: "💯 Pourcentages",
+  proportionnalite: "📊 Proportionnalité",
+  problemes: "🧩 Problèmes",
+  "calcul-mental": "🧮 Calcul mental",
 };
 
 const themeColors: Record<string, string> = {
-  decimaux: "#4f8ef7",
-  fractions: "#2ec4b6",
-  geometrie: "#ffd166",
-  statistiques: "#ff6b6b",
+  pourcentages: "#4f8ef7",
+  proportionnalite: "#2ec4b6",
+  problemes: "#ffd166",
+  "calcul-mental": "#ff6b6b",
 };
 
-export default function BilanCM2Maths() {
+export default function BilanMathsCM2Page2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"intro" | "qcm" | "fini">("intro");
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<string, number>>({
-    decimaux: 0,
-    fractions: 0,
-    geometrie: 0,
-    statistiques: 0,
+    pourcentages: 0,
+    proportionnalite: 0,
+    problemes: 0,
+    "calcul-mental": 0,
   });
   const [totalScore, setTotalScore] = useState(0);
   const [bestScore, setBestScore] = useState<any>(null);
@@ -208,8 +208,8 @@ export default function BilanCM2Maths() {
 
   useEffect(() => {
     const load = async () => {
-      const b = await getBestScore("cm2", "maths", "bilan");
-      const l = await getLastScore("cm2", "maths", "bilan");
+      const b = await getBestScore("cm2", "maths", "bilan-2");
+      const l = await getLastScore("cm2", "maths", "bilan-2");
       setBestScore(b);
       setLastScore(l);
     };
@@ -234,7 +234,6 @@ export default function BilanCM2Maths() {
       scoreRef.current += 1;
     }
   };
-
   const handleSuivant = async () => {
     if (qIndex + 1 >= shuffledQuestions.length) {
       if (!isSaving.current) {
@@ -242,12 +241,12 @@ export default function BilanCM2Maths() {
         await saveScore({
           classe: "cm2",
           matiere: "maths",
-          theme: "bilan",
+          theme: "bilan-2",
           score: scoreRef.current,
           total: 20,
         });
-        const b = await getBestScore("cm2", "maths", "bilan");
-        const l = await getLastScore("cm2", "maths", "bilan");
+        const b = await getBestScore("cm2", "maths", "bilan-2");
+        const l = await getLastScore("cm2", "maths", "bilan-2");
         setBestScore(b);
         setLastScore(l);
       }
@@ -257,26 +256,29 @@ export default function BilanCM2Maths() {
       setSelected(null);
     }
   };
-
   const handleRecommencer = () => {
     isSaving.current = false;
     scoreRef.current = 0;
     setEtape("intro");
     setQIndex(0);
     setSelected(null);
-    setScores({ decimaux: 0, fractions: 0, geometrie: 0, statistiques: 0 });
+    setScores({
+      pourcentages: 0,
+      proportionnalite: 0,
+      problemes: 0,
+      "calcul-mental": 0,
+    });
     setTotalScore(0);
   };
-
   const getMention = (score: number) => {
-    if (score >= 18) return { label: "Expert !", icon: "🏆", color: "#2ec4b6" };
+    if (score >= 18)
+      return { label: "Excellent !", icon: "🏆", color: "#2ec4b6" };
     if (score >= 14)
-      return { label: "Très bien !", icon: "⭐", color: "#4f8ef7" };
+      return { label: "Bien joué !", icon: "⭐", color: "#4f8ef7" };
     if (score >= 10)
-      return { label: "Pas mal !", icon: "👍", color: "#ffd166" };
-    return { label: "À réviser !", icon: "💪", color: "#ff6b6b" };
+      return { label: "Assez bien !", icon: "👍", color: "#ffd166" };
+    return { label: "À revoir !", icon: "💪", color: "#ff6b6b" };
   };
-
   const mention = getMention(totalScore);
 
   return (
@@ -284,7 +286,7 @@ export default function BilanCM2Maths() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/primaire/cm2/maths")}
+          onClick={() => router.push("/cours/primaire/cm2/maths/page-2")}
         >
           ← Retour
         </button>
@@ -293,14 +295,13 @@ export default function BilanCM2Maths() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Bilan Final</span>
+          <span className="breadcrumb-active">Bilan Partie 2</span>
         </div>
       </div>
-
       {etape === "intro" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🎯 Bilan Final · CM2</div>
-          <h1 className="lecon-titre">Bilan Final — CM2 Mathématiques</h1>
+          <div className="lecon-badge">🎯 Bilan Partie 2 · CM2 Maths</div>
+          <h1 className="lecon-titre">Bilan Maths CM2 — Partie 2</h1>
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
               {bestScore && (
@@ -318,7 +319,6 @@ export default function BilanCM2Maths() {
                     style={{
                       fontSize: "0.75rem",
                       color: "#2ec4b6",
-                      textTransform: "uppercase",
                       fontWeight: "bold",
                     }}
                   >
@@ -344,7 +344,6 @@ export default function BilanCM2Maths() {
                     style={{
                       fontSize: "0.75rem",
                       color: "#888",
-                      textTransform: "uppercase",
                       fontWeight: "bold",
                     }}
                   >
@@ -358,24 +357,24 @@ export default function BilanCM2Maths() {
             </div>
           )}
           <p className="lecon-intro">
-            Dernière étape ! 20 questions pour valider ton année de CM2.
+            Ce bilan regroupe les 4 thèmes de Maths CM2 partie 2.
           </p>
           <div className="bilan-info-grid">
             <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
-              <span>🔢</span>
-              <span>5 questions de Décimaux</span>
+              <span>💯</span>
+              <span>5 questions de Pourcentages</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
-              <span>🍕</span>
-              <span>5 questions de Fractions</span>
+              <span>📊</span>
+              <span>5 questions de Proportionnalité</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
-              <span>📐</span>
-              <span>5 questions de Géométrie</span>
+              <span>🧩</span>
+              <span>5 questions de Problèmes</span>
             </div>
             <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
-              <span>📊</span>
-              <span>5 questions de Statistiques</span>
+              <span>🧮</span>
+              <span>5 questions de Calcul mental</span>
             </div>
           </div>
           <div className="bilan-score-info">
@@ -386,7 +385,6 @@ export default function BilanCM2Maths() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && shuffledQuestions[qIndex] && (
         <>
           <div className="progression-wrapper">
@@ -458,7 +456,6 @@ export default function BilanCM2Maths() {
           </div>
         </>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">{mention.icon}</div>
@@ -485,7 +482,6 @@ export default function BilanCM2Maths() {
                     style={{
                       fontSize: "0.75rem",
                       color: "#2ec4b6",
-                      textTransform: "uppercase",
                       fontWeight: "bold",
                     }}
                   >
@@ -511,7 +507,6 @@ export default function BilanCM2Maths() {
                     style={{
                       fontSize: "0.75rem",
                       color: "#888",
-                      textTransform: "uppercase",
                       fontWeight: "bold",
                     }}
                   >
@@ -544,7 +539,7 @@ export default function BilanCM2Maths() {
           </div>
           <p className="resultat-desc">
             {totalScore >= 18
-              ? "Bravo, tu es un(e) champion(ne) des maths ! 🚀"
+              ? "Bravo, tu maîtrises les maths CM2 partie 2 ! 🚀"
               : totalScore >= 14
                 ? "Très bon niveau !"
                 : totalScore >= 10
@@ -557,7 +552,7 @@ export default function BilanCM2Maths() {
             </button>
             <button
               className="lecon-btn"
-              onClick={() => router.push("/cours/primaire/cm2/maths")}
+              onClick={() => router.push("/cours/primaire/cm2/maths/page-2")}
             >
               Retour aux thèmes →
             </button>

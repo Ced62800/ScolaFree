@@ -9,27 +9,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Fractions supérieures à 1",
+  titre: "Résoudre des problèmes à étapes",
   intro:
-    "En CM2, on travaille avec des fractions dont le numérateur est plus grand que le dénominateur. Ces fractions valent plus d'un entier et peuvent s'écrire comme des nombres mixtes.",
+    "Un problème à étapes nécessite plusieurs calculs successifs. On lit attentivement, on identifie les données, on choisit les opérations dans le bon ordre.",
   points: [
     {
-      titre: "Fractions supérieures à 1",
+      titre: "Méthode de résolution",
       texte:
-        "Quand le numérateur est plus grand que le dénominateur, la fraction vaut plus d'un entier. On peut la convertir en nombre mixte (entier + fraction).",
-      exemple: "7/3 = 2 entiers + 1/3 = 2 et 1/3. Car 3 × 2 = 6 et 7 − 6 = 1.",
+        "1. Lire et comprendre. 2. Repérer les données et ce qu'on cherche. 3. Planifier les étapes. 4. Calculer étape par étape. 5. Vérifier si le résultat est logique.",
+      exemple: "Total → + · Reste → − · Chacun → ÷ · En tout → ×",
     },
     {
-      titre: "Addition et soustraction de fractions (même dénominateur)",
+      titre: "Problèmes avec décimaux et pourcentages",
       texte:
-        "Pour additionner ou soustraire des fractions avec le même dénominateur, on opère sur les numérateurs et on garde le dénominateur.",
-      exemple: "5/8 + 6/8 = 11/8. 9/5 − 3/5 = 6/5.",
+        "En CM2, les problèmes peuvent mélanger décimaux, fractions et pourcentages. On applique les formules dans l'ordre logique.",
+      exemple:
+        "Prix avec remise : prix de base − (prix × taux de remise ÷ 100).",
     },
     {
-      titre: "Comparer des fractions supérieures à 1",
+      titre: "Problèmes de géométrie",
       texte:
-        "On compare d'abord la partie entière. Si elle est égale, on compare les parties fractionnaires.",
-      exemple: "11/4 = 2 et 3/4. 9/4 = 2 et 1/4. Donc 11/4 > 9/4.",
+        "Certains problèmes demandent de calculer des périmètres, aires ou volumes pour répondre à une question pratique.",
+      exemple:
+        "Combien de dalles pour couvrir 12 m² si chaque dalle fait 0,25 m² ? → 12 ÷ 0,25 = 48 dalles.",
     },
   ],
 };
@@ -37,92 +39,96 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Que vaut 5/2 ?",
-    options: ["Moins de 1", "Exactement 1", "Entre 1 et 2", "Plus de 2"],
-    reponse: "Plus de 2",
-    explication: "5/2 = 2 entiers + 1/2 = 2,5. C'est plus de 2.",
+    question: "Un livre coûte 12,50 €. Paul en achète 3. Combien paie-t-il ?",
+    options: ["35,50 €", "37,50 €", "38,50 €", "39,50 €"],
+    reponse: "37,50 €",
+    explication: "3 × 12,50 = 37,50 €.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "3/4 + 5/4 = ?",
-    options: ["8/8", "8/4", "6/4", "2/4"],
-    reponse: "8/4",
-    explication: "3 + 5 = 8, on garde 4. Résultat : 8/4 = 2 entiers.",
+    question: "Léa a 50 €. Elle dépense 18,75 €. Combien lui reste-t-il ?",
+    options: ["30,25 €", "31,25 €", "31,75 €", "32,25 €"],
+    reponse: "31,25 €",
+    explication: "50 - 18,75 = 31,25 €.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "7/3, combien d'entiers peut-on former ?",
-    options: ["1", "2", "3", "7"],
-    reponse: "2",
-    explication: "3 × 2 = 6 ≤ 7 < 9 = 3 × 3. On peut former 2 entiers.",
+    question:
+      "Une classe de 32 élèves est répartie en groupes de 4. Combien de groupes ?",
+    options: ["6", "7", "8", "9"],
+    reponse: "8",
+    explication: "32 ÷ 4 = 8 groupes.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "5/8 + 6/8 = ?",
-    options: ["11/8", "11/16", "1/8", "10/8"],
-    reponse: "11/8",
-    explication: "5 + 6 = 11, on garde 8. Résultat : 11/8.",
+    question:
+      "Tom achète 4 stylos à 1,25 € et 3 cahiers à 2,50 €. Combien dépense-t-il ?",
+    options: ["11,50 €", "12,00 €", "12,50 €", "13,00 €"],
+    reponse: "12,50 €",
+    explication: "4×1,25 + 3×2,50 = 5 + 7,50 = 12,50 €.",
     niveau: "moyen",
   },
   {
     id: 5,
-    question: "11/4, quelle est la partie entière ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication: "4 × 2 = 8 ≤ 11 < 12 = 4 × 3. La partie entière est 2.",
+    question: "Un rectangle mesure 8,5 cm × 4 cm. Quel est son périmètre ?",
+    options: ["24 cm", "25 cm", "26 cm", "34 cm"],
+    reponse: "25 cm",
+    explication: "Périmètre = 2 × (8,5 + 4) = 2 × 12,5 = 25 cm.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "9/5 − 3/5 = ?",
-    options: ["6/5", "6/10", "12/5", "3/5"],
-    reponse: "6/5",
-    explication: "9 − 3 = 6, on garde 5. Résultat : 6/5.",
+    question:
+      "Un vêtement coûte 60 €. Il est soldé à -20%. Quel est le prix final ?",
+    options: ["42 €", "44 €", "46 €", "48 €"],
+    reponse: "48 €",
+    explication: "20% de 60 = 12 €. Prix = 60 - 12 = 48 €.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Laquelle est la plus grande : 11/4 ou 9/4 ?",
-    options: ["11/4", "9/4", "Elles sont égales", "On ne peut pas savoir"],
-    reponse: "11/4",
-    explication: "Même dénominateur : 11 > 9, donc 11/4 > 9/4.",
+    question: "Combien de dalles de 0,25 m² faut-il pour couvrir 6 m² ?",
+    options: ["18", "20", "24", "30"],
+    reponse: "24",
+    explication: "6 ÷ 0,25 = 24 dalles.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "7/3 s'écrit comme nombre mixte : ?",
-    options: ["1 et 1/3", "2 et 1/3", "2 et 2/3", "3 et 1/3"],
-    reponse: "2 et 1/3",
-    explication: "3 × 2 = 6. 7 − 6 = 1. Donc 7/3 = 2 et 1/3.",
+    question:
+      "Paul gagne 150 € par semaine. En 5 semaines, il dépense 480 €. Combien lui reste-t-il ?",
+    options: ["240 €", "250 €", "260 €", "270 €"],
+    reponse: "270 €",
+    explication: "5 × 150 = 750 €. 750 - 480 = 270 €.",
     niveau: "difficile",
   },
   {
     id: 9,
-    question: "4/6 + 7/6 = ?",
-    options: ["11/6", "11/12", "3/6", "12/6"],
-    reponse: "11/6",
-    explication: "4 + 7 = 11, on garde 6. Résultat : 11/6.",
+    question:
+      "Une corde de 9,6 m est coupée en morceaux de 0,8 m. Combien de morceaux ?",
+    options: ["10", "11", "12", "14"],
+    reponse: "12",
+    explication: "9,6 ÷ 0,8 = 12 morceaux.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question:
-      "Une recette nécessite 3/4 de litre pour un gâteau. Pour 3 gâteaux, combien faut-il ?",
-    options: ["6/4", "9/4", "3/12", "12/4"],
-    reponse: "9/4",
-    explication: "3 × 3/4 = 9/4 litres = 2 litres et 1/4.",
+    question: "Un train roule à 180 km/h. Combien de temps pour 270 km ?",
+    options: ["1h", "1h30", "2h", "2h30"],
+    reponse: "1h30",
+    explication: "270 ÷ 180 = 1,5h = 1h30.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm2";
 const MATIERE = "maths";
-const THEME = "fractions";
+const THEME = "problemes";
 
-export default function FractionsCM2() {
+export default function ProblemesCM2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -194,7 +200,9 @@ export default function FractionsCM2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -203,7 +211,7 @@ export default function FractionsCM2() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Fractions</span>
+          <span className="breadcrumb-active">Problèmes</span>
         </div>
       </div>
       {etape === "qcm" && (
@@ -226,7 +234,7 @@ export default function FractionsCM2() {
       )}
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🍕 Fractions · CM2</div>
+          <div className="lecon-badge">🧩 Problèmes · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -359,7 +367,7 @@ export default function FractionsCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les fractions ! 🚀"
+              ? "Tu es un(e) expert(e) des problèmes ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -373,7 +381,7 @@ export default function FractionsCM2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

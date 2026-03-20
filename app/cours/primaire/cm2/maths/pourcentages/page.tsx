@@ -9,27 +9,29 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Fractions supérieures à 1",
+  titre: "Les pourcentages",
   intro:
-    "En CM2, on travaille avec des fractions dont le numérateur est plus grand que le dénominateur. Ces fractions valent plus d'un entier et peuvent s'écrire comme des nombres mixtes.",
+    "Un pourcentage exprime une proportion sur 100. 50% = 50/100 = 0,5. On utilise les pourcentages pour calculer des réductions, des augmentations, ou des parts.",
   points: [
     {
-      titre: "Fractions supérieures à 1",
+      titre: "Comprendre un pourcentage",
       texte:
-        "Quand le numérateur est plus grand que le dénominateur, la fraction vaut plus d'un entier. On peut la convertir en nombre mixte (entier + fraction).",
-      exemple: "7/3 = 2 entiers + 1/3 = 2 et 1/3. Car 3 × 2 = 6 et 7 − 6 = 1.",
+        "50% = la moitié. 25% = le quart. 10% = le dixième. 1% = un centième. Pour calculer x% d'une quantité, on multiplie par x puis on divise par 100.",
+      exemple:
+        "10% de 200 = 200 × 10 ÷ 100 = 20. 25% de 80 = 80 × 25 ÷ 100 = 20.",
     },
     {
-      titre: "Addition et soustraction de fractions (même dénominateur)",
+      titre: "Calculer une réduction",
       texte:
-        "Pour additionner ou soustraire des fractions avec le même dénominateur, on opère sur les numérateurs et on garde le dénominateur.",
-      exemple: "5/8 + 6/8 = 11/8. 9/5 − 3/5 = 6/5.",
+        "Pour une réduction de x%, on calcule x% du prix d'origine, puis on soustrait. Ou on multiplie par (100 - x) ÷ 100.",
+      exemple:
+        "Réduction de 20% sur 50 € : 50 × 20 ÷ 100 = 10 €. Prix final = 50 - 10 = 40 €.",
     },
     {
-      titre: "Comparer des fractions supérieures à 1",
+      titre: "Exprimer une fraction en pourcentage",
       texte:
-        "On compare d'abord la partie entière. Si elle est égale, on compare les parties fractionnaires.",
-      exemple: "11/4 = 2 et 3/4. 9/4 = 2 et 1/4. Donc 11/4 > 9/4.",
+        "Pour convertir une fraction en pourcentage, on divise le numérateur par le dénominateur et on multiplie par 100.",
+      exemple: "3/4 = 0,75 = 75%. 1/5 = 0,20 = 20%. 7/10 = 70%.",
     },
   ],
 };
@@ -37,92 +39,95 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Que vaut 5/2 ?",
-    options: ["Moins de 1", "Exactement 1", "Entre 1 et 2", "Plus de 2"],
-    reponse: "Plus de 2",
-    explication: "5/2 = 2 entiers + 1/2 = 2,5. C'est plus de 2.",
+    question: "Combien font 50% de 100 ?",
+    options: ["25", "50", "75", "100"],
+    reponse: "50",
+    explication: "50% = la moitié. 100 ÷ 2 = 50.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "3/4 + 5/4 = ?",
-    options: ["8/8", "8/4", "6/4", "2/4"],
-    reponse: "8/4",
-    explication: "3 + 5 = 8, on garde 4. Résultat : 8/4 = 2 entiers.",
+    question: "Combien font 10% de 80 ?",
+    options: ["4", "8", "10", "16"],
+    reponse: "8",
+    explication: "10% de 80 = 80 × 10 ÷ 100 = 8.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "7/3, combien d'entiers peut-on former ?",
-    options: ["1", "2", "3", "7"],
-    reponse: "2",
-    explication: "3 × 2 = 6 ≤ 7 < 9 = 3 × 3. On peut former 2 entiers.",
+    question: "Combien font 25% de 40 ?",
+    options: ["5", "8", "10", "15"],
+    reponse: "10",
+    explication: "25% = le quart. 40 ÷ 4 = 10.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "5/8 + 6/8 = ?",
-    options: ["11/8", "11/16", "1/8", "10/8"],
-    reponse: "11/8",
-    explication: "5 + 6 = 11, on garde 8. Résultat : 11/8.",
+    question:
+      "Un article coûte 60 €. Il y a une réduction de 10%. Quel est le prix final ?",
+    options: ["50 €", "54 €", "56 €", "58 €"],
+    reponse: "54 €",
+    explication: "10% de 60 = 6 €. Prix final = 60 - 6 = 54 €.",
     niveau: "moyen",
   },
   {
     id: 5,
-    question: "11/4, quelle est la partie entière ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication: "4 × 2 = 8 ≤ 11 < 12 = 4 × 3. La partie entière est 2.",
+    question: "Combien font 20% de 150 ?",
+    options: ["20", "25", "30", "35"],
+    reponse: "30",
+    explication: "20% de 150 = 150 × 20 ÷ 100 = 30.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "9/5 − 3/5 = ?",
-    options: ["6/5", "6/10", "12/5", "3/5"],
-    reponse: "6/5",
-    explication: "9 − 3 = 6, on garde 5. Résultat : 6/5.",
+    question: "3/4 exprimé en pourcentage = ?",
+    options: ["34%", "43%", "75%", "25%"],
+    reponse: "75%",
+    explication: "3 ÷ 4 = 0,75 = 75%.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Laquelle est la plus grande : 11/4 ou 9/4 ?",
-    options: ["11/4", "9/4", "Elles sont égales", "On ne peut pas savoir"],
-    reponse: "11/4",
-    explication: "Même dénominateur : 11 > 9, donc 11/4 > 9/4.",
+    question:
+      "Un livre coûte 20 €. Il est soldé à -25%. Quel est le prix soldé ?",
+    options: ["12 €", "14 €", "15 €", "16 €"],
+    reponse: "15 €",
+    explication: "25% de 20 = 5 €. Prix final = 20 - 5 = 15 €.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "7/3 s'écrit comme nombre mixte : ?",
-    options: ["1 et 1/3", "2 et 1/3", "2 et 2/3", "3 et 1/3"],
-    reponse: "2 et 1/3",
-    explication: "3 × 2 = 6. 7 − 6 = 1. Donc 7/3 = 2 et 1/3.",
+    question:
+      "Dans une classe de 30 élèves, 60% sont des filles. Combien y a-t-il de filles ?",
+    options: ["12", "15", "18", "20"],
+    reponse: "18",
+    explication: "60% de 30 = 30 × 60 ÷ 100 = 18 filles.",
     niveau: "difficile",
   },
   {
     id: 9,
-    question: "4/6 + 7/6 = ?",
-    options: ["11/6", "11/12", "3/6", "12/6"],
-    reponse: "11/6",
-    explication: "4 + 7 = 11, on garde 6. Résultat : 11/6.",
+    question: "1/5 exprimé en pourcentage = ?",
+    options: ["15%", "20%", "25%", "50%"],
+    reponse: "20%",
+    explication: "1 ÷ 5 = 0,20 = 20%.",
     niveau: "difficile",
   },
   {
     id: 10,
     question:
-      "Une recette nécessite 3/4 de litre pour un gâteau. Pour 3 gâteaux, combien faut-il ?",
-    options: ["6/4", "9/4", "3/12", "12/4"],
-    reponse: "9/4",
-    explication: "3 × 3/4 = 9/4 litres = 2 litres et 1/4.",
+      "Un vêtement coûte 80 €. Après une réduction de 15%, quel est le prix ?",
+    options: ["64 €", "66 €", "68 €", "70 €"],
+    reponse: "68 €",
+    explication: "15% de 80 = 12 €. Prix final = 80 - 12 = 68 €.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm2";
 const MATIERE = "maths";
-const THEME = "fractions";
+const THEME = "pourcentages";
 
-export default function FractionsCM2() {
+export default function PourcentagesCM2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -194,7 +199,9 @@ export default function FractionsCM2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -203,7 +210,7 @@ export default function FractionsCM2() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Fractions</span>
+          <span className="breadcrumb-active">Pourcentages</span>
         </div>
       </div>
       {etape === "qcm" && (
@@ -226,7 +233,7 @@ export default function FractionsCM2() {
       )}
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🍕 Fractions · CM2</div>
+          <div className="lecon-badge">💯 Pourcentages · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -359,7 +366,7 @@ export default function FractionsCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les fractions ! 🚀"
+              ? "Tu maîtrises les pourcentages ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -373,7 +380,7 @@ export default function FractionsCM2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →

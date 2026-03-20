@@ -9,27 +9,27 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Fractions supérieures à 1",
+  titre: "La proportionnalité",
   intro:
-    "En CM2, on travaille avec des fractions dont le numérateur est plus grand que le dénominateur. Ces fractions valent plus d'un entier et peuvent s'écrire comme des nombres mixtes.",
+    "Deux grandeurs sont proportionnelles quand leur rapport est constant. On peut toujours multiplier ou diviser par le même nombre pour passer d'une valeur à l'autre.",
   points: [
     {
-      titre: "Fractions supérieures à 1",
+      titre: "Tableaux de proportionnalité",
       texte:
-        "Quand le numérateur est plus grand que le dénominateur, la fraction vaut plus d'un entier. On peut la convertir en nombre mixte (entier + fraction).",
-      exemple: "7/3 = 2 entiers + 1/3 = 2 et 1/3. Car 3 × 2 = 6 et 7 − 6 = 1.",
+        "Dans un tableau de proportionnalité, on passe d'une ligne à l'autre en multipliant ou divisant par le même nombre (coefficient).",
+      exemple: "1 kg → 2 €. 3 kg → 6 €. 5 kg → 10 €. Coefficient = 2.",
     },
     {
-      titre: "Addition et soustraction de fractions (même dénominateur)",
+      titre: "La règle de trois",
       texte:
-        "Pour additionner ou soustraire des fractions avec le même dénominateur, on opère sur les numérateurs et on garde le dénominateur.",
-      exemple: "5/8 + 6/8 = 11/8. 9/5 − 3/5 = 6/5.",
+        "Si on connaît la valeur pour 1, on peut calculer pour n'importe quelle quantité en multipliant. Sinon on divise d'abord pour trouver la valeur unitaire.",
+      exemple: "3 stylos coûtent 6 €. 1 stylo = 2 €. 7 stylos = 14 €.",
     },
     {
-      titre: "Comparer des fractions supérieures à 1",
+      titre: "Vitesse et échelles",
       texte:
-        "On compare d'abord la partie entière. Si elle est égale, on compare les parties fractionnaires.",
-      exemple: "11/4 = 2 et 3/4. 9/4 = 2 et 1/4. Donc 11/4 > 9/4.",
+        "La vitesse est un rapport de proportionnalité : distance = vitesse × temps. L'échelle aussi : distance réelle = distance sur carte × échelle.",
+      exemple: "80 km/h pendant 3h = 240 km. Échelle 1/100 000 : 2 cm = 2 km.",
     },
   ],
 };
@@ -37,92 +37,94 @@ const lecon = {
 const questions = [
   {
     id: 1,
-    question: "Que vaut 5/2 ?",
-    options: ["Moins de 1", "Exactement 1", "Entre 1 et 2", "Plus de 2"],
-    reponse: "Plus de 2",
-    explication: "5/2 = 2 entiers + 1/2 = 2,5. C'est plus de 2.",
+    question: "1 cahier coûte 3 €. Combien coûtent 4 cahiers ?",
+    options: ["9 €", "12 €", "15 €", "7 €"],
+    reponse: "12 €",
+    explication: "4 × 3 = 12 €.",
     niveau: "facile",
   },
   {
     id: 2,
-    question: "3/4 + 5/4 = ?",
-    options: ["8/8", "8/4", "6/4", "2/4"],
-    reponse: "8/4",
-    explication: "3 + 5 = 8, on garde 4. Résultat : 8/4 = 2 entiers.",
+    question:
+      "Une voiture roule à 90 km/h. En 2h, quelle distance parcourt-elle ?",
+    options: ["90 km", "150 km", "180 km", "270 km"],
+    reponse: "180 km",
+    explication: "90 × 2 = 180 km.",
     niveau: "facile",
   },
   {
     id: 3,
-    question: "7/3, combien d'entiers peut-on former ?",
-    options: ["1", "2", "3", "7"],
-    reponse: "2",
-    explication: "3 × 2 = 6 ≤ 7 < 9 = 3 × 3. On peut former 2 entiers.",
+    question: "Tableau : 1 → 4, 2 → 8, 3 → ? Quelle est la valeur manquante ?",
+    options: ["9", "10", "12", "15"],
+    reponse: "12",
+    explication: "Coefficient = 4. 3 × 4 = 12.",
     niveau: "facile",
   },
   {
     id: 4,
-    question: "5/8 + 6/8 = ?",
-    options: ["11/8", "11/16", "1/8", "10/8"],
-    reponse: "11/8",
-    explication: "5 + 6 = 11, on garde 8. Résultat : 11/8.",
+    question: "4 kg de pommes coûtent 8 €. Combien coûtent 7 kg ?",
+    options: ["12 €", "14 €", "16 €", "18 €"],
+    reponse: "14 €",
+    explication: "1 kg = 2 €. 7 kg = 14 €.",
     niveau: "moyen",
   },
   {
     id: 5,
-    question: "11/4, quelle est la partie entière ?",
-    options: ["1", "2", "3", "4"],
-    reponse: "2",
-    explication: "4 × 2 = 8 ≤ 11 < 12 = 4 × 3. La partie entière est 2.",
+    question: "Tableau : 5 → 15, 8 → ? Quelle est la valeur manquante ?",
+    options: ["20", "24", "25", "30"],
+    reponse: "24",
+    explication: "Coefficient = 3. 8 × 3 = 24.",
     niveau: "moyen",
   },
   {
     id: 6,
-    question: "9/5 − 3/5 = ?",
-    options: ["6/5", "6/10", "12/5", "3/5"],
-    reponse: "6/5",
-    explication: "9 − 3 = 6, on garde 5. Résultat : 6/5.",
+    question:
+      "Un cycliste roule à 20 km/h. En 2h30, quelle distance parcourt-il ?",
+    options: ["40 km", "45 km", "50 km", "60 km"],
+    reponse: "50 km",
+    explication: "2h30 = 2,5h. 20 × 2,5 = 50 km.",
     niveau: "moyen",
   },
   {
     id: 7,
-    question: "Laquelle est la plus grande : 11/4 ou 9/4 ?",
-    options: ["11/4", "9/4", "Elles sont égales", "On ne peut pas savoir"],
-    reponse: "11/4",
-    explication: "Même dénominateur : 11 > 9, donc 11/4 > 9/4.",
+    question:
+      "Sur une carte à l'échelle 1/50 000, 4 cm représentent quelle distance ?",
+    options: ["2 km", "4 km", "20 km", "200 km"],
+    reponse: "2 km",
+    explication: "4 × 50 000 cm = 200 000 cm = 2 km.",
     niveau: "moyen",
   },
   {
     id: 8,
-    question: "7/3 s'écrit comme nombre mixte : ?",
-    options: ["1 et 1/3", "2 et 1/3", "2 et 2/3", "3 et 1/3"],
-    reponse: "2 et 1/3",
-    explication: "3 × 2 = 6. 7 − 6 = 1. Donc 7/3 = 2 et 1/3.",
+    question: "6 livres coûtent 42 €. Combien coûtent 9 livres ?",
+    options: ["54 €", "60 €", "63 €", "66 €"],
+    reponse: "63 €",
+    explication: "1 livre = 7 €. 9 livres = 63 €.",
     niveau: "difficile",
   },
   {
     id: 9,
-    question: "4/6 + 7/6 = ?",
-    options: ["11/6", "11/12", "3/6", "12/6"],
-    reponse: "11/6",
-    explication: "4 + 7 = 11, on garde 6. Résultat : 11/6.",
+    question: "Une voiture parcourt 300 km en 4h. Quelle est sa vitesse ?",
+    options: ["65 km/h", "70 km/h", "75 km/h", "80 km/h"],
+    reponse: "75 km/h",
+    explication: "Vitesse = 300 ÷ 4 = 75 km/h.",
     niveau: "difficile",
   },
   {
     id: 10,
-    question:
-      "Une recette nécessite 3/4 de litre pour un gâteau. Pour 3 gâteaux, combien faut-il ?",
-    options: ["6/4", "9/4", "3/12", "12/4"],
-    reponse: "9/4",
-    explication: "3 × 3/4 = 9/4 litres = 2 litres et 1/4.",
+    question: "Tableau : 3 → 7,5, 6 → ? Quelle est la valeur manquante ?",
+    options: ["12", "14", "15", "16"],
+    reponse: "15",
+    explication: "Coefficient = 2,5. 6 × 2,5 = 15.",
     niveau: "difficile",
   },
 ];
 
 const CLASSE = "cm2";
 const MATIERE = "maths";
-const THEME = "fractions";
+const THEME = "proportionnalite";
 
-export default function FractionsCM2() {
+export default function ProportionnaliteCM2() {
   const router = useRouter();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
@@ -194,7 +196,9 @@ export default function FractionsCM2() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)}
+          onClick={() =>
+            router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
+          }
         >
           ← Retour
         </button>
@@ -203,7 +207,7 @@ export default function FractionsCM2() {
           <span className="breadcrumb-sep">›</span>
           <span>Maths</span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Fractions</span>
+          <span className="breadcrumb-active">Proportionnalité</span>
         </div>
       </div>
       {etape === "qcm" && (
@@ -226,7 +230,7 @@ export default function FractionsCM2() {
       )}
       {etape === "lecon" && (
         <div className="lecon-wrapper">
-          <div className="lecon-badge">🍕 Fractions · CM2</div>
+          <div className="lecon-badge">📊 Proportionnalité · CM2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
           {(bestScore || lastScore) && (
@@ -359,7 +363,7 @@ export default function FractionsCM2() {
           </div>
           <p className="resultat-desc">
             {score >= 9
-              ? "Tu maîtrises parfaitement les fractions ! 🚀"
+              ? "Tu maîtrises la proportionnalité ! 🚀"
               : score >= 7
                 ? "Tu as bien compris l'essentiel, continue !"
                 : score >= 5
@@ -373,7 +377,7 @@ export default function FractionsCM2() {
             <button
               className="lecon-btn"
               onClick={() =>
-                router.push(`/cours/primaire/${CLASSE}/${MATIERE}`)
+                router.push(`/cours/primaire/${CLASSE}/${MATIERE}/page-2`)
               }
             >
               Retour aux thèmes →
