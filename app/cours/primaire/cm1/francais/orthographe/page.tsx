@@ -9,7 +9,7 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const lecon = {
-  titre: "Les homophones : ces/ses, son/sont, ou/où",
+  titre: "Les homophones : ces/ses, son/sont, ou/où, ça/sa",
   intro:
     "Ces mots se prononcent pareil mais s'écrivent différemment selon leur rôle dans la phrase. Une astuce : essaie de les remplacer par un autre mot pour trouver lequel utiliser !",
   points: [
@@ -33,6 +33,13 @@ const lecon = {
         "'ou' est une conjonction qui exprime un choix (= ou bien). 'où' est un adverbe qui indique le lieu ou le temps. On peut remplacer 'ou' par 'ou bien'.",
       exemple:
         "Tu veux du thé ou du café ? → ou bien ✅ · La ville où j'habite est belle.",
+    },
+    {
+      titre: "ça / sa",
+      texte:
+        "'ça' est un pronom démonstratif qui signifie 'cela'. On peut le remplacer par 'cela'. 'sa' est un déterminant possessif (= la sienne). On peut le remplacer par 'ma' ou 'ta'.",
+      exemple:
+        "Ça m'énerve ! → Cela m'énerve ✅ · Il prend sa veste. → Il prend ma veste ✅",
     },
   ],
 };
@@ -112,15 +119,10 @@ const questions = [
   },
   {
     id: 9,
-    question: "Quelle phrase contient une erreur ?",
-    options: [
-      "Ces enfants sont sages.",
-      "Il aime son chien.",
-      "Ses amis où gentils.",
-      "Tu viens ou tu restes ?",
-    ],
-    reponse: "Ses amis où gentils.",
-    explication: "Il faut 'sont' (verbe être) : 'Ses amis sont gentils'.",
+    question: "Complète : '___ m'énerve quand tu arrives en retard !'",
+    options: ["Sa", "Ça"],
+    reponse: "Ça",
+    explication: "'Ça' = cela. On peut dire 'Cela m'énerve' → Ça ✅",
     niveau: "difficile",
   },
   {
@@ -206,7 +208,6 @@ export default function OrthographeCM1() {
     setScore(0);
     setBonnes([]);
   };
-
   const niveauLabel = (n: string) =>
     n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
@@ -227,7 +228,6 @@ export default function OrthographeCM1() {
           <span className="breadcrumb-active">Orthographe</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -246,7 +246,6 @@ export default function OrthographeCM1() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">✏️ Orthographe · CM1</div>
@@ -312,7 +311,6 @@ export default function OrthographeCM1() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
@@ -321,16 +319,16 @@ export default function OrthographeCM1() {
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
-              let className = "qcm-option";
+              let cn = "qcm-option";
               if (selected) {
-                if (opt === questions[qIndex].reponse) className += " correct";
-                else if (opt === selected) className += " incorrect";
-                else className += " disabled";
+                if (opt === questions[qIndex].reponse) cn += " correct";
+                else if (opt === selected) cn += " incorrect";
+                else cn += " disabled";
               }
               return (
                 <button
                   key={opt}
-                  className={className}
+                  className={cn}
                   onClick={() => handleReponse(opt)}
                 >
                   {opt}
@@ -364,7 +362,6 @@ export default function OrthographeCM1() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">

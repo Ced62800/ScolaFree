@@ -134,10 +134,10 @@ const questions = [
   },
   {
     id: 15,
-    question: "Complète : '___ la classe a bien travaillé.' (tout/toute)",
-    options: ["Tout", "Tous", "Toutes", "Toute"],
-    reponse: "Toute",
-    explication: "'classe' est féminin singulier → 'toute'.",
+    question: "Complète : '___ m'énerve quand tu arrives en retard !' (ça/sa)",
+    options: ["Sa", "Ça"],
+    reponse: "Ça",
+    explication: "'Ça' = cela. On peut dire 'Cela m'énerve' → Ça ✅",
     theme: "orthographe-2",
   },
   // Vocabulaire 2 (5)
@@ -252,7 +252,6 @@ export default function BilanCE2FrancaisPage2() {
       scoreRef.current += 1;
     }
   };
-
   const handleSuivant = async () => {
     if (qIndex + 1 >= shuffledQuestions.length) {
       if (!isSaving.current) {
@@ -275,7 +274,6 @@ export default function BilanCE2FrancaisPage2() {
       setSelected(null);
     }
   };
-
   const handleRecommencer = () => {
     isSaving.current = false;
     scoreRef.current = 0;
@@ -290,7 +288,6 @@ export default function BilanCE2FrancaisPage2() {
     });
     setTotalScore(0);
   };
-
   const getMention = (score: number) => {
     if (score >= 18)
       return { label: "Excellent !", icon: "🏆", color: "#2ec4b6" };
@@ -299,7 +296,6 @@ export default function BilanCE2FrancaisPage2() {
       return { label: "Assez bien !", icon: "👍", color: "#ffd166" };
     return { label: "À revoir !", icon: "💪", color: "#ff6b6b" };
   };
-
   const mention = getMention(totalScore);
 
   return (
@@ -319,7 +315,6 @@ export default function BilanCE2FrancaisPage2() {
           <span className="breadcrumb-active">Bilan Partie 2</span>
         </div>
       </div>
-
       {etape === "intro" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Partie 2 · CE2</div>
@@ -409,7 +404,6 @@ export default function BilanCE2FrancaisPage2() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <>
           <div className="progression-wrapper">
@@ -436,17 +430,17 @@ export default function BilanCE2FrancaisPage2() {
             </div>
             <div className="qcm-options">
               {shuffledOptions.map((opt) => {
-                let className = "qcm-option";
+                let cn = "qcm-option";
                 if (selected) {
                   if (opt === shuffledQuestions[qIndex].reponse)
-                    className += " correct";
-                  else if (opt === selected) className += " incorrect";
-                  else className += " disabled";
+                    cn += " correct";
+                  else if (opt === selected) cn += " incorrect";
+                  else cn += " disabled";
                 }
                 return (
                   <button
                     key={opt}
-                    className={className}
+                    className={cn}
                     onClick={() => handleReponse(opt)}
                   >
                     {opt}
@@ -481,7 +475,6 @@ export default function BilanCE2FrancaisPage2() {
           </div>
         </>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">{mention.icon}</div>

@@ -56,7 +56,7 @@ const questions = [
     reponse: "conjonction",
     explication: "'mais' est une conjonction de coordination.",
   },
-  // Conjugaison (5) - PC + imparfait
+  // Conjugaison (5)
   {
     id: 6,
     theme: "conjugaison",
@@ -134,15 +134,10 @@ const questions = [
   {
     id: 15,
     theme: "orthographe",
-    question: "Quelle phrase contient une erreur ?",
-    options: [
-      "Ces enfants sont sages.",
-      "Il aime son chien.",
-      "Ses amis où gentils.",
-      "Tu viens ou tu restes ?",
-    ],
-    reponse: "Ses amis où gentils.",
-    explication: "Il faut 'sont' : 'Ses amis sont gentils'.",
+    question: "Complète : 'Il a oublié ___ veste à l'école.' (ça/sa)",
+    options: ["ça", "sa"],
+    reponse: "sa",
+    explication: "'sa' = la sienne. On peut dire 'ma veste' → sa ✅",
   },
   // Vocabulaire (5)
   {
@@ -257,7 +252,6 @@ export default function BilanFinalCM1() {
       scoreRef.current += 1;
     }
   };
-
   const handleSuivant = async () => {
     if (qIndex + 1 >= shuffledQuestions.length) {
       if (scoreSaved.current) return;
@@ -281,7 +275,6 @@ export default function BilanFinalCM1() {
       setSelected(null);
     }
   };
-
   const handleRecommencer = () => {
     scoreSaved.current = false;
     scoreRef.current = 0;
@@ -291,7 +284,6 @@ export default function BilanFinalCM1() {
     setScores({ grammaire: 0, conjugaison: 0, orthographe: 0, vocabulaire: 0 });
     setTotalScore(0);
   };
-
   const getMention = (score: number) => {
     if (score >= 18)
       return { label: "Excellent !", icon: "🏆", color: "#2ec4b6" };
@@ -300,7 +292,6 @@ export default function BilanFinalCM1() {
       return { label: "Assez bien !", icon: "👍", color: "#ffd166" };
     return { label: "À revoir !", icon: "💪", color: "#ff6b6b" };
   };
-
   const mention = getMention(totalScore);
 
   return (
@@ -320,7 +311,6 @@ export default function BilanFinalCM1() {
           <span className="breadcrumb-active">Bilan Final</span>
         </div>
       </div>
-
       {etape === "intro" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">🎯 Bilan Final · CM1</div>
@@ -399,7 +389,6 @@ export default function BilanFinalCM1() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <>
           <div className="progression-wrapper">
@@ -426,17 +415,17 @@ export default function BilanFinalCM1() {
             </div>
             <div className="qcm-options">
               {shuffledOptions.map((opt) => {
-                let className = "qcm-option";
+                let cn = "qcm-option";
                 if (selected) {
                   if (opt === shuffledQuestions[qIndex].reponse)
-                    className += " correct";
-                  else if (opt === selected) className += " incorrect";
-                  else className += " disabled";
+                    cn += " correct";
+                  else if (opt === selected) cn += " incorrect";
+                  else cn += " disabled";
                 }
                 return (
                   <button
                     key={opt}
-                    className={className}
+                    className={cn}
                     onClick={() => handleReponse(opt)}
                   >
                     {opt}
@@ -471,7 +460,6 @@ export default function BilanFinalCM1() {
           </div>
         </>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">{mention.icon}</div>

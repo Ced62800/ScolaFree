@@ -33,6 +33,13 @@ const lecon = {
       exemple:
         "Tout le monde. · Tous les élèves. · Toute la classe. · Toutes les filles.",
     },
+    {
+      titre: "ça / sa",
+      texte:
+        "'ça' est un pronom démonstratif qui signifie 'cela'. On peut le remplacer par 'cela'. 'sa' est un déterminant possessif (= la sienne). On peut le remplacer par 'ma' ou 'ta'.",
+      exemple:
+        "Ça m'énerve ! → Cela m'énerve ✅ · Il prend sa veste. → Il prend ma veste ✅",
+    },
   ],
 };
 
@@ -104,18 +111,18 @@ const questions = [
   },
   {
     id: 9,
-    question: "Complète : 'Je ___ donne un cadeau.' (leur/leurs)",
-    options: ["leurs", "leur"],
-    reponse: "leur",
-    explication: "'leur' sans -s = à eux (je donne à eux un cadeau).",
+    question: "Complète : '___ m'énerve quand tu fais ça !' (ça/sa)",
+    options: ["Sa", "Ça"],
+    reponse: "Ça",
+    explication: "'Ça' = cela. On peut dire 'Cela m'énerve' → Ça ✅",
     niveau: "difficile",
   },
   {
     id: 10,
-    question: "Complète : '___ les filles chantent bien.' (tout/toutes)",
-    options: ["Tout", "Tous", "Toute", "Toutes"],
-    reponse: "Toutes",
-    explication: "'filles' est féminin pluriel → 'toutes'.",
+    question: "Complète : 'Il a oublié ___ veste à l'école.' (ça/sa)",
+    options: ["ça", "sa"],
+    reponse: "sa",
+    explication: "'sa' = la sienne. On peut dire 'ma veste' → sa ✅",
     niveau: "difficile",
   },
 ];
@@ -193,7 +200,6 @@ export default function OrthographeCE2Page2() {
     setScore(0);
     setBonnes([]);
   };
-
   const niveauLabel = (n: string) =>
     n === "facile" ? "🟢 Facile" : n === "moyen" ? "🟡 Moyen" : "🔴 Difficile";
 
@@ -216,7 +222,6 @@ export default function OrthographeCE2Page2() {
           <span className="breadcrumb-active">Orthographe 2</span>
         </div>
       </div>
-
       {etape === "qcm" && (
         <div className="progression-wrapper">
           <div className="progression-info">
@@ -235,7 +240,6 @@ export default function OrthographeCE2Page2() {
           </div>
         </div>
       )}
-
       {etape === "lecon" && (
         <div className="lecon-wrapper">
           <div className="lecon-badge">✏️ Orthographe 2 · CE2</div>
@@ -301,7 +305,6 @@ export default function OrthographeCE2Page2() {
           </button>
         </div>
       )}
-
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
@@ -310,16 +313,16 @@ export default function OrthographeCE2Page2() {
           <div className="qcm-question">{questions[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
-              let className = "qcm-option";
+              let cn = "qcm-option";
               if (selected) {
-                if (opt === questions[qIndex].reponse) className += " correct";
-                else if (opt === selected) className += " incorrect";
-                else className += " disabled";
+                if (opt === questions[qIndex].reponse) cn += " correct";
+                else if (opt === selected) cn += " incorrect";
+                else cn += " disabled";
               }
               return (
                 <button
                   key={opt}
-                  className={className}
+                  className={cn}
                   onClick={() => handleReponse(opt)}
                 >
                   {opt}
@@ -353,7 +356,6 @@ export default function OrthographeCE2Page2() {
           )}
         </div>
       )}
-
       {etape === "fini" && (
         <div className="resultat-wrapper">
           <div className="resultat-icon">
