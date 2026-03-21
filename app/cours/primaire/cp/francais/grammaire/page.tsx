@@ -1,5 +1,7 @@
 "use client";
 
+import { useDecouverte } from "@/components/DecouverteContext";
+import PopupInscription from "@/components/PopupInscription";
 import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -136,18 +138,19 @@ const questions = [
   },
 ];
 
-// Identifiants uniques pour ce thème
 const CLASSE = "cp";
 const MATIERE = "francais";
 const THEME = "le-nom";
 
 export default function GrammaireCPNom() {
   const router = useRouter();
+  const { estConnecte, maxQuestions } = useDecouverte();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
   const [bestScore, setBestScore] = useState<{
     score: number;
     total: number;
@@ -158,42 +161,48 @@ export default function GrammaireCPNom() {
   } | null>(null);
   const scoreSaved = useRef(false);
 
+  // Limite les questions selon le mode
+  const questionsActives = questions.slice(0, maxQuestions);
+
   const shuffledOptions = useMemo(
-    () => shuffleArray(questions[qIndex].options),
+    () => shuffleArray(questionsActives[qIndex]?.options ?? []),
     [qIndex],
   );
+  const progression = Math.round(
+    (bonnes.length / questionsActives.length) * 100,
+  );
 
-  const progression = Math.round((bonnes.length / questions.length) * 100);
-
-  // Charger les scores au chargement de la page
   useEffect(() => {
-    getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
-    getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
-  }, []);
+    if (estConnecte) {
+      getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+      getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+    }
+  }, [estConnecte]);
 
   const handleReponse = (option: string) => {
     if (selected) return;
     setSelected(option);
-    const correct = option === questions[qIndex].reponse;
+    const correct = option === questionsActives[qIndex].reponse;
     if (correct) setScore((s) => s + 1);
     setBonnes((b) => [...b, correct]);
   };
 
   const handleSuivant = async () => {
-    if (qIndex + 1 >= questions.length) {
+    if (qIndex + 1 >= questionsActives.length) {
+      if (!estConnecte) {
+        // Mode découverte → popup
+        setShowPopup(true);
+        return;
+      }
       if (scoreSaved.current) return;
       scoreSaved.current = true;
-
-      // Sauvegarde du score final
       await saveScore({
         classe: CLASSE,
         matiere: MATIERE,
         theme: THEME,
-        score: score,
-        total: questions.length,
+        score,
+        total: questionsActives.length,
       });
-
-      // Rafraîchir les scores pour l'écran de fin
       const [best, last] = await Promise.all([
         getBestScore(CLASSE, MATIERE, THEME),
         getLastScore(CLASSE, MATIERE, THEME),
@@ -209,6 +218,7 @@ export default function GrammaireCPNom() {
 
   const handleRecommencer = () => {
     scoreSaved.current = false;
+    setShowPopup(false);
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
@@ -216,14 +226,17 @@ export default function GrammaireCPNom() {
     setBonnes([]);
   };
 
-  const niveauLabel = (niveau: string) => {
-    if (niveau === "facile") return "🟢 Facile";
-    if (niveau === "moyen") return "🟡 Moyen";
-    return "🔴 Difficile";
-  };
+  const niveauLabel = (niveau: string) =>
+    niveau === "facile"
+      ? "🟢 Facile"
+      : niveau === "moyen"
+        ? "🟡 Moyen"
+        : "🔴 Difficile";
 
   return (
     <div className="cours-page">
+      {showPopup && <PopupInscription onRecommencer={handleRecommencer} />}
+
       <div className="cours-header">
         <button
           className="cours-back"
@@ -244,7 +257,7 @@ export default function GrammaireCPNom() {
         <div className="progression-wrapper">
           <div className="progression-info">
             <span>
-              Question {qIndex + 1} / {questions.length}
+              Question {qIndex + 1} / {questionsActives.length}
             </span>
             <span>
               {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}
@@ -257,8 +270,22 @@ export default function GrammaireCPNom() {
             ></div>
           </div>
           <div className="niveau-label">
-            {niveauLabel(questions[qIndex].niveau)}
+            {niveauLabel(questionsActives[qIndex].niveau)}
           </div>
+          {!estConnecte && (
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: "0.8rem",
+                color: "#4f8ef7",
+                marginTop: "6px",
+              }}
+            >
+              👀 Mode découverte — {questionsActives.length - qIndex - 1}{" "}
+              question{questionsActives.length - qIndex - 1 > 1 ? "s" : ""}{" "}
+              restante{questionsActives.length - qIndex - 1 > 1 ? "s" : ""}
+            </div>
+          )}
         </div>
       )}
 
@@ -267,9 +294,7 @@ export default function GrammaireCPNom() {
           <div className="lecon-badge">📝 Grammaire · CP</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
-
-          {/* Encarts Score Meilleur / Dernier */}
-          {(bestScore || lastScore) && (
+          {estConnecte && (bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               {bestScore && (
                 <div
@@ -313,7 +338,26 @@ export default function GrammaireCPNom() {
               )}
             </div>
           )}
-
+          {!estConnecte && (
+            <div
+              style={{
+                padding: "12px 16px",
+                background: "rgba(79,142,247,0.1)",
+                border: "1px solid rgba(79,142,247,0.3)",
+                borderRadius: "12px",
+                marginBottom: "16px",
+                fontSize: "0.9rem",
+                color: "#4f8ef7",
+                textAlign: "center",
+              }}
+            >
+              👀 Mode découverte · 5 questions ·{" "}
+              <a href="/inscription" style={{ color: "#fff", fontWeight: 700 }}>
+                S'inscrire gratuitement
+              </a>{" "}
+              pour tout débloquer
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -331,21 +375,23 @@ export default function GrammaireCPNom() {
         </div>
       )}
 
-      {etape === "qcm" && (
+      {etape === "qcm" && questionsActives[qIndex] && (
         <div className="qcm-wrapper">
-          <div className="qcm-question">{questions[qIndex].question}</div>
+          <div className="qcm-question">
+            {questionsActives[qIndex].question}
+          </div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
-              let className = "qcm-option";
+              let cn = "qcm-option";
               if (selected) {
-                if (opt === questions[qIndex].reponse) className += " correct";
-                else if (opt === selected) className += " incorrect";
-                else className += " disabled";
+                if (opt === questionsActives[qIndex].reponse) cn += " correct";
+                else if (opt === selected) cn += " incorrect";
+                else cn += " disabled";
               }
               return (
                 <button
                   key={opt}
-                  className={className}
+                  className={cn}
                   onClick={() => handleReponse(opt)}
                 >
                   {opt}
@@ -355,25 +401,27 @@ export default function GrammaireCPNom() {
           </div>
           {selected && (
             <div
-              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
+              className={`qcm-feedback ${selected === questionsActives[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
             >
               <div className="feedback-icon">
-                {selected === questions[qIndex].reponse ? "✅" : "❌"}
+                {selected === questionsActives[qIndex].reponse ? "✅" : "❌"}
               </div>
               <div className="feedback-texte">
                 <strong>
-                  {selected === questions[qIndex].reponse
+                  {selected === questionsActives[qIndex].reponse
                     ? "Bravo !"
                     : "Pas tout à fait..."}
                 </strong>
-                <p>{questions[qIndex].explication}</p>
+                <p>{questionsActives[qIndex].explication}</p>
               </div>
             </div>
           )}
           {selected && (
             <button className="lecon-btn" onClick={handleSuivant}>
-              {qIndex + 1 >= questions.length
-                ? "Voir mon résultat →"
+              {qIndex + 1 >= questionsActives.length
+                ? !estConnecte
+                  ? "Voir les résultats →"
+                  : "Voir mon résultat →"
                 : "Question suivante →"}
             </button>
           )}
@@ -395,7 +443,7 @@ export default function GrammaireCPNom() {
                   : "À revoir !"}
           </h2>
           <div className="resultat-score">
-            {score} / {questions.length}
+            {score} / {questionsActives.length}
           </div>
           <p className="resultat-desc">
             {score >= 9
