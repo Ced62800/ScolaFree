@@ -131,6 +131,7 @@ export default function FractionsCM1() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
   const [session, setSession] = useState(0);
 
   const questionsActives = questions.slice(0, maxQuestions);
@@ -150,14 +151,20 @@ export default function FractionsCM1() {
   };
 
   const handleSuivant = () => {
-    if (qIndex + 1 >= questionsActives.length) setEtape("fini");
-    else {
+    if (qIndex + 1 >= questionsActives.length) {
+      if (!estConnecte) {
+        setShowPopup(true);
+        return;
+      }
+      setEtape("fini");
+    } else {
       setQIndex((i) => i + 1);
       setSelected(null);
     }
   };
 
   const handleRecommencer = () => {
+    setShowPopup(false);
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
@@ -168,6 +175,7 @@ export default function FractionsCM1() {
 
   return (
     <div className="cours-page">
+      {showPopup && <PopupInscription onRecommencer={handleRecommencer} />}
       <div className="cours-header">
         <button
           className="cours-back"
