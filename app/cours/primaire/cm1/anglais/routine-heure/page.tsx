@@ -1,5 +1,8 @@
 "use client";
 
+import { useDecouverte } from "@/components/DecouverteContext";
+import PopupInscription from "@/components/PopupInscription";
+
 import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -144,6 +147,7 @@ const niveauLabel = (n: string) =>
 
 export default function RoutineHeureCM1() {
   const router = useRouter();
+  const { estConnecte, maxQuestions } = useDecouverte();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -160,11 +164,13 @@ export default function RoutineHeureCM1() {
   } | null>(null);
   const scoreSaved = useRef(false);
 
+  const questionsActives = questions.slice(0, maxQuestions);
+
   const shuffledOptions = useMemo(
-    () => shuffleArray(questions[qIndex].options),
+    () => shuffleArray(questionsActives[qIndex]?.options ?? []),
     [qIndex, session],
   );
-  const progression = Math.round((bonnes.length / questions.length) * 100);
+  const progression = Math.round((bonnes.length / questionsActives.length) * 100);
 
   useEffect(() => {
     getBestScore("cm1", "anglais", "routine-heure").then(setBestScore);
@@ -174,13 +180,13 @@ export default function RoutineHeureCM1() {
   const handleReponse = (option: string) => {
     if (selected) return;
     setSelected(option);
-    const correct = option === questions[qIndex].reponse;
+    const correct = option === questionsActives[qIndex].reponse;
     if (correct) setScore((s) => s + 1);
     setBonnes((b) => [...b, correct]);
   };
 
   const handleSuivant = async (currentScore: number) => {
-    if (qIndex + 1 >= questions.length) {
+    if (qIndex + 1 >= questionsActives.length) {
       if (scoreSaved.current) return;
       scoreSaved.current = true;
       await saveScore({
@@ -188,7 +194,7 @@ export default function RoutineHeureCM1() {
         matiere: "anglais",
         theme: "routine-heure",
         score: currentScore,
-        total: questions.length,
+        total: questionsActives.length,
       });
       const [best, last] = await Promise.all([
         getBestScore("cm1", "anglais", "routine-heure"),
@@ -235,7 +241,7 @@ export default function RoutineHeureCM1() {
         <div className="progression-wrapper">
           <div className="progression-info">
             <span>
-              Question {qIndex + 1} / {questions.length}
+              Question {qIndex + 1} / {questionsActives.length}
             </span>
             <span>
               {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}
@@ -319,14 +325,14 @@ export default function RoutineHeureCM1() {
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
-            {niveauLabel(questions[qIndex].niveau)}
+            {niveauLabel(questionsActives[qIndex].niveau)}
           </div>
-          <div className="qcm-question">{questions[qIndex].question}</div>
+          <div className="qcm-question">{questionsActives[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
               let className = "qcm-option";
               if (selected) {
-                if (opt === questions[qIndex].reponse) className += " correct";
+                if (opt === questionsActives[qIndex].reponse) className += " correct";
                 else if (opt === selected) className += " incorrect";
                 else className += " disabled";
               }
@@ -343,24 +349,24 @@ export default function RoutineHeureCM1() {
           </div>
           {selected && (
             <div
-              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
+              className={`qcm-feedback ${selected === questionsActives[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
             >
               <div className="feedback-icon">
-                {selected === questions[qIndex].reponse ? "✅" : "❌"}
+                {selected === questionsActives[qIndex].reponse ? "✅" : "❌"}
               </div>
               <div className="feedback-texte">
                 <strong>
-                  {selected === questions[qIndex].reponse
+                  {selected === questionsActives[qIndex].reponse
                     ? "Well done! 🎉"
                     : "Not quite..."}
                 </strong>
-                <p>{questions[qIndex].explication}</p>
+                <p>{questionsActives[qIndex].explication}</p>
               </div>
             </div>
           )}
           {selected && (
             <button className="lecon-btn" onClick={() => handleSuivant(score)}>
-              {qIndex + 1 >= questions.length
+              {qIndex + 1 >= questionsActives.length
                 ? "Voir mon résultat →"
                 : "Question suivante →"}
             </button>
@@ -383,7 +389,7 @@ export default function RoutineHeureCM1() {
                   : "Keep trying!"}
           </h2>
           <div className="resultat-score">
-            {score} / {questions.length}
+            {score} / {questionsActives.length}
           </div>
           {(bestScore || lastScore) && (
             <div style={{ display: "flex", gap: "10px", margin: "12px 0" }}>

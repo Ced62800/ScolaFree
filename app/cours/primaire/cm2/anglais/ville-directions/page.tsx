@@ -1,5 +1,8 @@
 "use client";
 
+import { useDecouverte } from "@/components/DecouverteContext";
+import PopupInscription from "@/components/PopupInscription";
+
 import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -158,6 +161,7 @@ const THEME = "ville-directions";
 
 export default function VilleDirectionsCM2() {
   const router = useRouter();
+  const { estConnecte, maxQuestions } = useDecouverte();
   const [etape, setEtape] = useState<"lecon" | "qcm" | "fini">("lecon");
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -172,11 +176,13 @@ export default function VilleDirectionsCM2() {
     total: number;
   } | null>(null);
   const scoreSaved = useRef(false);
+  const questionsActives = questions.slice(0, maxQuestions);
+
   const shuffledOptions = useMemo(
-    () => shuffleArray(questions[qIndex].options),
+    () => shuffleArray(questionsActives[qIndex]?.options ?? []),
     [qIndex],
   );
-  const progression = Math.round((bonnes.length / questions.length) * 100);
+  const progression = Math.round((bonnes.length / questionsActives.length) * 100);
   useEffect(() => {
     getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
     getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
@@ -184,12 +190,12 @@ export default function VilleDirectionsCM2() {
   const handleReponse = (option: string) => {
     if (selected) return;
     setSelected(option);
-    const correct = option === questions[qIndex].reponse;
+    const correct = option === questionsActives[qIndex].reponse;
     if (correct) setScore((s) => s + 1);
     setBonnes((b) => [...b, correct]);
   };
   const handleSuivant = async () => {
-    if (qIndex + 1 >= questions.length) {
+    if (qIndex + 1 >= questionsActives.length) {
       if (!scoreSaved.current) {
         scoreSaved.current = true;
         await saveScore({
@@ -197,7 +203,7 @@ export default function VilleDirectionsCM2() {
           matiere: MATIERE,
           theme: THEME,
           score,
-          total: questions.length,
+          total: questionsActives.length,
         });
         const [best, last] = await Promise.all([
           getBestScore(CLASSE, MATIERE, THEME),
@@ -244,7 +250,7 @@ export default function VilleDirectionsCM2() {
         <div className="progression-wrapper">
           <div className="progression-info">
             <span>
-              Question {qIndex + 1} / {questions.length}
+              Question {qIndex + 1} / {questionsActives.length}
             </span>
             <span>
               {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}
@@ -326,14 +332,14 @@ export default function VilleDirectionsCM2() {
       {etape === "qcm" && (
         <div className="qcm-wrapper">
           <div className="niveau-label">
-            {niveauLabel(questions[qIndex].niveau)}
+            {niveauLabel(questionsActives[qIndex].niveau)}
           </div>
-          <div className="qcm-question">{questions[qIndex].question}</div>
+          <div className="qcm-question">{questionsActives[qIndex].question}</div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
               let cn = "qcm-option";
               if (selected) {
-                if (opt === questions[qIndex].reponse) cn += " correct";
+                if (opt === questionsActives[qIndex].reponse) cn += " correct";
                 else if (opt === selected) cn += " incorrect";
                 else cn += " disabled";
               }
@@ -350,24 +356,24 @@ export default function VilleDirectionsCM2() {
           </div>
           {selected && (
             <div
-              className={`qcm-feedback ${selected === questions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
+              className={`qcm-feedback ${selected === questionsActives[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
             >
               <div className="feedback-icon">
-                {selected === questions[qIndex].reponse ? "✅" : "❌"}
+                {selected === questionsActives[qIndex].reponse ? "✅" : "❌"}
               </div>
               <div className="feedback-texte">
                 <strong>
-                  {selected === questions[qIndex].reponse
+                  {selected === questionsActives[qIndex].reponse
                     ? "Well done! 🎉"
                     : "Not quite..."}
                 </strong>
-                <p>{questions[qIndex].explication}</p>
+                <p>{questionsActives[qIndex].explication}</p>
               </div>
             </div>
           )}
           {selected && (
             <button className="lecon-btn" onClick={handleSuivant}>
-              {qIndex + 1 >= questions.length
+              {qIndex + 1 >= questionsActives.length
                 ? "Voir mon résultat →"
                 : "Question suivante →"}
             </button>
@@ -389,7 +395,7 @@ export default function VilleDirectionsCM2() {
                   : "Keep trying!"}
           </h2>
           <div className="resultat-score">
-            {score} / {questions.length}
+            {score} / {questionsActives.length}
           </div>
           <p className="resultat-desc">
             {score >= 9

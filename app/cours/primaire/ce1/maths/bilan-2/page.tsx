@@ -219,6 +219,7 @@ export default function BilanMathsCE1Page2() {
   }, []);
 
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
+
   const shuffledOptions = useMemo(() => {
     if (!shuffledQuestions[qIndex]) return [];
     return shuffleArray(shuffledQuestions[qIndex].options);
