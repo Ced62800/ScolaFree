@@ -146,6 +146,7 @@ export default function MeteoSaisonsCM2() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
   const [bestScore, setBestScore] = useState<{
     score: number;
     total: number;
@@ -175,6 +176,10 @@ export default function MeteoSaisonsCM2() {
   };
   const handleSuivant = async () => {
     if (qIndex + 1 >= questionsActives.length) {
+      if (!estConnecte) {
+        setShowPopup(true);
+        return;
+      }
       if (!scoreSaved.current) {
         scoreSaved.current = true;
         await saveScore({
@@ -199,6 +204,7 @@ export default function MeteoSaisonsCM2() {
   };
   const handleRecommencer = () => {
     scoreSaved.current = false;
+    setShowPopup(false);
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
@@ -210,6 +216,7 @@ export default function MeteoSaisonsCM2() {
 
   return (
     <div className="cours-page">
+      {showPopup && <PopupInscription onRecommencer={handleRecommencer} />}
       <div className="cours-header">
         <button
           className="cours-back"

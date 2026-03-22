@@ -153,6 +153,7 @@ export default function RoutineHeureCM1() {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [bonnes, setBonnes] = useState<boolean[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
   const [session, setSession] = useState(0);
   const [bestScore, setBestScore] = useState<{
     score: number;
@@ -187,6 +188,10 @@ export default function RoutineHeureCM1() {
 
   const handleSuivant = async (currentScore: number) => {
     if (qIndex + 1 >= questionsActives.length) {
+      if (!estConnecte) {
+        setShowPopup(true);
+        return;
+      }
       if (scoreSaved.current) return;
       scoreSaved.current = true;
       await saveScore({
@@ -211,6 +216,7 @@ export default function RoutineHeureCM1() {
 
   const handleRecommencer = () => {
     scoreSaved.current = false;
+    setShowPopup(false);
     setEtape("lecon");
     setQIndex(0);
     setSelected(null);
@@ -221,6 +227,7 @@ export default function RoutineHeureCM1() {
 
   return (
     <div className="cours-page">
+      {showPopup && <PopupInscription onRecommencer={handleRecommencer} />}
       <div className="cours-header">
         <button
           className="cours-back"

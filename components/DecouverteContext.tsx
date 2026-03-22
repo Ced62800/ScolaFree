@@ -4,12 +4,12 @@ import { createContext, useContext } from "react";
 
 export type ModeDecouverte = {
   estConnecte: boolean;
-  maxQuestions: number; // 5 si non connecté, 10 si connecté
+  maxQuestions: number;
 };
 
 export const DecouverteContext = createContext<ModeDecouverte>({
-  estConnecte: true,
-  maxQuestions: 10,
+  estConnecte: false,
+  maxQuestions: 5,
 });
 
 export const useDecouverte = () => useContext(DecouverteContext);
