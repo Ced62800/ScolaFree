@@ -11,6 +11,11 @@ function ConnexionForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [modeReset, setModeReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState("");
+  const [resetError, setResetError] = useState("");
 
   useEffect(() => {
     if (searchParams.get("inscrit") === "1") {
@@ -52,6 +57,81 @@ function ConnexionForm() {
     router.push("/");
   };
 
+  const handleReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResetError("");
+    setResetSuccess("");
+    setResetLoading(true);
+
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+      redirectTo: `${window.location.origin}/reinitialiser-mot-de-passe`,
+    });
+
+    setResetLoading(false);
+
+    if (error) {
+      setResetError("Une erreur est survenue. Vérifie ton adresse email.");
+      return;
+    }
+
+    setResetSuccess(
+      "✅ Un email de réinitialisation a été envoyé ! Vérifie ta boîte mail.",
+    );
+  };
+
+  if (modeReset) {
+    return (
+      <div className="auth-page">
+        <div className="auth-card">
+          <div className="auth-logo" onClick={() => router.push("/")}>
+            🎓 Scola<span>Free</span>
+          </div>
+          <h2 className="auth-title">Mot de passe oublié</h2>
+          <p className="auth-sub">
+            Entre ton email pour recevoir un lien de réinitialisation.
+          </p>
+
+          {resetSuccess && <div className="auth-success">{resetSuccess}</div>}
+
+          {!resetSuccess && (
+            <form onSubmit={handleReset} className="auth-form">
+              <div className="form-group">
+                <label>Adresse email</label>
+                <input
+                  type="email"
+                  placeholder="jean.dupont@email.com"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  required
+                />
+              </div>
+              {resetError && <div className="auth-error">⚠️ {resetError}</div>}
+              <button
+                type="submit"
+                className="auth-btn"
+                disabled={resetLoading}
+              >
+                {resetLoading ? "Envoi en cours..." : "Envoyer le lien →"}
+              </button>
+            </form>
+          )}
+
+          <p className="auth-switch">
+            <span
+              onClick={() => {
+                setModeReset(false);
+                setResetSuccess("");
+                setResetError("");
+              }}
+            >
+              ← Retour à la connexion
+            </span>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -84,6 +164,27 @@ function ConnexionForm() {
               value={form.password}
               onChange={handleChange}
             />
+          </div>
+
+          {/* Lien mot de passe oublié */}
+          <div
+            style={{
+              textAlign: "right",
+              marginTop: "-8px",
+              marginBottom: "12px",
+            }}
+          >
+            <span
+              onClick={() => setModeReset(true)}
+              style={{
+                fontSize: "0.85rem",
+                color: "#4f8ef7",
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+            >
+              Mot de passe oublié ?
+            </span>
           </div>
 
           {error && <div className="auth-error">⚠️ {error}</div>}

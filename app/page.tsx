@@ -105,8 +105,9 @@ const CLASSES_CONFIG: Record<
   },
 };
 
-type BilanScore = { score: number; total: number } | null;
-type ClasseBilans = Record<string, BilanScore>;
+// Score moyen par matière (sur 20), calculé sur tous les bilans effectués
+type MoyenneMatiere = { moyenne: number; nbBilans: number } | null;
+type ClasseBilans = Record<string, MoyenneMatiere>;
 
 export default function Home() {
   const [prenom, setPrenom] = useState("");
@@ -127,29 +128,45 @@ export default function Home() {
           .select("prenom, role, classe")
           .eq("id", user.id)
           .single();
+
         if (profile) {
           setPrenom(profile.prenom);
           setRole(profile.role);
           setClasseEleve(profile.classe);
 
-          // On charge uniquement les bilans de la classe du profil
           if (profile.classe) {
+            // Récupère TOUS les bilans (bilan + bilan-2) de la classe
             const { data: bilanData } = await supabase
               .from("scores")
-              .select("matiere, score, total, created_at")
+              .select("matiere, theme, score, total")
               .eq("user_id", user.id)
               .eq("classe", profile.classe)
-              .eq("theme", "bilan")
-              .order("created_at", { ascending: false });
+              .or("theme.eq.bilan,theme.eq.bilan-2")
+              .order("score", { ascending: false }); // meilleur score en premier
 
             if (bilanData && bilanData.length > 0) {
-              const result: ClasseBilans = {};
-              // Les données arrivent du plus récent au plus ancien.
-              // On prend le premier trouvé par matière = le dernier score effectué.
+              // Pour chaque matière, on prend le meilleur score de chaque bilan
+              // puis on fait la moyenne
+              const parMatiere: Record<string, Record<string, number>> = {};
+
               for (const b of bilanData) {
-                if (!result[b.matiere]) {
-                  result[b.matiere] = { score: b.score, total: b.total };
+                if (!parMatiere[b.matiere]) parMatiere[b.matiere] = {};
+                // On garde uniquement le meilleur score par theme (bilan ou bilan-2)
+                if (!(b.theme in parMatiere[b.matiere])) {
+                  parMatiere[b.matiere][b.theme] = (b.score / b.total) * 20;
                 }
+              }
+
+              // Calcule la moyenne par matière
+              const result: ClasseBilans = {};
+              for (const [matiere, themes] of Object.entries(parMatiere)) {
+                const scores = Object.values(themes);
+                const moyenne =
+                  scores.reduce((acc, s) => acc + s, 0) / scores.length;
+                result[matiere] = {
+                  moyenne: Math.round(moyenne * 10) / 10,
+                  nbBilans: scores.length,
+                };
               }
               setBilans(result);
             }
@@ -170,18 +187,18 @@ export default function Home() {
     router.refresh();
   };
 
-  const getMoyenne = (): number | null => {
+  const getMoyenneGenerale = (): number | null => {
     if (!classeEleve) return null;
     const config = CLASSES_CONFIG[classeEleve];
     if (!config) return null;
     const scores = config.matieres
-      .map((m) => bilans[m.key])
-      .filter((b): b is { score: number; total: number } => !!b);
+      .map((m) => bilans[m.key]?.moyenne)
+      .filter((s): s is number => s !== undefined && s !== null);
     if (scores.length === 0) return null;
-    return scores.reduce((acc, b) => acc + b.score, 0) / scores.length;
+    return scores.reduce((acc, s) => acc + s, 0) / scores.length;
   };
 
-  const moyenne = getMoyenne();
+  const moyenneGenerale = getMoyenneGenerale();
   const config = classeEleve ? CLASSES_CONFIG[classeEleve] : null;
   const aBilans = config && Object.keys(bilans).length > 0;
 
@@ -268,7 +285,6 @@ export default function Home() {
         <div className="blob blob-1"></div>
         <div className="blob blob-2"></div>
         <div className="blob blob-3"></div>
-
         <div className="hero-content">
           <div className="badge">
             <span className="badge-dot"></span> 100% gratuit · Aucune carte
@@ -305,7 +321,6 @@ export default function Home() {
             </a>
           </div>
         </div>
-
         <div className="stats">
           <div className="stat-item">
             <div className="stat-num">
@@ -352,7 +367,6 @@ export default function Home() {
           >
             📊 Mes progrès
           </h2>
-
           <div
             style={{
               background: "rgba(255,255,255,0.04)",
@@ -374,10 +388,10 @@ export default function Home() {
               >
                 🎓 {config.label}
               </div>
-              {moyenne !== null && (
+              {moyenneGenerale !== null && (
                 <div style={{ textAlign: "right" }}>
                   <div style={{ fontSize: "0.75rem", color: "#aaa" }}>
-                    Moyenne bilans
+                    Moyenne générale
                   </div>
                   <div
                     style={{
@@ -386,19 +400,18 @@ export default function Home() {
                       color: "#ffd166",
                     }}
                   >
-                    {moyenne.toFixed(2).replace(".", ",")} / 20
+                    {moyenneGenerale.toFixed(1).replace(".", ",")} / 20
                   </div>
                 </div>
               )}
             </div>
-
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               {config.matieres.map((matiere) => {
                 const bilan = bilans[matiere.key];
                 const scoreColor = bilan
-                  ? bilan.score >= 14
+                  ? bilan.moyenne >= 14
                     ? "#2ec4b6"
-                    : bilan.score >= 10
+                    : bilan.moyenne >= 10
                       ? "#ffd166"
                       : "#ff6b6b"
                   : "#555";
@@ -428,15 +441,28 @@ export default function Home() {
                       {matiere.emoji} {matiere.label}
                     </div>
                     {bilan ? (
-                      <div
-                        style={{
-                          fontSize: "1.4rem",
-                          fontWeight: 800,
-                          color: scoreColor,
-                        }}
-                      >
-                        {bilan.score} / 20
-                      </div>
+                      <>
+                        <div
+                          style={{
+                            fontSize: "1.4rem",
+                            fontWeight: 800,
+                            color: scoreColor,
+                          }}
+                        >
+                          {bilan.moyenne.toFixed(1).replace(".", ",")} / 20
+                        </div>
+                        {bilan.nbBilans > 1 && (
+                          <div
+                            style={{
+                              fontSize: "0.7rem",
+                              color: "#888",
+                              marginTop: "4px",
+                            }}
+                          >
+                            moy. de {bilan.nbBilans} bilans
+                          </div>
+                        )}
+                      </>
                     ) : (
                       <div
                         style={{
