@@ -115,6 +115,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [classeEleve, setClasseEleve] = useState<string | null>(null);
   const [bilans, setBilans] = useState<ClasseBilans>({});
+  const [nbBadges, setNbBadges] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -169,6 +170,7 @@ export default function Home() {
                 };
               }
               setBilans(result);
+              setNbBadges(bilanData.length >= 1 ? 1 : 0);
             }
           }
         }
@@ -229,6 +231,18 @@ export default function Home() {
                   ⚙️ Admin
                 </a>
               )}
+              <a
+                href="/profil"
+                style={{
+                  color: "rgba(255,255,255,0.8)",
+                  fontSize: "0.9rem",
+                  textDecoration: "none",
+                }}
+              >
+                👤 Mon profil{" "}
+                {nbBadges > 0 &&
+                  `🏅 ${nbBadges} badge${nbBadges > 1 ? "s" : ""} gagné${nbBadges > 1 ? "s" : ""} !`}
+              </a>
               <button className="logout-btn-link" onClick={handleLogout}>
                 🚪 Déconnexion
               </button>
@@ -276,6 +290,7 @@ export default function Home() {
             )}
             <button onClick={handleLogout} className="mobile-menu-logout">
               🚪 Déconnexion
+              <a href="/profil">👤 Mon profil</a>
             </button>
           </>
         )}
@@ -481,7 +496,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
       <footer>
         <div className="footer-logo">
           🎓 Scola<span>Free</span>
