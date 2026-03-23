@@ -277,7 +277,7 @@ export default function Inscription() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
+                gridTemplateColumns: "repeat(3, 1fr)",
                 gap: "16px",
                 marginTop: "8px",
               }}
