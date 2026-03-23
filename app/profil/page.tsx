@@ -17,6 +17,62 @@ import {
   YAxis,
 } from "recharts";
 
+const BASE_URL =
+  "https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/avatars/";
+
+const AVATARS = [
+  { id: "Alchimiste", nom: "Alchimiste", fichier: "Alchimiste%20.png" },
+  {
+    id: "Apprenti_Sorcier",
+    nom: "Apprenti Sorcier",
+    fichier: "Apprenti%20Sorcier%20.png",
+  },
+  { id: "Astronaute", nom: "Astronaute", fichier: "Astronaute.png" },
+  {
+    id: "Cavalier_du_Savoir",
+    nom: "Cavalier du Savoir",
+    fichier: "Cavalier%20du%20Savoir..jpg",
+  },
+  { id: "Chevalier", nom: "Chevalier", fichier: "Chevalier.png" },
+  {
+    id: "Clown_du_Savoir",
+    nom: "Clown du Savoir",
+    fichier: "Clown%20du%20Savoir.jpg",
+  },
+  { id: "Clown_Ssola", nom: "Clown Ssola", fichier: "Clown%20Ssola.jpg" },
+  { id: "Detective", nom: "Détective", fichier: "Detective.png" },
+  { id: "dragon", nom: "Dragon", fichier: "dragon.png" },
+  { id: "Explorateur", nom: "Explorateur", fichier: "Explorateur.png" },
+  { id: "Gardien", nom: "Gardien", fichier: "Gardien%20.png" },
+  {
+    id: "Golem_de_Pierre",
+    nom: "Golem de Pierre",
+    fichier: "Golem%20de%20Pierre.png",
+  },
+  {
+    id: "Mage_des_etoiles",
+    nom: "Mage des étoiles",
+    fichier: "Mage%20des%20etoiles.png",
+  },
+  { id: "Ninja", nom: "Ninja", fichier: "Ninja.png" },
+  {
+    id: "Pirate_du_Savoir",
+    nom: "Pirate du Savoir",
+    fichier: "Pirate%20du%20Savoir.jpg",
+  },
+  {
+    id: "Pompier_du_Savoir",
+    nom: "Pompier du Savoir",
+    fichier: "Pompier%20du%20Savoir.jpg",
+  },
+  {
+    id: "Robot_futuriste",
+    nom: "Robot futuriste",
+    fichier: "Robot%20futuriste.png",
+  },
+  { id: "Samourai", nom: "Samouraï", fichier: "Samourai.png" },
+];
+
 export default function ProfilPage() {
   const router = useRouter();
   const [profil, setProfil] = useState<{
@@ -25,6 +81,7 @@ export default function ProfilPage() {
     classe: string;
     niveau: string;
     email: string;
+    avatar: string;
   } | null>(null);
   const [loading, setLoading] = useState(true);
   const [modeReset, setModeReset] = useState(false);
@@ -32,6 +89,10 @@ export default function ProfilPage() {
   const [resetSuccess, setResetSuccess] = useState("");
   const [resetError, setResetError] = useState("");
   const [scores, setScores] = useState<any[]>([]);
+  const [modeAvatar, setModeAvatar] = useState(false);
+  const [avatarChoisi, setAvatarChoisi] = useState("");
+  const [avatarSaving, setAvatarSaving] = useState(false);
+  const [avatarSuccess, setAvatarSuccess] = useState("");
 
   useEffect(() => {
     const chargerProfil = async () => {
@@ -43,7 +104,7 @@ export default function ProfilPage() {
       }
       const { data } = await supabase
         .from("profiles")
-        .select("prenom, nom, classe, niveau")
+        .select("prenom, nom, classe, niveau, avatar")
         .eq("id", user.id)
         .single();
       if (data) {
@@ -53,7 +114,9 @@ export default function ProfilPage() {
           classe: data.classe,
           niveau: data.niveau,
           email: user.email ?? "",
+          avatar: data.avatar ?? "",
         });
+        setAvatarChoisi(data.avatar ?? "");
       }
       const tousLesScores = await getAllScores();
       setScores(tousLesScores);
@@ -77,6 +140,23 @@ export default function ProfilPage() {
     }
     setResetSuccess("Un email de réinitialisation a été envoyé !");
     setModeReset(false);
+  };
+
+  const handleSauvegarderAvatar = async () => {
+    if (!avatarChoisi) return;
+    setAvatarSaving(true);
+    const { data: sessionData } = await supabase.auth.getSession();
+    const user = sessionData?.session?.user;
+    if (!user) return;
+    await supabase
+      .from("profiles")
+      .update({ avatar: avatarChoisi })
+      .eq("id", user.id);
+    setProfil((prev) => (prev ? { ...prev, avatar: avatarChoisi } : prev));
+    setAvatarSaving(false);
+    setModeAvatar(false);
+    setAvatarSuccess("Avatar mis à jour !");
+    setTimeout(() => setAvatarSuccess(""), 3000);
   };
 
   const niveauLabel: Record<string, string> = {
@@ -155,7 +235,6 @@ export default function ProfilPage() {
       .filter(Boolean);
   };
 
-  // Calcul des badges
   const nbBilans = bilansUniquement.length;
   const a2020 = bilansUniquement.some((s) => s.score === s.total);
   const bilans1620 = bilansUniquement.filter(
@@ -270,6 +349,8 @@ export default function ProfilPage() {
   const dataMoyennes = moyenneParMatiere();
   const dataComparaison = comparaisonBilans();
   const aBilans = bilansUniquement.length > 0;
+  const avatarActuel = AVATARS.find((a) => a.id === profil.avatar);
+  const avatarUrl = avatarActuel ? BASE_URL + avatarActuel.fichier : null;
 
   return (
     <div style={{ maxWidth: "720px", margin: "0 auto", padding: "48px 20px" }}>
@@ -292,6 +373,24 @@ export default function ProfilPage() {
         </p>
       </div>
 
+      {/* Message succès avatar */}
+      {avatarSuccess && (
+        <div
+          style={{
+            background: "rgba(46,196,182,0.1)",
+            border: "1px solid rgba(46,196,182,0.3)",
+            color: "#2ec4b6",
+            padding: "12px 16px",
+            borderRadius: "10px",
+            marginBottom: "16px",
+            fontSize: "0.9rem",
+            textAlign: "center",
+          }}
+        >
+          ✅ {avatarSuccess}
+        </div>
+      )}
+
       {/* Avatar + nom */}
       <div
         style={{
@@ -306,21 +405,79 @@ export default function ProfilPage() {
           gap: "20px",
         }}
       >
-        <div
-          style={{
-            width: "64px",
-            height: "64px",
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "1.8rem",
-            flexShrink: 0,
-          }}
-        >
-          🎓
+        {/* Avatar cliquable */}
+        <div style={{ position: "relative", flexShrink: 0 }}>
+          <div
+            onClick={() => setModeAvatar(!modeAvatar)}
+            style={{
+              cursor: "pointer",
+              width: "80px",
+              height: "80px",
+              borderRadius: "50%",
+              overflow: "hidden",
+              border: "3px solid rgba(79,142,247,0.5)",
+              position: "relative",
+            }}
+          >
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt="Avatar"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "2rem",
+                }}
+              >
+                🎓
+              </div>
+            )}
+            {/* Overlay au survol */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "rgba(0,0,0,0.4)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                opacity: modeAvatar ? 1 : 0,
+                transition: "opacity 0.2s",
+              }}
+            >
+              <span style={{ fontSize: "1.2rem" }}>✏️</span>
+            </div>
+          </div>
+          <div
+            onClick={() => setModeAvatar(!modeAvatar)}
+            style={{
+              position: "absolute",
+              bottom: "-4px",
+              right: "-4px",
+              background: "#4f8ef7",
+              borderRadius: "50%",
+              width: "24px",
+              height: "24px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              fontSize: "0.75rem",
+            }}
+          >
+            ✏️
+          </div>
         </div>
+
         <div>
           <div style={{ fontSize: "1.3rem", fontWeight: 800, color: "#fff" }}>
             {profil.prenom} {profil.nom}
@@ -345,6 +502,126 @@ export default function ProfilPage() {
           </div>
         </div>
       </div>
+
+      {/* Grille choix avatar */}
+      {modeAvatar && (
+        <div
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(79,142,247,0.3)",
+            borderRadius: "20px",
+            padding: "24px",
+            marginBottom: "20px",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              color: "#aaa",
+              marginBottom: "4px",
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+            }}
+          >
+            Choisis ton avatar
+          </h3>
+          <p
+            style={{ color: "#888", fontSize: "0.85rem", marginBottom: "16px" }}
+          >
+            Clique sur le personnage qui te ressemble !
+          </p>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "12px",
+              marginBottom: "16px",
+            }}
+          >
+            {AVATARS.map((avatar) => {
+              const url = BASE_URL + avatar.fichier;
+              const estChoisi = avatarChoisi === avatar.id;
+              return (
+                <div key={avatar.id} style={{ textAlign: "center" }}>
+                  <div
+                    onClick={() => setAvatarChoisi(avatar.id)}
+                    style={{
+                      cursor: "pointer",
+                      borderRadius: "50%",
+                      border: estChoisi
+                        ? "3px solid #4f8ef7"
+                        : "3px solid rgba(255,255,255,0.1)",
+                      boxShadow: estChoisi
+                        ? "0 0 16px rgba(79,142,247,0.6)"
+                        : "none",
+                      transition: "all 0.2s",
+                      overflow: "hidden",
+                      width: "70px",
+                      height: "70px",
+                      margin: "0 auto",
+                      transform: estChoisi ? "scale(1.1)" : "scale(1)",
+                    }}
+                  >
+                    <img
+                      src={url}
+                      alt={avatar.nom}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "50%",
+                        opacity: estChoisi ? 1 : 0.75,
+                      }}
+                    />
+                  </div>
+                  <p
+                    style={{
+                      color: "#aaa",
+                      fontSize: "0.65rem",
+                      marginTop: "4px",
+                    }}
+                  >
+                    {avatar.nom}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <button
+              onClick={handleSauvegarderAvatar}
+              disabled={avatarSaving || !avatarChoisi}
+              style={{
+                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                color: "white",
+                border: "none",
+                borderRadius: "12px",
+                padding: "12px 24px",
+                fontSize: "0.95rem",
+                cursor: "pointer",
+                fontWeight: 700,
+              }}
+            >
+              {avatarSaving ? "Sauvegarde..." : "✅ Valider mon avatar"}
+            </button>
+            <button
+              onClick={() => setModeAvatar(false)}
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                color: "#aaa",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "12px",
+                padding: "12px 24px",
+                fontSize: "0.95rem",
+                cursor: "pointer",
+              }}
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Infos détaillées */}
       <div
@@ -752,7 +1029,6 @@ export default function ProfilPage() {
               opacity: badge.debloque ? 1 : 0.5,
             }}
           >
-            {/* Emoji */}
             <div
               style={{
                 fontSize: "2.5rem",
@@ -762,8 +1038,6 @@ export default function ProfilPage() {
             >
               {badge.emoji}
             </div>
-
-            {/* Nom */}
             <div
               style={{
                 fontWeight: 700,
@@ -774,8 +1048,6 @@ export default function ProfilPage() {
             >
               {badge.nom}
             </div>
-
-            {/* Description */}
             <div
               style={{
                 fontSize: "0.8rem",
@@ -785,8 +1057,6 @@ export default function ProfilPage() {
             >
               {badge.description}
             </div>
-
-            {/* Barre de progression */}
             <div
               style={{
                 background: "rgba(255,255,255,0.08)",
@@ -808,8 +1078,6 @@ export default function ProfilPage() {
                 }}
               />
             </div>
-
-            {/* Message */}
             <div
               style={{
                 fontSize: "0.78rem",
