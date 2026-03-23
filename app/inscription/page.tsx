@@ -25,6 +25,62 @@ const CLASSES_PAR_NIVEAU: Record<string, { value: string; label: string }[]> = {
   ],
 };
 
+const BASE_URL =
+  "https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/avatars/";
+
+const AVATARS = [
+  { id: "Alchimiste", nom: "Alchimiste", fichier: "Alchimiste%20.png" },
+  {
+    id: "Apprenti_Sorcier",
+    nom: "Apprenti Sorcier",
+    fichier: "Apprenti%20Sorcier%20.png",
+  },
+  { id: "Astronaute", nom: "Astronaute", fichier: "Astronaute.png" },
+  {
+    id: "Cavalier_du_Savoir",
+    nom: "Cavalier du Savoir",
+    fichier: "Cavalier%20du%20Savoir..jpg",
+  },
+  { id: "Chevalier", nom: "Chevalier", fichier: "Chevalier.png" },
+  {
+    id: "Clown_du_Savoir",
+    nom: "Clown du Savoir",
+    fichier: "Clown%20du%20Savoir.jpg",
+  },
+  { id: "Clown_Ssola", nom: "Clown Ssola", fichier: "Clown%20Ssola.jpg" },
+  { id: "Detective", nom: "Détective", fichier: "Detective.png" },
+  { id: "dragon", nom: "Dragon", fichier: "dragon.png" },
+  { id: "Explorateur", nom: "Explorateur", fichier: "Explorateur.png" },
+  { id: "Gardien", nom: "Gardien", fichier: "Gardien%20.png" },
+  {
+    id: "Golem_de_Pierre",
+    nom: "Golem de Pierre",
+    fichier: "Golem%20de%20Pierre.png",
+  },
+  {
+    id: "Mage_des_etoiles",
+    nom: "Mage des étoiles",
+    fichier: "Mage%20des%20etoiles.png",
+  },
+  { id: "Ninja", nom: "Ninja", fichier: "Ninja.png" },
+  {
+    id: "Pirate_du_Savoir",
+    nom: "Pirate du Savoir",
+    fichier: "Pirate%20du%20Savoir.jpg",
+  },
+  {
+    id: "Pompier_du_Savoir",
+    nom: "Pompier du Savoir",
+    fichier: "Pompier%20du%20Savoir.jpg",
+  },
+  {
+    id: "Robot_futuriste",
+    nom: "Robot futuriste",
+    fichier: "Robot%20futuriste.png",
+  },
+  { id: "Samourai", nom: "Samouraï", fichier: "Samourai.png" },
+];
+
 export default function Inscription() {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -35,6 +91,7 @@ export default function Inscription() {
     niveau: "",
     classe: "",
   });
+  const [avatarChoisi, setAvatarChoisi] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +99,6 @@ export default function Inscription() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-    // Si on change le niveau, on remet la classe à vide
     if (name === "niveau") {
       setForm({ ...form, niveau: value, classe: "" });
     } else {
@@ -68,7 +124,12 @@ export default function Inscription() {
       return;
     }
 
-    // 1. Créer le compte auth Supabase
+    if (!avatarChoisi) {
+      setError("Veuillez choisir un avatar !");
+      setLoading(false);
+      return;
+    }
+
     const { data, error: signUpError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -79,6 +140,7 @@ export default function Inscription() {
           niveau: form.niveau,
           classe: form.classe,
           role: "user",
+          avatar: avatarChoisi,
         },
       },
     });
@@ -89,7 +151,6 @@ export default function Inscription() {
       return;
     }
 
-    // 2. Insérer le profil dans la table "profiles"
     if (data.user) {
       const { error: profileError } = await supabase.from("profiles").insert({
         id: data.user.id,
@@ -99,6 +160,7 @@ export default function Inscription() {
         niveau: form.niveau,
         classe: form.classe,
         role: "user",
+        avatar: avatarChoisi,
       });
 
       if (profileError) {
@@ -116,7 +178,7 @@ export default function Inscription() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
+      <div className="auth-card" style={{ maxWidth: "640px" }}>
         <div className="auth-logo" onClick={() => router.push("/")}>
           🎓 Scola<span>Free</span>
         </div>
@@ -192,6 +254,100 @@ export default function Inscription() {
               </select>
             </div>
           )}
+
+          {/* Choix de l'avatar */}
+          <div className="form-group">
+            <label>
+              Choisis ton avatar{" "}
+              {avatarChoisi ? (
+                "✅"
+              ) : (
+                <span style={{ color: "#ff6b6b" }}>*</span>
+              )}
+            </label>
+            <p
+              style={{
+                color: "#aaa",
+                fontSize: "0.85rem",
+                marginBottom: "12px",
+              }}
+            >
+              Clique sur le personnage qui te ressemble !
+            </p>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
+                gap: "16px",
+                marginTop: "8px",
+              }}
+            >
+              {AVATARS.map((avatar) => {
+                const url = BASE_URL + avatar.fichier;
+                const estChoisi = avatarChoisi === avatar.id;
+                return (
+                  <div key={avatar.id} style={{ textAlign: "center" }}>
+                    <div
+                      onClick={() => setAvatarChoisi(avatar.id)}
+                      title={avatar.nom}
+                      style={{
+                        cursor: "pointer",
+                        borderRadius: "50%",
+                        border: estChoisi
+                          ? "3px solid #4f8ef7"
+                          : "3px solid rgba(255,255,255,0.1)",
+                        boxShadow: estChoisi
+                          ? "0 0 16px rgba(79,142,247,0.6)"
+                          : "none",
+                        transition: "all 0.2s",
+                        overflow: "hidden",
+                        width: "80px",
+                        height: "80px",
+                        margin: "0 auto",
+                        transform: estChoisi ? "scale(1.1)" : "scale(1)",
+                      }}
+                    >
+                      <img
+                        src={url}
+                        alt={avatar.nom}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: "50%",
+                          opacity: estChoisi ? 1 : 0.75,
+                          transition: "opacity 0.2s",
+                        }}
+                      />
+                    </div>
+                    <p
+                      style={{
+                        color: "#aaa",
+                        fontSize: "0.7rem",
+                        marginTop: "6px",
+                      }}
+                    >
+                      {avatar.nom}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+            {avatarChoisi && (
+              <p
+                style={{
+                  textAlign: "center",
+                  marginTop: "12px",
+                  color: "#2ec4b6",
+                  fontSize: "0.9rem",
+                  fontWeight: 600,
+                }}
+              >
+                ✅ Tu as choisi :{" "}
+                {AVATARS.find((a) => a.id === avatarChoisi)?.nom} !
+              </p>
+            )}
+          </div>
 
           {error && <div className="auth-error">⚠️ {error}</div>}
 
