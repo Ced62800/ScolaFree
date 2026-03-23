@@ -105,7 +105,6 @@ const CLASSES_CONFIG: Record<
   },
 };
 
-// Score moyen par matière (sur 20), calculé sur tous les bilans effectués
 type MoyenneMatiere = { moyenne: number; nbBilans: number } | null;
 type ClasseBilans = Record<string, MoyenneMatiere>;
 
@@ -136,29 +135,22 @@ export default function Home() {
           setClasseEleve(profile.classe);
 
           if (profile.classe) {
-            // Récupère TOUS les bilans (bilan + bilan-2) de la classe
             const { data: bilanData } = await supabase
               .from("scores")
               .select("matiere, theme, score, total")
               .eq("user_id", user.id)
               .eq("classe", profile.classe)
               .or("theme.eq.bilan,theme.eq.bilan-2")
-              .order("score", { ascending: false }); // meilleur score en premier
+              .order("score", { ascending: false });
 
             if (bilanData && bilanData.length > 0) {
-              // Pour chaque matière, on prend le meilleur score de chaque bilan
-              // puis on fait la moyenne
               const parMatiere: Record<string, Record<string, number>> = {};
-
               for (const b of bilanData) {
                 if (!parMatiere[b.matiere]) parMatiere[b.matiere] = {};
-                // On garde uniquement le meilleur score par theme (bilan ou bilan-2)
                 if (!(b.theme in parMatiere[b.matiere])) {
                   parMatiere[b.matiere][b.theme] = (b.score / b.total) * 20;
                 }
               }
-
-              // Calcule la moyenne par matière
               const result: ClasseBilans = {};
               for (const [matiere, themes] of Object.entries(parMatiere)) {
                 const scores = Object.values(themes);
@@ -170,7 +162,23 @@ export default function Home() {
                 };
               }
               setBilans(result);
-              setNbBadges(bilanData.length >= 1 ? 1 : 0);
+
+              const moyenne =
+                bilanData.reduce(
+                  (acc, s) => acc + (s.score / s.total) * 20,
+                  0,
+                ) / bilanData.length;
+              const nb = [
+                bilanData.length >= 1,
+                bilanData.length >= 5,
+                bilanData.some((s) => s.score === s.total),
+                bilanData.filter((s) => (s.score / s.total) * 20 >= 16)
+                  .length >= 3,
+                moyenne >= 18,
+                ["ce1", "ce2", "cm1", "cm2"].includes(profile.classe),
+                false,
+              ].filter(Boolean).length;
+              setNbBadges(nb);
             }
           }
         }
@@ -186,6 +194,7 @@ export default function Home() {
     setMenuOpen(false);
     setClasseEleve(null);
     setBilans({});
+    setNbBadges(0);
     router.refresh();
   };
 
@@ -241,7 +250,7 @@ export default function Home() {
               >
                 👤 Mon profil{" "}
                 {nbBadges > 0 &&
-                  `🏅 ${nbBadges} badge${nbBadges > 1 ? "s" : ""} gagné${nbBadges > 1 ? "s" : ""} !`}
+                  `🏅 ${nbBadges} badge${nbBadges > 1 ? "s" : ""} !`}
               </a>
               <button className="logout-btn-link" onClick={handleLogout}>
                 🚪 Déconnexion
@@ -288,9 +297,24 @@ export default function Home() {
                 ⚙️ Admin
               </a>
             )}
+            <a
+              href="/profil"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                display: "block",
+                padding: "14px 20px",
+                color: "#fff",
+                fontSize: "1rem",
+                textDecoration: "none",
+                borderBottom: "1px solid rgba(255,255,255,0.08)",
+              }}
+            >
+              👤 Mon profil{" "}
+              {nbBadges > 0 &&
+                `🏅 ${nbBadges} badge${nbBadges > 1 ? "s" : ""} !`}
+            </a>
             <button onClick={handleLogout} className="mobile-menu-logout">
               🚪 Déconnexion
-              <a href="/profil">👤 Mon profil</a>
             </button>
           </>
         )}
@@ -494,8 +518,21 @@ export default function Home() {
               })}
             </div>
           </div>
+          <div style={{ textAlign: "center", marginTop: "16px" }}>
+            <a
+              href="/profil"
+              style={{
+                color: "#4f8ef7",
+                fontSize: "0.9rem",
+                textDecoration: "none",
+              }}
+            >
+              📊 Voir mes graphiques et badges détaillés →
+            </a>
+          </div>
         </section>
       )}
+
       <footer>
         <div className="footer-logo">
           🎓 Scola<span>Free</span>
