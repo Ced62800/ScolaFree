@@ -245,9 +245,7 @@ export default function ProfilPage() {
       ? bilansUniquement.reduce((acc, s) => acc + (s.score / s.total) * 20, 0) /
         bilansUniquement.length
       : 0;
-  const classeDebloquee = profil
-    ? ["cp", "ce1", "ce2", "cm1", "cm2"].indexOf(profil.classe) > 0
-    : false;
+  const classeDebloquee = moyenneGenerale >= 16;
   const cm2Complete =
     profil?.classe === "cm2" &&
     bilansUniquement.filter((s) => s.classe === "cm2").length >= 3;
