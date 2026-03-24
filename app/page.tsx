@@ -351,6 +351,7 @@ export default function Home() {
                 objectFit: "cover",
                 objectPosition: "center",
                 marginTop: "15px",
+                maxWidth: "100%",
               }}
             />
           </div>
