@@ -346,12 +346,10 @@ export default function Home() {
               src={LOGO_URL}
               alt="ScolaFree"
               style={{
-                width: "500px",
-                height: "100px",
-                objectFit: "cover",
-                objectPosition: "center",
+                width: "80%",
+                maxWidth: "400px",
+                height: "auto",
                 marginTop: "15px",
-                maxWidth: "100%",
               }}
             />
           </div>
