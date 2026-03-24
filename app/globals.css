@@ -40,7 +40,8 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 60px;
+  padding: 0 60px;
+  height: 64px;
   background: rgba(8, 13, 31, 0.75);
   backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border);

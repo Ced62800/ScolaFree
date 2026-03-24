@@ -4,6 +4,9 @@ import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+const LOGO_URL =
+  "https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/assets/Logo%20ScolaFree.png";
+
 const CLASSES_CONFIG: Record<
   string,
   { label: string; matieres: { key: string; label: string; emoji: any }[] }
@@ -217,7 +220,16 @@ export default function Home() {
     <>
       <nav>
         <div className="nav-logo">
-          🎓 Scola<span>Free</span>
+          <img
+            src={LOGO_URL}
+            alt="ScolaFree"
+            style={{
+              width: "160px",
+              height: "40px",
+              objectFit: "cover",
+              objectPosition: "center",
+            }}
+          />
         </div>
         <div className="nav-links">
           <a href="#">Matières</a>
@@ -330,16 +342,22 @@ export default function Home() {
             requise
           </div>
           <div className="logo-row">
-            <span className="cap-emoji">🎓</span>
-            <div className="logo-text">
-              <span className="scola">Scola</span>
-              <span className="free">Free</span>
-            </div>
+            <img
+              src={LOGO_URL}
+              alt="ScolaFree"
+              style={{
+                width: "500px",
+                height: "120px",
+                objectFit: "cover",
+                objectPosition: "center",
+                marginTop: "15px",
+              }}
+            />
           </div>
           <h1>
             L&apos;excellence scolaire,
             <br />
-            <em>accessible à tous</em>
+            <em style={{ color: "#00b4c8" }}>accessible à tous</em>
           </h1>
           <p className="desc">
             Une plateforme éducative complète pour{" "}
@@ -352,7 +370,11 @@ export default function Home() {
             <span className="tag tag-yellow">🌍 Anglais</span>
           </div>
           <div className="cta-row">
-            <a href="/inscription" className="btn-primary">
+            <a
+              href="/inscription"
+              className="btn-primary"
+              style={{ background: "#00b4c8" }}
+            >
               Inscription →
             </a>
             <a href="/cours" className="btn-secondary">
@@ -429,7 +451,7 @@ export default function Home() {
               </div>
               {moyenneGenerale !== null && (
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: "0.75rem", color: "#aaa" }}>
+                  <div style={{ fontSize: "0.75rem", color: "#2ec4b6" }}>
                     Moyenne générale
                   </div>
                   <div
@@ -449,7 +471,7 @@ export default function Home() {
                 const bilan = bilans[matiere.key];
                 const scoreColor = bilan
                   ? bilan.moyenne >= 14
-                    ? "#2ec4b6"
+                    ? "#00b4c8"
                     : bilan.moyenne >= 10
                       ? "#ffd166"
                       : "#ff6b6b"
@@ -460,10 +482,10 @@ export default function Home() {
                     style={{
                       flex: "1 1 120px",
                       background: bilan
-                        ? "rgba(79,142,247,0.08)"
+                        ? "rgba(0,180,200,0.08)"
                         : "rgba(255,255,255,0.03)",
                       border: bilan
-                        ? "1px solid rgba(79,142,247,0.25)"
+                        ? "1px solid rgba(0,180,200,0.25)"
                         : "1px solid rgba(255,255,255,0.07)",
                       borderRadius: "12px",
                       padding: "12px 14px",
@@ -522,7 +544,7 @@ export default function Home() {
             <a
               href="/profil"
               style={{
-                color: "#4f8ef7",
+                color: "#00b4c8",
                 fontSize: "0.9rem",
                 textDecoration: "none",
               }}
@@ -535,7 +557,16 @@ export default function Home() {
 
       <footer>
         <div className="footer-logo">
-          🎓 Scola<span>Free</span>
+          <img
+            src={LOGO_URL}
+            alt="ScolaFree"
+            style={{
+              width: "160px",
+              height: "40px",
+              objectFit: "cover",
+              objectPosition: "center",
+            }}
+          />
         </div>
         <div className="footer-links">
           <a href="#">Mentions légales</a>
