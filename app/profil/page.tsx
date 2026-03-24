@@ -245,7 +245,22 @@ export default function ProfilPage() {
       ? bilansUniquement.reduce((acc, s) => acc + (s.score / s.total) * 20, 0) /
         bilansUniquement.length
       : 0;
-  const classeDebloquee = moyenneGenerale >= 16;
+  const bilansClasseActuelle = bilansUniquement.filter(
+    (s) => s.classe === profil?.classe,
+  );
+  const parTheme: Record<string, number> = {};
+  for (const b of bilansClasseActuelle) {
+    const key = b.matiere + "_" + b.theme;
+    const score = (b.score / b.total) * 20;
+    if (!(key in parTheme) || score > parTheme[key]) parTheme[key] = score;
+  }
+  const scoresThemes = Object.values(parTheme);
+  const moyenneClasseActuelle =
+    scoresThemes.length > 0
+      ? scoresThemes.reduce((acc, s) => acc + s, 0) / scoresThemes.length
+      : 0;
+
+  const classeDebloquee = moyenneClasseActuelle >= 16;
   const cm2Complete =
     profil?.classe === "cm2" &&
     bilansUniquement.filter((s) => s.classe === "cm2").length >= 3;

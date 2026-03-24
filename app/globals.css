@@ -179,7 +179,7 @@ nav {
   }
 }
 
-. {
+.logo-row {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,7 +197,7 @@ nav {
   line-height: 1;
   letter-spacing: -2px;
 }
-logo-row .logo-text .scola {
+.logo-row .logo-text .scola {
   color: #fff;
 }
 .logo-text .free {
