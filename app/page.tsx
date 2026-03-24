@@ -367,7 +367,19 @@ export default function Home() {
           <div className="tags">
             <span className="tag tag-blue">📖 Français</span>
             <span className="tag tag-coral">➕ Mathématiques</span>
-            <span className="tag tag-yellow">🌍 Anglais</span>
+            <span className="tag tag-yellow">
+              <img
+                src="https://flagcdn.com/w40/gb.png"
+                alt="UK"
+                style={{
+                  width: "16px",
+                  verticalAlign: "middle",
+                  borderRadius: "2px",
+                  marginRight: "4px",
+                }}
+              />
+              Anglais
+            </span>
           </div>
           <div className="cta-row">
             <a
