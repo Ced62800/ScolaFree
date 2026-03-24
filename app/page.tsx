@@ -350,6 +350,7 @@ export default function Home() {
                 maxWidth: "400px",
                 height: "auto",
                 marginTop: "15px",
+                marginBottom: "20px",
               }}
             />
           </div>
