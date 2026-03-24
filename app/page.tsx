@@ -224,8 +224,8 @@ export default function Home() {
             src={LOGO_URL}
             alt="ScolaFree"
             style={{
-              width: "160px",
-              height: "40px",
+              width: "150px",
+              height: "28px",
               objectFit: "cover",
               objectPosition: "center",
             }}
@@ -347,7 +347,7 @@ export default function Home() {
               alt="ScolaFree"
               style={{
                 width: "500px",
-                height: "120px",
+                height: "100px",
                 objectFit: "cover",
                 objectPosition: "center",
                 marginTop: "15px",
@@ -561,8 +561,8 @@ export default function Home() {
             src={LOGO_URL}
             alt="ScolaFree"
             style={{
-              width: "160px",
-              height: "40px",
+              width: "100px",
+              height: "20px",
               objectFit: "cover",
               objectPosition: "center",
             }}
