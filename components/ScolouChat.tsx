@@ -90,7 +90,7 @@ export default function ScolouChat() {
       <div
         style={{
           position: "fixed",
-          bottom: "55px",
+          bottom: "40px",
           right: "24px",
           zIndex: 9999,
           textAlign: "center",
