@@ -87,32 +87,57 @@ export default function ScolouChat() {
   return (
     <>
       {/* Bouton flottant */}
-      <button
-        onClick={() => setOuvert(!ouvert)}
+      <div
         style={{
           position: "fixed",
-          bottom: "24px",
+          bottom: "16px",
           right: "24px",
-          width: "60px",
-          height: "60px",
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
-          border: "none",
-          cursor: "pointer",
-          boxShadow: "0 4px 20px rgba(79,142,247,0.5)",
-          fontSize: "1.6rem",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
           zIndex: 9999,
-          transition: "transform 0.2s",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
-        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-        title="Demande à Scolou"
       >
-        {ouvert ? "✕" : "🤖"}
-      </button>
+        <button
+          onClick={() => setOuvert(!ouvert)}
+          style={{
+            width: "70px",
+            height: "70px",
+            borderRadius: "50%",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "transform 0.2s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          title="Demande à Scolou"
+        >
+          {ouvert ? (
+            <span style={{ fontSize: "1.8rem", color: "#fff" }}>✕</span>
+          ) : (
+            <img
+              src="https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/assets/Logo-Robot-sans_fond.png"
+              alt="Scolou"
+              style={{
+                width: "60px",
+                height: "60px",
+                objectFit: "cover",
+                borderRadius: "50%",
+                overflow: "hidden",
+              }}
+            />
+          )}
+        </button>
+        <div style={{ fontSize: "0.72rem", color: "#aaa", marginTop: "4px" }}>
+          Demande à Scolou
+        </div>
+      </div>
 
       {/* Fenêtre de chat */}
       {ouvert && (
