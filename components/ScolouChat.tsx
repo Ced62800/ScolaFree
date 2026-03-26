@@ -102,8 +102,8 @@ export default function ScolouChat() {
         <button
           onClick={() => setOuvert(!ouvert)}
           style={{
-            width: "70px",
-            height: "70px",
+            width: "50px",
+            height: "50px",
             borderRadius: "50%",
             background: "transparent",
             border: "none",
@@ -125,8 +125,8 @@ export default function ScolouChat() {
               src="https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/assets/Logo-Robot-sans_fond.png"
               alt="Scolou"
               style={{
-                width: "60px",
-                height: "60px",
+                width: "50px",
+                height: "50px",
                 objectFit: "cover",
                 borderRadius: "50%",
                 overflow: "hidden",
