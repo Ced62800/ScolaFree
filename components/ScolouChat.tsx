@@ -4,6 +4,9 @@ import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+const ROBOT_URL =
+  "https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/assets/Logo-Robot-sans_fond.png";
+
 function formatReponse(text: string): string {
   return text
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
@@ -122,7 +125,7 @@ export default function ScolouChat() {
             <span style={{ fontSize: "1.8rem", color: "#fff" }}>✕</span>
           ) : (
             <img
-              src="https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/assets/Logo-Robot-sans_fond.png"
+              src={ROBOT_URL}
               alt="Scolou"
               style={{
                 width: "50px",
@@ -150,7 +153,7 @@ export default function ScolouChat() {
             maxWidth: "calc(100vw - 48px)",
             maxHeight: "80vh",
             background: "linear-gradient(135deg, #1a1a2e, #16213e)",
-            border: "1px solid rgba(79,142,247,0.3)",
+            border: "1px solid rgba(0,180,200,0.3)",
             borderRadius: "20px",
             boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
             zIndex: 9998,
@@ -163,14 +166,23 @@ export default function ScolouChat() {
           <div
             style={{
               padding: "16px 20px",
-              background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+              background: "linear-gradient(135deg, #1a1a2e, #16213e)",
               display: "flex",
               alignItems: "center",
               gap: "10px",
               flexShrink: 0,
             }}
           >
-            <span style={{ fontSize: "1.8rem" }}>🤖</span>
+            <img
+              src={ROBOT_URL}
+              alt="Scolou"
+              style={{
+                width: "40px",
+                height: "40px",
+                objectFit: "cover",
+                borderRadius: "50%",
+              }}
+            />
             <div>
               <div style={{ fontWeight: 800, fontSize: "1rem", color: "#fff" }}>
                 Scolou
@@ -189,8 +201,8 @@ export default function ScolouChat() {
             {!reponse && !loading && (
               <div
                 style={{
-                  background: "rgba(79,142,247,0.1)",
-                  border: "1px solid rgba(79,142,247,0.2)",
+                  background: "rgba(0,180,200,0.1)",
+                  border: "1px solid rgba(0,180,200,0.2)",
                   borderRadius: "12px",
                   padding: "12px 14px",
                   fontSize: "0.9rem",
@@ -225,8 +237,8 @@ export default function ScolouChat() {
               <>
                 <div
                   style={{
-                    background: "rgba(46,196,182,0.1)",
-                    border: "1px solid rgba(46,196,182,0.2)",
+                    background: "rgba(0,180,200,0.1)",
+                    border: "1px solid rgba(0,180,200,0.2)",
                     borderRadius: "12px",
                     padding: "14px 16px",
                     fontSize: "0.9rem",
@@ -247,7 +259,7 @@ export default function ScolouChat() {
                     style={{
                       width: "100%",
                       padding: "12px 16px",
-                      background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                      background: "linear-gradient(135deg, #00b4c8, #008fa0)",
                       border: "none",
                       borderRadius: "12px",
                       color: "#fff",
@@ -309,7 +321,7 @@ export default function ScolouChat() {
                   style={{
                     padding: "10px 16px",
                     background: question.trim()
-                      ? "linear-gradient(135deg, #4f8ef7, #2ec4b6)"
+                      ? "linear-gradient(135deg, #00b4c8, #008fa0)"
                       : "rgba(255,255,255,0.1)",
                     border: "none",
                     borderRadius: "12px",
@@ -348,10 +360,10 @@ export default function ScolouChat() {
                       onClick={() => setQuestion(ex)}
                       style={{
                         padding: "4px 10px",
-                        background: "rgba(79,142,247,0.1)",
-                        border: "1px solid rgba(79,142,247,0.2)",
+                        background: "rgba(0,180,200,0.1)",
+                        border: "1px solid rgba(0,180,200,0.2)",
                         borderRadius: "20px",
-                        color: "#4f8ef7",
+                        color: "#00b4c8",
                         fontSize: "0.78rem",
                         cursor: "pointer",
                       }}
