@@ -272,7 +272,9 @@ export default function ProfilPage() {
   const avatarUrl = avatarActuel ? BASE_URL + avatarActuel.fichier : null;
 
   return (
-    <div style={{ maxWidth: "720px", margin: "0 auto", padding: "48px 20px" }}>
+    <div
+      style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 48px 20px" }}
+    >
       {/* Titre */}
       <div style={{ marginBottom: "36px" }}>
         <h1
