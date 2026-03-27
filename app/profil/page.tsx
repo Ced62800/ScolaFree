@@ -603,39 +603,6 @@ export default function ProfilPage() {
         </div>
       )}
 
-      {/* Infos détaillées */}
-      <div
-        style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: "20px",
-          padding: "24px",
-          marginBottom: "20px",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "0.85rem",
-            fontWeight: 600,
-            color: "#aaa",
-            marginBottom: "16px",
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-          }}
-        >
-          Mes informations
-        </h2>
-        <LigneInfo emoji="✏️" label="Prénom" valeur={profil.prenom} />
-        <LigneInfo emoji="👤" label="Nom" valeur={profil.nom} />
-        <LigneInfo emoji="📧" label="Email" valeur={profil.email} />
-        <LigneInfo
-          emoji="🎓"
-          label="Classe"
-          valeur={LABEL_CLASSES[profil.classe] ?? profil.classe}
-        />
-        <LigneInfo emoji="📚" label="Niveau" valeur={profil.niveau} dernier />
-      </div>
-
       {/* Mot de passe */}
       <div
         style={{
