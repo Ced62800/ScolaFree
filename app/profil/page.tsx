@@ -408,7 +408,12 @@ export default function ProfilPage() {
               {profil.prenom} {profil.nom}
             </div>
             <div
-              style={{ fontSize: "0.9rem", color: "#aaa", marginTop: "4px" }}
+              style={{
+                fontSize: "0.9rem",
+                color: "#aaa",
+                marginTop: "4px",
+                wordBreak: "break-all",
+              }}
             >
               {profil.email}
             </div>
