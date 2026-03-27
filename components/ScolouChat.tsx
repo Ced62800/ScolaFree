@@ -166,7 +166,8 @@ export default function ScolouChat() {
           <div
             style={{
               padding: "16px 20px",
-              background: "linear-gradient(135deg, #1a1a2e, #16213e)",
+              background: "linear-gradient(135deg, #0d1f3c, #1a2a4a)",
+              borderTop: "3px solid #00b4c8",
               display: "flex",
               alignItems: "center",
               gap: "10px",
