@@ -329,6 +329,7 @@ export default function ProfilPage() {
             alignItems: "center",
             gap: "20px",
             marginBottom: "20px",
+            flexWrap: "wrap",
           }}
         >
           {/* Avatar cliquable */}
@@ -404,7 +405,14 @@ export default function ProfilPage() {
           </div>
 
           <div>
-            <div style={{ fontSize: "1.3rem", fontWeight: 800, color: "#fff" }}>
+            <div
+              style={{
+                fontSize: "1.3rem",
+                fontWeight: 800,
+                color: "#fff",
+                wordBreak: "break-word",
+              }}
+            >
               {profil.prenom} {profil.nom}
             </div>
             <div
