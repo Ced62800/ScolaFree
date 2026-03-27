@@ -113,11 +113,8 @@ type ClasseBilans = Record<string, MoyenneMatiere>;
 
 export default function Home() {
   const [prenom, setPrenom] = useState("");
-  const [role, setRole] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
   const [classeEleve, setClasseEleve] = useState<string | null>(null);
   const [bilans, setBilans] = useState<ClasseBilans>({});
-  const [nbBadges, setNbBadges] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -128,13 +125,12 @@ export default function Home() {
       if (user) {
         const { data: profile } = await supabase
           .from("profiles")
-          .select("prenom, role, classe")
+          .select("prenom, classe")
           .eq("id", user.id)
           .single();
 
         if (profile) {
           setPrenom(profile.prenom);
-          setRole(profile.role);
           setClasseEleve(profile.classe);
 
           if (profile.classe) {
@@ -165,23 +161,6 @@ export default function Home() {
                 };
               }
               setBilans(result);
-
-              const moyenne =
-                bilanData.reduce(
-                  (acc, s) => acc + (s.score / s.total) * 20,
-                  0,
-                ) / bilanData.length;
-              const nb = [
-                bilanData.length >= 1,
-                bilanData.length >= 5,
-                bilanData.some((s) => s.score === s.total),
-                bilanData.filter((s) => (s.score / s.total) * 20 >= 16)
-                  .length >= 3,
-                moyenne >= 18,
-                ["ce1", "ce2", "cm1", "cm2"].includes(profile.classe),
-                false,
-              ].filter(Boolean).length;
-              setNbBadges(nb);
             }
           }
         }
@@ -189,17 +168,6 @@ export default function Home() {
     };
     getUser();
   }, []);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setPrenom("");
-    setRole("");
-    setMenuOpen(false);
-    setClasseEleve(null);
-    setBilans({});
-    setNbBadges(0);
-    router.refresh();
-  };
 
   const getMoyenneGenerale = (): number | null => {
     if (!classeEleve) return null;
@@ -218,120 +186,6 @@ export default function Home() {
 
   return (
     <>
-      <nav>
-        <div className="nav-logo">
-          <img
-            src={LOGO_URL}
-            alt="ScolaFree"
-            style={{
-              width: "150px",
-              height: "28px",
-              objectFit: "cover",
-              objectPosition: "center",
-            }}
-          />
-        </div>
-        <div className="nav-links">
-          <a href="#">Matières</a>
-          <a href="#">Niveaux</a>
-          <a href="#">À propos</a>
-          {!prenom && (
-            <a href="/connexion" className="nav-connexion">
-              Connexion
-            </a>
-          )}
-          {prenom && (
-            <>
-              <span
-                style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem" }}
-              >
-                👋 {prenom}
-              </span>
-              {role === "admin" && (
-                <a href="/admin" className="admin-btn-link">
-                  ⚙️ Admin
-                </a>
-              )}
-              <a
-                href="/profil"
-                style={{
-                  color: "rgba(255,255,255,0.8)",
-                  fontSize: "0.9rem",
-                  textDecoration: "none",
-                }}
-              >
-                👤 Mon profil{" "}
-                {nbBadges > 0 &&
-                  `🏅 ${nbBadges} badge${nbBadges > 1 ? "s" : ""} !`}
-              </a>
-              <button className="logout-btn-link" onClick={handleLogout}>
-                🚪 Déconnexion
-              </button>
-            </>
-          )}
-        </div>
-        <button
-          className="hamburger"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
-        >
-          {menuOpen ? "✕" : "☰"}
-        </button>
-      </nav>
-
-      <div className={`mobile-menu${menuOpen ? " mobile-menu-open" : ""}`}>
-        <a href="#" onClick={() => setMenuOpen(false)}>
-          Matières
-        </a>
-        <a href="#" onClick={() => setMenuOpen(false)}>
-          Niveaux
-        </a>
-        <a href="#" onClick={() => setMenuOpen(false)}>
-          À propos
-        </a>
-        <a href="/cours/primaire" onClick={() => setMenuOpen(false)}>
-          Découvrir les cours
-        </a>
-        {!prenom && (
-          <a href="/connexion" className="mobile-menu-connexion">
-            Connexion
-          </a>
-        )}
-        {prenom && (
-          <>
-            <span className="mobile-menu-user">👋 Bonjour {prenom} !</span>
-            {role === "admin" && (
-              <a
-                href="/admin"
-                onClick={() => setMenuOpen(false)}
-                className="mobile-menu-admin"
-              >
-                ⚙️ Admin
-              </a>
-            )}
-            <a
-              href="/profil"
-              onClick={() => setMenuOpen(false)}
-              style={{
-                display: "block",
-                padding: "14px 20px",
-                color: "#fff",
-                fontSize: "1rem",
-                textDecoration: "none",
-                borderBottom: "1px solid rgba(255,255,255,0.08)",
-              }}
-            >
-              👤 Mon profil{" "}
-              {nbBadges > 0 &&
-                `🏅 ${nbBadges} badge${nbBadges > 1 ? "s" : ""} !`}
-            </a>
-            <button onClick={handleLogout} className="mobile-menu-logout">
-              🚪 Déconnexion
-            </button>
-          </>
-        )}
-      </div>
-
       <section className="hero">
         <div className="blob blob-1"></div>
         <div className="blob blob-2"></div>

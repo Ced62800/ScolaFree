@@ -180,7 +180,17 @@ export default function Inscription() {
     <div className="auth-page">
       <div className="auth-card" style={{ maxWidth: "640px" }}>
         <div className="auth-logo" onClick={() => router.push("/")}>
-          🎓 Scola<span>Free</span>
+          <img
+            src="https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/assets/Logo%20ScolaFree.png"
+            alt="ScolaFree"
+            style={{
+              width: "200px",
+              height: "40px",
+              objectFit: "cover",
+              objectPosition: "left center",
+              marginTop: "10px",
+            }}
+          />
         </div>
         <h2 className="auth-title">Créer un compte</h2>
         <p className="auth-sub">C&apos;est gratuit, pour toujours.</p>

@@ -1003,18 +1003,17 @@ body:has(.admin-page) footer {
 .cours-page {
   min-height: 100vh;
   background: var(--dark);
-  padding: 24px 40px 60px;
+  padding: 3px 40px 60px;
   max-width: 900px;
   margin: 0 auto;
 }
-
 /* Header navigation */
 .cours-header {
   display: flex;
   align-items: center;
   gap: 16px;
   margin-bottom: 40px;
-  padding-top: 16px;
+  padding-top: 80px;
 }
 
 .cours-back {
