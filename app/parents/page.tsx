@@ -169,7 +169,9 @@ export default function ParentsPage() {
   const aBilans = bilansClasseActuelle.length > 0;
 
   return (
-    <div style={{ maxWidth: "720px", margin: "0 auto", padding: "48px 20px" }}>
+    <div
+      style={{ maxWidth: "720px", margin: "0 auto", padding: "84px 48px 20px" }}
+    >
       {/* Titre */}
       <div style={{ marginBottom: "36px" }}>
         <h1
@@ -186,10 +188,8 @@ export default function ParentsPage() {
         </h1>
         <p style={{ color: "#aaa", fontSize: "0.95rem" }}>
           Suivez la progression de{" "}
-          <strong style={{ color: "#fff" }}>
-            {profil.prenom} {profil.nom}
-          </strong>{" "}
-          en {LABEL_CLASSES[profil.classe] ?? profil.classe}
+          <strong style={{ color: "#fff" }}>{profil.prenom}</strong> en{" "}
+          {LABEL_CLASSES[profil.classe] ?? profil.classe}
         </p>
       </div>
 
@@ -228,32 +228,27 @@ export default function ParentsPage() {
                 "linear-gradient(135deg, rgba(79,142,247,0.15), rgba(46,196,182,0.1))",
               border: "1px solid rgba(79,142,247,0.3)",
               borderRadius: "20px",
-              padding: "24px",
+              padding: "20px 24px 28px",
               marginBottom: "20px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              textAlign: "center",
             }}
           >
             <div>
               <div
                 style={{
-                  fontSize: "0.85rem",
+                  fontSize: "1.3rem",
                   color: "#aaa",
-                  marginBottom: "4px",
+                  marginBottom: "8px",
                   textTransform: "uppercase",
                   letterSpacing: "0.08em",
                 }}
               >
                 Moyenne générale
               </div>
-              <div style={{ fontSize: "0.9rem", color: "#fff" }}>
-                Classe : {LABEL_CLASSES[profil.classe]}
-              </div>
             </div>
             <div
               style={{
-                fontSize: "2.5rem",
+                fontSize: "1.5rem",
                 fontWeight: 800,
                 color:
                   moyenneGenerale >= 16
