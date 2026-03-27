@@ -176,7 +176,7 @@ export default function ParentsPage() {
       <div style={{ marginBottom: "36px" }}>
         <h1
           style={{
-            fontSize: "2rem",
+            fontSize: "1.6rem",
             fontWeight: 800,
             marginBottom: "6px",
             background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
