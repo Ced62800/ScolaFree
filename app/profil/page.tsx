@@ -4,18 +4,6 @@ import { getAllScores } from "@/lib/scores";
 import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 const BASE_URL =
   "https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/avatars/";
@@ -72,6 +60,15 @@ const AVATARS = [
   },
   { id: "Samourai", nom: "Samouraï", fichier: "Samourai.png" },
 ];
+
+const ORDRE_CLASSES = ["cp", "ce1", "ce2", "cm1", "cm2"];
+const LABEL_CLASSES: Record<string, string> = {
+  cp: "CP",
+  ce1: "CE1",
+  ce2: "CE2",
+  cm1: "CM1",
+  cm2: "CM2",
+};
 
 export default function ProfilPage() {
   const router = useRouter();
@@ -159,82 +156,9 @@ export default function ProfilPage() {
     setTimeout(() => setAvatarSuccess(""), 3000);
   };
 
-  const niveauLabel: Record<string, string> = {
-    cp: "CP",
-    ce1: "CE1",
-    ce2: "CE2",
-    cm1: "CM1",
-    cm2: "CM2",
-  };
-
   const bilansUniquement = scores.filter(
     (s) => s.theme === "bilan" || s.theme === "bilan-2",
   );
-
-  const moyenneParMatiere = () => {
-    const matieres = ["francais", "maths", "anglais"];
-    return matieres
-      .map((matiere) => {
-        const bilansMatiere = bilansUniquement.filter(
-          (s) => s.matiere === matiere,
-        );
-        if (bilansMatiere.length === 0) return null;
-        const moyenne =
-          bilansMatiere.reduce((acc, s) => acc + (s.score / s.total) * 20, 0) /
-          bilansMatiere.length;
-        return {
-          matiere:
-            matiere === "francais"
-              ? "Français"
-              : matiere === "maths"
-                ? "Maths"
-                : "Anglais",
-          moyenne: Math.round(moyenne * 10) / 10,
-        };
-      })
-      .filter(Boolean);
-  };
-
-  const evolutionDansLeTemps = bilansUniquement
-    .slice()
-    .reverse()
-    .map((s) => ({
-      date: new Date(s.created_at).toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "2-digit",
-      }),
-      score: Math.round((s.score / s.total) * 20 * 10) / 10,
-    }));
-
-  const comparaisonBilans = () => {
-    const matieres = ["francais", "maths", "anglais"];
-    return matieres
-      .map((matiere) => {
-        const bilan1 = scores.find(
-          (s) => s.matiere === matiere && s.theme === "bilan",
-        );
-        const bilan2 = scores.find(
-          (s) => s.matiere === matiere && s.theme === "bilan-2",
-        );
-        if (!bilan1 && !bilan2) return null;
-        return {
-          matiere:
-            matiere === "francais"
-              ? "Français"
-              : matiere === "maths"
-                ? "Maths"
-                : "Anglais",
-          "Bilan 1": bilan1
-            ? Math.round((bilan1.score / bilan1.total) * 20 * 10) / 10
-            : 0,
-          "Bilan 2": bilan2
-            ? Math.round((bilan2.score / bilan2.total) * 20 * 10) / 10
-            : 0,
-        };
-      })
-      .filter(Boolean);
-  };
-
   const nbBilans = bilansUniquement.length;
   const a2020 = bilansUniquement.some((s) => s.score === s.total);
   const bilans1620 = bilansUniquement.filter(
@@ -245,25 +169,20 @@ export default function ProfilPage() {
       ? bilansUniquement.reduce((acc, s) => acc + (s.score / s.total) * 20, 0) /
         bilansUniquement.length
       : 0;
-  const bilansClasseActuelle = bilansUniquement.filter(
-    (s) => s.classe === profil?.classe,
-  );
-  const parTheme: Record<string, number> = {};
-  for (const b of bilansClasseActuelle) {
-    const key = b.matiere + "_" + b.theme;
-    const score = (b.score / b.total) * 20;
-    if (!(key in parTheme) || score > parTheme[key]) parTheme[key] = score;
-  }
-  const scoresThemes = Object.values(parTheme);
-  const moyenneClasseActuelle =
-    scoresThemes.length > 0
-      ? scoresThemes.reduce((acc, s) => acc + s, 0) / scoresThemes.length
-      : 0;
-
-  const classeDebloquee = moyenneClasseActuelle >= 16;
   const cm2Complete =
     profil?.classe === "cm2" &&
     bilansUniquement.filter((s) => s.classe === "cm2").length >= 3;
+
+  // Calcul classes validées
+  const getClassesValidees = () => {
+    if (!profil) return [];
+    const indexActuel = ORDRE_CLASSES.indexOf(profil.classe);
+    return ORDRE_CLASSES.map((classe, index) => {
+      if (index < indexActuel) return { classe, statut: "validee" };
+      if (index === indexActuel) return { classe, statut: "en_cours" };
+      return { classe, statut: "bloquee" };
+    });
+  };
 
   const badges = [
     {
@@ -317,17 +236,6 @@ export default function ProfilPage() {
       messageEncouragement: `Ta moyenne : ${Math.round(moyenneGenerale * 10) / 10}/20 — continue !`,
     },
     {
-      emoji: "🚀",
-      nom: "Explorateur",
-      description: "Débloque la classe suivante",
-      debloque: classeDebloquee,
-      progression: classeDebloquee ? 1 : 0,
-      total: 1,
-      messageDebloque: "Tu as débloqué une nouvelle classe !",
-      messageEncouragement:
-        "Obtiens 16/20 de moyenne pour débloquer la classe suivante !",
-    },
-    {
       emoji: "💎",
       nom: "Expert",
       description: "Complète tous les bilans CM2",
@@ -341,6 +249,7 @@ export default function ProfilPage() {
   ];
 
   const nbBadgesDebloques = badges.filter((b) => b.debloque).length;
+  const classesValidees = getClassesValidees();
 
   if (loading) {
     return (
@@ -359,9 +268,6 @@ export default function ProfilPage() {
 
   if (!profil) return null;
 
-  const dataMoyennes = moyenneParMatiere();
-  const dataComparaison = comparaisonBilans();
-  const aBilans = bilansUniquement.length > 0;
   const avatarActuel = AVATARS.find((a) => a.id === profil.avatar);
   const avatarUrl = avatarActuel ? BASE_URL + avatarActuel.fichier : null;
 
@@ -404,7 +310,7 @@ export default function ProfilPage() {
         </div>
       )}
 
-      {/* Avatar + nom */}
+      {/* Avatar + nom + classes validées */}
       <div
         style={{
           background:
@@ -413,105 +319,151 @@ export default function ProfilPage() {
           borderRadius: "20px",
           padding: "28px",
           marginBottom: "20px",
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
         }}
       >
-        {/* Avatar cliquable */}
-        <div style={{ position: "relative", flexShrink: 0 }}>
-          <div
-            onClick={() => setModeAvatar(!modeAvatar)}
-            style={{
-              cursor: "pointer",
-              width: "80px",
-              height: "80px",
-              borderRadius: "50%",
-              overflow: "hidden",
-              border: "3px solid rgba(79,142,247,0.5)",
-              position: "relative",
-            }}
-          >
-            {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt="Avatar"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            ) : (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          {/* Avatar cliquable */}
+          <div style={{ position: "relative", flexShrink: 0 }}>
+            <div
+              onClick={() => setModeAvatar(!modeAvatar)}
+              style={{
+                cursor: "pointer",
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+                overflow: "hidden",
+                border: "3px solid rgba(79,142,247,0.5)",
+                position: "relative",
+              }}
+            >
+              {avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt="Avatar"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "2rem",
+                  }}
+                >
+                  🎓
+                </div>
+              )}
               <div
                 style={{
-                  width: "100%",
-                  height: "100%",
-                  background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                  position: "absolute",
+                  inset: 0,
+                  background: "rgba(0,0,0,0.4)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "2rem",
+                  borderRadius: "50%",
+                  opacity: modeAvatar ? 1 : 0,
+                  transition: "opacity 0.2s",
                 }}
               >
-                🎓
+                <span style={{ fontSize: "1.2rem" }}>✏️</span>
               </div>
-            )}
-            {/* Overlay au survol */}
+            </div>
             <div
+              onClick={() => setModeAvatar(!modeAvatar)}
               style={{
                 position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.4)",
+                bottom: "-4px",
+                right: "-4px",
+                background: "#4f8ef7",
+                borderRadius: "50%",
+                width: "24px",
+                height: "24px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: "50%",
-                opacity: modeAvatar ? 1 : 0,
-                transition: "opacity 0.2s",
+                cursor: "pointer",
+                fontSize: "0.75rem",
               }}
             >
-              <span style={{ fontSize: "1.2rem" }}>✏️</span>
+              ✏️
             </div>
           </div>
-          <div
-            onClick={() => setModeAvatar(!modeAvatar)}
-            style={{
-              position: "absolute",
-              bottom: "-4px",
-              right: "-4px",
-              background: "#4f8ef7",
-              borderRadius: "50%",
-              width: "24px",
-              height: "24px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              fontSize: "0.75rem",
-            }}
-          >
-            ✏️
+
+          <div>
+            <div style={{ fontSize: "1.3rem", fontWeight: 800, color: "#fff" }}>
+              {profil.prenom} {profil.nom}
+            </div>
+            <div
+              style={{ fontSize: "0.9rem", color: "#aaa", marginTop: "4px" }}
+            >
+              {profil.email}
+            </div>
           </div>
         </div>
 
+        {/* Classes validées */}
         <div>
-          <div style={{ fontSize: "1.3rem", fontWeight: 800, color: "#fff" }}>
-            {profil.prenom} {profil.nom}
-          </div>
-          <div style={{ fontSize: "0.9rem", color: "#aaa", marginTop: "4px" }}>
-            {profil.email}
-          </div>
           <div
             style={{
-              display: "inline-block",
-              marginTop: "8px",
-              background: "rgba(79,142,247,0.2)",
-              border: "1px solid rgba(79,142,247,0.4)",
-              borderRadius: "20px",
-              padding: "3px 12px",
               fontSize: "0.8rem",
-              color: "#4f8ef7",
+              color: "#aaa",
+              marginBottom: "10px",
               fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
             }}
           >
-            ⭐ {niveauLabel[profil.classe] ?? profil.classe}
+            Ma progression
+          </div>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {classesValidees.map(({ classe, statut }) => (
+              <div
+                key={classe}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "20px",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  background:
+                    statut === "validee"
+                      ? "rgba(46,196,182,0.2)"
+                      : statut === "en_cours"
+                        ? "rgba(79,142,247,0.2)"
+                        : "rgba(255,255,255,0.05)",
+                  border:
+                    statut === "validee"
+                      ? "1px solid rgba(46,196,182,0.5)"
+                      : statut === "en_cours"
+                        ? "1px solid rgba(79,142,247,0.5)"
+                        : "1px solid rgba(255,255,255,0.1)",
+                  color:
+                    statut === "validee"
+                      ? "#2ec4b6"
+                      : statut === "en_cours"
+                        ? "#4f8ef7"
+                        : "#555",
+                }}
+              >
+                {statut === "validee"
+                  ? "✅"
+                  : statut === "en_cours"
+                    ? "🔄"
+                    : "🔒"}{" "}
+                {LABEL_CLASSES[classe]}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -664,7 +616,7 @@ export default function ProfilPage() {
         <LigneInfo
           emoji="🎓"
           label="Classe"
-          valeur={niveauLabel[profil.classe] ?? profil.classe}
+          valeur={LABEL_CLASSES[profil.classe] ?? profil.classe}
         />
         <LigneInfo emoji="📚" label="Niveau" valeur={profil.niveau} dernier />
       </div>
@@ -785,222 +737,6 @@ export default function ProfilPage() {
         )}
       </div>
 
-      {/* GRAPHIQUES */}
-      {aBilans && (
-        <>
-          <div style={{ marginTop: "40px", marginBottom: "24px" }}>
-            <h2
-              style={{
-                fontSize: "1.4rem",
-                fontWeight: 800,
-                color: "#fff",
-                marginBottom: "6px",
-              }}
-            >
-              📊 Mes progrès
-            </h2>
-            <p style={{ color: "#aaa", fontSize: "0.9rem" }}>
-              Tes résultats aux bilans
-            </p>
-          </div>
-
-          {dataMoyennes.length > 0 && (
-            <div
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "20px",
-                padding: "24px",
-                marginBottom: "20px",
-              }}
-            >
-              <h3
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "#aaa",
-                  marginBottom: "20px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                Moyenne par matière /20
-              </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart
-                  data={dataMoyennes}
-                  margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="rgba(255,255,255,0.06)"
-                  />
-                  <XAxis
-                    dataKey="matiere"
-                    tick={{ fill: "#aaa", fontSize: 13 }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    domain={[0, 20]}
-                    tick={{ fill: "#aaa", fontSize: 12 }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      background: "#1a1a2e",
-                      border: "1px solid rgba(79,142,247,0.3)",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    formatter={(value: any) => [`${value}/20`, "Moyenne"]}
-                  />
-                  <Bar
-                    dataKey="moyenne"
-                    fill="url(#gradBar)"
-                    radius={[8, 8, 0, 0]}
-                  />
-                  <defs>
-                    <linearGradient id="gradBar" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#4f8ef7" />
-                      <stop offset="100%" stopColor="#2ec4b6" />
-                    </linearGradient>
-                  </defs>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-
-          {evolutionDansLeTemps.length > 1 && (
-            <div
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "20px",
-                padding: "24px",
-                marginBottom: "20px",
-              }}
-            >
-              <h3
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "#aaa",
-                  marginBottom: "20px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                Évolution dans le temps
-              </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <LineChart
-                  data={evolutionDansLeTemps}
-                  margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="rgba(255,255,255,0.06)"
-                  />
-                  <XAxis
-                    dataKey="date"
-                    tick={{ fill: "#aaa", fontSize: 12 }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    domain={[0, 20]}
-                    tick={{ fill: "#aaa", fontSize: 12 }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      background: "#1a1a2e",
-                      border: "1px solid rgba(79,142,247,0.3)",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    formatter={(value: any) => [`${value}/20`, "Score"]}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="score"
-                    stroke="#4f8ef7"
-                    strokeWidth={3}
-                    dot={{ fill: "#4f8ef7", r: 5 }}
-                    activeDot={{ r: 7 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-
-          {dataComparaison.length > 0 && (
-            <div
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "20px",
-                padding: "24px",
-                marginBottom: "20px",
-              }}
-            >
-              <h3
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "#aaa",
-                  marginBottom: "20px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                Bilan 1 vs Bilan 2
-              </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart
-                  data={dataComparaison}
-                  margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="rgba(255,255,255,0.06)"
-                  />
-                  <XAxis
-                    dataKey="matiere"
-                    tick={{ fill: "#aaa", fontSize: 13 }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    domain={[0, 20]}
-                    tick={{ fill: "#aaa", fontSize: 12 }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      background: "#1a1a2e",
-                      border: "1px solid rgba(79,142,247,0.3)",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    formatter={(value: any) => [`${value}/20`]}
-                  />
-                  <Legend
-                    wrapperStyle={{ color: "#aaa", fontSize: "0.85rem" }}
-                  />
-                  <Bar dataKey="Bilan 1" fill="#4f8ef7" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="Bilan 2" fill="#2ec4b6" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-        </>
-      )}
-
       {/* BADGES */}
       <div style={{ marginTop: "40px", marginBottom: "24px" }}>
         <h2
@@ -1104,6 +840,39 @@ export default function ProfilPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Lien vers page parents */}
+      <div
+        style={{
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: "16px",
+          padding: "20px",
+          marginBottom: "32px",
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{ fontSize: "0.9rem", color: "#aaa", marginBottom: "12px" }}
+        >
+          👨‍👩‍👧 Tu es un parent ? Consulte les progrès détaillés de ton enfant.
+        </div>
+        <button
+          onClick={() => router.push("/parents")}
+          style={{
+            background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+            color: "white",
+            border: "none",
+            borderRadius: "12px",
+            padding: "12px 24px",
+            fontSize: "0.95rem",
+            cursor: "pointer",
+            fontWeight: 700,
+          }}
+        >
+          📊 Voir les progrès détaillés →
+        </button>
       </div>
 
       {/* Retour */}

@@ -1,5 +1,92 @@
 import { supabase } from "@/supabaseClient";
 
+// Ordre des classes
+export const ORDRE_CLASSES = ["cp", "ce1", "ce2", "cm1", "cm2"];
+
+// Bilans requis par classe
+const BILANS_PAR_CLASSE: Record<string, { matiere: string; theme: string }[]> =
+  {
+    cp: [
+      { matiere: "francais", theme: "bilan" },
+      { matiere: "maths", theme: "bilan" },
+    ],
+    ce1: [
+      { matiere: "francais", theme: "bilan" },
+      { matiere: "maths", theme: "bilan" },
+      { matiere: "anglais", theme: "bilan" },
+    ],
+    ce2: [
+      { matiere: "francais", theme: "bilan" },
+      { matiere: "maths", theme: "bilan" },
+      { matiere: "anglais", theme: "bilan" },
+    ],
+    cm1: [
+      { matiere: "francais", theme: "bilan" },
+      { matiere: "maths", theme: "bilan" },
+      { matiere: "anglais", theme: "bilan" },
+    ],
+    cm2: [
+      { matiere: "francais", theme: "bilan" },
+      { matiere: "maths", theme: "bilan" },
+      { matiere: "anglais", theme: "bilan" },
+    ],
+  };
+
+// Vérifie si l'élève peut passer à la classe suivante et met à jour automatiquement
+export async function verifierEtPasserClasse(
+  userId: string,
+  classeActuelle: string,
+): Promise<boolean> {
+  const indexActuel = ORDRE_CLASSES.indexOf(classeActuelle);
+
+  // Si déjà en CM2, pas de classe suivante
+  if (indexActuel === -1 || indexActuel === ORDRE_CLASSES.length - 1)
+    return false;
+
+  // Récupère tous les bilans de la classe actuelle
+  const { data, error } = await supabase
+    .from("scores")
+    .select("matiere, theme, score, total")
+    .eq("user_id", userId)
+    .eq("classe", classeActuelle)
+    .eq("theme", "bilan")
+    .order("score", { ascending: false });
+
+  if (error || !data) return false;
+
+  const bilansRequis = BILANS_PAR_CLASSE[classeActuelle];
+  const scores: number[] = [];
+
+  for (const bilan of bilansRequis) {
+    const meilleur = data.find((d) => d.matiere === bilan.matiere);
+    if (meilleur) {
+      scores.push((meilleur.score / meilleur.total) * 20);
+    }
+  }
+
+  // Vérifie si tous les bilans sont faits et moyenne >= 16
+  if (scores.length < bilansRequis.length) return false;
+
+  const moyenne = scores.reduce((acc, s) => acc + s, 0) / scores.length;
+  if (moyenne < 16) return false;
+
+  // Passage à la classe suivante !
+  const classesSuivante = ORDRE_CLASSES[indexActuel + 1];
+
+  const { error: updateError } = await supabase
+    .from("profiles")
+    .update({ classe: classesSuivante })
+    .eq("id", userId);
+
+  if (updateError) {
+    console.error("Erreur passage de classe:", updateError);
+    return false;
+  }
+
+  console.log(`Passage de classe : ${classeActuelle} -> ${classesSuivante}`);
+  return true;
+}
+
 // Sauvegarder un score
 export async function saveScore({
   classe,
@@ -28,7 +115,16 @@ export async function saveScore({
     total,
   });
 
-  if (error) console.error("Erreur sauvegarde score:", error);
+  if (error) {
+    console.error("Erreur sauvegarde score:", error);
+    return null;
+  }
+
+  // Si c'est un bilan, on vérifie si l'élève peut passer à la classe suivante
+  if (theme === "bilan") {
+    await verifierEtPasserClasse(user.id, classe);
+  }
+
   return data;
 }
 
@@ -140,38 +236,6 @@ export async function getLastScore(
   return data;
 }
 
-// Ordre des classes
-export const ORDRE_CLASSES = ["cp", "ce1", "ce2", "cm1", "cm2"];
-
-// Bilans requis par classe
-const BILANS_PAR_CLASSE: Record<string, { matiere: string; theme: string }[]> =
-  {
-    cp: [
-      { matiere: "francais", theme: "bilan" },
-      { matiere: "maths", theme: "bilan" },
-    ],
-    ce1: [
-      { matiere: "francais", theme: "bilan" },
-      { matiere: "maths", theme: "bilan" },
-      { matiere: "anglais", theme: "bilan" },
-    ],
-    ce2: [
-      { matiere: "francais", theme: "bilan" },
-      { matiere: "maths", theme: "bilan" },
-      { matiere: "anglais", theme: "bilan" },
-    ],
-    cm1: [
-      { matiere: "francais", theme: "bilan" },
-      { matiere: "maths", theme: "bilan" },
-      { matiere: "anglais", theme: "bilan" },
-    ],
-    cm2: [
-      { matiere: "francais", theme: "bilan" },
-      { matiere: "maths", theme: "bilan" },
-      { matiere: "anglais", theme: "bilan" },
-    ],
-  };
-
 // UN SEUL appel pour récupérer tous les bilans de toutes les classes
 export async function getAllBilansForDeblocage(): Promise<
   Record<string, number | null>
@@ -181,7 +245,6 @@ export async function getAllBilansForDeblocage(): Promise<
   } = await supabase.auth.getUser();
   if (!user) return {};
 
-  // Récupère tous les scores de type "bilan" en un seul appel
   const { data, error } = await supabase
     .from("scores")
     .select("classe, matiere, theme, score, total")
@@ -191,7 +254,6 @@ export async function getAllBilansForDeblocage(): Promise<
 
   if (error || !data) return {};
 
-  // Calcule la moyenne par classe
   const resultat: Record<string, number | null> = {};
 
   for (const classe of ORDRE_CLASSES) {
@@ -199,7 +261,6 @@ export async function getAllBilansForDeblocage(): Promise<
     const scores: number[] = [];
 
     for (const bilan of bilansRequis) {
-      // Prend le meilleur score pour ce bilan
       const meilleur = data.find(
         (d) => d.classe === classe && d.matiere === bilan.matiere,
       );
@@ -219,7 +280,7 @@ export async function getAllBilansForDeblocage(): Promise<
   return resultat;
 }
 
-// Vérifie quelles classes sont débloquées (moyenne ≥ 16/20)
+// Vérifie quelles classes sont débloquées (moyenne >= 16/20)
 export async function getClassesDebloquees(): Promise<Set<string>> {
   const moyennes = await getAllBilansForDeblocage();
   const debloquees = new Set<string>();
