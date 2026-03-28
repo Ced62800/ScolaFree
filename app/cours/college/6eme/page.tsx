@@ -15,14 +15,14 @@ const themes = [
     label: "Les classes de mots",
     emoji: "📝",
     desc: "Nom, verbe, adjectif, déterminant, pronom...",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "groupe-nominal",
     label: "Le groupe nominal",
     emoji: "🔤",
     desc: "Construction et accords du groupe nominal",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "present-indicatif",
