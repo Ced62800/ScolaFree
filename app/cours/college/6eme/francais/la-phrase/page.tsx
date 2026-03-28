@@ -213,7 +213,8 @@ export default function LaPhrasePage() {
   const [index, setIndex] = useState(0);
   const [reponseChoisie, setReponseChoisie] = useState<string | null>(null);
   const [estCorrecte, setEstCorrecte] = useState<boolean | null>(null);
-  const [ficheouverte, setFicheOuverte] = useState(false);
+  const [ficheOuverte, setFicheOuverte] = useState(false);
+  const [ficheObligatoireLue, setFicheObligatoireLue] = useState(false);
   const [bestScore, setBestScore] = useState<{
     score: number;
     total: number;
@@ -224,6 +225,7 @@ export default function LaPhrasePage() {
   } | null>(null);
   const scoreRef = useRef(0);
   const scoreSaved = useRef(false);
+  const fautesRef = useRef(0);
 
   useEffect(() => {
     const charger = async () => {
@@ -242,11 +244,13 @@ export default function LaPhrasePage() {
     }));
     setQuestions(q);
     scoreRef.current = 0;
+    fautesRef.current = 0;
     scoreSaved.current = false;
     setIndex(0);
     setReponseChoisie(null);
     setEstCorrecte(null);
     setFicheOuverte(false);
+    setFicheObligatoireLue(false);
     setEtape("quiz");
   };
 
@@ -258,11 +262,19 @@ export default function LaPhrasePage() {
     if (correct) {
       scoreRef.current += 1;
     } else {
-      setFicheOuverte(true);
+      fautesRef.current += 1;
+      if (fautesRef.current === 1) {
+        // 1ère faute : fiche s'ouvre automatiquement
+        setFicheOuverte(true);
+        setFicheObligatoireLue(false);
+      } else if (fautesRef.current === 6) {
+        // 6ème faute : fiche obligatoire
+        setFicheObligatoireLue(false);
+      }
     }
   };
 
-  const question_suivante = async () => {
+  const questionSuivante = async () => {
     setFicheOuverte(false);
     if (index + 1 >= questions.length) {
       if (!scoreSaved.current) {
@@ -284,11 +296,13 @@ export default function LaPhrasePage() {
       setIndex(index + 1);
       setReponseChoisie(null);
       setEstCorrecte(null);
+      setFicheObligatoireLue(false);
     }
   };
 
-  const score = scoreRef.current;
   const total = questions.length;
+  const est6emeFaute = fautesRef.current === 6;
+  const boutonBloque = est6emeFaute && !ficheObligatoireLue;
 
   if (etape === "intro") {
     return (
@@ -298,7 +312,6 @@ export default function LaPhrasePage() {
             ← Retour
           </button>
         </div>
-
         <div className="lecon-wrapper">
           <div className="lecon-badge">📖 Français — 6ème</div>
           <h1 className="lecon-titre">La phrase</h1>
@@ -308,7 +321,6 @@ export default function LaPhrasePage() {
             <strong>signe de ponctuation</strong> (. ! ? …).
           </div>
 
-          {/* Encarts meilleur/dernier score */}
           {(bestScore || lastScore) && (
             <div
               style={{
@@ -383,7 +395,6 @@ export default function LaPhrasePage() {
             </div>
           )}
 
-          {/* Résumé de la leçon */}
           <div className="lecon-points">
             <div className="lecon-point">
               <div className="lecon-point-titre">🔤 Les types de phrases</div>
@@ -433,6 +444,7 @@ export default function LaPhrasePage() {
 
   if (etape === "quiz" && questions.length > 0) {
     const q = questions[index];
+
     return (
       <div className="cours-page">
         <div className="cours-header">
@@ -441,7 +453,6 @@ export default function LaPhrasePage() {
           </button>
         </div>
 
-        {/* Progression */}
         <div className="progression-wrapper">
           <div className="progression-info">
             <span>
@@ -460,7 +471,6 @@ export default function LaPhrasePage() {
           </div>
         </div>
 
-        {/* Question */}
         <div className="qcm-wrapper">
           <div className="qcm-question">{q.question}</div>
           <div className="qcm-options">
@@ -483,7 +493,6 @@ export default function LaPhrasePage() {
             })}
           </div>
 
-          {/* Feedback */}
           {reponseChoisie && (
             <div
               className={`qcm-feedback ${estCorrecte ? "feedback-correct" : "feedback-incorrect"}`}
@@ -498,11 +507,39 @@ export default function LaPhrasePage() {
                     ? "Excellente réponse !"
                     : `La bonne réponse est : "${q.answer}"`}
                 </p>
+
+                {/* Message spécial 6ème faute */}
+                {!estCorrecte && est6emeFaute && !ficheObligatoireLue && (
+                  <div
+                    style={{
+                      marginTop: "10px",
+                      background: "rgba(255,209,102,0.15)",
+                      border: "1px solid rgba(255,209,102,0.4)",
+                      borderRadius: "10px",
+                      padding: "10px 14px",
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: "#ffd166",
+                        fontWeight: 700,
+                        marginBottom: "4px",
+                      }}
+                    >
+                      😅 Aïe, 6 erreurs !
+                    </p>
+                    <p style={{ color: "#ddd", fontSize: "0.85rem" }}>
+                      Tu dois relire la fiche pédagogique avant de continuer.
+                      Elle est là pour t'aider ! 💪
+                    </p>
+                  </div>
+                )}
+
                 {!estCorrecte && (
                   <button
                     onClick={() => setFicheOuverte(true)}
                     style={{
-                      marginTop: "8px",
+                      marginTop: "10px",
                       background: "rgba(255,209,102,0.2)",
                       border: "1px solid rgba(255,209,102,0.4)",
                       borderRadius: "8px",
@@ -521,20 +558,38 @@ export default function LaPhrasePage() {
           )}
 
           {reponseChoisie && (
-            <button
-              className="lecon-btn"
-              onClick={question_suivante}
-              style={{ marginTop: "16px" }}
-            >
-              {index + 1 >= total
-                ? "Voir mon résultat →"
-                : "Question suivante →"}
-            </button>
+            <div style={{ marginTop: "16px" }}>
+              {boutonBloque && (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#ffd166",
+                    fontSize: "0.85rem",
+                    marginBottom: "8px",
+                  }}
+                >
+                  📖 Lis la fiche pédagogique pour débloquer la question
+                  suivante !
+                </p>
+              )}
+              <button
+                className="lecon-btn"
+                onClick={questionSuivante}
+                disabled={boutonBloque}
+                style={{
+                  opacity: boutonBloque ? 0.4 : 1,
+                  cursor: boutonBloque ? "not-allowed" : "pointer",
+                }}
+              >
+                {index + 1 >= total
+                  ? "Voir mon résultat →"
+                  : "Question suivante →"}
+              </button>
+            </div>
           )}
         </div>
 
-        {/* Pop-up fiche pédagogique */}
-        {ficheouverte && (
+        {ficheOuverte && (
           <div
             style={{
               position: "fixed",
@@ -565,9 +620,6 @@ export default function LaPhrasePage() {
                   fontWeight: 800,
                   color: "#ffd166",
                   marginBottom: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
                 }}
               >
                 📖 Fiche pédagogique
@@ -603,7 +655,6 @@ export default function LaPhrasePage() {
                   {q.fiche.regle}
                 </div>
               </div>
-
               <div
                 style={{
                   marginBottom: "16px",
@@ -634,7 +685,6 @@ export default function LaPhrasePage() {
                   {q.fiche.exemple}
                 </div>
               </div>
-
               <div
                 style={{
                   marginBottom: "16px",
@@ -665,7 +715,6 @@ export default function LaPhrasePage() {
                   {q.fiche.piege}
                 </div>
               </div>
-
               <div
                 style={{
                   marginBottom: "20px",
@@ -698,7 +747,10 @@ export default function LaPhrasePage() {
               </div>
 
               <button
-                onClick={() => setFicheOuverte(false)}
+                onClick={() => {
+                  setFicheOuverte(false);
+                  setFicheObligatoireLue(true);
+                }}
                 style={{
                   width: "100%",
                   padding: "14px",
