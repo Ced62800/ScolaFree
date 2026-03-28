@@ -9,32 +9,32 @@ const themes = [
     id: "la-phrase",
     label: "La phrase",
     emoji: "✏️",
-    desc: "Types et formes de phrases, sujet, ponctuation",
     color: "#4f8ef7",
+    desc: "Types et formes de phrases, sujet, ponctuation",
     dispo: true,
   },
   {
     id: "classes-de-mots",
     label: "Les classes de mots",
     emoji: "📝",
-    desc: "Nom, verbe, adjectif, déterminant, pronom...",
     color: "#2ec4b6",
+    desc: "Nom, verbe, adjectif, déterminant, pronom...",
     dispo: true,
   },
   {
     id: "groupe-nominal",
     label: "Le groupe nominal",
     emoji: "🔤",
-    desc: "Construction et accords du groupe nominal",
     color: "#ffd166",
+    desc: "Construction et accords du groupe nominal",
     dispo: true,
   },
   {
     id: "present-indicatif",
     label: "Le présent de l'indicatif",
     emoji: "⏱️",
-    desc: "Conjugaison au présent — tous les groupes",
     color: "#ff6b6b",
+    desc: "Conjugaison au présent — tous les groupes",
     dispo: true,
   },
 ];
@@ -42,17 +42,17 @@ const themes = [
 export default function Francais6emePage() {
   const router = useRouter();
   const [estConnecte, setEstConnecte] = useState(false);
-  const [pret, setPret] = useState(false);
+  const [chargement, setChargement] = useState(true);
 
   useEffect(() => {
-    const check = async () => {
+    const init = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
       setEstConnecte(!!user);
-      setPret(true);
+      setChargement(false);
     };
-    check();
+    init();
   }, []);
 
   const handleBilan = () => {
@@ -98,165 +98,119 @@ export default function Francais6emePage() {
         </div>
       </div>
 
-      <div style={{ textAlign: "center", marginBottom: "32px" }}>
-        <h1
-          style={{
-            fontSize: "2rem",
-            fontWeight: 800,
-            color: "#fff",
-            marginBottom: "8px",
-          }}
-        >
-          Français — 6ème
-        </h1>
-        <p style={{ color: "#aaa", fontSize: "0.95rem" }}>
+      <div className="cours-hero">
+        <div className="cours-hero-icon">📖</div>
+        <h1 className="cours-hero-title">Français — 6ème</h1>
+        <p className="cours-hero-desc">
           {estConnecte
-            ? "Programme officiel — Partie 1"
+            ? "Choisis un thème pour commencer !"
             : "Mode découverte — 5 questions par thème"}
         </p>
       </div>
 
       {/* Bandeau mode découverte */}
-      {pret && !estConnecte && (
+      {!estConnecte && !chargement && (
         <div
           style={{
+            maxWidth: "600px",
+            margin: "0 auto 24px",
+            padding: "14px 20px",
             background: "rgba(79,142,247,0.1)",
             border: "1px solid rgba(79,142,247,0.3)",
-            borderRadius: "12px",
-            padding: "14px 20px",
-            marginBottom: "24px",
-            fontSize: "0.9rem",
-            color: "#ccc",
+            borderRadius: "14px",
             textAlign: "center",
+            fontSize: "0.95rem",
+            color: "#aaa",
           }}
         >
-          📖 Tu explores en mode découverte.{" "}
-          <span
-            onClick={() => router.push("/inscription")}
+          👀 Tu explores en mode découverte.{" "}
+          <a
+            href="/inscription"
             style={{
               color: "#4f8ef7",
               fontWeight: 700,
-              cursor: "pointer",
-              textDecoration: "underline",
+              textDecoration: "none",
             }}
           >
             Inscris-toi gratuitement
-          </span>{" "}
+          </a>{" "}
           pour accéder à tous les exercices !
         </div>
       )}
 
       {/* Grille des thèmes */}
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "16px",
-          marginBottom: "32px",
-        }}
+        className="themes-grid"
+        style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
       >
         {themes.map((t) => (
           <div
             key={t.id}
+            className="theme-card"
             onClick={() =>
               t.dispo && router.push(`/cours/college/6eme/francais/${t.id}`)
             }
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              border: `2px solid ${t.color}`,
-              borderRadius: "16px",
-              padding: "20px",
-              cursor: t.dispo ? "pointer" : "not-allowed",
-              opacity: t.dispo ? 1 : 0.5,
-              transition: "transform 0.15s",
-              position: "relative",
-            }}
-            onMouseEnter={(e) => {
-              if (t.dispo)
-                (e.currentTarget as HTMLDivElement).style.transform =
-                  "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLDivElement).style.transform =
-                "translateY(0)";
-            }}
+            style={
+              {
+                "--card-color": t.color,
+                position: "relative",
+                cursor: t.dispo ? "pointer" : "not-allowed",
+                paddingTop: "44px",
+              } as React.CSSProperties
+            }
           >
             {/* Badge découverte */}
-            {!estConnecte && pret && (
+            {!estConnecte && !chargement && (
               <div
                 style={{
                   position: "absolute",
                   top: "10px",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  background: "rgba(79,142,247,0.2)",
-                  border: "1px solid rgba(79,142,247,0.4)",
-                  borderRadius: "20px",
-                  padding: "3px 12px",
-                  fontSize: "0.75rem",
+                  background: "rgba(79,142,247,0.15)",
                   color: "#4f8ef7",
+                  fontSize: "0.85rem",
                   fontWeight: 700,
+                  padding: "6px 16px",
+                  borderRadius: "20px",
+                  border: "1px solid rgba(79,142,247,0.3)",
                   whiteSpace: "nowrap",
                 }}
               >
-                📖 Découverte
+                👀 Découverte
               </div>
             )}
-            <div
-              style={{
-                fontSize: "2rem",
-                marginBottom: "10px",
-                marginTop: !estConnecte && pret ? "20px" : "0",
-              }}
-            >
-              {t.emoji}
-            </div>
-            <div
-              style={{
-                fontWeight: 800,
-                fontSize: "1.1rem",
-                color: "#fff",
-                marginBottom: "6px",
-              }}
-            >
-              {t.label}
-            </div>
-            <div
-              style={{
-                fontSize: "0.8rem",
-                color: "#aaa",
-                marginBottom: "12px",
-              }}
-            >
-              {t.desc}
-            </div>
-            <div
-              style={{
-                fontSize: "0.85rem",
-                color: "#aaa",
-                marginBottom: "8px",
-              }}
-            >
-              {estConnecte ? "10 exercices" : "5 questions en découverte"}
-            </div>
-            {t.dispo && (
+
+            <div className="theme-emoji">{t.emoji}</div>
+            <div className="theme-label">{t.label}</div>
+            <div className="theme-desc">{t.desc}</div>
+            {!estConnecte && !chargement && (
               <div
-                style={{ color: t.color, fontWeight: 700, fontSize: "0.9rem" }}
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#aaa",
+                  marginTop: "4px",
+                  marginBottom: "4px",
+                }}
               >
-                Commencer →
+                5 questions par thème
               </div>
             )}
+            <div className="theme-arrow" style={{ color: t.color }}>
+              Commencer →
+            </div>
           </div>
         ))}
       </div>
 
       {/* Bouton Bilan */}
-      {pret && (
+      {!chargement && (
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            marginTop: "32px",
             marginBottom: "16px",
           }}
         >
@@ -292,7 +246,7 @@ export default function Francais6emePage() {
             }}
           >
             {estConnecte
-              ? "Teste toutes tes connaissances de la Partie 1 en une seule fois !"
+              ? "Teste toutes tes connaissances de la Partie 1 !"
               : "🔒 Inscris-toi pour accéder au bilan"}
           </p>
         </div>
