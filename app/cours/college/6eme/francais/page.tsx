@@ -15,7 +15,7 @@ const themes = [
     label: "Les classes de mots",
     emoji: "📝",
     desc: "Nom, verbe, adjectif, déterminant, pronom...",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "groupe-nominal",
@@ -35,43 +35,7 @@ const themes = [
     id: "bilan",
     label: "Bilan 1",
     emoji: "📊",
-    desc: "Évaluation sur la phrase et les classes de mots",
-    dispo: false,
-    isBilan: true,
-  },
-  {
-    id: "imparfait",
-    label: "L'imparfait",
-    emoji: "⏳",
-    desc: "Conjugaison à l'imparfait",
-    dispo: false,
-  },
-  {
-    id: "accords",
-    label: "Les accords",
-    emoji: "✅",
-    desc: "Accord sujet-verbe, nom-adjectif",
-    dispo: false,
-  },
-  {
-    id: "orthographe",
-    label: "L'orthographe",
-    emoji: "🔡",
-    desc: "Homophones et orthographe lexicale",
-    dispo: false,
-  },
-  {
-    id: "vocabulaire",
-    label: "Le vocabulaire",
-    emoji: "📚",
-    desc: "Sens des mots, synonymes, antonymes",
-    dispo: false,
-  },
-  {
-    id: "bilan-2",
-    label: "Bilan 2",
-    emoji: "📊",
-    desc: "Évaluation sur la conjugaison et l'orthographe",
+    desc: "Évaluation sur la phrase, les classes de mots, le groupe nominal et le présent",
     dispo: false,
     isBilan: true,
   },
@@ -118,7 +82,7 @@ export default function Francais6emePage() {
       <div className="cours-hero">
         <div className="cours-hero-icon">📖</div>
         <h1 className="cours-hero-title">Français — 6ème</h1>
-        <p className="cours-hero-desc">Programme officiel de 6ème</p>
+        <p className="cours-hero-desc">Programme officiel — Partie 1</p>
       </div>
 
       <div className="themes-grid">
@@ -149,6 +113,25 @@ export default function Francais6emePage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Lien vers page 2 */}
+      <div style={{ textAlign: "center", marginTop: "40px" }}>
+        <button
+          onClick={() => router.push("/cours/college/6eme/francais/page-2")}
+          style={{
+            background: "rgba(79,142,247,0.1)",
+            border: "1px solid rgba(79,142,247,0.3)",
+            borderRadius: "14px",
+            padding: "14px 28px",
+            color: "#4f8ef7",
+            fontWeight: 700,
+            fontSize: "1rem",
+            cursor: "pointer",
+          }}
+        >
+          Suite du programme → Page 2
+        </button>
       </div>
     </div>
   );
