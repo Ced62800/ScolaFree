@@ -1,6 +1,8 @@
 "use client";
 
+import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const themes = [
   {
@@ -8,6 +10,7 @@ const themes = [
     label: "La phrase",
     emoji: "✏️",
     desc: "Types et formes de phrases, sujet, ponctuation",
+    color: "#4f8ef7",
     dispo: true,
   },
   {
@@ -15,6 +18,7 @@ const themes = [
     label: "Les classes de mots",
     emoji: "📝",
     desc: "Nom, verbe, adjectif, déterminant, pronom...",
+    color: "#2ec4b6",
     dispo: true,
   },
   {
@@ -22,6 +26,7 @@ const themes = [
     label: "Le groupe nominal",
     emoji: "🔤",
     desc: "Construction et accords du groupe nominal",
+    color: "#ffd166",
     dispo: true,
   },
   {
@@ -29,20 +34,34 @@ const themes = [
     label: "Le présent de l'indicatif",
     emoji: "⏱️",
     desc: "Conjugaison au présent — tous les groupes",
+    color: "#ff6b6b",
     dispo: true,
-  },
-  {
-    id: "bilan",
-    label: "Bilan 1",
-    emoji: "📊",
-    desc: "Évaluation sur la phrase, les classes de mots, le groupe nominal et le présent",
-    dispo: false,
-    isBilan: true,
   },
 ];
 
 export default function Francais6emePage() {
   const router = useRouter();
+  const [estConnecte, setEstConnecte] = useState(false);
+  const [pret, setPret] = useState(false);
+
+  useEffect(() => {
+    const check = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setEstConnecte(!!user);
+      setPret(true);
+    };
+    check();
+  }, []);
+
+  const handleBilan = () => {
+    if (!estConnecte) {
+      router.push("/inscription");
+      return;
+    }
+    router.push("/cours/college/6eme/francais/bilan");
+  };
 
   return (
     <div className="cours-page">
@@ -82,9 +101,44 @@ export default function Francais6emePage() {
       <div className="cours-hero">
         <div className="cours-hero-icon">📖</div>
         <h1 className="cours-hero-title">Français — 6ème</h1>
-        <p className="cours-hero-desc">Programme officiel — Partie 1</p>
+        <p className="cours-hero-desc">
+          {pret && !estConnecte
+            ? "Mode découverte — 5 questions par thème"
+            : "Programme officiel — Partie 1"}
+        </p>
       </div>
 
+      {/* Bandeau mode découverte */}
+      {pret && !estConnecte && (
+        <div
+          style={{
+            background: "rgba(79,142,247,0.1)",
+            border: "1px solid rgba(79,142,247,0.3)",
+            borderRadius: "12px",
+            padding: "14px 20px",
+            marginBottom: "24px",
+            fontSize: "0.9rem",
+            color: "#ccc",
+            textAlign: "center",
+          }}
+        >
+          📖 Tu explores en mode découverte.{" "}
+          <span
+            onClick={() => router.push("/inscription")}
+            style={{
+              color: "#4f8ef7",
+              fontWeight: 700,
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
+            Inscris-toi gratuitement
+          </span>{" "}
+          pour accéder à tous les exercices !
+        </div>
+      )}
+
+      {/* Grille des thèmes - utilise les classes CSS du primaire */}
       <div className="themes-grid">
         {themes.map((t) => (
           <div
@@ -95,42 +149,138 @@ export default function Francais6emePage() {
             }
             style={
               {
-                "--card-color": t.isBilan
-                  ? "#ffd166"
-                  : t.dispo
-                    ? "#4f8ef7"
-                    : "#888",
+                "--card-color": t.color,
                 opacity: t.dispo ? 1 : 0.5,
                 cursor: t.dispo ? "pointer" : "not-allowed",
+                position: "relative",
               } as React.CSSProperties
             }
           >
-            <div className="theme-emoji">{t.emoji}</div>
+            {/* Badge découverte */}
+            {pret && !estConnecte && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  background: "rgba(79,142,247,0.2)",
+                  border: "1px solid rgba(79,142,247,0.4)",
+                  borderRadius: "20px",
+                  padding: "3px 12px",
+                  fontSize: "0.75rem",
+                  color: "#4f8ef7",
+                  fontWeight: 700,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                📖 Découverte
+              </div>
+            )}
+            <div
+              className="theme-emoji"
+              style={{ marginTop: pret && !estConnecte ? "20px" : "0" }}
+            >
+              {t.emoji}
+            </div>
             <div className="theme-label">{t.label}</div>
             <div className="theme-desc">{t.desc}</div>
-            <div className="theme-arrow">
-              {t.dispo ? "Accéder →" : "🔒 Bientôt"}
+            <div
+              style={{
+                fontSize: "0.85rem",
+                color: "#aaa",
+                marginBottom: "8px",
+              }}
+            >
+              {estConnecte ? "10 exercices" : "5 questions en découverte"}
             </div>
+            {t.dispo && (
+              <div className="theme-arrow" style={{ color: t.color }}>
+                Commencer →
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-      {/* Lien vers page 2 */}
-      <div style={{ textAlign: "center", marginTop: "40px" }}>
+      {/* Bouton Bilan */}
+      {pret && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "32px",
+            marginBottom: "16px",
+          }}
+        >
+          <button
+            onClick={handleBilan}
+            style={{
+              background: estConnecte
+                ? "linear-gradient(135deg, #f7974f, #f74f4f)"
+                : "rgba(255,255,255,0.08)",
+              border: "none",
+              borderRadius: "14px",
+              padding: "16px 32px",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: "1.1rem",
+              cursor: "pointer",
+              width: "100%",
+              maxWidth: "400px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+            }}
+          >
+            🎯 Bilan Final Français 6ème
+          </button>
+          <p
+            style={{
+              color: "#aaa",
+              fontSize: "0.85rem",
+              marginTop: "8px",
+              textAlign: "center",
+            }}
+          >
+            {estConnecte
+              ? "Teste toutes tes connaissances de la Partie 1 !"
+              : "🔒 Inscris-toi pour accéder au bilan"}
+          </p>
+        </div>
+      )}
+
+      {/* Bouton Page 2 */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: "8px",
+        }}
+      >
         <button
           onClick={() => router.push("/cours/college/6eme/francais/page-2")}
           style={{
-            background: "rgba(79,142,247,0.1)",
-            border: "1px solid rgba(79,142,247,0.3)",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.15)",
             borderRadius: "14px",
             padding: "14px 28px",
-            color: "#4f8ef7",
+            color: "#fff",
             fontWeight: 700,
             fontSize: "1rem",
             cursor: "pointer",
+            width: "100%",
+            maxWidth: "400px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
           }}
         >
-          Suite du programme → Page 2
+          📚 Cours suivants — Partie 2 →
         </button>
       </div>
     </div>
