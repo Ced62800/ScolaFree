@@ -1,10 +1,60 @@
+import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+);
+
 export async function POST(req: NextRequest) {
-  const { question, prenom, classe } = await req.json();
+  const { question, prenom, classe, userId } = await req.json();
 
   if (!question)
     return NextResponse.json({ error: "Question manquante" }, { status: 400 });
+
+  // Vérification utilisateur connecté
+  if (!userId) {
+    return NextResponse.json(
+      { error: "Tu dois être connecté pour poser une question à Scolou !" },
+      { status: 401 },
+    );
+  }
+
+  // Récupérer le profil de l'utilisateur
+  const { data: profile, error: profileError } = await supabaseAdmin
+    .from("profiles")
+    .select("role, scolou_count, scolou_date")
+    .eq("id", userId)
+    .single();
+
+  if (profileError || !profile) {
+    return NextResponse.json({ error: "Profil introuvable" }, { status: 404 });
+  }
+
+  // Admin → accès illimité
+  const isAdmin = profile.role === "admin";
+
+  if (!isAdmin) {
+    const aujourd_hui = new Date().toISOString().split("T")[0]; // format YYYY-MM-DD
+    const dernierDate = profile.scolou_date;
+    const count = dernierDate === aujourd_hui ? profile.scolou_count || 0 : 0;
+
+    if (count >= 2) {
+      return NextResponse.json(
+        { error: "Tu as utilisé tes 2 questions du jour ! Reviens demain 😊" },
+        { status: 429 },
+      );
+    }
+
+    // Mettre à jour le compteur
+    await supabaseAdmin
+      .from("profiles")
+      .update({
+        scolou_count: count + 1,
+        scolou_date: aujourd_hui,
+      })
+      .eq("id", userId);
+  }
 
   const niveauLabel: Record<string, string> = {
     cp: "CP (6 ans)",
@@ -82,12 +132,6 @@ Français page 1:
 - Accords, homophones simples (a/à, est/et) → /cours/primaire/ce1/francais/orthographe
 - Synonymes, antonymes, familles de mots → /cours/primaire/ce1/francais/vocabulaire
 
-Français page 2:
-- Compléments, adjectifs qualificatifs → /cours/primaire/ce1/francais/grammaire-2
-- Futur simple, imparfait → /cours/primaire/ce1/francais/conjugaison-2
-- Homophones (on/ont, son/sont, ou/où) → /cours/primaire/ce1/francais/orthographe-2
-- Niveaux de langue, expressions → /cours/primaire/ce1/francais/vocabulaire-2
-
 Maths page 1:
 - Nombres jusqu'à 100 → /cours/primaire/ce1/maths/numeration
 - Additions posées → /cours/primaire/ce1/maths/addition
@@ -106,157 +150,98 @@ Anglais:
 
 --- CE2 ---
 Français page 1:
-- Nature des mots (nom, verbe, adjectif, déterminant, pronom) → /cours/primaire/ce2/francais/grammaire
+- Nature des mots → /cours/primaire/ce2/francais/grammaire
 - Passé composé avec avoir → /cours/primaire/ce2/francais/conjugaison
-- Accord sujet-verbe, homophones (a/à, est/et, on/ont) → /cours/primaire/ce2/francais/orthographe
-- Sens des mots, contexte, registres → /cours/primaire/ce2/francais/vocabulaire
+- Accord sujet-verbe, homophones → /cours/primaire/ce2/francais/orthographe
+- Sens des mots, contexte → /cours/primaire/ce2/francais/vocabulaire
 
 Français page 2:
-- COD, compléments circonstanciels (lieu, temps), ponctuation → /cours/primaire/ce2/francais/grammaire-2
+- COD, compléments circonstanciels → /cours/primaire/ce2/francais/grammaire-2
 - Passé composé avec être, futur antérieur → /cours/primaire/ce2/francais/conjugaison-2
 - Homophones avancés (ces/ses/c'est/s'est, leur/leurs, tout/tous, ça/sa) → /cours/primaire/ce2/francais/orthographe-2
 - Champs lexicaux, figures de style simples → /cours/primaire/ce2/francais/vocabulaire-2
 
-Maths page 1:
+Maths:
 - Nombres jusqu'à 1000 → /cours/primaire/ce2/maths/numeration
 - Multiplication posée → /cours/primaire/ce2/maths/multiplication
 - Division euclidienne → /cours/primaire/ce2/maths/division
-- Fractions (numérateur, dénominateur) → /cours/primaire/ce2/maths/fractions
+- Fractions → /cours/primaire/ce2/maths/fractions
 - Périmètre, aires → /cours/primaire/ce2/maths/geometrie
-- Mesures (km, m, cm, kg, L) → /cours/primaire/ce2/maths/grandeurs-mesures
-- Additions et soustractions de grands nombres → /cours/primaire/ce2/maths/addition-soustraction
-- Problèmes → /cours/primaire/ce2/maths/problemes
+- Mesures → /cours/primaire/ce2/maths/grandeurs-mesures
 
 Anglais:
-- Objets de la classe, consignes → /cours/primaire/ce2/anglais/ecole-objets
+- Objets de la classe → /cours/primaire/ce2/anglais/ecole-objets
 - Vêtements, maison → /cours/primaire/ce2/anglais/vetements-maison
 - Fruits, nourriture → /cours/primaire/ce2/anglais/fruits-nourriture
-- Goûts, préférences (I like/I don't like) → /cours/primaire/ce2/anglais/gouts
+- Goûts → /cours/primaire/ce2/anglais/gouts
 
 --- CM1 ---
-Français page 1:
-- Phrase simple/complexe, classes grammaticales → /cours/primaire/cm1/francais/grammaire
+Français:
+- Phrase simple/complexe → /cours/primaire/cm1/francais/grammaire
 - Passé composé et imparfait → /cours/primaire/cm1/francais/conjugaison
-- Homophones (ces/ses, son/sont, ou/où, ça/sa) → /cours/primaire/cm1/francais/orthographe
-- Niveaux de langue (familier, courant, soutenu) → /cours/primaire/cm1/francais/vocabulaire
+- Homophones → /cours/primaire/cm1/francais/orthographe
+- Niveaux de langue → /cours/primaire/cm1/francais/vocabulaire
 
-Français page 2:
-- Propositions subordonnées, COI, voix passive → /cours/primaire/cm1/francais/grammaire-2
-- Futur simple, futur antérieur, conditionnel → /cours/primaire/cm1/francais/conjugaison-2
-- Accord du participe passé, homophones avancés → /cours/primaire/cm1/francais/orthographe-2
-- Préfixes, suffixes, étymologie → /cours/primaire/cm1/francais/vocabulaire-2
-
-Maths page 1:
-- Grands nombres, milliards → /cours/primaire/cm1/maths/grands-nombres
-- Multiplication à plusieurs chiffres → /cours/primaire/cm1/maths/multiplication
-- Division avec reste → /cours/primaire/cm1/maths/division
-- Nombres décimaux (lecture, écriture) → /cours/primaire/cm1/maths/decimaux
-- Fractions (égales, comparer, additionner) → /cours/primaire/cm1/maths/fractions
-- Proportionnalité, tableaux → /cours/primaire/cm1/maths/proportionnalite
-- Additions et soustractions de décimaux → /cours/primaire/cm1/maths/addition-decimaux
-- Problèmes complexes → /cours/primaire/cm1/maths/problemes
+Maths:
+- Grands nombres → /cours/primaire/cm1/maths/grands-nombres
+- Multiplication → /cours/primaire/cm1/maths/multiplication
+- Division → /cours/primaire/cm1/maths/division
+- Décimaux → /cours/primaire/cm1/maths/decimaux
+- Fractions → /cours/primaire/cm1/maths/fractions
+- Proportionnalité → /cours/primaire/cm1/maths/proportionnalite
 
 Anglais:
-- Routine quotidienne, heures → /cours/primaire/cm1/anglais/routine-heure
-- Métiers en anglais → /cours/primaire/cm1/anglais/metiers
-- Décrire quelqu'un (physique, caractère) → /cours/primaire/cm1/anglais/decrire-quelquun
-- Pays anglophones, cultures → /cours/primaire/cm1/anglais/pays-anglophones
+- Routine, heures → /cours/primaire/cm1/anglais/routine-heure
+- Métiers → /cours/primaire/cm1/anglais/metiers
+- Décrire quelqu'un → /cours/primaire/cm1/anglais/decrire-quelquun
+- Pays anglophones → /cours/primaire/cm1/anglais/pays-anglophones
 
 --- CM2 ---
-Français page 1:
-- Subordonnées relatives, circonstancielles → /cours/primaire/cm2/francais/grammaire
+Français:
+- Subordonnées relatives → /cours/primaire/cm2/francais/grammaire
 - Passé simple, plus-que-parfait → /cours/primaire/cm2/francais/conjugaison
-- Accord du participe passé avec avoir/être → /cours/primaire/cm2/francais/orthographe
-- Figures de style (métaphore, comparaison, personnification) → /cours/primaire/cm2/francais/vocabulaire
+- Accord du participe passé → /cours/primaire/cm2/francais/orthographe
+- Figures de style → /cours/primaire/cm2/francais/vocabulaire
 
-Français page 2:
-- Phrase complexe, coordination, subordination → /cours/primaire/cm2/francais/grammaire-2
-- Conditionnel présent, subjonctif présent → /cours/primaire/cm2/francais/conjugaison-2
-- Homophones complexes, accord PP → /cours/primaire/cm2/francais/orthographe-2
-- Champs lexicaux avancés, nuances de sens → /cours/primaire/cm2/francais/vocabulaire-2
-
-Maths page 1:
-- Décimaux (opérations avancées) → /cours/primaire/cm2/maths/decimaux
-- Fractions supérieures à 1, opérations → /cours/primaire/cm2/maths/fractions
-- Aires, volumes, cercle, π → /cours/primaire/cm2/maths/geometrie
-- Moyenne, tableaux, graphiques → /cours/primaire/cm2/maths/statistiques
-
-Maths page 2:
-- Pourcentages → /cours/primaire/cm2/maths/pourcentages
-- Proportionnalité avancée → /cours/primaire/cm2/maths/proportionnalite
-- Problèmes à plusieurs étapes → /cours/primaire/cm2/maths/problemes
-- Calcul mental rapide → /cours/primaire/cm2/maths/calcul-mental
+Maths:
+- Décimaux avancés → /cours/primaire/cm2/maths/decimaux
+- Fractions → /cours/primaire/cm2/maths/fractions
+- Aires, volumes → /cours/primaire/cm2/maths/geometrie
+- Statistiques → /cours/primaire/cm2/maths/statistiques
 
 Anglais:
 - Météo, saisons → /cours/primaire/cm2/anglais/meteo-saisons
-- Corps, santé, maladies → /cours/primaire/cm2/anglais/corps-sante
-- Shopping, argent en anglais → /cours/primaire/cm2/anglais/shopping
+- Corps, santé → /cours/primaire/cm2/anglais/corps-sante
+- Shopping → /cours/primaire/cm2/anglais/shopping
 - Ville, directions → /cours/primaire/cm2/anglais/ville-directions
 
 === NOTES DE CORRESPONDANCE IMPORTANTES ===
 
 CONJUGAISON :
 - Présent de être/avoir → /cours/primaire/cp/francais/conjugaison
-- Présent des verbes du 1er groupe → /cours/primaire/ce1/francais/conjugaison
-- Futur simple (toutes classes) → conjugaison-2 de la classe concernée
+- Futur simple → conjugaison-2 de la classe concernée
 - Imparfait → conjugaison-2 (CE1, CE2, CM1)
 - Passé composé avec avoir → /cours/primaire/ce2/francais/conjugaison
 - Passé composé avec être → /cours/primaire/ce2/francais/conjugaison-2
 - Passé simple → /cours/primaire/cm2/francais/conjugaison
-- Plus-que-parfait → /cours/primaire/cm2/francais/conjugaison
-- Conditionnel → /cours/primaire/cm1/francais/conjugaison-2 (CM1) ou /cours/primaire/cm2/francais/conjugaison-2 (CM2)
+- Conditionnel → conjugaison-2 CM1 ou CM2
 
 ORTHOGRAPHE :
-- ça/sa → /cours/primaire/ce2/francais/orthographe-2 (introduction CE2) ou /cours/primaire/cm1/francais/orthographe (révision CM1)
+- ça/sa → /cours/primaire/ce2/francais/orthographe-2
 - leur/leurs → /cours/primaire/ce2/francais/orthographe-2
-- tout/tous/toute/toutes → /cours/primaire/ce2/francais/orthographe-2
 - ces/ses/c'est/s'est → /cours/primaire/ce2/francais/orthographe-2
 - son/sont, ou/où → /cours/primaire/ce1/francais/orthographe-2
 - on/ont, a/à, est/et → /cours/primaire/ce1/francais/orthographe
 - accord du participe passé → /cours/primaire/cm2/francais/orthographe
 
-GRAMMAIRE :
-- COD → /cours/primaire/ce2/francais/grammaire-2
-- COI → /cours/primaire/cm1/francais/grammaire-2
-- Compléments circonstanciels → /cours/primaire/ce2/francais/grammaire-2
-- Figures de style → /cours/primaire/cm2/francais/vocabulaire
-- Préfixes/suffixes → /cours/primaire/cm1/francais/vocabulaire-2
-- Phrase complexe/subordonnée → /cours/primaire/cm2/francais/grammaire
-
 MATHS :
 - Tables de multiplication → /cours/primaire/ce1/maths/multiplication
-- Fractions simples → /cours/primaire/ce1/maths/fractions (CE1) ou /cours/primaire/ce2/maths/fractions (CE2)
-- Fractions avancées → /cours/primaire/cm1/maths/fractions (CM1) ou /cours/primaire/cm2/maths/fractions (CM2)
-- Décimaux → /cours/primaire/cm1/maths/decimaux (CM1) ou /cours/primaire/cm2/maths/decimaux (CM2)
-- Proportionnalité → /cours/primaire/cm1/maths/proportionnalite (CM1) ou /cours/primaire/cm2/maths/proportionnalite (CM2)
-- Pourcentages → /cours/primaire/cm2/maths/pourcentages (CM2 uniquement)
-- Périmètre/aires → /cours/primaire/ce2/maths/geometrie (CE2) ou /cours/primaire/cm2/maths/geometrie (CM2)
-- Volume → /cours/primaire/cm2/maths/geometrie
-- Statistiques/moyenne → /cours/primaire/cm2/maths/statistiques
-- Division → /cours/primaire/ce2/maths/division (CE2) ou /cours/primaire/cm1/maths/division (CM1)
+- Fractions simples → /cours/primaire/ce1/maths/fractions
+- Décimaux → /cours/primaire/cm1/maths/decimaux
+- Division → /cours/primaire/ce2/maths/division
+- Statistiques → /cours/primaire/cm2/maths/statistiques
 
-ANGLAIS :
-- Verbes irréguliers → utilise le cours anglais le plus proche du niveau de l'élève
-- How to say... → cours de vocabulaire anglais correspondant au thème
-- Météo → /cours/primaire/cm2/anglais/meteo-saisons
-- Corps/santé → /cours/primaire/cm2/anglais/corps-sante
-- Shopping → /cours/primaire/cm2/anglais/shopping
-- Directions → /cours/primaire/cm2/anglais/ville-directions
-- Animaux → /cours/primaire/ce1/anglais/animaux
-- Famille → /cours/primaire/ce1/anglais/famille-corps
-- Couleurs → /cours/primaire/ce1/anglais/couleurs-chiffres
-- Nourriture → /cours/primaire/ce2/anglais/fruits-nourriture
-- Vêtements → /cours/primaire/ce2/anglais/vetements-maison
-- Métiers → /cours/primaire/cm1/anglais/metiers
-- Routine/heures → /cours/primaire/cm1/anglais/routine-heure
-
-Exemples de format attendu :
-- Question sur ça/sa → LIEN:/cours/primaire/ce2/francais/orthographe-2
-- Question sur le futur CM1 → LIEN:/cours/primaire/cm1/francais/conjugaison-2
-- Question sur les fractions CM2 → LIEN:/cours/primaire/cm2/maths/fractions
-- Question sur les tables de 7 → LIEN:/cours/primaire/ce1/maths/multiplication
-- Question sur le COD → LIEN:/cours/primaire/ce2/francais/grammaire-2
-- Si aucun cours ne correspond, ne mets pas de LIEN.`;
+Si aucun cours ne correspond, ne mets pas de LIEN.`;
 
   const apiKey = process.env.GEMINI_API_KEY;
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
@@ -291,7 +276,6 @@ Exemples de format attendu :
   }
 
   const texte = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-
   const lienMatch = texte.match(/LIEN:([^\n]+)/);
   const lien = lienMatch ? lienMatch[1].trim() : null;
   const reponse = texte.replace(/LIEN:[^\n]+/g, "").trim();

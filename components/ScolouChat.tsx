@@ -23,7 +23,9 @@ export default function ScolouChat() {
   const [loading, setLoading] = useState(false);
   const [prenom, setPrenom] = useState<string | null>(null);
   const [classe, setClasse] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [salutation, setSalutation] = useState("");
+  const [erreur, setErreur] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function ScolouChat() {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
+        setUserId(user.id);
         const { data: profile } = await supabase
           .from("profiles")
           .select("prenom, classe")
@@ -41,13 +44,11 @@ export default function ScolouChat() {
           setPrenom(profile.prenom);
           setClasse(profile.classe);
           setSalutation(
-            `Salut ${profile.prenom} ! 👋 Je suis Scolou, ton assistant scolaire. Pose-moi toutes tes questions en Français, Maths ou Anglais !`,
+            `Salut ${profile.prenom} ! 👋 Je suis Scolou, ton assistant scolaire. Tu as droit à 2 questions par jour. Pose-moi tes questions en Français, Maths ou Anglais !`,
           );
         }
       } else {
-        setSalutation(
-          "Salut ! 👋 Je suis Scolou. Inscris-toi pour me poser des questions personnalisées !",
-        );
+        setSalutation("");
       }
     };
     loadProfil();
@@ -64,18 +65,24 @@ export default function ScolouChat() {
     setLoading(true);
     setReponse("");
     setLien(null);
+    setErreur(null);
 
     try {
       const res = await fetch("/api/scolou", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, prenom, classe }),
+        body: JSON.stringify({ question, prenom, classe, userId }),
       });
       const data = await res.json();
-      setReponse(data.reponse || "Désolé, je n'ai pas pu répondre.");
-      setLien(data.lien || null);
+
+      if (!res.ok) {
+        setErreur(data.error || "Une erreur est survenue.");
+      } else {
+        setReponse(data.reponse || "Désolé, je n'ai pas pu répondre.");
+        setLien(data.lien || null);
+      }
     } catch {
-      setReponse("Oups ! Une erreur est survenue. Réessaie !");
+      setErreur("Oups ! Une erreur est survenue. Réessaie !");
     }
     setLoading(false);
   };
@@ -84,6 +91,7 @@ export default function ScolouChat() {
     setQuestion("");
     setReponse("");
     setLien(null);
+    setErreur(null);
     if (inputRef.current) inputRef.current.focus();
   };
 
@@ -132,7 +140,6 @@ export default function ScolouChat() {
                 height: "50px",
                 objectFit: "cover",
                 borderRadius: "50%",
-                overflow: "hidden",
               }}
             />
           )}
@@ -198,182 +205,283 @@ export default function ScolouChat() {
 
           {/* Corps scrollable */}
           <div style={{ padding: "16px 20px", flex: 1, overflowY: "auto" }}>
-            {/* Salutation */}
-            {!reponse && !loading && (
-              <div
-                style={{
-                  background: "rgba(0,180,200,0.1)",
-                  border: "1px solid rgba(0,180,200,0.2)",
-                  borderRadius: "12px",
-                  padding: "12px 14px",
-                  fontSize: "0.9rem",
-                  color: "#ccc",
-                  marginBottom: "16px",
-                  lineHeight: "1.5",
-                }}
-              >
-                {salutation || "Chargement..."}
-              </div>
-            )}
-
-            {/* Chargement */}
-            {loading && (
-              <div
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  borderRadius: "12px",
-                  padding: "12px 14px",
-                  fontSize: "0.9rem",
-                  color: "#aaa",
-                  marginBottom: "16px",
-                  textAlign: "center",
-                }}
-              >
-                🤔 Scolou réfléchit...
-              </div>
-            )}
-
-            {/* Réponse */}
-            {reponse && (
-              <>
+            {/* Non connecté */}
+            {!userId && (
+              <div style={{ textAlign: "center", padding: "20px 0" }}>
+                <div style={{ fontSize: "3rem", marginBottom: "12px" }}>🔒</div>
                 <div
                   style={{
-                    background: "rgba(0,180,200,0.1)",
-                    border: "1px solid rgba(0,180,200,0.2)",
-                    borderRadius: "12px",
-                    padding: "14px 16px",
-                    fontSize: "0.9rem",
-                    color: "#ddd",
-                    marginBottom: "12px",
-                    lineHeight: "1.7",
+                    fontWeight: 700,
+                    color: "#fff",
+                    marginBottom: "8px",
+                    fontSize: "1rem",
                   }}
-                  dangerouslySetInnerHTML={{ __html: formatReponse(reponse) }}
-                />
-
-                {/* Bouton lien vers le cours */}
-                {lien && (
-                  <button
-                    onClick={() => {
-                      router.push(lien);
-                      setOuvert(false);
-                    }}
-                    style={{
-                      width: "100%",
-                      padding: "12px 16px",
-                      background: "linear-gradient(135deg, #00b4c8, #008fa0)",
-                      border: "none",
-                      borderRadius: "12px",
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: "0.9rem",
-                      cursor: "pointer",
-                      marginBottom: "10px",
-                      textAlign: "left",
-                    }}
-                  >
-                    📚 Revoir le cours sur ScolaFree →
-                  </button>
-                )}
-
-                <button
-                  onClick={handleReset}
+                >
+                  Scolou est réservé aux inscrits
+                </div>
+                <p
                   style={{
-                    width: "100%",
-                    padding: "10px",
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "10px",
                     color: "#aaa",
                     fontSize: "0.85rem",
-                    cursor: "pointer",
-                    marginBottom: "12px",
+                    marginBottom: "16px",
+                    lineHeight: "1.5",
                   }}
                 >
-                  🔄 Nouvelle question
-                </button>
-              </>
-            )}
-
-            {/* Input */}
-            {!reponse && (
-              <div style={{ display: "flex", gap: "8px" }}>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleEnvoyer()}
-                  placeholder="Pose ta question..."
-                  style={{
-                    flex: 1,
-                    padding: "10px 14px",
-                    background: "rgba(255,255,255,0.08)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: "12px",
-                    color: "#fff",
-                    fontSize: "0.9rem",
-                    outline: "none",
-                  }}
-                  disabled={loading}
-                />
+                  Crée un compte gratuit pour poser jusqu'à 2 questions par jour
+                  à Scolou !
+                </p>
                 <button
-                  onClick={handleEnvoyer}
-                  disabled={loading || !question.trim()}
+                  onClick={() => router.push("/inscription")}
                   style={{
-                    padding: "10px 16px",
-                    background: question.trim()
-                      ? "linear-gradient(135deg, #00b4c8, #008fa0)"
-                      : "rgba(255,255,255,0.1)",
+                    background: "linear-gradient(135deg, #00b4c8, #008fa0)",
+                    color: "#fff",
                     border: "none",
                     borderRadius: "12px",
-                    color: "#fff",
-                    cursor: question.trim() ? "pointer" : "default",
-                    fontSize: "1rem",
-                    transition: "all 0.2s",
+                    padding: "12px 24px",
+                    fontWeight: 700,
+                    fontSize: "0.9rem",
+                    cursor: "pointer",
+                    marginBottom: "8px",
+                    width: "100%",
                   }}
                 >
-                  {loading ? "..." : "→"}
+                  ✨ S'inscrire gratuitement →
+                </button>
+                <button
+                  onClick={() => router.push("/connexion")}
+                  style={{
+                    background: "rgba(255,255,255,0.06)",
+                    color: "#aaa",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 24px",
+                    fontSize: "0.85rem",
+                    cursor: "pointer",
+                    width: "100%",
+                  }}
+                >
+                  J'ai déjà un compte
                 </button>
               </div>
             )}
 
-            {/* Suggestions */}
-            {!reponse && !loading && (
-              <div style={{ marginTop: "12px" }}>
-                <div
-                  style={{
-                    fontSize: "0.75rem",
-                    color: "#666",
-                    marginBottom: "8px",
-                  }}
-                >
-                  Exemples :
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                  {[
-                    "Ça ou sa ?",
-                    "Tables de 7",
-                    "How to say 'chat' ?",
-                    "C'est quoi un COD ?",
-                  ].map((ex) => (
+            {/* Connecté */}
+            {userId && (
+              <>
+                {/* Salutation */}
+                {!reponse && !loading && !erreur && (
+                  <div
+                    style={{
+                      background: "rgba(0,180,200,0.1)",
+                      border: "1px solid rgba(0,180,200,0.2)",
+                      borderRadius: "12px",
+                      padding: "12px 14px",
+                      fontSize: "0.9rem",
+                      color: "#ccc",
+                      marginBottom: "16px",
+                      lineHeight: "1.5",
+                    }}
+                  >
+                    {salutation || "Chargement..."}
+                  </div>
+                )}
+
+                {/* Chargement */}
+                {loading && (
+                  <div
+                    style={{
+                      background: "rgba(255,255,255,0.05)",
+                      borderRadius: "12px",
+                      padding: "12px 14px",
+                      fontSize: "0.9rem",
+                      color: "#aaa",
+                      marginBottom: "16px",
+                      textAlign: "center",
+                    }}
+                  >
+                    🤔 Scolou réfléchit...
+                  </div>
+                )}
+
+                {/* Erreur */}
+                {erreur && (
+                  <div
+                    style={{
+                      background: "rgba(255,107,107,0.1)",
+                      border: "1px solid rgba(255,107,107,0.3)",
+                      borderRadius: "12px",
+                      padding: "14px 16px",
+                      fontSize: "0.9rem",
+                      color: "#ff6b6b",
+                      marginBottom: "12px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {erreur}
                     <button
-                      key={ex}
-                      onClick={() => setQuestion(ex)}
+                      onClick={handleReset}
                       style={{
-                        padding: "4px 10px",
-                        background: "rgba(0,180,200,0.1)",
-                        border: "1px solid rgba(0,180,200,0.2)",
-                        borderRadius: "20px",
-                        color: "#00b4c8",
-                        fontSize: "0.78rem",
+                        display: "block",
+                        margin: "12px auto 0",
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        borderRadius: "10px",
+                        padding: "8px 16px",
+                        color: "#aaa",
+                        fontSize: "0.85rem",
                         cursor: "pointer",
                       }}
                     >
-                      {ex}
+                      🔄 Réessayer
                     </button>
-                  ))}
-                </div>
-              </div>
+                  </div>
+                )}
+
+                {/* Réponse */}
+                {reponse && (
+                  <>
+                    <div
+                      style={{
+                        background: "rgba(0,180,200,0.1)",
+                        border: "1px solid rgba(0,180,200,0.2)",
+                        borderRadius: "12px",
+                        padding: "14px 16px",
+                        fontSize: "0.9rem",
+                        color: "#ddd",
+                        marginBottom: "12px",
+                        lineHeight: "1.7",
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: formatReponse(reponse),
+                      }}
+                    />
+                    {lien && (
+                      <button
+                        onClick={() => {
+                          router.push(lien);
+                          setOuvert(false);
+                        }}
+                        style={{
+                          width: "100%",
+                          padding: "12px 16px",
+                          background:
+                            "linear-gradient(135deg, #00b4c8, #008fa0)",
+                          border: "none",
+                          borderRadius: "12px",
+                          color: "#fff",
+                          fontWeight: 700,
+                          fontSize: "0.9rem",
+                          cursor: "pointer",
+                          marginBottom: "10px",
+                          textAlign: "left",
+                        }}
+                      >
+                        📚 Revoir le cours sur ScolaFree →
+                      </button>
+                    )}
+                    <button
+                      onClick={handleReset}
+                      style={{
+                        width: "100%",
+                        padding: "10px",
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        borderRadius: "10px",
+                        color: "#aaa",
+                        fontSize: "0.85rem",
+                        cursor: "pointer",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      🔄 Nouvelle question
+                    </button>
+                  </>
+                )}
+
+                {/* Input */}
+                {!reponse && !erreur && (
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      value={question}
+                      onChange={(e) => setQuestion(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleEnvoyer()}
+                      placeholder="Pose ta question..."
+                      style={{
+                        flex: 1,
+                        padding: "10px 14px",
+                        background: "rgba(255,255,255,0.08)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        borderRadius: "12px",
+                        color: "#fff",
+                        fontSize: "0.9rem",
+                        outline: "none",
+                      }}
+                      disabled={loading}
+                    />
+                    <button
+                      onClick={handleEnvoyer}
+                      disabled={loading || !question.trim()}
+                      style={{
+                        padding: "10px 16px",
+                        background: question.trim()
+                          ? "linear-gradient(135deg, #00b4c8, #008fa0)"
+                          : "rgba(255,255,255,0.1)",
+                        border: "none",
+                        borderRadius: "12px",
+                        color: "#fff",
+                        cursor: question.trim() ? "pointer" : "default",
+                        fontSize: "1rem",
+                        transition: "all 0.2s",
+                      }}
+                    >
+                      {loading ? "..." : "→"}
+                    </button>
+                  </div>
+                )}
+
+                {/* Suggestions */}
+                {!reponse && !loading && !erreur && (
+                  <div style={{ marginTop: "12px" }}>
+                    <div
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "#666",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      Exemples :
+                    </div>
+                    <div
+                      style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}
+                    >
+                      {[
+                        "Ça ou sa ?",
+                        "Tables de 7",
+                        "How to say 'chat' ?",
+                        "C'est quoi un COD ?",
+                      ].map((ex) => (
+                        <button
+                          key={ex}
+                          onClick={() => setQuestion(ex)}
+                          style={{
+                            padding: "4px 10px",
+                            background: "rgba(0,180,200,0.1)",
+                            border: "1px solid rgba(0,180,200,0.2)",
+                            borderRadius: "20px",
+                            color: "#00b4c8",
+                            fontSize: "0.78rem",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {ex}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
