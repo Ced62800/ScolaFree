@@ -4,46 +4,10 @@ import { useRouter } from "next/navigation";
 
 const themes = [
   {
-    id: "la-phrase",
-    label: "La phrase",
-    emoji: "✏️",
-    desc: "Types et formes de phrases, sujet, ponctuation",
-    dispo: true,
-  },
-  {
-    id: "classes-de-mots",
-    label: "Les classes de mots",
-    emoji: "📝",
-    desc: "Nom, verbe, adjectif, déterminant, pronom...",
-    dispo: false,
-  },
-  {
-    id: "groupe-nominal",
-    label: "Le groupe nominal",
-    emoji: "🔤",
-    desc: "Construction et accords du groupe nominal",
-    dispo: false,
-  },
-  {
-    id: "present-indicatif",
-    label: "Le présent de l'indicatif",
-    emoji: "⏱️",
-    desc: "Conjugaison au présent — tous les groupes",
-    dispo: false,
-  },
-  {
-    id: "bilan",
-    label: "Bilan 1",
-    emoji: "📊",
-    desc: "Évaluation sur la phrase et les classes de mots",
-    dispo: false,
-    isBilan: true,
-  },
-  {
     id: "imparfait",
     label: "L'imparfait",
     emoji: "⏳",
-    desc: "Conjugaison à l'imparfait",
+    desc: "Conjugaison à l'imparfait — tous les groupes",
     dispo: false,
   },
   {
@@ -64,20 +28,20 @@ const themes = [
     id: "vocabulaire",
     label: "Le vocabulaire",
     emoji: "📚",
-    desc: "Sens des mots, synonymes, antonymes",
+    desc: "Sens des mots, synonymes, antonymes, familles de mots",
     dispo: false,
   },
   {
     id: "bilan-2",
     label: "Bilan 2",
     emoji: "📊",
-    desc: "Évaluation sur la conjugaison et l'orthographe",
+    desc: "Évaluation sur l'imparfait, les accords, l'orthographe et le vocabulaire",
     dispo: false,
     isBilan: true,
   },
 ];
 
-export default function Francais6emePage() {
+export default function Francais6emePageDeux() {
   const router = useRouter();
 
   return (
@@ -85,7 +49,7 @@ export default function Francais6emePage() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/college/6eme")}
+          onClick={() => router.push("/cours/college/6eme/francais")}
         >
           ← Retour
         </button>
@@ -111,14 +75,21 @@ export default function Francais6emePage() {
             6ème
           </span>
           <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Français</span>
+          <span
+            onClick={() => router.push("/cours/college/6eme/francais")}
+            style={{ cursor: "pointer" }}
+          >
+            Français
+          </span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Page 2</span>
         </div>
       </div>
 
       <div className="cours-hero">
         <div className="cours-hero-icon">📖</div>
         <h1 className="cours-hero-title">Français — 6ème</h1>
-        <p className="cours-hero-desc">Programme officiel de 6ème</p>
+        <p className="cours-hero-desc">Programme officiel — Partie 2</p>
       </div>
 
       <div className="themes-grid">
@@ -149,6 +120,25 @@ export default function Francais6emePage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Retour page 1 */}
+      <div style={{ textAlign: "center", marginTop: "40px" }}>
+        <button
+          onClick={() => router.push("/cours/college/6eme/francais")}
+          style={{
+            background: "rgba(79,142,247,0.1)",
+            border: "1px solid rgba(79,142,247,0.3)",
+            borderRadius: "14px",
+            padding: "14px 28px",
+            color: "#4f8ef7",
+            fontWeight: 700,
+            fontSize: "1rem",
+            cursor: "pointer",
+          }}
+        >
+          ← Retour Page 1
+        </button>
       </div>
     </div>
   );

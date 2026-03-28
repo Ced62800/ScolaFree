@@ -19,7 +19,7 @@ const niveaux = [
     desc: "6ème · 5ème · 4ème · 3ème",
     age: "11 à 15 ans",
     color: "#2ec4b6",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "lycee",
