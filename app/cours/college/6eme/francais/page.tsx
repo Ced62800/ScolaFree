@@ -22,7 +22,7 @@ const themes = [
     label: "Le groupe nominal",
     emoji: "🔤",
     desc: "Construction et accords du groupe nominal",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "present-indicatif",
