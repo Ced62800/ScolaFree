@@ -1,8 +1,9 @@
 "use client";
 
+import { DecouverteContext } from "@/components/DecouverteContext";
 import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 const CLASSE = "6eme";
 const MATIERE = "francais";
@@ -21,12 +22,7 @@ type Question = {
   question: string;
   options: string[];
   answer: string;
-  fiche: {
-    regle: string;
-    exemple: string;
-    piege: string;
-    astuce: string;
-  };
+  fiche: { regle: string; exemple: string; piege: string; astuce: string };
 };
 
 const questionsBase: Question[] = [
@@ -45,9 +41,8 @@ const questionsBase: Question[] = [
       exemple:
         "✅ le chat / une belle maison / ces trois petits enfants curieux",
       piege:
-        "Un nom seul n'est pas un groupe nominal complet. Il faut au minimum un déterminant : 'chat' ≠ GN / 'le chat' = GN.",
-      astuce:
-        "Le groupe nominal répond à la question 'qui ?' ou 'quoi ?' devant le verbe. C'est souvent le sujet ou le complément !",
+        "Un nom seul n'est pas un GN complet. Il faut au minimum un déterminant.",
+      astuce: "Le GN répond à 'qui ?' ou 'quoi ?' devant le verbe !",
     },
   },
   {
@@ -57,13 +52,12 @@ const questionsBase: Question[] = [
     answer: "robe",
     fiche: {
       regle:
-        "Le nom noyau est le mot le plus important du groupe nominal. Tous les autres mots du GN sont là pour le préciser ou le qualifier.",
-      exemple:
-        "✅ 'une belle robe rouge' → robe est le noyau / 'le petit chien blanc' → chien est le noyau",
+        "Le nom noyau est le mot le plus important du GN. Tous les autres mots sont là pour le préciser.",
+      exemple: "✅ 'une belle robe rouge' → robe est le noyau",
       piege:
-        "Ne pas confondre le nom noyau avec les adjectifs qui l'entourent. Les adjectifs qualifient le nom mais ne sont pas le noyau !",
+        "Ne pas confondre le nom noyau avec les adjectifs qui l'entourent !",
       astuce:
-        "Pour trouver le nom noyau, supprime tous les adjectifs et le déterminant — ce qui reste est le noyau !",
+        "Supprime les adjectifs et le déterminant — ce qui reste est le noyau !",
     },
   },
   {
@@ -76,12 +70,10 @@ const questionsBase: Question[] = [
     ],
     answer: "le petit chien blanc",
     fiche: {
-      regle:
-        "Un groupe nominal contient obligatoirement un nom (noyau) et un déterminant. Il peut aussi contenir des adjectifs, des compléments du nom...",
+      regle: "Un GN contient obligatoirement un nom (noyau) et un déterminant.",
       exemple:
         "✅ le petit chien blanc = déterminant + adjectif + nom + adjectif",
-      piege:
-        "'mange rapidement' est un groupe verbal, pas un GN. Un GN ne peut pas commencer par un verbe conjugué !",
+      piege: "'mange rapidement' est un groupe verbal, pas un GN !",
       astuce:
         "Cherche le nom — si tu en trouves un avec un déterminant, c'est un GN !",
     },
@@ -92,13 +84,10 @@ const questionsBase: Question[] = [
     answer: "de mon ami",
     fiche: {
       regle:
-        "Le complément du nom (CDN) est un groupe de mots qui précise le nom noyau. Il est souvent introduit par les prépositions 'de', 'à', 'en'.",
-      exemple:
-        "✅ le livre de mon ami → 'de mon ami' complète 'livre' / la maison en pierre → 'en pierre' complète 'maison'",
-      piege:
-        "Le complément du nom commence souvent par 'de' mais pas toujours ! Ex : 'un sac à dos', 'une table en bois'.",
-      astuce:
-        "Pour repérer le CDN, pose la question 'quel + nom ?' : 'quel livre ?' → 'le livre de mon ami' → CDN = 'de mon ami'.",
+        "Le complément du nom (CDN) précise le nom noyau. Il est souvent introduit par 'de', 'à', 'en'.",
+      exemple: "✅ le livre de mon ami → 'de mon ami' complète 'livre'",
+      piege: "Le CDN commence souvent par 'de' mais pas toujours !",
+      astuce: "Pose la question 'quel + nom ?' pour repérer le CDN.",
     },
   },
   {
@@ -112,11 +101,10 @@ const questionsBase: Question[] = [
     answer: "Il s'accorde en genre et en nombre avec le nom noyau",
     fiche: {
       regle:
-        "Dans un groupe nominal, l'adjectif qualificatif s'accorde toujours en genre (masculin/féminin) et en nombre (singulier/pluriel) avec le nom noyau.",
-      exemple:
-        "✅ un petit chat → petit (masc. sing.) / une petite chatte → petite (fém. sing.) / de petits chats → petits (masc. plur.)",
+        "Dans un GN, l'adjectif qualificatif s'accorde toujours en genre et en nombre avec le nom noyau.",
+      exemple: "✅ un petit chat / une petite chatte / de petits chats",
       piege:
-        "Si le GN contient plusieurs noms de genres différents, l'adjectif se met au masculin pluriel : 'un garçon et une fille heureux'.",
+        "Si le GN contient plusieurs noms de genres différents, l'adjectif se met au masculin pluriel.",
       astuce:
         "Trouve le nom noyau → regarde son genre et son nombre → accorde l'adjectif pareil !",
     },
@@ -132,13 +120,10 @@ const questionsBase: Question[] = [
     answer: "des belles fleurs rouges",
     fiche: {
       regle:
-        "Dans un GN au pluriel, le déterminant, le nom ET tous les adjectifs prennent la marque du pluriel (généralement -s).",
-      exemple:
-        "✅ une belle fleur rouge → des belles fleurs rouges (tout s'accorde au féminin pluriel)",
-      piege:
-        "Oublier d'accorder l'adjectif APRÈS le nom est une erreur très fréquente ! 'rouges' s'accorde aussi !",
-      astuce:
-        "Dans un GN, tous les mots variables (déterminant, adjectifs) s'accordent avec le nom noyau !",
+        "Dans un GN au pluriel, le déterminant, le nom ET tous les adjectifs prennent la marque du pluriel.",
+      exemple: "✅ une belle fleur rouge → des belles fleurs rouges",
+      piege: "Oublier d'accorder l'adjectif APRÈS le nom est très fréquent !",
+      astuce: "Tous les mots variables s'accordent avec le nom noyau !",
     },
   },
   {
@@ -152,13 +137,11 @@ const questionsBase: Question[] = [
     answer: "Il introduit le nom et indique son genre et son nombre",
     fiche: {
       regle:
-        "Le déterminant introduit le nom dans la phrase. Il s'accorde avec le nom et permet de connaître son genre (masc./fém.) et son nombre (sing./plur.).",
+        "Le déterminant introduit le nom dans la phrase et permet de connaître son genre et son nombre.",
       exemple:
-        "✅ le (masc. sing.) / la (fém. sing.) / les (plur.) / un (masc. sing.) / une (fém. sing.) / des (plur.)",
-      piege:
-        "Ne pas confondre déterminant et adjectif : le déterminant introduit le nom, l'adjectif le qualifie.",
-      astuce:
-        "Le déterminant est toujours juste avant le nom (ou avant l'adjectif qui précède le nom) !",
+        "✅ le (masc. sing.) / la (fém. sing.) / les (plur.) / un / une / des",
+      piege: "Ne pas confondre déterminant et adjectif.",
+      astuce: "Le déterminant est toujours juste avant le nom !",
     },
   },
   {
@@ -168,13 +151,11 @@ const questionsBase: Question[] = [
     answer: "2",
     fiche: {
       regle:
-        "Un GN peut contenir plusieurs adjectifs. Ils peuvent être placés avant ou après le nom noyau, et tous s'accordent avec le nom.",
-      exemple:
-        "✅ 'ces magnifiques oiseaux migrateurs' : magnifiques (avant le nom) + migrateurs (après le nom) = 2 adjectifs",
-      piege:
-        "'ces' est un déterminant démonstratif, pas un adjectif ! Ne pas le compter comme adjectif.",
+        "Un GN peut contenir plusieurs adjectifs placés avant ou après le nom.",
+      exemple: "✅ 'magnifiques' (avant) + 'migrateurs' (après) = 2 adjectifs",
+      piege: "'ces' est un déterminant, pas un adjectif !",
       astuce:
-        "Cherche les mots qui donnent des informations sur le nom — qualité, caractéristique. Ce sont les adjectifs !",
+        "Cherche les mots qui donnent des informations sur le nom — ce sont les adjectifs !",
     },
   },
   {
@@ -189,13 +170,12 @@ const questionsBase: Question[] = [
     answer: "Un complément du nom",
     fiche: {
       regle:
-        "Le GN peut être enrichi par différentes expansions : adjectif qualificatif, complément du nom (introduit par une préposition) ou proposition relative.",
-      exemple:
-        "✅ la maison rouge → adjectif / la maison de Pierre → CDN / la maison qui est belle → proposition relative",
+        "Le GN peut être enrichi par : adjectif, complément du nom (préposition) ou proposition relative.",
+      exemple: "✅ la maison rouge → adjectif / la maison de Pierre → CDN",
       piege:
-        "'avec un grand jardin' commence par une préposition → c'est un complément du nom, pas un adjectif !",
+        "'avec un grand jardin' commence par une préposition → c'est un CDN !",
       astuce:
-        "Si l'expansion commence par une préposition (de, à, avec, en...), c'est un complément du nom !",
+        "Si l'expansion commence par une préposition, c'est un complément du nom !",
     },
   },
   {
@@ -209,11 +189,10 @@ const questionsBase: Question[] = [
     answer: "une jolie fleur",
     fiche: {
       regle:
-        "Pour identifier le genre et le nombre d'un GN, regarde le déterminant : 'une' = féminin singulier / 'un' = masculin singulier / 'des/les' = pluriel.",
-      exemple:
-        "✅ une jolie fleur → 'une' = fém. sing. / un grand chien → 'un' = masc. sing. / les beaux oiseaux → 'les' = plur.",
+        "Pour identifier le genre et le nombre d'un GN, regarde le déterminant.",
+      exemple: "✅ une jolie fleur → 'une' = fém. sing.",
       piege:
-        "Ne regarde pas l'adjectif pour déterminer le genre — regarde le déterminant qui est le plus fiable !",
+        "Ne regarde pas l'adjectif pour déterminer le genre — regarde le déterminant !",
       astuce:
         "Le déterminant est la clé ! 'une' → féminin singulier, toujours !",
     },
@@ -222,6 +201,7 @@ const questionsBase: Question[] = [
 
 export default function GroupeNominalPage() {
   const router = useRouter();
+  const { estConnecte, maxQuestions } = useContext(DecouverteContext);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [etape, setEtape] = useState<"intro" | "quiz" | "resultat">("intro");
   const [index, setIndex] = useState(0);
@@ -242,20 +222,16 @@ export default function GroupeNominalPage() {
   const fautesRef = useRef(0);
 
   useEffect(() => {
-    const charger = async () => {
-      const best = await getBestScore(CLASSE, MATIERE, THEME);
-      const last = await getLastScore(CLASSE, MATIERE, THEME);
-      setBestScore(best);
-      setLastScore(last);
-    };
-    charger();
-  }, []);
+    if (estConnecte) {
+      getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+      getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+    }
+  }, [estConnecte]);
 
   const demarrer = () => {
-    const q = shuffleArray(questionsBase).map((q) => ({
-      ...q,
-      options: shuffleArray(q.options),
-    }));
+    const q = shuffleArray(questionsBase)
+      .slice(0, maxQuestions)
+      .map((q) => ({ ...q, options: shuffleArray(q.options) }));
     setQuestions(q);
     scoreRef.current = 0;
     fautesRef.current = 0;
@@ -289,7 +265,7 @@ export default function GroupeNominalPage() {
   const questionSuivante = async () => {
     setFicheOuverte(false);
     if (index + 1 >= questions.length) {
-      if (!scoreSaved.current) {
+      if (!scoreSaved.current && estConnecte) {
         scoreSaved.current = true;
         await saveScore({
           classe: CLASSE,
@@ -298,10 +274,8 @@ export default function GroupeNominalPage() {
           score: scoreRef.current,
           total: questions.length,
         });
-        const best = await getBestScore(CLASSE, MATIERE, THEME);
-        const last = await getLastScore(CLASSE, MATIERE, THEME);
-        setBestScore(best);
-        setLastScore(last);
+        getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+        getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
       }
       setEtape("resultat");
     } else {
@@ -327,13 +301,35 @@ export default function GroupeNominalPage() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">📖 Français — 6ème</div>
           <h1 className="lecon-titre">Le groupe nominal</h1>
+          {!estConnecte && (
+            <div
+              style={{
+                background: "rgba(79,142,247,0.1)",
+                border: "1px solid rgba(79,142,247,0.3)",
+                borderRadius: "10px",
+                padding: "10px 16px",
+                marginBottom: "16px",
+                fontSize: "0.85rem",
+                color: "#aaa",
+                textAlign: "center",
+              }}
+            >
+              📖 Mode découverte — 5 questions ·{" "}
+              <span
+                onClick={() => router.push("/inscription")}
+                style={{ color: "#4f8ef7", cursor: "pointer", fontWeight: 700 }}
+              >
+                Inscris-toi
+              </span>{" "}
+              pour les 10 questions complètes !
+            </div>
+          )}
           <div className="lecon-intro">
             Le <strong>groupe nominal (GN)</strong> est un groupe de mots
             organisé autour d'un nom. C'est l'un des éléments essentiels de la
             phrase française !
           </div>
-
-          {(bestScore || lastScore) && (
+          {estConnecte && (bestScore || lastScore) && (
             <div
               style={{
                 display: "flex",
@@ -406,14 +402,12 @@ export default function GroupeNominalPage() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             <div className="lecon-point">
               <div className="lecon-point-titre">🏗️ La structure du GN</div>
               <div className="lecon-point-texte">
-                Un GN est composé au minimum d'un <strong>déterminant</strong> +
-                un <strong>nom noyau</strong>. On peut l'enrichir avec des
-                adjectifs ou des compléments.
+                Un GN = <strong>déterminant</strong> +{" "}
+                <strong>nom noyau</strong> (+ adjectifs ou compléments)
               </div>
               <div className="lecon-point-exemple">
                 <span className="exemple-label">Minimal :</span> le chat
@@ -425,29 +419,12 @@ export default function GroupeNominalPage() {
             <div className="lecon-point">
               <div className="lecon-point-titre">🎯 Le nom noyau</div>
               <div className="lecon-point-texte">
-                Le <strong>nom noyau</strong> est le mot principal du GN. Tous
-                les autres mots s'accordent avec lui.
+                Le <strong>nom noyau</strong> est le mot principal. Tous les
+                autres mots s'accordent avec lui.
               </div>
               <div className="lecon-point-exemple">
                 <span className="exemple-label">Exemple :</span> "une belle robe
-                rouge" → <strong>robe</strong> est le noyau → belle et rouge
-                sont au féminin singulier
-              </div>
-            </div>
-            <div className="lecon-point">
-              <div className="lecon-point-titre">➕ Les expansions du GN</div>
-              <div className="lecon-point-texte">
-                On peut enrichir un GN avec :
-              </div>
-              <div className="lecon-point-exemple">
-                <span className="exemple-label">Adjectif :</span> un grand
-                jardin
-                <br />
-                <span className="exemple-label">Complément du nom :</span> le
-                jardin de la maison
-                <br />
-                <span className="exemple-label">Proposition relative :</span> le
-                jardin qui est fleuri
+                rouge" → <strong>robe</strong> est le noyau
               </div>
             </div>
             <div className="lecon-point">
@@ -466,7 +443,6 @@ export default function GroupeNominalPage() {
               </div>
             </div>
           </div>
-
           <button className="lecon-btn" onClick={demarrer}>
             🚀 Commencer les exercices →
           </button>
@@ -484,7 +460,6 @@ export default function GroupeNominalPage() {
             ← Retour
           </button>
         </div>
-
         <div className="progression-wrapper">
           <div className="progression-info">
             <span>
@@ -502,7 +477,6 @@ export default function GroupeNominalPage() {
             />
           </div>
         </div>
-
         <div className="qcm-wrapper">
           <div className="qcm-question">{q.question}</div>
           <div className="qcm-options">
@@ -524,7 +498,6 @@ export default function GroupeNominalPage() {
               );
             })}
           </div>
-
           {reponseChoisie && (
             <div
               className={`qcm-feedback ${estCorrecte ? "feedback-correct" : "feedback-incorrect"}`}
@@ -559,8 +532,8 @@ export default function GroupeNominalPage() {
                       😅 Aïe, 6 erreurs !
                     </p>
                     <p style={{ color: "#ddd", fontSize: "0.85rem" }}>
-                      Tu dois relire la fiche pédagogique avant de continuer.
-                      Elle est là pour t'aider ! 💪
+                      Tu dois relire la fiche avant de continuer. Elle est là
+                      pour t'aider ! 💪
                     </p>
                   </div>
                 )}
@@ -585,7 +558,6 @@ export default function GroupeNominalPage() {
               </div>
             </div>
           )}
-
           {reponseChoisie && (
             <div style={{ marginTop: "16px" }}>
               {boutonBloque && (
@@ -597,8 +569,7 @@ export default function GroupeNominalPage() {
                     marginBottom: "8px",
                   }}
                 >
-                  📖 Lis la fiche pédagogique pour débloquer la question
-                  suivante !
+                  📖 Lis la fiche pour débloquer la question suivante !
                 </p>
               )}
               <button
@@ -617,7 +588,6 @@ export default function GroupeNominalPage() {
             </div>
           )}
         </div>
-
         {ficheOuverte && (
           <div
             style={{
@@ -825,7 +795,45 @@ export default function GroupeNominalPage() {
             Tu as répondu correctement à {scoreRef.current} question
             {scoreRef.current > 1 ? "s" : ""} sur {total} ({pourcentage}%).
           </p>
-          {(bestScore || lastScore) && (
+          {!estConnecte && (
+            <div
+              style={{
+                background: "rgba(79,142,247,0.1)",
+                border: "1px solid rgba(79,142,247,0.3)",
+                borderRadius: "12px",
+                padding: "16px",
+                marginBottom: "20px",
+                textAlign: "center",
+              }}
+            >
+              <p
+                style={{
+                  color: "#aaa",
+                  fontSize: "0.9rem",
+                  marginBottom: "12px",
+                }}
+              >
+                📖 Mode découverte (5 questions). Inscris-toi pour accéder aux
+                10 questions !
+              </p>
+              <button
+                onClick={() => router.push("/inscription")}
+                style={{
+                  background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "10px 20px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontSize: "0.9rem",
+                }}
+              >
+                ✨ S'inscrire gratuitement →
+              </button>
+            </div>
+          )}
+          {estConnecte && (bestScore || lastScore) && (
             <div
               style={{
                 display: "flex",

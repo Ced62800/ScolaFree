@@ -29,7 +29,7 @@ const themes = [
     label: "Le présent de l'indicatif",
     emoji: "⏱️",
     desc: "Conjugaison au présent — tous les groupes",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "bilan",

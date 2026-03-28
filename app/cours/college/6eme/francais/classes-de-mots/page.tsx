@@ -1,8 +1,9 @@
 "use client";
 
+import { DecouverteContext } from "@/components/DecouverteContext";
 import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 const CLASSE = "6eme";
 const MATIERE = "francais";
@@ -21,12 +22,7 @@ type Question = {
   question: string;
   options: string[];
   answer: string;
-  fiche: {
-    regle: string;
-    exemple: string;
-    piege: string;
-    astuce: string;
-  };
+  fiche: { regle: string; exemple: string; piege: string; astuce: string };
 };
 
 const questionsBase: Question[] = [
@@ -37,13 +33,11 @@ const questionsBase: Question[] = [
     answer: "Déterminant",
     fiche: {
       regle:
-        "Le déterminant accompagne le nom et s'accorde avec lui en genre et en nombre. Les déterminants les plus courants sont les articles : le, la, les, un, une, des.",
-      exemple:
-        "✅ Le chat (masc. sing.) / La chatte (fém. sing.) / Les chats (masc. plur.)",
+        "Le déterminant accompagne le nom et s'accorde avec lui en genre et en nombre.",
+      exemple: "✅ Le chat (masc. sing.) / La chatte (fém. sing.)",
       piege:
-        "Ne pas confondre 'le' déterminant (devant un nom) et 'le' pronom (qui remplace un nom) : 'Je le vois' → pronom.",
-      astuce:
-        "Le déterminant est toujours collé à un nom. Si tu peux le remplacer par 'un' ou 'une', c'est un déterminant !",
+        "Ne pas confondre 'le' déterminant et 'le' pronom : 'Je le vois' → pronom.",
+      astuce: "Le déterminant est toujours collé à un nom !",
     },
   },
   {
@@ -52,12 +46,11 @@ const questionsBase: Question[] = [
     answer: "Verbe",
     fiche: {
       regle:
-        "Le verbe exprime une action, un état ou une existence. Il se conjugue (change selon la personne, le temps). À l'infinitif, il se termine par -er, -ir, -re, -oir.",
-      exemple: "✅ courir (action) / être (état) / sembler (existence)",
+        "Le verbe exprime une action, un état ou une existence. Il se conjugue.",
+      exemple: "✅ courir (action) / être (état)",
       piege:
-        "Attention aux noms formés sur des verbes : 'la course' est un nom, 'courir' est un verbe !",
-      astuce:
-        "Le verbe est le seul mot qui se conjugue. Essaie de le mettre au passé ou au futur — si ça marche, c'est un verbe !",
+        "Attention aux noms formés sur des verbes : 'la course' est un nom !",
+      astuce: "Le verbe est le seul mot qui se conjugue !",
     },
   },
   {
@@ -67,13 +60,11 @@ const questionsBase: Question[] = [
     answer: "Adjectif qualificatif",
     fiche: {
       regle:
-        "L'adjectif qualificatif donne une qualité ou une caractéristique au nom. Il s'accorde en genre et en nombre avec le nom qu'il qualifie.",
+        "L'adjectif qualificatif donne une qualité au nom. Il s'accorde en genre et en nombre.",
       exemple:
         "✅ Une belle maison (fém. sing.) / De beaux jardins (masc. plur.)",
-      piege:
-        "L'adjectif peut être placé avant ou après le nom : 'une belle fleur' ou 'une fleur magnifique'.",
-      astuce:
-        "L'adjectif répond à la question 'Comment est le nom ?' Si tu peux demander 'comment est-il/elle ?', c'est un adjectif !",
+      piege: "L'adjectif peut être placé avant ou après le nom.",
+      astuce: "L'adjectif répond à 'Comment est le nom ?'",
     },
   },
   {
@@ -82,13 +73,11 @@ const questionsBase: Question[] = [
     answer: "Adverbe",
     fiche: {
       regle:
-        "L'adverbe est un mot invariable qui modifie un verbe, un adjectif ou un autre adverbe. Beaucoup d'adverbes se terminent en -ment.",
-      exemple:
-        "✅ Il court rapidement. (modifie le verbe) / Elle est très belle. (modifie l'adjectif)",
-      piege:
-        "L'adverbe ne s'accorde jamais ! Il reste toujours invariable, même si le nom est féminin ou pluriel.",
+        "L'adverbe est un mot invariable qui modifie un verbe, un adjectif ou un autre adverbe.",
+      exemple: "✅ Il court rapidement. / Elle est très belle.",
+      piege: "L'adverbe ne s'accorde jamais !",
       astuce:
-        "Si le mot se termine en -ment et qu'il est invariable, c'est presque toujours un adverbe !",
+        "Si le mot se termine en -ment et est invariable, c'est presque toujours un adverbe !",
     },
   },
   {
@@ -97,14 +86,10 @@ const questionsBase: Question[] = [
     options: ["Nom propre", "Déterminant", "Pronom personnel", "Adjectif"],
     answer: "Pronom personnel",
     fiche: {
-      regle:
-        "Le pronom personnel remplace un nom pour éviter la répétition. Les pronoms personnels sujets sont : je, tu, il, elle, nous, vous, ils, elles.",
-      exemple:
-        "✅ Marie mange → Elle mange. / Les enfants jouent → Ils jouent.",
-      piege:
-        "Ne pas confondre 'elle' pronom (remplace un nom) et 'elle' dans d'autres constructions.",
-      astuce:
-        "Le pronom remplace un nom. Cherche le nom qu'il remplace — si tu le trouves, c'est bien un pronom !",
+      regle: "Le pronom personnel remplace un nom pour éviter la répétition.",
+      exemple: "✅ Marie mange → Elle mange.",
+      piege: "Ne pas confondre 'elle' pronom et d'autres emplois.",
+      astuce: "Le pronom remplace un nom. Cherche le nom qu'il remplace !",
     },
   },
   {
@@ -113,13 +98,11 @@ const questionsBase: Question[] = [
     answer: "Nom propre",
     fiche: {
       regle:
-        "Le nom propre désigne une personne, un lieu ou une chose unique. Il prend toujours une majuscule. Le nom commun désigne une catégorie générale.",
-      exemple:
-        "✅ Paris, Marie, la France → noms propres / la ville, la fille, le pays → noms communs",
+        "Le nom propre désigne une personne, un lieu unique. Il prend toujours une majuscule.",
+      exemple: "✅ Paris, Marie, la France → noms propres",
       piege:
-        "Attention : 'le français' (la langue) = nom commun / 'un Français' (une personne) = nom propre !",
-      astuce:
-        "Majuscule = nom propre. Minuscule = nom commun. C'est la règle générale !",
+        "'le français' (langue) = nom commun / 'un Français' (personne) = nom propre !",
+      astuce: "Majuscule = nom propre. Minuscule = nom commun.",
     },
   },
   {
@@ -129,13 +112,11 @@ const questionsBase: Question[] = [
     answer: "Préposition",
     fiche: {
       regle:
-        "La préposition est un mot invariable qui relie deux éléments de la phrase. Les prépositions les plus courantes : à, de, dans, sur, sous, avec, pour, par, en.",
-      exemple:
-        "✅ Il marche dans la forêt. / Elle pense à toi. / Le livre est sur la table.",
+        "La préposition est un mot invariable qui relie deux éléments de la phrase.",
+      exemple: "✅ Il marche dans la forêt. / Elle pense à toi.",
       piege:
         "Les prépositions sont invariables — elles ne s'accordent jamais !",
-      astuce:
-        "Retiens les prépositions les plus courantes : à, de, dans, sur, sous, avec, pour, par, en, vers.",
+      astuce: "Retiens : à, de, dans, sur, sous, avec, pour, par, en, vers.",
     },
   },
   {
@@ -144,12 +125,11 @@ const questionsBase: Question[] = [
     answer: "Nom commun",
     fiche: {
       regle:
-        "Le nom commun désigne une catégorie d'êtres, d'objets ou d'idées. Il s'écrit avec une minuscule (sauf en début de phrase) et est souvent accompagné d'un déterminant.",
+        "Le nom commun désigne une catégorie d'êtres, d'objets ou d'idées.",
       exemple: "✅ un chien, la maison, des idées, le bonheur",
-      piege:
-        "Le nom commun peut être concret (chien, maison) ou abstrait (bonheur, liberté) !",
+      piege: "Le nom commun peut être concret ou abstrait !",
       astuce:
-        "Si tu peux mettre 'un', 'une' ou 'le', 'la' devant le mot, c'est un nom commun !",
+        "Si tu peux mettre 'un' ou 'le' devant le mot, c'est un nom commun !",
     },
   },
   {
@@ -164,13 +144,13 @@ const questionsBase: Question[] = [
     answer: "Conjonction de coordination",
     fiche: {
       regle:
-        "La conjonction de coordination relie deux mots, groupes de mots ou propositions de même nature. Les 7 conjonctions de coordination : mais, ou, et, donc, or, ni, car.",
+        "La conjonction de coordination relie deux mots ou propositions de même nature. Les 7 : mais, ou, et, donc, or, ni, car.",
       exemple:
         "✅ Il chante et il danse. / Elle est fatiguée mais elle travaille.",
       piege:
-        "Ne pas confondre avec les conjonctions de subordination (que, si, quand...) qui relient une proposition principale et une subordonnée.",
+        "Ne pas confondre avec les conjonctions de subordination (que, si, quand...).",
       astuce:
-        "Retiens 'mais ou et donc or ni car' — une phrase pour les mémoriser : 'Mais où est donc Ornicar ?'",
+        "Retiens : 'Mais où est donc Ornicar ?' pour mémoriser les 7 conjonctions !",
     },
   },
   {
@@ -185,11 +165,10 @@ const questionsBase: Question[] = [
     answer: "Déterminant exclamatif",
     fiche: {
       regle:
-        "Le déterminant exclamatif (quel, quelle, quels, quelles) s'utilise dans les phrases exclamatives. Il s'accorde en genre et en nombre avec le nom.",
+        "Le déterminant exclamatif (quel, quelle, quels, quelles) s'utilise dans les phrases exclamatives.",
       exemple:
-        "✅ Quel beau jardin ! / Quelle chance ! / Quels beaux enfants ! / Quelles belles fleurs !",
-      piege:
-        "Ne pas confondre 'quel' déterminant exclamatif et 'quel' déterminant interrogatif : 'Quel film regardes-tu ?' (interrogatif).",
+        "✅ Quel beau jardin ! / Quelle chance ! / Quels beaux enfants !",
+      piege: "Ne pas confondre 'quel' exclamatif et 'quel' interrogatif.",
       astuce:
         "Dans une phrase exclamative avec !, 'quel/quelle' est toujours un déterminant exclamatif !",
     },
@@ -198,6 +177,7 @@ const questionsBase: Question[] = [
 
 export default function ClassesDeMotsPage() {
   const router = useRouter();
+  const { estConnecte, maxQuestions } = useContext(DecouverteContext);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [etape, setEtape] = useState<"intro" | "quiz" | "resultat">("intro");
   const [index, setIndex] = useState(0);
@@ -218,20 +198,16 @@ export default function ClassesDeMotsPage() {
   const fautesRef = useRef(0);
 
   useEffect(() => {
-    const charger = async () => {
-      const best = await getBestScore(CLASSE, MATIERE, THEME);
-      const last = await getLastScore(CLASSE, MATIERE, THEME);
-      setBestScore(best);
-      setLastScore(last);
-    };
-    charger();
-  }, []);
+    if (estConnecte) {
+      getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+      getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+    }
+  }, [estConnecte]);
 
   const demarrer = () => {
-    const q = shuffleArray(questionsBase).map((q) => ({
-      ...q,
-      options: shuffleArray(q.options),
-    }));
+    const q = shuffleArray(questionsBase)
+      .slice(0, maxQuestions)
+      .map((q) => ({ ...q, options: shuffleArray(q.options) }));
     setQuestions(q);
     scoreRef.current = 0;
     fautesRef.current = 0;
@@ -265,7 +241,7 @@ export default function ClassesDeMotsPage() {
   const questionSuivante = async () => {
     setFicheOuverte(false);
     if (index + 1 >= questions.length) {
-      if (!scoreSaved.current) {
+      if (!scoreSaved.current && estConnecte) {
         scoreSaved.current = true;
         await saveScore({
           classe: CLASSE,
@@ -274,10 +250,8 @@ export default function ClassesDeMotsPage() {
           score: scoreRef.current,
           total: questions.length,
         });
-        const best = await getBestScore(CLASSE, MATIERE, THEME);
-        const last = await getLastScore(CLASSE, MATIERE, THEME);
-        setBestScore(best);
-        setLastScore(last);
+        getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+        getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
       }
       setEtape("resultat");
     } else {
@@ -303,14 +277,35 @@ export default function ClassesDeMotsPage() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">📖 Français — 6ème</div>
           <h1 className="lecon-titre">Les classes de mots</h1>
+          {!estConnecte && (
+            <div
+              style={{
+                background: "rgba(79,142,247,0.1)",
+                border: "1px solid rgba(79,142,247,0.3)",
+                borderRadius: "10px",
+                padding: "10px 16px",
+                marginBottom: "16px",
+                fontSize: "0.85rem",
+                color: "#aaa",
+                textAlign: "center",
+              }}
+            >
+              📖 Mode découverte — 5 questions ·{" "}
+              <span
+                onClick={() => router.push("/inscription")}
+                style={{ color: "#4f8ef7", cursor: "pointer", fontWeight: 700 }}
+              >
+                Inscris-toi
+              </span>{" "}
+              pour les 10 questions complètes !
+            </div>
+          )}
           <div className="lecon-intro">
             En français, chaque mot appartient à une{" "}
             <strong>classe grammaticale</strong>. Connaître la classe d'un mot
-            permet de mieux comprendre son rôle dans la phrase et de mieux
-            l'orthographier.
+            permet de mieux comprendre son rôle dans la phrase !
           </div>
-
-          {(bestScore || lastScore) && (
+          {estConnecte && (bestScore || lastScore) && (
             <div
               style={{
                 display: "flex",
@@ -383,7 +378,6 @@ export default function ClassesDeMotsPage() {
               )}
             </div>
           )}
-
           <div className="lecon-points">
             <div className="lecon-point">
               <div className="lecon-point-titre">📌 Les classes variables</div>
@@ -392,20 +386,15 @@ export default function ClassesDeMotsPage() {
                 nombre :
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Nom :</span> chat, maison,
-                bonheur
+                <span className="exemple-label">Nom :</span> chat, maison
                 <br />
-                <span className="exemple-label">Déterminant :</span> le, un,
-                mon, ce
+                <span className="exemple-label">Déterminant :</span> le, un, mon
                 <br />
-                <span className="exemple-label">Adjectif :</span> beau, grand,
-                rouge
+                <span className="exemple-label">Adjectif :</span> beau, grand
                 <br />
-                <span className="exemple-label">Verbe :</span> manger, courir,
-                être
+                <span className="exemple-label">Verbe :</span> manger, être
                 <br />
-                <span className="exemple-label">Pronom :</span> il, elle, nous,
-                celui
+                <span className="exemple-label">Pronom :</span> il, elle, nous
               </div>
             </div>
             <div className="lecon-point">
@@ -417,39 +406,31 @@ export default function ClassesDeMotsPage() {
               </div>
               <div className="lecon-point-exemple">
                 <span className="exemple-label">Adverbe :</span> rapidement,
-                très, bien
+                très
                 <br />
                 <span className="exemple-label">Préposition :</span> à, de,
-                dans, sur, avec
+                dans, sur
                 <br />
                 <span className="exemple-label">Conjonction :</span> mais, et,
-                car, que
-                <br />
-                <span className="exemple-label">Interjection :</span> ah !, oh
-                !, hélas !
+                car
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">💡 Astuce générale</div>
-              <div className="lecon-point-texte">
-                Pour trouver la classe d'un mot, pose-toi ces questions :
-              </div>
+              <div className="lecon-point-titre">💡 Astuce</div>
+              <div className="lecon-point-texte">Pour trouver la classe :</div>
               <div className="lecon-point-exemple">
-                1. Est-ce que ce mot se conjugue ? → <strong>Verbe</strong>
+                1. Se conjugue ? → <strong>Verbe</strong>
                 <br />
-                2. Est-ce qu'il accompagne un nom ? →{" "}
-                <strong>Déterminant</strong>
+                2. Accompagne un nom ? → <strong>Déterminant</strong>
                 <br />
-                3. Est-ce qu'il donne une qualité ? → <strong>Adjectif</strong>
+                3. Donne une qualité ? → <strong>Adjectif</strong>
                 <br />
-                4. Est-ce qu'il remplace un nom ? → <strong>Pronom</strong>
+                4. Remplace un nom ? → <strong>Pronom</strong>
                 <br />
-                5. Est-ce qu'il est invariable ? →{" "}
-                <strong>Adverbe / Préposition / Conjonction</strong>
+                5. Invariable ? → <strong>Adverbe / Préposition</strong>
               </div>
             </div>
           </div>
-
           <button className="lecon-btn" onClick={demarrer}>
             🚀 Commencer les exercices →
           </button>
@@ -467,7 +448,6 @@ export default function ClassesDeMotsPage() {
             ← Retour
           </button>
         </div>
-
         <div className="progression-wrapper">
           <div className="progression-info">
             <span>
@@ -485,7 +465,6 @@ export default function ClassesDeMotsPage() {
             />
           </div>
         </div>
-
         <div className="qcm-wrapper">
           <div className="qcm-question">{q.question}</div>
           <div className="qcm-options">
@@ -507,7 +486,6 @@ export default function ClassesDeMotsPage() {
               );
             })}
           </div>
-
           {reponseChoisie && (
             <div
               className={`qcm-feedback ${estCorrecte ? "feedback-correct" : "feedback-incorrect"}`}
@@ -542,8 +520,8 @@ export default function ClassesDeMotsPage() {
                       😅 Aïe, 6 erreurs !
                     </p>
                     <p style={{ color: "#ddd", fontSize: "0.85rem" }}>
-                      Tu dois relire la fiche pédagogique avant de continuer.
-                      Elle est là pour t'aider ! 💪
+                      Tu dois relire la fiche avant de continuer. Elle est là
+                      pour t'aider ! 💪
                     </p>
                   </div>
                 )}
@@ -568,7 +546,6 @@ export default function ClassesDeMotsPage() {
               </div>
             </div>
           )}
-
           {reponseChoisie && (
             <div style={{ marginTop: "16px" }}>
               {boutonBloque && (
@@ -580,8 +557,7 @@ export default function ClassesDeMotsPage() {
                     marginBottom: "8px",
                   }}
                 >
-                  📖 Lis la fiche pédagogique pour débloquer la question
-                  suivante !
+                  📖 Lis la fiche pour débloquer la question suivante !
                 </p>
               )}
               <button
@@ -600,7 +576,6 @@ export default function ClassesDeMotsPage() {
             </div>
           )}
         </div>
-
         {ficheOuverte && (
           <div
             style={{
@@ -808,7 +783,45 @@ export default function ClassesDeMotsPage() {
             Tu as répondu correctement à {scoreRef.current} question
             {scoreRef.current > 1 ? "s" : ""} sur {total} ({pourcentage}%).
           </p>
-          {(bestScore || lastScore) && (
+          {!estConnecte && (
+            <div
+              style={{
+                background: "rgba(79,142,247,0.1)",
+                border: "1px solid rgba(79,142,247,0.3)",
+                borderRadius: "12px",
+                padding: "16px",
+                marginBottom: "20px",
+                textAlign: "center",
+              }}
+            >
+              <p
+                style={{
+                  color: "#aaa",
+                  fontSize: "0.9rem",
+                  marginBottom: "12px",
+                }}
+              >
+                📖 Mode découverte (5 questions). Inscris-toi pour accéder aux
+                10 questions et sauvegarder ta progression !
+              </p>
+              <button
+                onClick={() => router.push("/inscription")}
+                style={{
+                  background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "10px 20px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontSize: "0.9rem",
+                }}
+              >
+                ✨ S'inscrire gratuitement →
+              </button>
+            </div>
+          )}
+          {estConnecte && (bestScore || lastScore) && (
             <div
               style={{
                 display: "flex",

@@ -1,8 +1,9 @@
 "use client";
 
+import { DecouverteContext } from "@/components/DecouverteContext";
 import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 const CLASSE = "6eme";
 const MATIERE = "francais";
@@ -21,12 +22,7 @@ type Question = {
   question: string;
   options: string[];
   answer: string;
-  fiche: {
-    regle: string;
-    exemple: string;
-    piege: string;
-    astuce: string;
-  };
+  fiche: { regle: string; exemple: string; piege: string; astuce: string };
 };
 
 const questionsBase: Question[] = [
@@ -45,8 +41,7 @@ const questionsBase: Question[] = [
       exemple: "✅ Le chat dort. ❌ le chat dort",
       piege:
         "Oublier la majuscule au début ou le point à la fin sont les erreurs les plus fréquentes.",
-      astuce:
-        "Retiens : Majuscule au début, point à la fin — comme une route qui a un départ et une arrivée !",
+      astuce: "Retiens : Majuscule au début, point à la fin !",
     },
   },
   {
@@ -55,12 +50,11 @@ const questionsBase: Question[] = [
     answer: "Impérative",
     fiche: {
       regle:
-        "La phrase impérative exprime un ordre, un conseil ou une demande. Elle se termine souvent par un point d'exclamation et n'a pas de sujet exprimé.",
-      exemple: "✅ Ferme la porte ! ✅ Mangez vos légumes. ✅ Sois sage !",
-      piege:
-        "Ne pas confondre exclamative (exprime un sentiment) et impérative (exprime un ordre).",
+        "La phrase impérative exprime un ordre, un conseil ou une demande.",
+      exemple: "✅ Ferme la porte ! ✅ Mangez vos légumes.",
+      piege: "Ne pas confondre exclamative (sentiment) et impérative (ordre).",
       astuce:
-        "Impérative = ordre ou conseil. Si tu peux remplacer par 'Tu dois...', c'est une phrase impérative !",
+        "Impérative = ordre. Si tu peux remplacer par 'Tu dois...', c'est une impérative !",
     },
   },
   {
@@ -71,12 +65,11 @@ const questionsBase: Question[] = [
     fiche: {
       regle:
         "La phrase interrogative pose une question. Elle se termine par un point d'interrogation (?).",
-      exemple:
-        "✅ Aimes-tu la lecture ? ✅ Est-ce que tu viens ? ✅ Pourquoi ris-tu ?",
+      exemple: "✅ Aimes-tu la lecture ? ✅ Est-ce que tu viens ?",
       piege:
         "Une phrase peut commencer par 'Est-ce que' ou avoir l'inversion sujet-verbe.",
       astuce:
-        "Interrogative = question. Si tu cherches une réponse, c'est une phrase interrogative !",
+        "Interrogative = question. Si tu cherches une réponse, c'est une interrogative !",
     },
   },
   {
@@ -91,13 +84,11 @@ const questionsBase: Question[] = [
     answer: "Il ne mange pas de pomme.",
     fiche: {
       regle:
-        "À la forme négative, on encadre le verbe avec 'ne...pas'. Après la négation, l'article indéfini (un, une, des) devient 'de'.",
-      exemple:
-        "✅ Il mange une pomme → Il ne mange pas de pomme. ✅ Elle a des amis → Elle n'a pas d'amis.",
+        "À la forme négative, on encadre le verbe avec 'ne...pas'. Après la négation, l'article indéfini devient 'de'.",
+      exemple: "✅ Il mange une pomme → Il ne mange pas de pomme.",
       piege:
         "Beaucoup oublient de changer 'une/un/des' en 'de' après la négation !",
-      astuce:
-        "Négation = ne...pas autour du verbe + 'de' à la place de un/une/des.",
+      astuce: "Négation = ne...pas + 'de' à la place de un/une/des.",
     },
   },
   {
@@ -107,13 +98,11 @@ const questionsBase: Question[] = [
     answer: "les oiseaux",
     fiche: {
       regle:
-        "Le sujet est le mot ou groupe de mots qui fait l'action du verbe. On le trouve en posant la question 'Qui est-ce qui ?' ou 'Qu'est-ce qui ?' avant le verbe.",
+        "Le sujet est le mot ou groupe de mots qui fait l'action du verbe.",
       exemple:
         "✅ Les oiseaux chantent → Qui est-ce qui chante ? → les oiseaux = sujet.",
-      piege:
-        "Le sujet n'est pas toujours placé juste avant le verbe. Il peut y avoir des compléments avant lui !",
-      astuce:
-        "Pour trouver le sujet : pose 'Qui est-ce qui + verbe ?' La réponse est le sujet !",
+      piege: "Le sujet n'est pas toujours placé juste avant le verbe !",
+      astuce: "Pour trouver le sujet : pose 'Qui est-ce qui + verbe ?'",
     },
   },
   {
@@ -123,13 +112,10 @@ const questionsBase: Question[] = [
     answer: "Exclamative",
     fiche: {
       regle:
-        "La phrase exclamative exprime un sentiment fort (joie, surprise, colère, admiration). Elle se termine par un point d'exclamation (!).",
-      exemple:
-        "✅ Quelle belle journée ! ✅ Comme c'est beau ! ✅ Quel dommage !",
-      piege:
-        "Ne pas confondre avec la phrase impérative qui donne un ordre. L'exclamative exprime un sentiment.",
-      astuce:
-        "Exclamative = émotion forte. Si tu ressens quelque chose en lisant, c'est une phrase exclamative !",
+        "La phrase exclamative exprime un sentiment fort (joie, surprise, admiration).",
+      exemple: "✅ Quelle belle journée ! ✅ Comme c'est beau !",
+      piege: "Ne pas confondre avec la phrase impérative qui donne un ordre.",
+      astuce: "Exclamative = émotion forte !",
     },
   },
   {
@@ -140,28 +126,23 @@ const questionsBase: Question[] = [
     fiche: {
       regle:
         "La forme négative utilise les mots de négation : ne...pas, ne...plus, ne...jamais, ne...rien.",
-      exemple:
-        "✅ Je n'aime pas → forme négative. ✅ Je n'ai plus faim → forme négative.",
-      piege:
-        "Attention : une phrase peut être interrogative ET négative à la fois ! Ex : 'N'aimes-tu pas les épinards ?'",
+      exemple: "✅ Je n'aime pas → forme négative.",
+      piege: "Une phrase peut être interrogative ET négative à la fois !",
       astuce:
-        "Cherche 'ne...pas' ou 'ne...jamais' dans la phrase — si tu les trouves, c'est la forme négative !",
+        "Cherche 'ne...pas' dans la phrase — si tu les trouves, c'est la forme négative !",
     },
   },
   {
     question:
-      "Combien de phrases y a-t-il dans ce texte : « Le soleil brille. Les enfants jouent. Il fait chaud ! »",
+      "Combien de phrases y a-t-il : « Le soleil brille. Les enfants jouent. Il fait chaud ! »",
     options: ["1 phrase", "2 phrases", "3 phrases", "4 phrases"],
     answer: "3 phrases",
     fiche: {
       regle:
-        "On compte les phrases en comptant les signes de ponctuation finale : . ! ? … Chaque signe marque la fin d'une phrase.",
-      exemple:
-        "✅ 'Il fait beau. Je sors.' = 2 phrases. ✅ 'Viens ! Tu veux ? Je pars.' = 3 phrases.",
-      piege:
-        "Ne pas confondre la virgule (,) qui ne termine pas une phrase, et le point (.) qui la termine.",
-      astuce:
-        "Compte les points, points d'exclamation et d'interrogation = nombre de phrases !",
+        "On compte les phrases en comptant les signes de ponctuation finale : . ! ?",
+      exemple: "✅ 'Il fait beau. Je sors.' = 2 phrases.",
+      piege: "Ne pas confondre la virgule (,) qui ne termine pas une phrase.",
+      astuce: "Compte les points, ! et ? = nombre de phrases !",
     },
   },
   {
@@ -174,14 +155,11 @@ const questionsBase: Question[] = [
     ],
     answer: "Le ciel est bleu aujourd'hui.",
     fiche: {
-      regle:
-        "La phrase déclarative donne une information, raconte ou décrit. Elle se termine par un point (.).",
-      exemple:
-        "✅ Le ciel est bleu. ✅ Marie mange une pomme. ✅ Il fait froid en hiver.",
+      regle: "La phrase déclarative donne une information, raconte ou décrit.",
+      exemple: "✅ Le ciel est bleu. ✅ Marie mange une pomme.",
       piege:
-        "C'est le type de phrase le plus courant. Si la phrase n'est pas une question, un ordre ou une exclamation, c'est une déclarative !",
-      astuce:
-        "Déclarative = donne une info. C'est le type de phrase que tu utilises le plus souvent !",
+        "C'est le type le plus courant. Si la phrase n'est pas une question, un ordre ou une exclamation, c'est une déclarative !",
+      astuce: "Déclarative = donne une info.",
     },
   },
   {
@@ -194,20 +172,19 @@ const questionsBase: Question[] = [
     ],
     answer: "Nous partons en vacances demain.",
     fiche: {
-      regle:
-        "La forme affirmative n'utilise pas de mots de négation. Elle affirme quelque chose de positif.",
+      regle: "La forme affirmative n'utilise pas de mots de négation.",
       exemple:
         "✅ Nous partons → affirmative. ❌ Nous ne partons pas → négative.",
       piege:
-        "Les mots 'ne...pas', 'ne...jamais', 'ne...rien', 'ne...plus' indiquent toujours la forme négative.",
-      astuce:
-        "Si tu ne vois pas de 'ne...pas' ou similaire dans la phrase, c'est la forme affirmative !",
+        "Les mots 'ne...pas', 'ne...jamais', 'ne...rien' indiquent la forme négative.",
+      astuce: "Si tu ne vois pas de 'ne...pas', c'est la forme affirmative !",
     },
   },
 ];
 
 export default function LaPhrasePage() {
   const router = useRouter();
+  const { estConnecte, maxQuestions } = useContext(DecouverteContext);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [etape, setEtape] = useState<"intro" | "quiz" | "resultat">("intro");
   const [index, setIndex] = useState(0);
@@ -228,20 +205,16 @@ export default function LaPhrasePage() {
   const fautesRef = useRef(0);
 
   useEffect(() => {
-    const charger = async () => {
-      const best = await getBestScore(CLASSE, MATIERE, THEME);
-      const last = await getLastScore(CLASSE, MATIERE, THEME);
-      setBestScore(best);
-      setLastScore(last);
-    };
-    charger();
-  }, []);
+    if (estConnecte) {
+      getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+      getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+    }
+  }, [estConnecte]);
 
   const demarrer = () => {
-    const q = shuffleArray(questionsBase).map((q) => ({
-      ...q,
-      options: shuffleArray(q.options),
-    }));
+    const q = shuffleArray(questionsBase)
+      .slice(0, maxQuestions)
+      .map((q) => ({ ...q, options: shuffleArray(q.options) }));
     setQuestions(q);
     scoreRef.current = 0;
     fautesRef.current = 0;
@@ -264,11 +237,9 @@ export default function LaPhrasePage() {
     } else {
       fautesRef.current += 1;
       if (fautesRef.current === 1) {
-        // 1ère faute : fiche s'ouvre automatiquement
         setFicheOuverte(true);
         setFicheObligatoireLue(false);
       } else if (fautesRef.current === 6) {
-        // 6ème faute : fiche obligatoire
         setFicheObligatoireLue(false);
       }
     }
@@ -277,7 +248,7 @@ export default function LaPhrasePage() {
   const questionSuivante = async () => {
     setFicheOuverte(false);
     if (index + 1 >= questions.length) {
-      if (!scoreSaved.current) {
+      if (!scoreSaved.current && estConnecte) {
         scoreSaved.current = true;
         await saveScore({
           classe: CLASSE,
@@ -286,10 +257,8 @@ export default function LaPhrasePage() {
           score: scoreRef.current,
           total: questions.length,
         });
-        const best = await getBestScore(CLASSE, MATIERE, THEME);
-        const last = await getLastScore(CLASSE, MATIERE, THEME);
-        setBestScore(best);
-        setLastScore(last);
+        getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+        getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
       }
       setEtape("resultat");
     } else {
@@ -315,13 +284,36 @@ export default function LaPhrasePage() {
         <div className="lecon-wrapper">
           <div className="lecon-badge">📖 Français — 6ème</div>
           <h1 className="lecon-titre">La phrase</h1>
+          {!estConnecte && (
+            <div
+              style={{
+                background: "rgba(79,142,247,0.1)",
+                border: "1px solid rgba(79,142,247,0.3)",
+                borderRadius: "10px",
+                padding: "10px 16px",
+                marginBottom: "16px",
+                fontSize: "0.85rem",
+                color: "#aaa",
+                textAlign: "center",
+              }}
+            >
+              📖 Mode découverte — 5 questions ·{" "}
+              <span
+                onClick={() => router.push("/inscription")}
+                style={{ color: "#4f8ef7", cursor: "pointer", fontWeight: 700 }}
+              >
+                Inscris-toi
+              </span>{" "}
+              pour les 10 questions complètes !
+            </div>
+          )}
           <div className="lecon-intro">
             Une phrase est un ensemble de mots qui a un sens complet. Elle
             commence par une <strong>majuscule</strong> et se termine par un{" "}
             <strong>signe de ponctuation</strong> (. ! ? …).
           </div>
 
-          {(bestScore || lastScore) && (
+          {estConnecte && (bestScore || lastScore) && (
             <div
               style={{
                 display: "flex",
@@ -399,10 +391,9 @@ export default function LaPhrasePage() {
             <div className="lecon-point">
               <div className="lecon-point-titre">🔤 Les types de phrases</div>
               <div className="lecon-point-texte">
-                Il existe 4 types de phrases : <strong>déclarative</strong>{" "}
-                (donne une info), <strong>interrogative</strong> (pose une
-                question), <strong>exclamative</strong> (exprime un sentiment),{" "}
-                <strong>impérative</strong> (donne un ordre).
+                Il existe 4 types : <strong>déclarative</strong>,{" "}
+                <strong>interrogative</strong>, <strong>exclamative</strong>,{" "}
+                <strong>impérative</strong>.
               </div>
               <div className="lecon-point-exemple">
                 <span className="exemple-label">Exemples :</span> Le chat dort.
@@ -412,24 +403,23 @@ export default function LaPhrasePage() {
             <div className="lecon-point">
               <div className="lecon-point-titre">✅ Les formes de phrases</div>
               <div className="lecon-point-texte">
-                Une phrase peut être à la forme <strong>affirmative</strong>{" "}
-                (sans négation) ou <strong>négative</strong> (avec ne...pas,
-                ne...jamais, ne...plus...).
+                Une phrase peut être <strong>affirmative</strong> ou{" "}
+                <strong>négative</strong> (avec ne...pas, ne...jamais...).
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemples :</span> Je mange.
-                (affirmative) / Je ne mange pas. (négative)
+                <span className="exemple-label">Exemples :</span> Je mange. / Je
+                ne mange pas.
               </div>
             </div>
             <div className="lecon-point">
               <div className="lecon-point-titre">👤 Le sujet</div>
               <div className="lecon-point-texte">
-                Le sujet est celui qui fait l'action. Pour le trouver, pose la
-                question <strong>"Qui est-ce qui + verbe ?"</strong>
+                Le sujet fait l'action. Pose la question{" "}
+                <strong>"Qui est-ce qui + verbe ?"</strong>
               </div>
               <div className="lecon-point-exemple">
                 <span className="exemple-label">Exemple :</span> Les enfants
-                jouent. → Qui est-ce qui joue ? → les enfants = sujet.
+                jouent. → Qui joue ? → les enfants.
               </div>
             </div>
           </div>
@@ -444,7 +434,6 @@ export default function LaPhrasePage() {
 
   if (etape === "quiz" && questions.length > 0) {
     const q = questions[index];
-
     return (
       <div className="cours-page">
         <div className="cours-header">
@@ -452,7 +441,6 @@ export default function LaPhrasePage() {
             ← Retour
           </button>
         </div>
-
         <div className="progression-wrapper">
           <div className="progression-info">
             <span>
@@ -507,8 +495,6 @@ export default function LaPhrasePage() {
                     ? "Excellente réponse !"
                     : `La bonne réponse est : "${q.answer}"`}
                 </p>
-
-                {/* Message spécial 6ème faute */}
                 {!estCorrecte && est6emeFaute && !ficheObligatoireLue && (
                   <div
                     style={{
@@ -529,12 +515,11 @@ export default function LaPhrasePage() {
                       😅 Aïe, 6 erreurs !
                     </p>
                     <p style={{ color: "#ddd", fontSize: "0.85rem" }}>
-                      Tu dois relire la fiche pédagogique avant de continuer.
-                      Elle est là pour t'aider ! 💪
+                      Tu dois relire la fiche avant de continuer. Elle est là
+                      pour t'aider ! 💪
                     </p>
                   </div>
                 )}
-
                 {!estCorrecte && (
                   <button
                     onClick={() => setFicheOuverte(true)}
@@ -568,8 +553,7 @@ export default function LaPhrasePage() {
                     marginBottom: "8px",
                   }}
                 >
-                  📖 Lis la fiche pédagogique pour débloquer la question
-                  suivante !
+                  📖 Lis la fiche pour débloquer la question suivante !
                 </p>
               )}
               <button
@@ -624,7 +608,6 @@ export default function LaPhrasePage() {
               >
                 📖 Fiche pédagogique
               </div>
-
               <div
                 style={{
                   marginBottom: "16px",
@@ -745,7 +728,6 @@ export default function LaPhrasePage() {
                   {q.fiche.astuce}
                 </div>
               </div>
-
               <button
                 onClick={() => {
                   setFicheOuverte(false);
@@ -781,7 +763,6 @@ export default function LaPhrasePage() {
         : pourcentage >= 60
           ? "Bien joué !"
           : "Continue à t'entraîner !";
-
     return (
       <div className="cours-page">
         <div className="cours-header">
@@ -800,7 +781,46 @@ export default function LaPhrasePage() {
             {scoreRef.current > 1 ? "s" : ""} sur {total} ({pourcentage}%).
           </p>
 
-          {(bestScore || lastScore) && (
+          {!estConnecte && (
+            <div
+              style={{
+                background: "rgba(79,142,247,0.1)",
+                border: "1px solid rgba(79,142,247,0.3)",
+                borderRadius: "12px",
+                padding: "16px",
+                marginBottom: "20px",
+                textAlign: "center",
+              }}
+            >
+              <p
+                style={{
+                  color: "#aaa",
+                  fontSize: "0.9rem",
+                  marginBottom: "12px",
+                }}
+              >
+                📖 Tu étais en mode découverte (5 questions). Inscris-toi pour
+                accéder aux 10 questions et sauvegarder ta progression !
+              </p>
+              <button
+                onClick={() => router.push("/inscription")}
+                style={{
+                  background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "10px 20px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontSize: "0.9rem",
+                }}
+              >
+                ✨ S'inscrire gratuitement →
+              </button>
+            </div>
+          )}
+
+          {estConnecte && (bestScore || lastScore) && (
             <div
               style={{
                 display: "flex",

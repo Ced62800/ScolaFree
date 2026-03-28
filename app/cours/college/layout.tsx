@@ -1,9 +1,9 @@
 "use client";
 
+import { DecouverteContext } from "@/components/DecouverteContext";
 import { supabase } from "@/supabaseClient";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
 export default function CollegeLayout({
   children,
 }: {
@@ -105,5 +105,11 @@ export default function CollegeLayout({
     );
   }
 
-  return <>{children}</>;
+  return (
+    <DecouverteContext.Provider
+      value={{ estConnecte, maxQuestions: estConnecte ? 10 : 5 }}
+    >
+      {children}
+    </DecouverteContext.Provider>
+  );
 }
