@@ -228,6 +228,7 @@ export default function GroupeNominalPage() {
   const [reponseChoisie, setReponseChoisie] = useState<string | null>(null);
   const [estCorrecte, setEstCorrecte] = useState<boolean | null>(null);
   const [ficheOuverte, setFicheOuverte] = useState(false);
+  const [ficheObligatoireLue, setFicheObligatoireLue] = useState(false);
   const [bestScore, setBestScore] = useState<{
     score: number;
     total: number;
@@ -238,6 +239,7 @@ export default function GroupeNominalPage() {
   } | null>(null);
   const scoreRef = useRef(0);
   const scoreSaved = useRef(false);
+  const fautesRef = useRef(0);
 
   useEffect(() => {
     const charger = async () => {
@@ -256,11 +258,13 @@ export default function GroupeNominalPage() {
     }));
     setQuestions(q);
     scoreRef.current = 0;
+    fautesRef.current = 0;
     scoreSaved.current = false;
     setIndex(0);
     setReponseChoisie(null);
     setEstCorrecte(null);
     setFicheOuverte(false);
+    setFicheObligatoireLue(false);
     setEtape("quiz");
   };
 
@@ -269,8 +273,17 @@ export default function GroupeNominalPage() {
     setReponseChoisie(option);
     const correct = option === questions[index].answer;
     setEstCorrecte(correct);
-    if (!correct) setFicheOuverte(true);
-    else scoreRef.current += 1;
+    if (correct) {
+      scoreRef.current += 1;
+    } else {
+      fautesRef.current += 1;
+      if (fautesRef.current === 1) {
+        setFicheOuverte(true);
+        setFicheObligatoireLue(false);
+      } else if (fautesRef.current === 6) {
+        setFicheObligatoireLue(false);
+      }
+    }
   };
 
   const questionSuivante = async () => {
@@ -295,10 +308,13 @@ export default function GroupeNominalPage() {
       setIndex(index + 1);
       setReponseChoisie(null);
       setEstCorrecte(null);
+      setFicheObligatoireLue(false);
     }
   };
 
   const total = questions.length;
+  const est6emeFaute = fautesRef.current === 6;
+  const boutonBloque = est6emeFaute && !ficheObligatoireLue;
 
   if (etape === "intro") {
     return (
@@ -523,11 +539,36 @@ export default function GroupeNominalPage() {
                     ? "Excellente réponse !"
                     : `La bonne réponse est : "${q.answer}"`}
                 </p>
+                {!estCorrecte && est6emeFaute && !ficheObligatoireLue && (
+                  <div
+                    style={{
+                      marginTop: "10px",
+                      background: "rgba(255,209,102,0.15)",
+                      border: "1px solid rgba(255,209,102,0.4)",
+                      borderRadius: "10px",
+                      padding: "10px 14px",
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: "#ffd166",
+                        fontWeight: 700,
+                        marginBottom: "4px",
+                      }}
+                    >
+                      😅 Aïe, 6 erreurs !
+                    </p>
+                    <p style={{ color: "#ddd", fontSize: "0.85rem" }}>
+                      Tu dois relire la fiche pédagogique avant de continuer.
+                      Elle est là pour t'aider ! 💪
+                    </p>
+                  </div>
+                )}
                 {!estCorrecte && (
                   <button
                     onClick={() => setFicheOuverte(true)}
                     style={{
-                      marginTop: "8px",
+                      marginTop: "10px",
                       background: "rgba(255,209,102,0.2)",
                       border: "1px solid rgba(255,209,102,0.4)",
                       borderRadius: "8px",
@@ -546,15 +587,34 @@ export default function GroupeNominalPage() {
           )}
 
           {reponseChoisie && (
-            <button
-              className="lecon-btn"
-              onClick={questionSuivante}
-              style={{ marginTop: "16px" }}
-            >
-              {index + 1 >= total
-                ? "Voir mon résultat →"
-                : "Question suivante →"}
-            </button>
+            <div style={{ marginTop: "16px" }}>
+              {boutonBloque && (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#ffd166",
+                    fontSize: "0.85rem",
+                    marginBottom: "8px",
+                  }}
+                >
+                  📖 Lis la fiche pédagogique pour débloquer la question
+                  suivante !
+                </p>
+              )}
+              <button
+                className="lecon-btn"
+                onClick={questionSuivante}
+                disabled={boutonBloque}
+                style={{
+                  opacity: boutonBloque ? 0.4 : 1,
+                  cursor: boutonBloque ? "not-allowed" : "pointer",
+                }}
+              >
+                {index + 1 >= total
+                  ? "Voir mon résultat →"
+                  : "Question suivante →"}
+              </button>
+            </div>
           )}
         </div>
 
@@ -593,7 +653,6 @@ export default function GroupeNominalPage() {
               >
                 📖 Fiche pédagogique
               </div>
-
               <div
                 style={{
                   marginBottom: "16px",
@@ -624,7 +683,6 @@ export default function GroupeNominalPage() {
                   {q.fiche.regle}
                 </div>
               </div>
-
               <div
                 style={{
                   marginBottom: "16px",
@@ -655,7 +713,6 @@ export default function GroupeNominalPage() {
                   {q.fiche.exemple}
                 </div>
               </div>
-
               <div
                 style={{
                   marginBottom: "16px",
@@ -686,7 +743,6 @@ export default function GroupeNominalPage() {
                   {q.fiche.piege}
                 </div>
               </div>
-
               <div
                 style={{
                   marginBottom: "20px",
@@ -717,9 +773,11 @@ export default function GroupeNominalPage() {
                   {q.fiche.astuce}
                 </div>
               </div>
-
               <button
-                onClick={() => setFicheOuverte(false)}
+                onClick={() => {
+                  setFicheOuverte(false);
+                  setFicheObligatoireLue(true);
+                }}
                 style={{
                   width: "100%",
                   padding: "14px",
@@ -750,7 +808,6 @@ export default function GroupeNominalPage() {
         : pourcentage >= 60
           ? "Bien joué !"
           : "Continue à t'entraîner !";
-
     return (
       <div className="cours-page">
         <div className="cours-header">
@@ -768,7 +825,6 @@ export default function GroupeNominalPage() {
             Tu as répondu correctement à {scoreRef.current} question
             {scoreRef.current > 1 ? "s" : ""} sur {total} ({pourcentage}%).
           </p>
-
           {(bestScore || lastScore) && (
             <div
               style={{
@@ -842,7 +898,6 @@ export default function GroupeNominalPage() {
               )}
             </div>
           )}
-
           <div className="resultat-actions">
             <button className="lecon-btn" onClick={demarrer}>
               🔄 Réessayer
