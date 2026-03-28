@@ -231,7 +231,10 @@ export default function ScolouChat() {
                   à Scolou !
                 </p>
                 <button
-                  onClick={() => router.push("/inscription")}
+                  onClick={() => {
+                    setOuvert(false);
+                    router.push("/inscription");
+                  }}
                   style={{
                     background: "linear-gradient(135deg, #00b4c8, #008fa0)",
                     color: "#fff",
@@ -248,7 +251,10 @@ export default function ScolouChat() {
                   ✨ S'inscrire gratuitement →
                 </button>
                 <button
-                  onClick={() => router.push("/connexion")}
+                  onClick={() => {
+                    setOuvert(false);
+                    router.push("/connexion");
+                  }}
                   style={{
                     background: "rgba(255,255,255,0.06)",
                     color: "#aaa",

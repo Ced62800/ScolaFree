@@ -136,7 +136,17 @@ function ConnexionForm() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-logo" onClick={() => router.push("/")}>
-          🎓 Scola<span>Free</span>
+          <img
+            src="https://akdvjkvdaggjpbfgscko.supabase.co/storage/v1/object/public/assets/Logo%20ScolaFree.png"
+            alt="ScolaFree"
+            style={{
+              width: "200px",
+              height: "40px",
+              objectFit: "cover",
+              objectPosition: "left center",
+              marginTop: "10px",
+            }}
+          />
         </div>
         <h2 className="auth-title">Connexion</h2>
         <p className="auth-sub">Content de te revoir !</p>
