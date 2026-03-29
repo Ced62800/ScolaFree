@@ -4,42 +4,40 @@ import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const themes = [
+const matieres = [
   {
-    id: "la-phrase",
-    label: "La phrase",
-    emoji: "✏️",
+    id: "francais",
+    label: "Français",
+    emoji: "📖",
     color: "#4f8ef7",
-    desc: "Types et formes de phrases, sujet, ponctuation",
+    desc: "Grammaire, conjugaison, orthographe et vocabulaire",
     dispo: true,
   },
   {
-    id: "classes-de-mots",
-    label: "Les classes de mots",
-    emoji: "📝",
+    id: "maths",
+    label: "Mathématiques",
+    emoji: "🔢",
     color: "#2ec4b6",
-    desc: "Nom, verbe, adjectif, déterminant, pronom...",
+    desc: "Nombres, calcul, géométrie et statistiques",
     dispo: true,
   },
   {
-    id: "groupe-nominal",
-    label: "Le groupe nominal",
-    emoji: "🔤",
+    id: "anglais",
+    label: "Anglais",
+    emoji: (
+      <img
+        src="https://flagcdn.com/w40/gb.png"
+        alt="UK"
+        style={{ width: "28px", verticalAlign: "middle", borderRadius: "3px" }}
+      />
+    ),
     color: "#ffd166",
-    desc: "Construction et accords du groupe nominal",
-    dispo: true,
-  },
-  {
-    id: "present-indicatif",
-    label: "Le présent de l'indicatif",
-    emoji: "⏱️",
-    color: "#ff6b6b",
-    desc: "Conjugaison au présent — tous les groupes",
-    dispo: true,
+    desc: "Vocabulaire, grammaire et expression en anglais",
+    dispo: false,
   },
 ];
 
-export default function Francais6emePage() {
+export default function SixiemePage() {
   const router = useRouter();
   const [estConnecte, setEstConnecte] = useState(false);
   const [chargement, setChargement] = useState(true);
@@ -55,20 +53,12 @@ export default function Francais6emePage() {
     init();
   }, []);
 
-  const handleBilan = () => {
-    if (!estConnecte) {
-      router.push("/inscription");
-      return;
-    }
-    router.push("/cours/college/6eme/francais/bilan");
-  };
-
   return (
     <div className="cours-page">
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/college/6eme")}
+          onClick={() => router.push("/cours/college")}
         >
           ← Retour
         </button>
@@ -87,28 +77,20 @@ export default function Francais6emePage() {
             Collège
           </span>
           <span className="breadcrumb-sep">›</span>
-          <span
-            onClick={() => router.push("/cours/college/6eme")}
-            style={{ cursor: "pointer" }}
-          >
-            6ème
-          </span>
-          <span className="breadcrumb-sep">›</span>
-          <span className="breadcrumb-active">Français</span>
+          <span className="breadcrumb-active">6ème</span>
         </div>
       </div>
 
       <div className="cours-hero">
-        <div className="cours-hero-icon">📖</div>
-        <h1 className="cours-hero-title">Français — 6ème</h1>
+        <div className="cours-hero-icon">🏫</div>
+        <h1 className="cours-hero-title">6ème</h1>
         <p className="cours-hero-desc">
           {estConnecte
-            ? "Choisis un thème pour commencer !"
+            ? "Choisis ta matière pour commencer !"
             : "Mode découverte — 5 questions par thème"}
         </p>
       </div>
 
-      {/* Bandeau mode découverte */}
       {!estConnecte && !chargement && (
         <div
           style={{
@@ -138,28 +120,27 @@ export default function Francais6emePage() {
         </div>
       )}
 
-      {/* Grille des thèmes */}
       <div
         className="themes-grid"
         style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
       >
-        {themes.map((t) => (
+        {matieres.map((m) => (
           <div
-            key={t.id}
+            key={m.id}
             className="theme-card"
             onClick={() =>
-              t.dispo && router.push(`/cours/college/6eme/francais/${t.id}`)
+              m.dispo && router.push(`/cours/college/6eme/${m.id}`)
             }
             style={
               {
-                "--card-color": t.color,
+                "--card-color": m.color,
                 position: "relative",
-                cursor: t.dispo ? "pointer" : "not-allowed",
+                cursor: m.dispo ? "pointer" : "not-allowed",
                 paddingTop: "44px",
+                opacity: m.dispo ? 1 : 0.5,
               } as React.CSSProperties
             }
           >
-            {/* Badge découverte */}
             {!estConnecte && !chargement && (
               <div
                 style={{
@@ -180,10 +161,9 @@ export default function Francais6emePage() {
                 👀 Découverte
               </div>
             )}
-
-            <div className="theme-emoji">{t.emoji}</div>
-            <div className="theme-label">{t.label}</div>
-            <div className="theme-desc">{t.desc}</div>
+            <div className="theme-emoji">{m.emoji}</div>
+            <div className="theme-label">{m.label}</div>
+            <div className="theme-desc">{m.desc}</div>
             {!estConnecte && !chargement && (
               <div
                 style={{
@@ -196,92 +176,11 @@ export default function Francais6emePage() {
                 5 questions par thème
               </div>
             )}
-            <div className="theme-arrow" style={{ color: t.color }}>
-              Commencer →
+            <div className="theme-arrow" style={{ color: m.color }}>
+              {m.dispo ? "Accéder →" : "🔒 Bientôt"}
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Bouton Bilan */}
-      {!chargement && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: "32px",
-            marginBottom: "16px",
-          }}
-        >
-          <button
-            onClick={handleBilan}
-            style={{
-              background: estConnecte
-                ? "linear-gradient(135deg, #f7974f, #f74f4f)"
-                : "rgba(255,255,255,0.08)",
-              border: "none",
-              borderRadius: "14px",
-              padding: "16px 32px",
-              color: "#fff",
-              fontWeight: 800,
-              fontSize: "1.1rem",
-              cursor: "pointer",
-              width: "100%",
-              maxWidth: "400px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px",
-            }}
-          >
-            🎯 Bilan Final Français 6ème
-          </button>
-          <p
-            style={{
-              color: "#aaa",
-              fontSize: "0.85rem",
-              marginTop: "8px",
-              textAlign: "center",
-            }}
-          >
-            {estConnecte
-              ? "Teste toutes tes connaissances de la Partie 1 !"
-              : "🔒 Inscris-toi pour accéder au bilan"}
-          </p>
-        </div>
-      )}
-
-      {/* Bouton Page 2 */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "8px",
-        }}
-      >
-        <button
-          onClick={() => router.push("/cours/college/6eme/francais/page-2")}
-          style={{
-            background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "14px",
-            padding: "14px 28px",
-            color: "#fff",
-            fontWeight: 700,
-            fontSize: "1rem",
-            cursor: "pointer",
-            width: "100%",
-            maxWidth: "400px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-          }}
-        >
-          📚 Cours suivants — Partie 2 →
-        </button>
       </div>
     </div>
   );
