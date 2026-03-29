@@ -93,7 +93,7 @@ const questions = [
     options: ["Adverbe", "Préposition", "Conjonction", "Déterminant"],
     reponse: "Préposition",
     explication:
-      "'sur' est une préposition — c'est un mot invariable qui relie deux éléments.",
+      "'sur' est une préposition — mot invariable qui relie deux éléments.",
   },
   {
     id: 10,
@@ -243,28 +243,27 @@ export default function Bilan1Francais6eme() {
     "present-indicatif": 0,
   });
   const [totalScore, setTotalScore] = useState(0);
-  const [bestScore, setBestScore] = useState<{
-    score: number;
-    total: number;
-  } | null>(null);
-  const [lastScore, setLastScore] = useState<{
-    score: number;
-    total: number;
-  } | null>(null);
-  const scoreSaved = useRef(false);
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
   const scoreRef = useRef(0);
 
-  const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const shuffledOptions = useMemo(
-    () => shuffleArray(shuffledQuestions[qIndex].options),
-    [qIndex, shuffledQuestions],
-  );
-  const progression = Math.round((qIndex / questions.length) * 100);
-
   useEffect(() => {
-    getBestScore("6eme", "francais", "bilan").then(setBestScore);
-    getLastScore("6eme", "francais", "bilan").then(setLastScore);
+    const load = async () => {
+      const b = await getBestScore("6eme", "francais", "bilan");
+      const l = await getLastScore("6eme", "francais", "bilan");
+      setBestScore(b);
+      setLastScore(l);
+    };
+    load();
   }, []);
+
+  const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
+  const progression = Math.round((qIndex / questions.length) * 100);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -280,21 +279,20 @@ export default function Bilan1Francais6eme() {
 
   const handleSuivant = async () => {
     if (qIndex + 1 >= shuffledQuestions.length) {
-      if (scoreSaved.current) return;
-      scoreSaved.current = true;
-      await saveScore({
-        classe: "6eme",
-        matiere: "francais",
-        theme: "bilan",
-        score: scoreRef.current,
-        total: 20,
-      });
-      const [best, last] = await Promise.all([
-        getBestScore("6eme", "francais", "bilan"),
-        getLastScore("6eme", "francais", "bilan"),
-      ]);
-      setBestScore(best);
-      setLastScore(last);
+      if (!isSaving.current) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "6eme",
+          matiere: "francais",
+          theme: "bilan",
+          score: scoreRef.current,
+          total: 20,
+        });
+        const b = await getBestScore("6eme", "francais", "bilan");
+        const l = await getLastScore("6eme", "francais", "bilan");
+        setBestScore(b);
+        setLastScore(l);
+      }
       setEtape("fini");
     } else {
       setQIndex((i) => i + 1);
@@ -303,7 +301,7 @@ export default function Bilan1Francais6eme() {
   };
 
   const handleRecommencer = () => {
-    scoreSaved.current = false;
+    isSaving.current = false;
     scoreRef.current = 0;
     setEtape("intro");
     setQIndex(0);
@@ -350,53 +348,63 @@ export default function Bilan1Francais6eme() {
           <div className="lecon-badge">🎯 Bilan 1 · Français 6ème</div>
           <h1 className="lecon-titre">Bilan 1 — Français 6ème</h1>
           {(bestScore || lastScore) && (
-            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
               {bestScore && (
                 <div
                   style={{
                     flex: 1,
-                    background: "rgba(79,142,247,0.1)",
-                    border: "1px solid rgba(79,142,247,0.3)",
+                    padding: "12px",
+                    background: "rgba(46,196,182,0.1)",
                     borderRadius: "12px",
-                    padding: "10px 16px",
-                    fontSize: "0.9rem",
-                    color: "#4f8ef7",
+                    border: "1px solid #2ec4b6",
                     textAlign: "center",
                   }}
                 >
-                  🏆 Meilleur
-                  <br />
-                  <strong>
-                    {bestScore.score} / {bestScore.total}
-                  </strong>
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Record
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
                 </div>
               )}
               {lastScore && (
                 <div
                   style={{
                     flex: 1,
+                    padding: "12px",
                     background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: "12px",
-                    padding: "10px 16px",
-                    fontSize: "0.9rem",
-                    color: "#aaa",
+                    border: "1px solid rgba(255,255,255,0.1)",
                     textAlign: "center",
                   }}
                 >
-                  🕐 Dernier
-                  <br />
-                  <strong style={{ color: "#fff" }}>
-                    {lastScore.score} / {lastScore.total}
-                  </strong>
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
                 </div>
               )}
             </div>
           )}
           <p className="lecon-intro">
-            Ce bilan regroupe des questions sur les 4 thèmes de la première
-            partie : La phrase, Les classes de mots, Le groupe nominal et Le
-            présent de l'indicatif.
+            Ce bilan regroupe les 4 thèmes de Français 6ème — Partie 1.
           </p>
           <div className="bilan-info-grid">
             <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
@@ -451,17 +459,17 @@ export default function Bilan1Francais6eme() {
             </div>
             <div className="qcm-options">
               {shuffledOptions.map((opt) => {
-                let cn = "qcm-option";
+                let className = "qcm-option";
                 if (selected) {
                   if (opt === shuffledQuestions[qIndex].reponse)
-                    cn += " correct";
-                  else if (opt === selected) cn += " incorrect";
-                  else cn += " disabled";
+                    className += " correct";
+                  else if (opt === selected) className += " incorrect";
+                  else className += " disabled";
                 }
                 return (
                   <button
                     key={opt}
-                    className={cn}
+                    className={className}
                     onClick={() => handleReponse(opt)}
                   >
                     {opt}
@@ -507,45 +515,57 @@ export default function Bilan1Francais6eme() {
             {totalScore} / 20
           </div>
           {(bestScore || lastScore) && (
-            <div style={{ display: "flex", gap: "10px", margin: "12px 0" }}>
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
               {bestScore && (
                 <div
                   style={{
                     flex: 1,
-                    background: "rgba(79,142,247,0.1)",
-                    border: "1px solid rgba(79,142,247,0.3)",
+                    padding: "12px",
+                    background: "rgba(46,196,182,0.1)",
                     borderRadius: "12px",
-                    padding: "10px",
-                    fontSize: "0.85rem",
-                    color: "#4f8ef7",
+                    border: "1px solid #2ec4b6",
                     textAlign: "center",
                   }}
                 >
-                  🏆 Meilleur
-                  <br />
-                  <strong>
-                    {bestScore.score} / {bestScore.total}
-                  </strong>
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Meilleur
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
                 </div>
               )}
               {lastScore && (
                 <div
                   style={{
                     flex: 1,
+                    padding: "12px",
                     background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: "12px",
-                    padding: "10px",
-                    fontSize: "0.85rem",
-                    color: "#aaa",
+                    border: "1px solid rgba(255,255,255,0.1)",
                     textAlign: "center",
                   }}
                 >
-                  🕐 Dernier
-                  <br />
-                  <strong style={{ color: "#fff" }}>
-                    {lastScore.score} / {lastScore.total}
-                  </strong>
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
                 </div>
               )}
             </div>
@@ -570,11 +590,11 @@ export default function Bilan1Francais6eme() {
           </div>
           <p className="resultat-desc">
             {totalScore >= 18
-              ? "Bravo ! Tu maîtrises bien la première partie ! 🚀"
+              ? "Bravo, tu maîtrises le Français 6ème Partie 1 ! 🚀"
               : totalScore >= 14
-                ? "Très bon niveau ! Continue comme ça !"
+                ? "Très bon niveau, continue !"
                 : totalScore >= 10
-                  ? "Tu progresses bien ! Révise les thèmes en rouge."
+                  ? "Tu progresses bien !"
                   : "Courage ! Reprends les leçons et réessaie."}
           </p>
           <div className="resultat-actions">
