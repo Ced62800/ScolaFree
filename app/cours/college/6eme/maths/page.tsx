@@ -19,7 +19,7 @@ const themes = [
     emoji: "🔡",
     color: "#2ec4b6",
     desc: "Lire, écrire et comparer les décimaux",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "fractions",
@@ -27,7 +27,7 @@ const themes = [
     emoji: "➗",
     color: "#ffd166",
     desc: "Numérateur, dénominateur, fractions équivalentes",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "geometrie",
@@ -35,7 +35,7 @@ const themes = [
     emoji: "📐",
     color: "#ff6b6b",
     desc: "Figures, constructions et propriétés",
-    dispo: false,
+    dispo: true,
   },
 ];
 

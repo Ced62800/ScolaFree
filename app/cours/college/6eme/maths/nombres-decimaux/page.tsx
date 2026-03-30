@@ -7,7 +7,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 const CLASSE = "6eme";
 const MATIERE = "maths";
-const THEME = "fractions";
+const THEME = "nombres-decimaux";
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -27,144 +27,154 @@ type Question = {
 
 const questionsBase: Question[] = [
   {
-    question: "Dans la fraction 3/5, que représente le 5 ?",
-    options: ["Le numérateur", "Le dénominateur", "Le quotient", "Le reste"],
-    answer: "Le dénominateur",
+    question: "Quel est le chiffre des centièmes dans 45,382 ?",
+    options: ["4", "3", "8", "2"],
+    answer: "8",
     fiche: {
       regle:
-        "Une fraction a/b : a = numérateur (en haut) / b = dénominateur (en bas). Le dénominateur indique en combien de parts égales on divise le tout.",
+        "Dans un nombre décimal, après la virgule : dixièmes (1er rang), centièmes (2ème rang), millièmes (3ème rang).",
+      exemple: "✅ 45,382 : 3 = dixièmes / 8 = centièmes / 2 = millièmes",
+      piege:
+        "Ne pas confondre les rangs avant la virgule (entiers) et après (décimaux) !",
+      astuce:
+        "Après la virgule : 1er chiffre = dixièmes, 2ème = centièmes, 3ème = millièmes !",
+    },
+  },
+  {
+    question: "Lequel de ces nombres est le plus grand ?",
+    options: ["3,09", "3,9", "3,090", "3,19"],
+    answer: "3,9",
+    fiche: {
+      regle:
+        "Pour comparer des décimaux : on compare d'abord la partie entière, puis les chiffres après la virgule rang par rang.",
       exemple:
-        "✅ 3/5 : 5 = dénominateur (5 parts égales) / 3 = numérateur (on prend 3 parts)",
-      piege: "Le dénominateur est TOUJOURS en bas de la fraction !",
-      astuce:
-        "Dénominateur → en bas. Numérateur → en haut. D avant N dans l'alphabet = Dessous !",
-    },
-  },
-  {
-    question: "Quelle fraction est égale à 1/2 ?",
-    options: ["2/3", "3/6", "2/5", "4/9"],
-    answer: "3/6",
-    fiche: {
-      regle:
-        "Des fractions équivalentes représentent la même quantité. On les obtient en multipliant (ou divisant) le numérateur ET le dénominateur par le même nombre.",
-      exemple: "✅ 1/2 = 2/4 = 3/6 = 4/8... (multiplie par 2, 3, 4...)",
+        "✅ 3,9 = 3,900 / 3,19 = 3,190 → 3,9 > 3,19 car 9 dixièmes > 1 dixième",
       piege:
-        "Pour des fractions équivalentes, il faut multiplier numérateur ET dénominateur par le MÊME nombre !",
+        "3,9 n'est pas plus petit que 3,19 ! 3,9 = 3,90 qui est plus grand que 3,19.",
       astuce:
-        "1/2 × (3/3) = 3/6. Multiplie en haut ET en bas par le même nombre !",
+        "Ajoute des zéros pour avoir le même nombre de décimales et compare chiffre par chiffre !",
     },
   },
   {
-    question:
-      "Quelle est la fraction de la figure si 3 cases sur 8 sont coloriées ?",
-    options: ["8/3", "5/8", "3/8", "3/5"],
-    answer: "3/8",
+    question: "Comment écrit-on « sept unités et cinq centièmes » ?",
+    options: ["7,5", "7,05", "7,50", "70,5"],
+    answer: "7,05",
     fiche: {
       regle:
-        "Fraction = (nombre de parts prises) / (nombre total de parts). Numérateur = parts prises / Dénominateur = total.",
-      exemple: "✅ 3 cases coloriées sur 8 au total = 3/8",
-      piege:
-        "Ne pas inverser ! 3/8 et non 8/3. Le total est TOUJOURS le dénominateur.",
-      astuce: "Fraction = ce qu'on prend / total. Coloriées / Total = 3/8 !",
-    },
-  },
-  {
-    question: "Laquelle de ces fractions est supérieure à 1 ?",
-    options: ["3/4", "5/7", "7/5", "2/3"],
-    answer: "7/5",
-    fiche: {
-      regle:
-        "Une fraction est > 1 si le numérateur > dénominateur. = 1 si numérateur = dénominateur. < 1 si numérateur < dénominateur.",
+        "Cinq centièmes = 5 au rang des centièmes (2ème rang après la virgule). Le rang des dixièmes est vide → on met 0.",
       exemple:
-        "✅ 7/5 : 7 > 5 → fraction > 1 (= 1 et 2/5) / 3/4 : 3 < 4 → fraction < 1",
+        "✅ 7 unités et 5 centièmes = 7,05 (le 0 occupe la place des dixièmes)",
       piege:
-        "Quand le numérateur est plus grand que le dénominateur, la fraction dépasse 1 !",
+        "7,5 = 7 et 5 dixièmes ≠ 7 et 5 centièmes. Ne pas oublier le zéro des dixièmes !",
       astuce:
-        "numérateur > dénominateur → fraction > 1 / numérateur < dénominateur → fraction < 1 !",
+        "Centièmes = 2ème rang après la virgule. Si le 1er rang (dixièmes) est vide → mets un 0 !",
     },
   },
   {
-    question: "Quelle fraction est la plus grande : 3/4 ou 5/8 ?",
-    options: ["3/4", "5/8", "Elles sont égales", "Impossible à comparer"],
-    answer: "3/4",
+    question: "Quel est l'arrondi de 6,847 au dixième près ?",
+    options: ["6,8", "6,9", "7,0", "6,85"],
+    answer: "6,8",
     fiche: {
       regle:
-        "Pour comparer des fractions : ramène-les au même dénominateur. 3/4 = 6/8 et 5/8 → 6/8 > 5/8 donc 3/4 > 5/8.",
-      exemple: "✅ 3/4 = 6/8 / 5/8 → 6/8 > 5/8 → 3/4 > 5/8",
-      piege:
-        "On ne peut pas comparer directement 3/4 et 5/8 sans les mettre au même dénominateur !",
-      astuce: "Même dénominateur → compare les numérateurs. 3/4 = 6/8 > 5/8 !",
+        "Pour arrondir au dixième : on regarde le chiffre des centièmes. Si ≥ 5 → on monte le dixième de 1. Si < 5 → on garde le même dixième.",
+      exemple: "✅ 6,847 : chiffre des centièmes = 4 < 5 → on garde 6,8",
+      piege: "6,847 → centièmes = 4 < 5 → on reste à 6,8 (et non 6,9) !",
+      astuce: "Règle du 5 : centièmes ≥ 5 → monte / < 5 → reste. 4 < 5 → 6,8 !",
     },
   },
   {
-    question: "Quelle est la fraction simplifiée de 6/9 ?",
-    options: ["3/4", "2/3", "1/3", "6/9"],
-    answer: "2/3",
+    question: "Range dans l'ordre croissant : 0,5 / 0,15 / 0,51 / 0,05",
+    options: [
+      "0,05 < 0,15 < 0,5 < 0,51",
+      "0,5 < 0,51 < 0,15 < 0,05",
+      "0,05 < 0,5 < 0,15 < 0,51",
+      "0,15 < 0,05 < 0,51 < 0,5",
+    ],
+    answer: "0,05 < 0,15 < 0,5 < 0,51",
     fiche: {
       regle:
-        "Pour simplifier : divise le numérateur ET le dénominateur par leur plus grand commun diviseur (PGCD).",
-      exemple: "✅ 6/9 : PGCD(6,9) = 3 → 6÷3 / 9÷3 = 2/3",
-      piege:
-        "Divise numérateur ET dénominateur par le même nombre. 6÷3=2 et 9÷3=3 → 2/3.",
-      astuce:
-        "Cherche un nombre qui divise exactement les deux. 6 et 9 sont tous deux divisibles par 3 → 2/3 !",
-    },
-  },
-  {
-    question: "À quel nombre décimal correspond 3/4 ?",
-    options: ["0,34", "0,75", "1,33", "0,43"],
-    answer: "0,75",
-    fiche: {
-      regle:
-        "Pour convertir une fraction en décimal : divise le numérateur par le dénominateur.",
-      exemple: "✅ 3/4 = 3 ÷ 4 = 0,75 / 1/2 = 1 ÷ 2 = 0,5 / 1/4 = 0,25",
-      piege: "3/4 ≠ 0,34 ! Il faut DIVISER : 3 ÷ 4 = 0,75.",
-      astuce: "Fraction → décimal : numérateur ÷ dénominateur. 3 ÷ 4 = 0,75 !",
-    },
-  },
-  {
-    question:
-      "Si une pizza est coupée en 8 parts égales et que tu en manges 3, quelle fraction reste-t-il ?",
-    options: ["3/8", "5/8", "8/5", "5/3"],
-    answer: "5/8",
-    fiche: {
-      regle: "Total = 8/8. Mangées = 3/8. Reste = 8/8 - 3/8 = 5/8.",
+        "Pour comparer : aligne les virgules et compare chiffre par chiffre. Ajoute des zéros si nécessaire.",
       exemple:
-        "✅ 8/8 - 3/8 = 5/8 (on soustrait les numérateurs, le dénominateur reste le même)",
+        "✅ 0,05 / 0,15 / 0,50 / 0,51 → 5 centièmes < 15 centièmes < 50 centièmes < 51 centièmes",
       piege:
-        "Pour soustraire des fractions de même dénominateur : garde le dénominateur, soustrait les numérateurs !",
+        "0,5 ≠ 0,05 ! 0,5 = 5 dixièmes = 50 centièmes. C'est bien plus grand que 0,05 !",
       astuce:
-        "Même dénominateur → soustrait juste les numérateurs. 8-3=5 → 5/8 !",
+        "Transforme tout en centièmes : 0,5 = 50 centièmes / 0,15 = 15 centièmes → facile à comparer !",
     },
   },
   {
-    question: "Laquelle de ces fractions est égale à 2 ?",
-    options: ["2/1", "1/2", "4/1", "2/4"],
-    answer: "2/1",
+    question: "Quelle est la valeur du chiffre 7 dans 12,074 ?",
+    options: ["7 dixièmes", "7 centièmes", "7 millièmes", "7 unités"],
+    answer: "7 centièmes",
     fiche: {
       regle:
-        "Tout entier peut s'écrire comme une fraction avec 1 au dénominateur : n = n/1.",
-      exemple: "✅ 2 = 2/1 / 5 = 5/1 / 3 = 3/1",
-      piege: "2/4 = 1/2 ≠ 2. Et 4/1 = 4 ≠ 2. Seul 2/1 = 2 !",
-      astuce: "Un entier n = n/1. Donc 2 = 2/1 !",
+        "Après la virgule : 1er rang = dixièmes / 2ème rang = centièmes / 3ème rang = millièmes.",
+      exemple:
+        "✅ 12,074 : 0 = dixièmes / 7 = centièmes / 4 = millièmes → 7 centièmes = 0,07",
+      piege:
+        "Le 0 occupe le rang des dixièmes, donc le 7 est bien au rang des centièmes !",
+      astuce:
+        "Compte les rangs depuis la virgule : 12, | 0(dixièmes) | 7(centièmes) | 4(millièmes) !",
     },
   },
   {
-    question: "Quelle est la somme de 1/4 + 2/4 ?",
-    options: ["3/8", "3/4", "2/8", "1/2"],
-    answer: "3/4",
+    question: "Combien de dixièmes y a-t-il dans 3,7 ?",
+    options: ["3", "7", "37", "0,7"],
+    answer: "37",
     fiche: {
       regle:
-        "Pour additionner des fractions de même dénominateur : additionne les numérateurs, garde le même dénominateur.",
-      exemple: "✅ 1/4 + 2/4 = (1+2)/4 = 3/4",
-      piege: "Ne pas additionner les dénominateurs ! 1/4 + 2/4 ≠ 3/8.",
+        "3,7 = 3 unités + 7 dixièmes = 30 dixièmes + 7 dixièmes = 37 dixièmes. Pour trouver le nombre de dixièmes : multiplie par 10.",
+      exemple: "✅ 3,7 × 10 = 37 → il y a 37 dixièmes dans 3,7",
+      piege:
+        "Ne pas répondre 7 ! Les 3 unités comptent aussi : 3 unités = 30 dixièmes.",
+      astuce: "Nombre de dixièmes = nombre × 10. 3,7 × 10 = 37 dixièmes !",
+    },
+  },
+  {
+    question: "Quel nombre décimal correspond à « 5 + 3/10 + 4/100 » ?",
+    options: ["5,34", "5,043", "5,304", "53,4"],
+    answer: "5,34",
+    fiche: {
+      regle:
+        "3/10 = 3 dixièmes = 0,3 / 4/100 = 4 centièmes = 0,04. Donc 5 + 0,3 + 0,04 = 5,34.",
+      exemple: "✅ 5 + 3/10 + 4/100 = 5 + 0,3 + 0,04 = 5,34",
+      piege:
+        "Ne pas écrire 5,304 ! Le 3 est au rang des dixièmes et le 4 au rang des centièmes.",
       astuce:
-        "Même dénominateur → additionne juste les numérateurs. 1+2=3 → 3/4 !",
+        "3/10 → dixièmes (1er rang) / 4/100 → centièmes (2ème rang) → 5,34 !",
+    },
+  },
+  {
+    question: "Lequel de ces nombres est égal à 2,50 ?",
+    options: ["2,5", "2,05", "25,0", "0,25"],
+    answer: "2,5",
+    fiche: {
+      regle:
+        "Un zéro à la fin d'un nombre décimal ne change pas sa valeur : 2,50 = 2,5.",
+      exemple: "✅ 2,50 = 2,5 (le zéro final est inutile) / 2,05 ≠ 2,50 !",
+      piege:
+        "2,05 ≠ 2,50 ! 2,05 a 0 dixième et 5 centièmes. 2,50 a 5 dixièmes et 0 centième.",
+      astuce:
+        "Les zéros à la fin d'un décimal ne changent pas la valeur : 2,50 = 2,500 = 2,5 !",
+    },
+  },
+  {
+    question: "Quelle opération donne 0,1 ?",
+    options: ["1 ÷ 100", "1 ÷ 10", "10 ÷ 1", "1 ÷ 1000"],
+    answer: "1 ÷ 10",
+    fiche: {
+      regle:
+        "0,1 = 1 dixième = 1/10. Diviser par 10 déplace la virgule d'un rang vers la gauche.",
+      exemple: "✅ 1 ÷ 10 = 0,1 / 1 ÷ 100 = 0,01 / 1 ÷ 1000 = 0,001",
+      piege:
+        "Ne pas confondre ÷10, ÷100 et ÷1000 qui donnent des résultats très différents !",
+      astuce:
+        "÷10 → 0,1 / ÷100 → 0,01 / ÷1000 → 0,001. Chaque division par 10 ajoute un zéro !",
     },
   },
 ];
 
-export default function FractionsPage() {
+export default function NombresDecimauxPage() {
   const router = useRouter();
   const { estConnecte, maxQuestions } = useContext(DecouverteContext);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -265,7 +275,7 @@ export default function FractionsPage() {
         </div>
         <div className="lecon-wrapper">
           <div className="lecon-badge">🔢 Maths — 6ème</div>
-          <h1 className="lecon-titre">Les fractions</h1>
+          <h1 className="lecon-titre">Les nombres décimaux</h1>
           {!estConnecte && (
             <div
               style={{
@@ -290,8 +300,8 @@ export default function FractionsPage() {
             </div>
           )}
           <div className="lecon-intro">
-            Une <strong>fraction</strong> représente une partie d'un tout. Elle
-            s'écrit a/b où a est le numérateur et b le dénominateur.
+            Les <strong>nombres décimaux</strong> ont une partie entière et une
+            partie décimale séparées par une virgule. Ex : 3,14 ou 45,7.
           </div>
           {estConnecte && (bestScore || lastScore) && (
             <div
@@ -368,38 +378,37 @@ export default function FractionsPage() {
           )}
           <div className="lecon-points">
             <div className="lecon-point">
-              <div className="lecon-point-titre">
-                🍕 Numérateur et dénominateur
-              </div>
+              <div className="lecon-point-titre">🔢 Les rangs décimaux</div>
               <div className="lecon-point-texte">
-                <strong>Numérateur</strong> (haut) = parts prises ·{" "}
-                <strong>Dénominateur</strong> (bas) = total de parts
+                Après la virgule : <strong>dixièmes</strong> (÷10),{" "}
+                <strong>centièmes</strong> (÷100), <strong>millièmes</strong>{" "}
+                (÷1000)
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 3/8 d'une pizza
-                = 3 parts prises sur 8 parts au total
+                <span className="exemple-label">Exemple :</span> 45,382 → 3
+                dixièmes / 8 centièmes / 2 millièmes
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">🔄 Fractions équivalentes</div>
+              <div className="lecon-point-titre">📊 Comparer des décimaux</div>
               <div className="lecon-point-texte">
-                Multiplier ou diviser numérateur ET dénominateur par le même
-                nombre donne une fraction équivalente.
+                Aligne les virgules et ajoute des zéros si nécessaire, puis
+                compare chiffre par chiffre.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 1/2 = 2/4 = 3/6
-                = 4/8...
+                <span className="exemple-label">Exemple :</span> 3,9 vs 3,19
+                &#8594; 3,90 &gt; 3,19 car 9 dixièmes &gt; 1 dixième
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">📊 Comparer des fractions</div>
+              <div className="lecon-point-titre">🔄 Arrondir</div>
               <div className="lecon-point-texte">
-                Pour comparer, ramène au même dénominateur puis compare les
-                numérateurs.
+                Même règle qu&apos;avec les entiers : si le chiffre suivant ≥ 5
+                &#8594; monte / &lt; 5 &#8594; reste.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 3/4 vs 5/8 →
-                6/8 vs 5/8 → 3/4 &gt; 5/8
+                <span className="exemple-label">Exemple :</span> 6,847 au
+                dixième &#8594; centièmes = 4 &lt; 5 &#8594; 6,8
               </div>
             </div>
           </div>
@@ -491,7 +500,8 @@ export default function FractionsPage() {
                       😅 Aïe, 6 erreurs !
                     </p>
                     <p style={{ color: "#ddd", fontSize: "0.85rem" }}>
-                      Tu dois relire la fiche avant de continuer ! 💪
+                      Tu dois relire la fiche avant de continuer. Elle est là
+                      pour t'aider ! 💪
                     </p>
                   </div>
                 )}
