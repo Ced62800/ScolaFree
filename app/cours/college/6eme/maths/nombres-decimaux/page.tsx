@@ -48,7 +48,7 @@ const questionsBase: Question[] = [
       regle:
         "Pour comparer des décimaux : on compare d'abord la partie entière, puis les chiffres après la virgule rang par rang.",
       exemple:
-        "✅ 3,9 = 3,900 / 3,19 = 3,190 → 3,9 > 3,19 car 9 dixièmes > 1 dixième",
+        "✅ 3,9 = 3,900 et 3,19 = 3,190 : 9 dixièmes est plus grand que 1 dixième",
       piege:
         "3,9 n'est pas plus petit que 3,19 ! 3,9 = 3,90 qui est plus grand que 3,19.",
       astuce:
@@ -56,18 +56,18 @@ const questionsBase: Question[] = [
     },
   },
   {
-    question: "Comment écrit-on « sept unités et cinq centièmes » ?",
+    question: "Comment écrit-on sept unités et cinq centièmes ?",
     options: ["7,5", "7,05", "7,50", "70,5"],
     answer: "7,05",
     fiche: {
       regle:
-        "Cinq centièmes = 5 au rang des centièmes (2ème rang après la virgule). Le rang des dixièmes est vide → on met 0.",
+        "Cinq centièmes = 5 au rang des centièmes (2ème rang après la virgule). Le rang des dixièmes est vide donc on met 0.",
       exemple:
         "✅ 7 unités et 5 centièmes = 7,05 (le 0 occupe la place des dixièmes)",
       piege:
-        "7,5 = 7 et 5 dixièmes ≠ 7 et 5 centièmes. Ne pas oublier le zéro des dixièmes !",
+        "7,5 = 7 et 5 dixièmes, ce n'est pas 7 et 5 centièmes. Ne pas oublier le zéro des dixièmes !",
       astuce:
-        "Centièmes = 2ème rang après la virgule. Si le 1er rang (dixièmes) est vide → mets un 0 !",
+        "Centièmes = 2ème rang après la virgule. Si le 1er rang est vide mets un 0 !",
     },
   },
   {
@@ -76,10 +76,11 @@ const questionsBase: Question[] = [
     answer: "6,8",
     fiche: {
       regle:
-        "Pour arrondir au dixième : on regarde le chiffre des centièmes. Si ≥ 5 → on monte le dixième de 1. Si < 5 → on garde le même dixième.",
-      exemple: "✅ 6,847 : chiffre des centièmes = 4 < 5 → on garde 6,8",
-      piege: "6,847 → centièmes = 4 < 5 → on reste à 6,8 (et non 6,9) !",
-      astuce: "Règle du 5 : centièmes ≥ 5 → monte / < 5 → reste. 4 < 5 → 6,8 !",
+        "Pour arrondir au dixième : on regarde le chiffre des centièmes. Si ce chiffre est 5 ou plus on monte. Si moins de 5 on reste.",
+      exemple: "✅ 6,847 : centièmes = 4, moins de 5 donc on garde 6,8",
+      piege: "6,847 : centièmes = 4 donc on reste à 6,8 et non 6,9 !",
+      astuce:
+        "Règle du 5 : centièmes 5 ou plus monte, moins de 5 reste. 4 est moins de 5 donc 6,8 !",
     },
   },
   {
@@ -95,11 +96,11 @@ const questionsBase: Question[] = [
       regle:
         "Pour comparer : aligne les virgules et compare chiffre par chiffre. Ajoute des zéros si nécessaire.",
       exemple:
-        "✅ 0,05 / 0,15 / 0,50 / 0,51 → 5 centièmes < 15 centièmes < 50 centièmes < 51 centièmes",
+        "✅ 0,05 / 0,15 / 0,50 / 0,51 : 5 centièmes, 15 centièmes, 50 centièmes, 51 centièmes",
       piege:
-        "0,5 ≠ 0,05 ! 0,5 = 5 dixièmes = 50 centièmes. C'est bien plus grand que 0,05 !",
+        "0,5 n'est pas égal à 0,05 ! 0,5 = 5 dixièmes = 50 centièmes, bien plus grand que 0,05 !",
       astuce:
-        "Transforme tout en centièmes : 0,5 = 50 centièmes / 0,15 = 15 centièmes → facile à comparer !",
+        "Transforme tout en centièmes : 0,5 = 50 centièmes / 0,15 = 15 centièmes, facile à comparer !",
     },
   },
   {
@@ -110,11 +111,11 @@ const questionsBase: Question[] = [
       regle:
         "Après la virgule : 1er rang = dixièmes / 2ème rang = centièmes / 3ème rang = millièmes.",
       exemple:
-        "✅ 12,074 : 0 = dixièmes / 7 = centièmes / 4 = millièmes → 7 centièmes = 0,07",
+        "✅ 12,074 : 0 = dixièmes / 7 = centièmes / 4 = millièmes donc 7 centièmes = 0,07",
       piege:
         "Le 0 occupe le rang des dixièmes, donc le 7 est bien au rang des centièmes !",
       astuce:
-        "Compte les rangs depuis la virgule : 12, | 0(dixièmes) | 7(centièmes) | 4(millièmes) !",
+        "Compte les rangs depuis la virgule : 0 dixièmes, 7 centièmes, 4 millièmes !",
     },
   },
   {
@@ -124,52 +125,58 @@ const questionsBase: Question[] = [
     fiche: {
       regle:
         "3,7 = 3 unités + 7 dixièmes = 30 dixièmes + 7 dixièmes = 37 dixièmes. Pour trouver le nombre de dixièmes : multiplie par 10.",
-      exemple: "✅ 3,7 × 10 = 37 → il y a 37 dixièmes dans 3,7",
+      exemple: "✅ 3,7 x 10 = 37 donc il y a 37 dixièmes dans 3,7",
       piege:
         "Ne pas répondre 7 ! Les 3 unités comptent aussi : 3 unités = 30 dixièmes.",
-      astuce: "Nombre de dixièmes = nombre × 10. 3,7 × 10 = 37 dixièmes !",
+      astuce: "Nombre de dixièmes = nombre x 10. 3,7 x 10 = 37 dixièmes !",
     },
   },
   {
-    question: "Quel nombre décimal correspond à « 5 + 3/10 + 4/100 » ?",
+    question: "Quel nombre décimal correspond à 5 + 3/10 + 4/100 ?",
     options: ["5,34", "5,043", "5,304", "53,4"],
     answer: "5,34",
     fiche: {
       regle:
-        "3/10 = 3 dixièmes = 0,3 / 4/100 = 4 centièmes = 0,04. Donc 5 + 0,3 + 0,04 = 5,34.",
+        "3/10 = 3 dixièmes = 0,3 et 4/100 = 4 centièmes = 0,04. Donc 5 + 0,3 + 0,04 = 5,34.",
       exemple: "✅ 5 + 3/10 + 4/100 = 5 + 0,3 + 0,04 = 5,34",
       piege:
         "Ne pas écrire 5,304 ! Le 3 est au rang des dixièmes et le 4 au rang des centièmes.",
       astuce:
-        "3/10 → dixièmes (1er rang) / 4/100 → centièmes (2ème rang) → 5,34 !",
+        "3/10 donne le 1er chiffre après la virgule, 4/100 donne le 2ème donc 5,34 !",
     },
   },
   {
     question: "Lequel de ces nombres est égal à 2,50 ?",
-    options: ["2,5", "2,05", "25,0", "0,25"],
-    answer: "2,5",
+    options: ["2,500", "2,05", "25,0", "0,25"],
+    answer: "2,500",
     fiche: {
       regle:
-        "Un zéro à la fin d'un nombre décimal ne change pas sa valeur : 2,50 = 2,5.",
-      exemple: "✅ 2,50 = 2,5 (le zéro final est inutile) / 2,05 ≠ 2,50 !",
+        "Un zéro à la fin d'un nombre décimal ne change pas sa valeur : 2,50 = 2,500 = 2,5.",
+      exemple:
+        "✅ 2,50 = 2,500 (les zéros finaux sont inutiles) / 2,05 est différent de 2,50 !",
       piege:
-        "2,05 ≠ 2,50 ! 2,05 a 0 dixième et 5 centièmes. 2,50 a 5 dixièmes et 0 centième.",
+        "2,05 est différent de 2,50 ! 2,05 a 0 dixième et 5 centièmes. 2,50 a 5 dixièmes et 0 centième.",
       astuce:
-        "Les zéros à la fin d'un décimal ne changent pas la valeur : 2,50 = 2,500 = 2,5 !",
+        "Les zéros à la fin d'un décimal ne changent pas la valeur : 2,50 = 2,500 !",
     },
   },
   {
     question: "Quelle opération donne 0,1 ?",
-    options: ["1 ÷ 100", "1 ÷ 10", "10 ÷ 1", "1 ÷ 1000"],
-    answer: "1 ÷ 10",
+    options: [
+      "1 divise par 100",
+      "1 divise par 10",
+      "10 divise par 1",
+      "1 divise par 1000",
+    ],
+    answer: "1 divise par 10",
     fiche: {
       regle:
         "0,1 = 1 dixième = 1/10. Diviser par 10 déplace la virgule d'un rang vers la gauche.",
-      exemple: "✅ 1 ÷ 10 = 0,1 / 1 ÷ 100 = 0,01 / 1 ÷ 1000 = 0,001",
+      exemple: "✅ 1 / 10 = 0,1 et 1 / 100 = 0,01 et 1 / 1000 = 0,001",
       piege:
-        "Ne pas confondre ÷10, ÷100 et ÷1000 qui donnent des résultats très différents !",
+        "Ne pas confondre diviser par 10, par 100 et par 1000 qui donnent des résultats très différents !",
       astuce:
-        "÷10 → 0,1 / ÷100 → 0,01 / ÷1000 → 0,001. Chaque division par 10 ajoute un zéro !",
+        "Diviser par 10 donne 0,1 / par 100 donne 0,01 / par 1000 donne 0,001 !",
     },
   },
 ];
@@ -265,7 +272,7 @@ export default function NombresDecimauxPage() {
   const est6emeFaute = fautesRef.current === 6;
   const boutonBloque = est6emeFaute && !ficheObligatoireLue;
 
-  if (etape === "intro")
+  if (etape === "intro") {
     return (
       <div className="cours-page">
         <div className="cours-header">
@@ -380,35 +387,36 @@ export default function NombresDecimauxPage() {
             <div className="lecon-point">
               <div className="lecon-point-titre">🔢 Les rangs décimaux</div>
               <div className="lecon-point-texte">
-                Après la virgule : <strong>dixièmes</strong> (÷10),{" "}
-                <strong>centièmes</strong> (÷100), <strong>millièmes</strong>{" "}
-                (÷1000)
+                Après la virgule : <strong>dixièmes</strong> (1er rang),{" "}
+                <strong>centièmes</strong> (2ème rang),{" "}
+                <strong>millièmes</strong> (3ème rang).
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 45,382 → 3
+                <span className="exemple-label">Exemple :</span> 45,382 : 3
                 dixièmes / 8 centièmes / 2 millièmes
               </div>
             </div>
             <div className="lecon-point">
               <div className="lecon-point-titre">📊 Comparer des décimaux</div>
               <div className="lecon-point-texte">
-                Aligne les virgules et ajoute des zéros si nécessaire, puis
+                Aligne les virgules, ajoute des zéros si nécessaire, puis
                 compare chiffre par chiffre.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 3,9 vs 3,19
-                &#8594; 3,90 &gt; 3,19 car 9 dixièmes &gt; 1 dixième
+                <span className="exemple-label">Exemple :</span> 3,9 vs 3,19 :
+                3,90 est plus grand que 3,19 car 9 dixièmes est plus grand que 1
+                dixième
               </div>
             </div>
             <div className="lecon-point">
               <div className="lecon-point-titre">🔄 Arrondir</div>
               <div className="lecon-point-texte">
-                Même règle qu&apos;avec les entiers : si le chiffre suivant ≥ 5
-                &#8594; monte / &lt; 5 &#8594; reste.
+                On regarde le chiffre juste après la position voulue. 5 ou plus
+                on monte, moins de 5 on reste.
               </div>
               <div className="lecon-point-exemple">
                 <span className="exemple-label">Exemple :</span> 6,847 au
-                dixième &#8594; centièmes = 4 &lt; 5 &#8594; 6,8
+                dixième : centièmes = 4, moins de 5 donc 6,8
               </div>
             </div>
           </div>
@@ -418,6 +426,7 @@ export default function NombresDecimauxPage() {
         </div>
       </div>
     );
+  }
 
   if (etape === "quiz" && questions.length > 0) {
     const q = questions[index];
@@ -449,16 +458,16 @@ export default function NombresDecimauxPage() {
           <div className="qcm-question">{q.question}</div>
           <div className="qcm-options">
             {q.options.map((option) => {
-              let cn = "qcm-option";
+              let className = "qcm-option";
               if (reponseChoisie) {
-                if (option === q.answer) cn += " correct";
-                else if (option === reponseChoisie) cn += " incorrect";
-                else cn += " disabled";
+                if (option === q.answer) className += " correct";
+                else if (option === reponseChoisie) className += " incorrect";
+                else className += " disabled";
               }
               return (
                 <button
                   key={option}
-                  className={cn}
+                  className={className}
                   onClick={() => choisirReponse(option)}
                 >
                   {option}
@@ -509,7 +518,7 @@ export default function NombresDecimauxPage() {
                   <button
                     onClick={() => setFicheOuverte(true)}
                     style={{
-                      marginTop: "10px",
+                      marginTop: "8px",
                       background: "rgba(255,209,102,0.2)",
                       border: "1px solid rgba(255,209,102,0.4)",
                       borderRadius: "8px",
@@ -886,5 +895,6 @@ export default function NombresDecimauxPage() {
       </div>
     );
   }
+
   return null;
 }
