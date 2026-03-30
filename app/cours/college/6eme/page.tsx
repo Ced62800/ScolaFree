@@ -82,7 +82,7 @@ export default function SixiemePage() {
       </div>
 
       <div className="cours-hero">
-        <div className="cours-hero-icon">🏫</div>
+        <div className="cours-hero-icon">🎒</div>
         <h1 className="cours-hero-title">6ème</h1>
         <p className="cours-hero-desc">
           {estConnecte

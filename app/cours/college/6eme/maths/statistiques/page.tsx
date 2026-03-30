@@ -7,7 +7,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 const CLASSE = "6eme";
 const MATIERE = "maths";
-const THEME = "proportionnalite";
+const THEME = "statistiques";
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -27,160 +27,160 @@ type Question = {
 
 const questionsBase: Question[] = [
   {
-    question: "Si 3 stylos coûtent 6 euros, combien coûtent 9 stylos ?",
-    options: ["12 euros", "15 euros", "18 euros", "21 euros"],
-    answer: "18 euros",
+    question: "Quelle est la moyenne de ces notes : 12, 15, 8, 14, 11 ?",
+    options: ["11", "12", "13", "10"],
+    answer: "12",
     fiche: {
       regle:
-        "Dans un tableau de proportionnalité, on multiplie ou divise par le même nombre. Ici on multiplie par 3 : 3 stylos x3 = 9 stylos, donc 6 euros x3 = 18 euros.",
-      exemple: "✅ 3 stylos → 6 euros. 9 stylos = 3 x 3 donc 6 x 3 = 18 euros.",
+        "Moyenne = somme de toutes les valeurs divisée par le nombre de valeurs.",
+      exemple: "✅ (12+15+8+14+11) / 5 = 60 / 5 = 12",
       piege:
-        "Ne pas additionner ! Ce n'est pas 6 + 6 + 6. On cherche le coefficient multiplicateur.",
+        "Ne pas oublier de diviser par le nombre de valeurs ! Ici on divise par 5 et non par autre chose.",
       astuce:
-        "Trouve combien de fois tu multiplies la quantité, puis multiplie le prix par le meme nombre !",
+        "Moyenne = total / nombre. Additionne tout puis divise par combien il y a de valeurs. 60/5 = 12 !",
     },
   },
   {
     question:
-      "Un robinet remplit 4 litres en 2 minutes. Combien de litres en 10 minutes ?",
-    options: ["16 litres", "20 litres", "24 litres", "12 litres"],
-    answer: "20 litres",
+      "Dans une classe, les températures relevées sont : 18, 20, 17, 22, 18 degrés. Quelle est l'étendue ?",
+    options: ["3", "4", "5", "22"],
+    answer: "5",
     fiche: {
       regle:
-        "La quantite d'eau est proportionnelle au temps. On trouve le débit : 4 litres en 2 min = 2 litres par minute. En 10 minutes : 2 x 10 = 20 litres.",
+        "Etendue = valeur maximale - valeur minimale. L'étendue mesure l'ecart entre la plus grande et la plus petite valeur.",
+      exemple: "✅ max = 22, min = 17. Etendue = 22 - 17 = 5",
+      piege:
+        "L'étendue n'est pas la moyenne ! C'est juste max - min. Ici 22 - 17 = 5.",
+      astuce:
+        "Etendue = max - min. Trouve le plus grand et le plus petit, puis soustrait. 22 - 17 = 5 !",
+    },
+  },
+  {
+    question:
+      "Voici des notes : 10, 12, 15, 12, 8, 15, 12. Quel est le mode (valeur la plus fréquente) ?",
+    options: ["10", "12", "15", "8"],
+    answer: "12",
+    fiche: {
+      regle:
+        "Le mode est la valeur qui apparait le plus souvent dans une série de données.",
       exemple:
-        "✅ 4 litres en 2 min → 2 litres/min. En 10 min : 2 x 10 = 20 litres.",
+        "✅ 10 apparait 1 fois, 12 apparait 3 fois, 15 apparait 2 fois, 8 apparait 1 fois. Mode = 12.",
       piege:
-        "Attention : 10 minutes n'est pas 5 fois 2 minutes ! 10 divise par 2 = 5, donc 4 x 5 = 20.",
+        "Le mode n'est pas la valeur du milieu (médiane) ni la moyenne. C'est la valeur la PLUS fréquente.",
       astuce:
-        "Trouve la valeur unitaire (par 1) puis multiplie. 4/2 = 2 litres/min, puis 2 x 10 = 20.",
+        "Compte combien de fois chaque valeur apparait. La plus fréquente = le mode. Ici 12 apparait 3 fois !",
     },
   },
   {
     question:
-      "Dans un tableau de proportionnalité, si x = 5 correspond à y = 15, quelle est la valeur de y quand x = 8 ?",
-    options: ["20", "24", "18", "40"],
-    answer: "24",
+      "5 élèves ont ces tailles en cm : 155, 160, 162, 158, 165. Quelle est leur taille moyenne ?",
+    options: ["158 cm", "160 cm", "162 cm", "165 cm"],
+    answer: "160 cm",
     fiche: {
-      regle:
-        "Le coefficient de proportionnalité k = y divise par x = 15 divise par 5 = 3. Pour x = 8 : y = 8 x 3 = 24.",
-      exemple: "✅ k = 15/5 = 3. Pour x = 8 : y = 8 x 3 = 24.",
+      regle: "Moyenne = somme / nombre de valeurs = (155+160+162+158+165) / 5.",
+      exemple: "✅ 155+160+162+158+165 = 800. Moyenne = 800 / 5 = 160 cm.",
       piege:
-        "Ne pas additionner les différences ! La relation est y = k x x, pas y = x + quelque chose.",
+        "Bien additionner TOUTES les valeurs avant de diviser. 155+160+162+158+165 = 800.",
       astuce:
-        "Trouve k = y/x = 15/5 = 3. Ensuite pour tout x, y = k x x. Ici 8 x 3 = 24.",
+        "Additionne : 155+165=320, 160+160=320, +162 = 802... Attends, calcule methodiquement : 800/5 = 160 cm !",
     },
   },
   {
     question:
-      "Une voiture parcourt 120 km en 2 heures. Quelle distance en 5 heures ?",
-    options: ["240 km", "300 km", "360 km", "180 km"],
-    answer: "300 km",
+      "Un diagramme en barres montre les sports préférés de 30 élèves : foot 12, basket 8, natation 10. Combien d'élèves préfèrent le foot ou la natation ?",
+    options: ["18", "20", "22", "30"],
+    answer: "22",
     fiche: {
       regle:
-        "Distance et temps sont proportionnels. Vitesse = 120 divise par 2 = 60 km/h. En 5 heures : 60 x 5 = 300 km.",
-      exemple: "✅ 120 km en 2h → 60 km/h. En 5h : 60 x 5 = 300 km.",
-      piege:
-        "5 heures n'est pas 2,5 fois 2 heures, c'est bien 5/2 = 2,5. Donc 120 x 2,5 = 300.",
-      astuce:
-        "Vitesse = distance/temps = 120/2 = 60 km/h. Puis distance = vitesse x temps = 60 x 5 = 300 km.",
-    },
-  },
-  {
-    question:
-      "Ce tableau est-il un tableau de proportionnalité ? x : 2, 4, 6 / y : 6, 12, 18",
-    options: ["Oui, k = 3", "Oui, k = 2", "Non", "Impossible à dire"],
-    answer: "Oui, k = 3",
-    fiche: {
-      regle:
-        "Un tableau est proportionnel si le rapport y/x est constant pour toutes les colonnes.",
+        "Pour compter les élèves preferant l'un ou l'autre sport, on additionne les deux fréquences : 12 + 10 = 22.",
       exemple:
-        "✅ 6/2 = 3 et 12/4 = 3 et 18/6 = 3. Le rapport est toujours 3 donc c'est bien proportionnel avec k = 3.",
-      piege: "Vérifier TOUTES les colonnes, pas seulement la première !",
-      astuce:
-        "Calcule y/x pour chaque colonne. Si c'est toujours le meme nombre, c'est proportionnel !",
-    },
-  },
-  {
-    question: "Si 5 kg de pommes coûtent 8 euros, combien coûtent 15 kg ?",
-    options: ["20 euros", "24 euros", "16 euros", "30 euros"],
-    answer: "24 euros",
-    fiche: {
-      regle:
-        "15 kg = 3 x 5 kg, donc le prix = 3 x 8 = 24 euros. Ou : prix au kg = 8/5 = 1,6 euro/kg. 15 x 1,6 = 24 euros.",
-      exemple: "✅ 5 kg → 8 euros. 15 kg = 3 x 5 donc 8 x 3 = 24 euros.",
+        "✅ Foot : 12 élèves. Natation : 10 élèves. Total = 12 + 10 = 22 élèves.",
       piege:
-        "Ne pas faire 8 + 15 ou 8 x 15. On multiplie le prix par le coefficient (3 ici).",
+        "Ne pas inclure le basket ! La question dit foot OU natation, pas les trois sports.",
       astuce:
-        "15 = 3 x 5 donc multiplie le prix par 3 : 8 x 3 = 24 euros. Simple !",
+        "Lis bien la question. Foot OU natation = 12 + 10 = 22. Pas besoin d'inclure le basket !",
     },
   },
   {
     question:
-      "Un élève lit 20 pages en 30 minutes. Combien de pages en 1 heure et demie ?",
-    options: ["40 pages", "50 pages", "60 pages", "45 pages"],
-    answer: "60 pages",
+      "La moyenne de 4 nombres est 15. Si on ajoute un 5ème nombre qui vaut 20, quelle est la nouvelle moyenne ?",
+    options: ["15", "16", "17", "18"],
+    answer: "16",
     fiche: {
       regle:
-        "1h30 = 90 minutes. 90/30 = 3. Donc il lit 3 fois plus : 20 x 3 = 60 pages.",
-      exemple:
-        "✅ 20 pages en 30 min. 90 min = 3 x 30 min donc 20 x 3 = 60 pages.",
+        "Somme des 4 premiers = 4 x 15 = 60. Avec le 5ème : 60 + 20 = 80. Nouvelle moyenne = 80 / 5 = 16.",
+      exemple: "✅ 4 x 15 = 60. 60 + 20 = 80. 80 / 5 = 16.",
       piege:
-        "1h30 = 90 minutes et non 130 minutes. Convertis bien les heures en minutes !",
+        "Ne pas faire (15+20)/2 = 17,5 ! Il faut retrouver la somme initiale puis recalculer la moyenne.",
       astuce:
-        "Convertis tout en minutes. 1h30 = 90 min. 90/30 = 3 fois plus. 20 x 3 = 60 pages.",
+        "Somme = moyenne x nombre. 4 x 15 = 60. Puis ajoute le nouveau : 60+20=80. Divise : 80/5 = 16 !",
     },
   },
   {
     question:
-      "Le prix de 6 places de cinéma est 54 euros. Quel est le prix de 4 places ?",
-    options: ["32 euros", "36 euros", "40 euros", "42 euros"],
-    answer: "36 euros",
+      "Dans une série ordonnée : 8, 10, 12, 15, 20. Quelle est la médiane ?",
+    options: ["10", "12", "13", "15"],
+    answer: "12",
     fiche: {
       regle:
-        "Prix d'une place = 54 divise par 6 = 9 euros. Prix de 4 places = 4 x 9 = 36 euros.",
+        "La médiane est la valeur du milieu d'une série ordonnée. Avec 5 valeurs, la médiane est la 3ème valeur.",
       exemple:
-        "✅ 6 places → 54 euros. 1 place = 54/6 = 9 euros. 4 places = 4 x 9 = 36 euros.",
+        "✅ 8, 10, 12, 15, 20 → la valeur du milieu (3ème sur 5) est 12.",
       piege:
-        "Ne pas faire 54 divise par 6 x 4 sans ordre ! Calcule d'abord le prix unitaire.",
+        "La médiane n'est pas la moyenne ! C'est la valeur centrale quand les données sont classées dans l'ordre.",
       astuce:
-        "Toujours trouver la valeur pour 1 d'abord : 54/6 = 9 euros/place. Puis 4 x 9 = 36 euros.",
+        "Pour trouver la médiane : range dans l'ordre et prends la valeur du milieu. 5 valeurs → 3ème valeur = 12 !",
     },
   },
   {
     question:
-      "Dans une recette pour 4 personnes, on utilise 300g de farine. Combien pour 10 personnes ?",
-    options: ["600g", "700g", "750g", "800g"],
-    answer: "750g",
+      "Un sac contient 3 billes rouges et 7 billes bleues. On tire une bille au hasard. Quelle est la probabilité d'obtenir une bille rouge ?",
+    options: ["3/7", "7/10", "3/10", "1/3"],
+    answer: "3/10",
     fiche: {
       regle:
-        "Pour 1 personne : 300 divise par 4 = 75g. Pour 10 personnes : 75 x 10 = 750g.",
+        "Probabilité = nombre de cas favorables / nombre de cas possibles. Total = 3+7 = 10 billes.",
       exemple:
-        "✅ 4 personnes → 300g. 1 personne = 300/4 = 75g. 10 personnes = 75 x 10 = 750g.",
+        "✅ Cas favorables (rouge) = 3. Cas possibles (total) = 10. P(rouge) = 3/10.",
       piege:
-        "Ne pas faire 300 x 10 ! Il faut d'abord diviser par 4 (pour 1 personne) puis multiplier par 10.",
+        "Ne pas mettre 3/7 ! Le dénominateur est le nombre TOTAL de billes = 10, pas uniquement les bleues.",
       astuce:
-        "Valeur unitaire = 300/4 = 75g par personne. Puis 75 x 10 = 750g. Divise puis multiplie !",
+        "Probabilité = ce qu'on veut / total. Rouge = 3, total = 10 billes. P = 3/10 !",
     },
   },
   {
     question:
-      "Si y est proportionnel à x avec k = 4, quelle est la valeur de x quand y = 28 ?",
-    options: ["6", "7", "8", "112"],
-    answer: "7",
+      "Notes d'un élève : 14, 18, 10, 16, 12. Quelle note manque-t-il pour avoir une moyenne de 14 ?",
+    options: ["14", "15", "16", "12"],
+    answer: "14",
     fiche: {
-      regle: "y = k x x donc x = y divise par k. Ici x = 28 divise par 4 = 7.",
-      exemple:
-        "✅ y = 4 x x. Si y = 28 : x = 28/4 = 7. Vérification : 4 x 7 = 28.",
+      regle:
+        "Pour avoir une moyenne de 14 avec 6 notes : somme totale = 14 x 6 = 84. Somme actuelle = 14+18+10+16+12 = 70. Note manquante = 84 - 70 = 14.",
+      exemple: "✅ 14 x 6 = 84. 14+18+10+16+12 = 70. Note = 84 - 70 = 14.",
       piege:
-        "Ne pas multiplier ! x = y/k et non x = y x k. Ici 28 x 4 = 112 est FAUX.",
+        "Ne pas faire 14 - moyenne actuelle. Il faut calculer la somme visée puis soustraire la somme actuelle.",
       astuce:
-        "y = k x x donc x = y/k. Divise y par k pour trouver x. 28/4 = 7.",
+        "Somme visee = moyenne x nombre de notes = 14 x 6 = 84. Somme actuelle = 70. Note = 84 - 70 = 14 !",
+    },
+  },
+  {
+    question:
+      "Une série de données a pour étendue 12 et valeur minimale 5. Quelle est la valeur maximale ?",
+    options: ["7", "12", "17", "60"],
+    answer: "17",
+    fiche: {
+      regle: "Etendue = max - min donc max = etendue + min = 12 + 5 = 17.",
+      exemple:
+        "✅ max = etendue + min = 12 + 5 = 17. Vérification : 17 - 5 = 12.",
+      piege:
+        "Ne pas faire etendue x min ou etendue - min ! max = etendue + min.",
+      astuce:
+        "Etendue = max - min donc max = min + etendue = 5 + 12 = 17. Toujours vérifier : 17 - 5 = 12 !",
     },
   },
 ];
 
-export default function ProportionnalitePage() {
+export default function StatistiquesPage() {
   const router = useRouter();
   const { estConnecte, maxQuestions } = useContext(DecouverteContext);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -281,7 +281,7 @@ export default function ProportionnalitePage() {
         </div>
         <div className="lecon-wrapper">
           <div className="lecon-badge">🔢 Maths — 6ème</div>
-          <h1 className="lecon-titre">La proportionnalité</h1>
+          <h1 className="lecon-titre">Les statistiques</h1>
           {!estConnecte && (
             <div
               style={{
@@ -306,9 +306,9 @@ export default function ProportionnalitePage() {
             </div>
           )}
           <div className="lecon-intro">
-            Deux grandeurs sont <strong>proportionnelles</strong> quand leur
-            rapport est constant. On utilise un tableau ou la règle de trois
-            pour résoudre les problèmes.
+            Les <strong>statistiques</strong> permettent d'analyser des données
+            : calculer une moyenne, trouver la valeur la plus fréquente,
+            représenter des informations sur un graphique.
           </div>
           {estConnecte && (bestScore || lastScore) && (
             <div
@@ -385,40 +385,36 @@ export default function ProportionnalitePage() {
           )}
           <div className="lecon-points">
             <div className="lecon-point">
-              <div className="lecon-point-titre">
-                📊 Le coefficient de proportionnalité
-              </div>
+              <div className="lecon-point-titre">📊 La moyenne</div>
               <div className="lecon-point-texte">
-                k = y divise par x. Pour trouver y : y = k x x. Pour trouver x :
-                x = y divise par k.
+                Moyenne = somme de toutes les valeurs divise par le nombre de
+                valeurs.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 3 stylos = 6
-                euros → k = 6/3 = 2. Pour 9 stylos : 9 x 2 = 18 euros.
+                <span className="exemple-label">Exemple :</span> Notes 12, 15,
+                8, 14, 11 → (12+15+8+14+11)/5 = 60/5 = 12
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">🔢 La valeur unitaire</div>
+              <div className="lecon-point-titre">📈 Mode et médiane</div>
               <div className="lecon-point-texte">
-                Pour résoudre : trouve d'abord la valeur pour 1, puis multiplie
-                par la quantité voulue.
+                Mode = valeur la plus fréquente. Médiane = valeur du milieu
+                d'une série ordonnée.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 6 places = 54
-                euros → 1 place = 54/6 = 9 euros → 4 places = 4 x 9 = 36 euros.
+                <span className="exemple-label">Exemple :</span> 8, 10, 12, 15,
+                20 → médiane = 12 (valeur centrale)
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">
-                ✅ Vérifier la proportionnalité
-              </div>
+              <div className="lecon-point-titre">📉 L'étendue</div>
               <div className="lecon-point-texte">
-                Un tableau est proportionnel si le rapport y/x est identique
-                pour toutes les colonnes.
+                Etendue = valeur maximale - valeur minimale. Mesure la
+                dispersion des données.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> x: 2, 4, 6 et
-                y: 6, 12, 18 → 6/2 = 12/4 = 18/6 = 3, c'est proportionnel !
+                <span className="exemple-label">Exemple :</span> Températures
+                17, 18, 20, 22 → étendue = 22 - 17 = 5
               </div>
             </div>
           </div>

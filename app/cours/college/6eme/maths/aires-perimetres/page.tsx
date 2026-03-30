@@ -7,7 +7,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 const CLASSE = "6eme";
 const MATIERE = "maths";
-const THEME = "proportionnalite";
+const THEME = "aires-perimetres";
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -27,160 +27,151 @@ type Question = {
 
 const questionsBase: Question[] = [
   {
-    question: "Si 3 stylos coûtent 6 euros, combien coûtent 9 stylos ?",
-    options: ["12 euros", "15 euros", "18 euros", "21 euros"],
-    answer: "18 euros",
+    question:
+      "Quel est le périmètre d'un rectangle de longueur 8 cm et de largeur 5 cm ?",
+    options: ["26 cm", "40 cm", "13 cm", "20 cm"],
+    answer: "26 cm",
     fiche: {
       regle:
-        "Dans un tableau de proportionnalité, on multiplie ou divise par le même nombre. Ici on multiplie par 3 : 3 stylos x3 = 9 stylos, donc 6 euros x3 = 18 euros.",
-      exemple: "✅ 3 stylos → 6 euros. 9 stylos = 3 x 3 donc 6 x 3 = 18 euros.",
+        "Périmètre d'un rectangle = 2 x (longueur + largeur). On additionne les 4 côtés.",
+      exemple: "✅ P = 2 x (8 + 5) = 2 x 13 = 26 cm",
       piege:
-        "Ne pas additionner ! Ce n'est pas 6 + 6 + 6. On cherche le coefficient multiplicateur.",
+        "Ne pas faire 8 + 5 = 13 cm ! Le périmètre c'est le tour complet : 8+5+8+5 = 26 cm.",
       astuce:
-        "Trouve combien de fois tu multiplies la quantité, puis multiplie le prix par le meme nombre !",
+        "Rectangle : P = 2 x (L + l). Carré : P = 4 x côté. Retiens ces deux formules !",
     },
   },
   {
     question:
-      "Un robinet remplit 4 litres en 2 minutes. Combien de litres en 10 minutes ?",
-    options: ["16 litres", "20 litres", "24 litres", "12 litres"],
-    answer: "20 litres",
+      "Quelle est l'aire d'un rectangle de longueur 7 cm et de largeur 4 cm ?",
+    options: ["22 cm2", "28 cm2", "11 cm2", "14 cm2"],
+    answer: "28 cm2",
     fiche: {
       regle:
-        "La quantite d'eau est proportionnelle au temps. On trouve le débit : 4 litres en 2 min = 2 litres par minute. En 10 minutes : 2 x 10 = 20 litres.",
+        "Aire d'un rectangle = longueur x largeur. L'aire se mesure en cm2 (centimètres carrés).",
+      exemple: "✅ A = 7 x 4 = 28 cm2",
+      piege:
+        "Le périmètre se mesure en cm (longueur) et l'aire en cm2 (surface). Ne pas confondre !",
+      astuce:
+        "Rectangle : A = L x l. C'est comme compter le nombre de petits carrés d'1 cm de côté qui rentrent dedans.",
+    },
+  },
+  {
+    question: "Quel est le périmètre d'un carré de côté 6 cm ?",
+    options: ["12 cm", "18 cm", "24 cm", "36 cm"],
+    answer: "24 cm",
+    fiche: {
+      regle: "Périmètre d'un carré = 4 x côté. Un carré a 4 côtés égaux.",
+      exemple: "✅ P = 4 x 6 = 24 cm",
+      piege:
+        "Ne pas faire 6 x 6 = 36 (c'est l'aire !). Le périmètre c'est 4 x côté = 24 cm.",
+      astuce:
+        "Carré : P = 4 x côté et A = côté x côté. Ne pas confondre les deux formules !",
+    },
+  },
+  {
+    question:
+      "Quelle est l'aire d'un triangle de base 10 cm et de hauteur 6 cm ?",
+    options: ["60 cm2", "30 cm2", "16 cm2", "32 cm2"],
+    answer: "30 cm2",
+    fiche: {
+      regle: "Aire d'un triangle = (base x hauteur) divise par 2.",
+      exemple: "✅ A = (10 x 6) / 2 = 60 / 2 = 30 cm2",
+      piege:
+        "Ne pas oublier de diviser par 2 ! Un triangle = la moitié d'un rectangle de mêmes dimensions.",
+      astuce:
+        "Triangle : A = (b x h) / 2. Imagine le rectangle de même base et hauteur, le triangle en est la moitié !",
+    },
+  },
+  {
+    question: "Le périmètre d'un carré est 36 cm. Quel est son côté ?",
+    options: ["6 cm", "9 cm", "12 cm", "18 cm"],
+    answer: "9 cm",
+    fiche: {
+      regle: "P = 4 x côté donc côté = P divise par 4. 36 divise par 4 = 9 cm.",
+      exemple: "✅ côté = 36 / 4 = 9 cm. Vérification : 4 x 9 = 36 cm.",
+      piege:
+        "Ne pas diviser par 2 ! Un carré a 4 côtés, donc on divise le périmètre par 4.",
+      astuce:
+        "côté = périmètre / 4. Si P = 36, côté = 36/4 = 9 cm. Toujours vérifier : 4 x 9 = 36.",
+    },
+  },
+  {
+    question: "Quelle est l'aire d'un carré de côté 5 cm ?",
+    options: ["10 cm2", "20 cm2", "25 cm2", "15 cm2"],
+    answer: "25 cm2",
+    fiche: {
+      regle: "Aire d'un carré = côté x côté = côté au carré.",
+      exemple: "✅ A = 5 x 5 = 25 cm2",
+      piege:
+        "Ne pas faire 4 x 5 = 20 (c'est le périmètre !). L'aire c'est côté x côté = 25 cm2.",
+      astuce:
+        "Carré : A = côté x côté. Périmètre = 4 x côté. Ici A = 5 x 5 = 25 cm2.",
+    },
+  },
+  {
+    question:
+      "Quelle est la circonférence d'un cercle de rayon 7 cm ? (prendre pi = 3,14)",
+    options: ["21,98 cm", "43,96 cm", "153,86 cm", "14 cm"],
+    answer: "43,96 cm",
+    fiche: {
+      regle:
+        "Circonférence (périmètre du cercle) = 2 x pi x rayon = pi x diamètre. Avec pi = 3,14.",
+      exemple: "✅ C = 2 x 3,14 x 7 = 6,28 x 7 = 43,96 cm",
+      piege:
+        "Ne pas confondre rayon et diamètre ! Diamètre = 2 x rayon. Ici rayon = 7 donc diamètre = 14.",
+      astuce:
+        "Circonférence = 2 x pi x r = pi x d. Retiens : C = 2pir ou C = pid !",
+    },
+  },
+  {
+    question:
+      "Quelle est l'aire d'un cercle de rayon 5 cm ? (prendre pi = 3,14)",
+    options: ["15,7 cm2", "31,4 cm2", "78,5 cm2", "157 cm2"],
+    answer: "78,5 cm2",
+    fiche: {
+      regle: "Aire d'un disque = pi x rayon x rayon = pi x r2. Avec pi = 3,14.",
+      exemple: "✅ A = 3,14 x 5 x 5 = 3,14 x 25 = 78,5 cm2",
+      piege:
+        "Ne pas confondre avec la circonférence ! L'aire du disque = pi x r2 et non 2 x pi x r.",
+      astuce:
+        "Aire du disque = pi x r x r. Circonférence = 2 x pi x r. Retiens les deux formules !",
+    },
+  },
+  {
+    question:
+      "Un rectangle a un périmètre de 30 cm et une longueur de 10 cm. Quelle est sa largeur ?",
+    options: ["3 cm", "5 cm", "8 cm", "20 cm"],
+    answer: "5 cm",
+    fiche: {
+      regle:
+        "P = 2 x (L + l) donc L + l = P/2 = 30/2 = 15. Largeur = 15 - longueur = 15 - 10 = 5 cm.",
       exemple:
-        "✅ 4 litres en 2 min → 2 litres/min. En 10 min : 2 x 10 = 20 litres.",
+        "✅ L + l = 30/2 = 15. l = 15 - 10 = 5 cm. Vérif : 2 x (10+5) = 30.",
       piege:
-        "Attention : 10 minutes n'est pas 5 fois 2 minutes ! 10 divise par 2 = 5, donc 4 x 5 = 20.",
+        "Ne pas faire P divise par 4 (c'est pour le carré). Pour le rectangle : L + l = P/2.",
       astuce:
-        "Trouve la valeur unitaire (par 1) puis multiplie. 4/2 = 2 litres/min, puis 2 x 10 = 20.",
+        "P = 2(L+l) donc L+l = P/2. Trouve l : l = P/2 - L = 15 - 10 = 5 cm.",
     },
   },
   {
     question:
-      "Dans un tableau de proportionnalité, si x = 5 correspond à y = 15, quelle est la valeur de y quand x = 8 ?",
-    options: ["20", "24", "18", "40"],
-    answer: "24",
+      "Quelle est l'aire d'un triangle rectangle de côtés 3 cm et 4 cm ?",
+    options: ["12 cm2", "6 cm2", "7 cm2", "24 cm2"],
+    answer: "6 cm2",
     fiche: {
       regle:
-        "Le coefficient de proportionnalité k = y divise par x = 15 divise par 5 = 3. Pour x = 8 : y = 8 x 3 = 24.",
-      exemple: "✅ k = 15/5 = 3. Pour x = 8 : y = 8 x 3 = 24.",
+        "Aire d'un triangle = (base x hauteur) / 2. Dans un triangle rectangle, les deux côtés de l'angle droit sont la base et la hauteur.",
+      exemple: "✅ A = (3 x 4) / 2 = 12 / 2 = 6 cm2",
       piege:
-        "Ne pas additionner les différences ! La relation est y = k x x, pas y = x + quelque chose.",
+        "Ne pas oublier de diviser par 2 ! Et ne pas confondre avec l'hypoténuse (le grand côté).",
       astuce:
-        "Trouve k = y/x = 15/5 = 3. Ensuite pour tout x, y = k x x. Ici 8 x 3 = 24.",
-    },
-  },
-  {
-    question:
-      "Une voiture parcourt 120 km en 2 heures. Quelle distance en 5 heures ?",
-    options: ["240 km", "300 km", "360 km", "180 km"],
-    answer: "300 km",
-    fiche: {
-      regle:
-        "Distance et temps sont proportionnels. Vitesse = 120 divise par 2 = 60 km/h. En 5 heures : 60 x 5 = 300 km.",
-      exemple: "✅ 120 km en 2h → 60 km/h. En 5h : 60 x 5 = 300 km.",
-      piege:
-        "5 heures n'est pas 2,5 fois 2 heures, c'est bien 5/2 = 2,5. Donc 120 x 2,5 = 300.",
-      astuce:
-        "Vitesse = distance/temps = 120/2 = 60 km/h. Puis distance = vitesse x temps = 60 x 5 = 300 km.",
-    },
-  },
-  {
-    question:
-      "Ce tableau est-il un tableau de proportionnalité ? x : 2, 4, 6 / y : 6, 12, 18",
-    options: ["Oui, k = 3", "Oui, k = 2", "Non", "Impossible à dire"],
-    answer: "Oui, k = 3",
-    fiche: {
-      regle:
-        "Un tableau est proportionnel si le rapport y/x est constant pour toutes les colonnes.",
-      exemple:
-        "✅ 6/2 = 3 et 12/4 = 3 et 18/6 = 3. Le rapport est toujours 3 donc c'est bien proportionnel avec k = 3.",
-      piege: "Vérifier TOUTES les colonnes, pas seulement la première !",
-      astuce:
-        "Calcule y/x pour chaque colonne. Si c'est toujours le meme nombre, c'est proportionnel !",
-    },
-  },
-  {
-    question: "Si 5 kg de pommes coûtent 8 euros, combien coûtent 15 kg ?",
-    options: ["20 euros", "24 euros", "16 euros", "30 euros"],
-    answer: "24 euros",
-    fiche: {
-      regle:
-        "15 kg = 3 x 5 kg, donc le prix = 3 x 8 = 24 euros. Ou : prix au kg = 8/5 = 1,6 euro/kg. 15 x 1,6 = 24 euros.",
-      exemple: "✅ 5 kg → 8 euros. 15 kg = 3 x 5 donc 8 x 3 = 24 euros.",
-      piege:
-        "Ne pas faire 8 + 15 ou 8 x 15. On multiplie le prix par le coefficient (3 ici).",
-      astuce:
-        "15 = 3 x 5 donc multiplie le prix par 3 : 8 x 3 = 24 euros. Simple !",
-    },
-  },
-  {
-    question:
-      "Un élève lit 20 pages en 30 minutes. Combien de pages en 1 heure et demie ?",
-    options: ["40 pages", "50 pages", "60 pages", "45 pages"],
-    answer: "60 pages",
-    fiche: {
-      regle:
-        "1h30 = 90 minutes. 90/30 = 3. Donc il lit 3 fois plus : 20 x 3 = 60 pages.",
-      exemple:
-        "✅ 20 pages en 30 min. 90 min = 3 x 30 min donc 20 x 3 = 60 pages.",
-      piege:
-        "1h30 = 90 minutes et non 130 minutes. Convertis bien les heures en minutes !",
-      astuce:
-        "Convertis tout en minutes. 1h30 = 90 min. 90/30 = 3 fois plus. 20 x 3 = 60 pages.",
-    },
-  },
-  {
-    question:
-      "Le prix de 6 places de cinéma est 54 euros. Quel est le prix de 4 places ?",
-    options: ["32 euros", "36 euros", "40 euros", "42 euros"],
-    answer: "36 euros",
-    fiche: {
-      regle:
-        "Prix d'une place = 54 divise par 6 = 9 euros. Prix de 4 places = 4 x 9 = 36 euros.",
-      exemple:
-        "✅ 6 places → 54 euros. 1 place = 54/6 = 9 euros. 4 places = 4 x 9 = 36 euros.",
-      piege:
-        "Ne pas faire 54 divise par 6 x 4 sans ordre ! Calcule d'abord le prix unitaire.",
-      astuce:
-        "Toujours trouver la valeur pour 1 d'abord : 54/6 = 9 euros/place. Puis 4 x 9 = 36 euros.",
-    },
-  },
-  {
-    question:
-      "Dans une recette pour 4 personnes, on utilise 300g de farine. Combien pour 10 personnes ?",
-    options: ["600g", "700g", "750g", "800g"],
-    answer: "750g",
-    fiche: {
-      regle:
-        "Pour 1 personne : 300 divise par 4 = 75g. Pour 10 personnes : 75 x 10 = 750g.",
-      exemple:
-        "✅ 4 personnes → 300g. 1 personne = 300/4 = 75g. 10 personnes = 75 x 10 = 750g.",
-      piege:
-        "Ne pas faire 300 x 10 ! Il faut d'abord diviser par 4 (pour 1 personne) puis multiplier par 10.",
-      astuce:
-        "Valeur unitaire = 300/4 = 75g par personne. Puis 75 x 10 = 750g. Divise puis multiplie !",
-    },
-  },
-  {
-    question:
-      "Si y est proportionnel à x avec k = 4, quelle est la valeur de x quand y = 28 ?",
-    options: ["6", "7", "8", "112"],
-    answer: "7",
-    fiche: {
-      regle: "y = k x x donc x = y divise par k. Ici x = 28 divise par 4 = 7.",
-      exemple:
-        "✅ y = 4 x x. Si y = 28 : x = 28/4 = 7. Vérification : 4 x 7 = 28.",
-      piege:
-        "Ne pas multiplier ! x = y/k et non x = y x k. Ici 28 x 4 = 112 est FAUX.",
-      astuce:
-        "y = k x x donc x = y/k. Divise y par k pour trouver x. 28/4 = 7.",
+        "Triangle rectangle : les deux côtés de l'angle droit = base et hauteur. A = (3 x 4)/2 = 6 cm2.",
     },
   },
 ];
 
-export default function ProportionnalitePage() {
+export default function AiresPerimetresPage() {
   const router = useRouter();
   const { estConnecte, maxQuestions } = useContext(DecouverteContext);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -281,7 +272,7 @@ export default function ProportionnalitePage() {
         </div>
         <div className="lecon-wrapper">
           <div className="lecon-badge">🔢 Maths — 6ème</div>
-          <h1 className="lecon-titre">La proportionnalité</h1>
+          <h1 className="lecon-titre">Aires et périmètres</h1>
           {!estConnecte && (
             <div
               style={{
@@ -306,9 +297,9 @@ export default function ProportionnalitePage() {
             </div>
           )}
           <div className="lecon-intro">
-            Deux grandeurs sont <strong>proportionnelles</strong> quand leur
-            rapport est constant. On utilise un tableau ou la règle de trois
-            pour résoudre les problèmes.
+            Le <strong>périmètre</strong> est la longueur du contour d'une
+            figure. L'<strong>aire</strong> est la surface intérieure. Ces deux
+            mesures n'ont pas les mêmes unités !
           </div>
           {estConnecte && (bestScore || lastScore) && (
             <div
@@ -385,40 +376,36 @@ export default function ProportionnalitePage() {
           )}
           <div className="lecon-points">
             <div className="lecon-point">
-              <div className="lecon-point-titre">
-                📊 Le coefficient de proportionnalité
-              </div>
+              <div className="lecon-point-titre">📐 Périmètres des figures</div>
               <div className="lecon-point-texte">
-                k = y divise par x. Pour trouver y : y = k x x. Pour trouver x :
-                x = y divise par k.
+                Rectangle : P = 2 x (L + l). Carré : P = 4 x côté. Cercle : C =
+                2 x pi x r.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 3 stylos = 6
-                euros → k = 6/3 = 2. Pour 9 stylos : 9 x 2 = 18 euros.
+                <span className="exemple-label">Exemple :</span> Rectangle 8x5 :
+                P = 2 x (8+5) = 26 cm
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">🔢 La valeur unitaire</div>
+              <div className="lecon-point-titre">📏 Aires des figures</div>
               <div className="lecon-point-texte">
-                Pour résoudre : trouve d'abord la valeur pour 1, puis multiplie
-                par la quantité voulue.
+                Rectangle : A = L x l. Carré : A = c x c. Triangle : A = (b x h)
+                / 2. Disque : A = pi x r x r.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> 6 places = 54
-                euros → 1 place = 54/6 = 9 euros → 4 places = 4 x 9 = 36 euros.
+                <span className="exemple-label">Exemple :</span> Triangle base
+                10, hauteur 6 : A = (10 x 6) / 2 = 30 cm2
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">
-                ✅ Vérifier la proportionnalité
-              </div>
+              <div className="lecon-point-titre">⚠️ Périmètre vs Aire</div>
               <div className="lecon-point-texte">
-                Un tableau est proportionnel si le rapport y/x est identique
-                pour toutes les colonnes.
+                Le périmètre se mesure en cm (ou m, km...). L'aire se mesure en
+                cm2 (ou m2, km2...).
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> x: 2, 4, 6 et
-                y: 6, 12, 18 → 6/2 = 12/4 = 18/6 = 3, c'est proportionnel !
+                <span className="exemple-label">Carré côté 5 cm :</span> P = 4 x
+                5 = 20 cm et A = 5 x 5 = 25 cm2
               </div>
             </div>
           </div>
