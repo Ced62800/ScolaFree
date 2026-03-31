@@ -33,7 +33,7 @@ const matieres = [
     ),
     color: "#ffd166",
     desc: "Vocabulaire, grammaire et expression en anglais",
-    dispo: false,
+    dispo: true,
   },
 ];
 
