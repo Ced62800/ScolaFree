@@ -179,12 +179,13 @@ export async function getAllScores() {
   } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data, error } = await supabase
-    .from("scores")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
+  const { data, error } = await supabase;
+  if (scores.length === 0 || scores.length < bilansRequis.length) {
+    resultat[classe] = null;
+  } else {
+    const moyenne = scores.reduce((acc, s) => acc + s, 0) / scores.length;
+    resultat[classe] = Math.round(moyenne * 10) / 10;
+  }
   if (error) return [];
   return data;
 }
