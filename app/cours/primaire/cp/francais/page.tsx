@@ -6,36 +6,40 @@ import { useEffect, useState } from "react";
 
 const themes = [
   {
-    id: "grammaire",
+    id: "le-nom",
     label: "Grammaire",
     emoji: "📝",
     color: "#4f8ef7",
     desc: "La phrase, le nom, le verbe",
     dispo: true,
+    lien: "grammaire",
   },
   {
-    id: "conjugaison",
+    id: "etre-present",
     label: "Conjugaison",
     emoji: "⏰",
     color: "#2ec4b6",
     desc: "Le présent des verbes être et avoir",
     dispo: true,
+    lien: "conjugaison",
   },
   {
-    id: "orthographe",
+    id: "sons-lettres",
     label: "Orthographe",
     emoji: "✏️",
     color: "#ffd166",
     desc: "Les sons et les lettres",
     dispo: true,
+    lien: "orthographe",
   },
   {
-    id: "vocabulaire",
+    id: "sens-des-mots",
     label: "Vocabulaire",
     emoji: "📚",
     color: "#ff6b6b",
     desc: "Les mots de la vie quotidienne",
     dispo: true,
+    lien: "vocabulaire",
   },
 ];
 
@@ -117,9 +121,8 @@ export default function FrancaisCP() {
 
   useEffect(() => {
     const init = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
       setEstConnecte(!!user);
 
       if (user) {
@@ -232,13 +235,13 @@ export default function FrancaisCP() {
         style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
       >
         {themes.map((t) => {
-          const statut = estConnecte ? statuts[t.id] || "jamais" : "jamais";
+          const statut = statuts[t.id] || "jamais";
           return (
             <div
               key={t.id}
               className="theme-card"
               onClick={() =>
-                t.dispo && router.push(`/cours/primaire/cp/francais/${t.id}`)
+                t.dispo && router.push(`/cours/primaire/cp/francais/${t.lien}`)
               }
               style={
                 {
@@ -256,7 +259,7 @@ export default function FrancaisCP() {
                 } as React.CSSProperties
               }
             >
-              {estConnecte && !chargement && <BadgeStatut statut={statut} />}
+              {!chargement && <BadgeStatut statut={statut} />}
 
               {!estConnecte && !chargement && t.dispo && (
                 <div
@@ -279,32 +282,11 @@ export default function FrancaisCP() {
                 </div>
               )}
 
-              {!t.dispo && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "rgba(255,255,255,0.07)",
-                    color: "#999",
-                    fontSize: "0.85rem",
-                    fontWeight: 700,
-                    padding: "6px 16px",
-                    borderRadius: "20px",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  🔒 Bientôt
-                </div>
-              )}
-
               <div className="theme-emoji">{t.emoji}</div>
               <div className="theme-label">{t.label}</div>
               <div className="theme-desc">{t.desc}</div>
 
-              {estConnecte && !chargement && <PhraseStatut statut={statut} />}
+              {!chargement && <PhraseStatut statut={statut} />}
 
               {!estConnecte && !chargement && t.dispo && (
                 <div
