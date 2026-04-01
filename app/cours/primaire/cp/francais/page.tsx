@@ -11,7 +11,7 @@ const themes = [
     emoji: "📝",
     color: "#4f8ef7",
     desc: "La phrase, le nom, le verbe",
-    nb: 10,
+    dispo: true,
   },
   {
     id: "conjugaison",
@@ -19,7 +19,7 @@ const themes = [
     emoji: "⏰",
     color: "#2ec4b6",
     desc: "Le présent des verbes être et avoir",
-    nb: 10,
+    dispo: true,
   },
   {
     id: "orthographe",
@@ -27,7 +27,7 @@ const themes = [
     emoji: "✏️",
     color: "#ffd166",
     desc: "Les sons et les lettres",
-    nb: 10,
+    dispo: true,
   },
   {
     id: "vocabulaire",
@@ -35,7 +35,7 @@ const themes = [
     emoji: "📚",
     color: "#ff6b6b",
     desc: "Les mots de la vie quotidienne",
-    nb: 10,
+    dispo: true,
   },
 ];
 
@@ -121,6 +121,7 @@ export default function FrancaisCP() {
         data: { user },
       } = await supabase.auth.getUser();
       setEstConnecte(!!user);
+
       if (user) {
         const { data } = await supabase
           .from("scores")
@@ -129,8 +130,8 @@ export default function FrancaisCP() {
           .eq("classe", "cp")
           .eq("matiere", "francais")
           .order("score", { ascending: false });
+
         if (data) {
-          console.log(data);
           const nouveauxStatuts: Record<string, StatutTheme> = {};
           themes.forEach((t) => {
             const meilleur = data.find((s) => s.theme === t.id) || null;
@@ -144,6 +145,14 @@ export default function FrancaisCP() {
     init();
   }, []);
 
+  const handleBilan = () => {
+    if (!estConnecte) {
+      router.push("/inscription");
+      return;
+    }
+    router.push("/cours/primaire/cp/francais/bilan");
+  };
+
   return (
     <div className="cours-page">
       <div className="cours-header">
@@ -154,9 +163,26 @@ export default function FrancaisCP() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Primaire</span>
+          <span
+            onClick={() => router.push("/cours")}
+            style={{ cursor: "pointer" }}
+          >
+            Cours
+          </span>
           <span className="breadcrumb-sep">›</span>
-          <span>CP</span>
+          <span
+            onClick={() => router.push("/cours/primaire")}
+            style={{ cursor: "pointer" }}
+          >
+            Primaire
+          </span>
+          <span className="breadcrumb-sep">›</span>
+          <span
+            onClick={() => router.push("/cours/primaire/cp")}
+            style={{ cursor: "pointer" }}
+          >
+            CP
+          </span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Français</span>
         </div>
@@ -165,8 +191,41 @@ export default function FrancaisCP() {
       <div className="cours-hero">
         <div className="cours-hero-icon">📖</div>
         <h1 className="cours-hero-title">Français — CP</h1>
-        <p className="cours-hero-desc">Cours Préparatoire · 6 ans</p>
+        <p className="cours-hero-desc">
+          {estConnecte
+            ? "Choisis un thème pour commencer !"
+            : "Mode découverte — 5 questions par thème"}
+        </p>
       </div>
+
+      {!estConnecte && !chargement && (
+        <div
+          style={{
+            maxWidth: "600px",
+            margin: "0 auto 24px",
+            padding: "14px 20px",
+            background: "rgba(79,142,247,0.1)",
+            border: "1px solid rgba(79,142,247,0.3)",
+            borderRadius: "14px",
+            textAlign: "center",
+            fontSize: "0.95rem",
+            color: "#aaa",
+          }}
+        >
+          👀 Tu explores en mode découverte.{" "}
+          <a
+            href="/inscription"
+            style={{
+              color: "#4f8ef7",
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            Inscris-toi gratuitement
+          </a>{" "}
+          pour accéder à tous les exercices !
+        </div>
+      )}
 
       <div
         className="themes-grid"
@@ -178,11 +237,16 @@ export default function FrancaisCP() {
             <div
               key={t.id}
               className="theme-card"
-              onClick={() => router.push(`/cours/primaire/cp/francais/${t.id}`)}
+              onClick={() =>
+                t.dispo && router.push(`/cours/primaire/cp/francais/${t.id}`)
+              }
               style={
                 {
-                  "--card-color": t.color,
+                  "--card-color": t.dispo ? t.color : "#888",
                   position: "relative",
+                  cursor: t.dispo ? "pointer" : "not-allowed",
+                  paddingTop: "44px",
+                  opacity: t.dispo ? 1 : 0.5,
                   border:
                     statut === "valide"
                       ? "2px solid rgba(46,196,182,0.4)"
@@ -193,89 +257,161 @@ export default function FrancaisCP() {
               }
             >
               {estConnecte && !chargement && <BadgeStatut statut={statut} />}
+
+              {!estConnecte && !chargement && t.dispo && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(79,142,247,0.15)",
+                    color: "#4f8ef7",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    padding: "6px 16px",
+                    borderRadius: "20px",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  👀 Découverte
+                </div>
+              )}
+
+              {!t.dispo && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(255,255,255,0.07)",
+                    color: "#999",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    padding: "6px 16px",
+                    borderRadius: "20px",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  🔒 Bientôt
+                </div>
+              )}
+
               <div className="theme-emoji">{t.emoji}</div>
               <div className="theme-label">{t.label}</div>
               <div className="theme-desc">{t.desc}</div>
-              <div className="theme-nb">{t.nb} exercices</div>
-              <div className="theme-progress">
-                <div
-                  className="theme-progress-bar"
-                  style={{ width: "0%" }}
-                ></div>
-              </div>
+
               {estConnecte && !chargement && <PhraseStatut statut={statut} />}
-              <div className="theme-arrow">
-                {statut === "valide"
-                  ? "Refaire →"
-                  : statut === "en-cours"
-                    ? "Améliorer →"
-                    : "Commencer →"}
+
+              {!estConnecte && !chargement && t.dispo && (
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "#aaa",
+                    marginTop: "4px",
+                    marginBottom: "4px",
+                  }}
+                >
+                  5 questions par thème
+                </div>
+              )}
+
+              <div
+                className="theme-arrow"
+                style={{ color: t.dispo ? t.color : "#888" }}
+              >
+                {!t.dispo
+                  ? "🔒 Bientôt"
+                  : statut === "valide"
+                    ? "Refaire →"
+                    : statut === "en-cours"
+                      ? "Améliorer →"
+                      : "Commencer →"}
               </div>
             </div>
           );
         })}
       </div>
 
-      <div
-        style={{
-          marginTop: "40px",
-          textAlign: "center",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "20px",
-        }}
-      >
-        <div>
+      {!chargement && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "32px",
+            marginBottom: "16px",
+          }}
+        >
           <button
-            onClick={() => router.push("/cours/primaire/cp/francais/bilan")}
+            onClick={handleBilan}
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-              background: "linear-gradient(135deg, #ffd166, #ff6b6b)",
-              color: "#1a1a2e",
+              background: estConnecte
+                ? "linear-gradient(135deg, #ffd166, #ff6b6b)"
+                : "rgba(255,255,255,0.08)",
+              border: "none",
+              borderRadius: "14px",
+              padding: "16px 32px",
+              color: estConnecte ? "#1a1a2e" : "#fff",
               fontWeight: 800,
               fontSize: "1.1rem",
-              padding: "16px 32px",
-              borderRadius: "16px",
-              border: "none",
               cursor: "pointer",
-              boxShadow: "0 4px 20px rgba(255,209,102,0.3)",
+              width: "100%",
+              maxWidth: "400px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
             }}
           >
             🎯 Bilan Final CP — 20 questions
           </button>
-          <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
-            Teste toutes tes connaissances du CP en une seule fois !
+          <p
+            style={{
+              color: "#aaa",
+              fontSize: "0.85rem",
+              marginTop: "8px",
+              textAlign: "center",
+            }}
+          >
+            {estConnecte
+              ? "Teste toutes tes connaissances du CP en une seule fois !"
+              : "🔒 Inscris-toi pour accéder au bilan"}
           </p>
         </div>
+      )}
 
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: "8px",
+        }}
+      >
         <button
           onClick={() => router.push("/cours/primaire/cp/francais/page-2")}
           style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "10px",
-            background: "rgba(255, 255, 255, 0.05)",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: "14px",
+            padding: "14px 28px",
             color: "#fff",
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: "1rem",
-            padding: "12px 24px",
-            borderRadius: "12px",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
             cursor: "pointer",
-            transition: "all 0.2s ease",
+            width: "100%",
+            maxWidth: "400px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
           }}
-          onMouseOver={(e) =>
-            (e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)")
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)")
-          }
         >
-          📚 Cours suivants — Partie 2{" "}
-          <span style={{ fontSize: "1.2rem" }}>→</span>
+          📚 Cours suivants — Partie 2 →
         </button>
       </div>
     </div>
