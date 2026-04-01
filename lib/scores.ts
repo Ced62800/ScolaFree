@@ -32,18 +32,15 @@ const BILANS_PAR_CLASSE: Record<string, { matiere: string; theme: string }[]> =
     ],
   };
 
-// Vérifie si l'élève peut passer à la classe suivante et met à jour automatiquement
 export async function verifierEtPasserClasse(
   userId: string,
   classeActuelle: string,
 ): Promise<boolean> {
   const indexActuel = ORDRE_CLASSES.indexOf(classeActuelle);
 
-  // Si déjà en CM2, pas de classe suivante
   if (indexActuel === -1 || indexActuel === ORDRE_CLASSES.length - 1)
     return false;
 
-  // Récupère tous les bilans de la classe actuelle
   const { data, error } = await supabase
     .from("scores")
     .select("matiere, theme, score, total")
@@ -64,13 +61,11 @@ export async function verifierEtPasserClasse(
     }
   }
 
-  // Vérifie si tous les bilans sont faits et moyenne >= 16
   if (scores.length < bilansRequis.length) return false;
 
   const moyenne = scores.reduce((acc, s) => acc + s, 0) / scores.length;
   if (moyenne < 16) return false;
 
-  // Passage à la classe suivante !
   const classesSuivante = ORDRE_CLASSES[indexActuel + 1];
 
   const { error: updateError } = await supabase
@@ -87,7 +82,6 @@ export async function verifierEtPasserClasse(
   return true;
 }
 
-// Sauvegarder un score
 export async function saveScore({
   classe,
   matiere,
@@ -120,7 +114,6 @@ export async function saveScore({
     return null;
   }
 
-  // Si c'est un bilan, on vérifie si l'élève peut passer à la classe suivante
   if (theme === "bilan") {
     await verifierEtPasserClasse(user.id, classe);
   }
@@ -128,7 +121,6 @@ export async function saveScore({
   return data;
 }
 
-// Récupérer le meilleur score pour un thème
 export async function getBestScore(
   classe: string,
   matiere: string,
@@ -154,7 +146,6 @@ export async function getBestScore(
   return data;
 }
 
-// Récupérer tous les scores d'une classe
 export async function getScoresByClasse(classe: string) {
   const {
     data: { user },
@@ -172,25 +163,22 @@ export async function getScoresByClasse(classe: string) {
   return data;
 }
 
-// Récupérer l'historique complet
 export async function getAllScores() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data, error } = await supabase;
-  if (scores.length === 0 || scores.length < bilansRequis.length) {
-    resultat[classe] = null;
-  } else {
-    const moyenne = scores.reduce((acc, s) => acc + s, 0) / scores.length;
-    resultat[classe] = Math.round(moyenne * 10) / 10;
-  }
+  const { data, error } = await supabase
+    .from("scores")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
   if (error) return [];
   return data;
 }
 
-// Calculer la moyenne par matière pour une classe
 export async function getMoyenneByMatiere(classe: string, matiere: string) {
   const {
     data: { user },
@@ -211,7 +199,6 @@ export async function getMoyenneByMatiere(classe: string, matiere: string) {
   return Math.round(moyenne);
 }
 
-// Récupérer le dernier score pour un thème
 export async function getLastScore(
   classe: string,
   matiere: string,
@@ -237,7 +224,6 @@ export async function getLastScore(
   return data;
 }
 
-// UN SEUL appel pour récupérer tous les bilans de toutes les classes
 export async function getAllBilansForDeblocage(): Promise<
   Record<string, number | null>
 > {
@@ -270,7 +256,7 @@ export async function getAllBilansForDeblocage(): Promise<
       }
     }
 
-    if (scores.length === 0) {
+    if (scores.length === 0 || scores.length < bilansRequis.length) {
       resultat[classe] = null;
     } else {
       const moyenne = scores.reduce((acc, s) => acc + s, 0) / scores.length;
@@ -281,7 +267,6 @@ export async function getAllBilansForDeblocage(): Promise<
   return resultat;
 }
 
-// Vérifie quelles classes sont débloquées (moyenne >= 16/20)
 export async function getClassesDebloquees(): Promise<Set<string>> {
   const moyennes = await getAllBilansForDeblocage();
   const debloquees = new Set<string>();
