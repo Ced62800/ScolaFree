@@ -11,6 +11,7 @@ const classes = [
     emoji: "🌱",
     color: "#4f8ef7",
     desc: "Sixième · 11 ans",
+    dispo: true,
   },
   {
     id: "5eme",
