@@ -18,11 +18,11 @@ const questions = [
     options: [
       "My name is Emma.",
       "I am Emma name.",
-      "Emma is my name I.",
+      "Emma is my name.",
       "Name is Emma my.",
     ],
     reponse: "My name is Emma.",
-    explication: "My name is + prénom. Ou I'm Emma.",
+    explication: "My name is + prénom. On peut aussi dire I'm Emma.",
   },
   {
     id: 2,
@@ -48,7 +48,7 @@ const questions = [
       "My age is 12 years.",
     ],
     reponse: "I am 12 years old.",
-    explication: "I am + chiffre + years old. Jamais 'I have'.",
+    explication: "I am + chiffre + years old. Jamais 'I have' pour l'âge.",
   },
   {
     id: 4,
@@ -226,42 +226,37 @@ const questions = [
   },
 ];
 
-const THEMES = [
-  { id: "se-presenter", label: "Se présenter", color: "#4f8ef7" },
-  { id: "famille-animaux", label: "Famille & animaux", color: "#2ec4b6" },
-  { id: "maison-ecole", label: "Maison & école", color: "#ffd166" },
-  {
-    id: "activites-quotidiennes",
-    label: "Activités quotidiennes",
-    color: "#ff6b6b",
-  },
-];
+const themeLabels: Record<string, string> = {
+  "se-presenter": "👤 Se présenter",
+  "famille-animaux": "👨‍👩‍👧 Famille & animaux",
+  "maison-ecole": "🏠 Maison & école",
+  "activites-quotidiennes": "📅 Activités quotidiennes",
+};
 
-const CLASSE = "6eme";
-const MATIERE = "anglais";
-const THEME = "bilan";
+const themeColors: Record<string, string> = {
+  "se-presenter": "#4f8ef7",
+  "famille-animaux": "#2ec4b6",
+  "maison-ecole": "#ffd166",
+  "activites-quotidiennes": "#ff6b6b",
+};
 
 export default function BilanAnglais6eme() {
   const router = useRouter();
-  const [questionsActives, setQuestionsActives] = useState<typeof questions>(
-    [],
-  );
-  const [etape, setEtape] = useState<"intro" | "qcm" | "resultat">("intro");
-  const [index, setIndex] = useState(0);
-  const [reponseChoisie, setReponseChoisie] = useState<string | null>(null);
   const [estConnecte, setEstConnecte] = useState(false);
-  const [bestScore, setBestScore] = useState<{
-    score: number;
-    total: number;
-  } | null>(null);
-  const [lastScore, setLastScore] = useState<{
-    score: number;
-    total: number;
-  } | null>(null);
+  const [chargement, setChargement] = useState(true);
+  const [etape, setEtape] = useState<"intro" | "qcm" | "fini">("intro");
+  const [qIndex, setQIndex] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [scores, setScores] = useState<Record<string, number>>({
+    "se-presenter": 0,
+    "famille-animaux": 0,
+    "maison-ecole": 0,
+    "activites-quotidiennes": 0,
+  });
+  const [bestScore, setBestScore] = useState<any>(null);
+  const [lastScore, setLastScore] = useState<any>(null);
+  const isSaving = useRef(false);
   const scoreRef = useRef(0);
-  const scoreSaved = useRef(false);
-  const scoresParTheme = useRef<Record<string, number>>({});
-  const totauxParTheme = useRef<Record<string, number>>({});
 
   useEffect(() => {
     const init = async () => {
@@ -270,506 +265,428 @@ export default function BilanAnglais6eme() {
       } = await supabase.auth.getUser();
       setEstConnecte(!!user);
       if (user) {
-        getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
-        getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+        const b = await getBestScore("6eme", "anglais", "bilan");
+        const l = await getLastScore("6eme", "anglais", "bilan");
+        setBestScore(b);
+        setLastScore(l);
       }
+      setChargement(false);
     };
     init();
   }, []);
 
-  const demarrer = () => {
-    const q = shuffleArray(questions);
-    setQuestionsActives(q);
+  const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
+  const shuffledOptions = useMemo(() => {
+    if (!shuffledQuestions[qIndex]) return [];
+    return shuffleArray(shuffledQuestions[qIndex].options);
+  }, [qIndex, shuffledQuestions]);
+
+  const progression = ((qIndex + 1) / shuffledQuestions.length) * 100;
+  const totalScore = scoreRef.current;
+
+  const mention =
+    totalScore >= 18
+      ? { label: "Excellent!", icon: "🏆", color: "#2ec4b6" }
+      : totalScore >= 14
+        ? { label: "Well done!", icon: "⭐", color: "#4f8ef7" }
+        : totalScore >= 10
+          ? { label: "Good job!", icon: "👍", color: "#ffd166" }
+          : { label: "Keep trying!", icon: "💪", color: "#ff6b6b" };
+
+  const handleReponse = (opt: string) => {
+    if (selected) return;
+    setSelected(opt);
+    if (opt === shuffledQuestions[qIndex].reponse) {
+      scoreRef.current += 1;
+      setScores((prev) => ({
+        ...prev,
+        [shuffledQuestions[qIndex].theme]:
+          (prev[shuffledQuestions[qIndex].theme] || 0) + 1,
+      }));
+    }
+  };
+
+  const handleSuivant = async () => {
+    if (qIndex + 1 >= shuffledQuestions.length) {
+      if (!isSaving.current && estConnecte) {
+        isSaving.current = true;
+        await saveScore({
+          classe: "6eme",
+          matiere: "anglais",
+          theme: "bilan",
+          score: scoreRef.current,
+          total: 20,
+        });
+        const b = await getBestScore("6eme", "anglais", "bilan");
+        const l = await getLastScore("6eme", "anglais", "bilan");
+        setBestScore(b);
+        setLastScore(l);
+      }
+      setEtape("fini");
+    } else {
+      setQIndex((i) => i + 1);
+      setSelected(null);
+    }
+  };
+
+  const handleRecommencer = () => {
     scoreRef.current = 0;
-    scoreSaved.current = false;
-    scoresParTheme.current = {};
-    totauxParTheme.current = {};
-    THEMES.forEach((t) => {
-      scoresParTheme.current[t.id] = 0;
-      totauxParTheme.current[t.id] = 0;
+    isSaving.current = false;
+    setScores({
+      "se-presenter": 0,
+      "famille-animaux": 0,
+      "maison-ecole": 0,
+      "activites-quotidiennes": 0,
     });
-    setIndex(0);
-    setReponseChoisie(null);
+    setQIndex(0);
+    setSelected(null);
     setEtape("qcm");
   };
 
-  const choisirReponse = (option: string) => {
-    if (reponseChoisie) return;
-    setReponseChoisie(option);
-    const q = questionsActives[index];
-    const correct = option === q.reponse;
-    totauxParTheme.current[q.theme] =
-      (totauxParTheme.current[q.theme] || 0) + 1;
-    if (correct) {
-      scoreRef.current += 1;
-      scoresParTheme.current[q.theme] =
-        (scoresParTheme.current[q.theme] || 0) + 1;
-    }
-  };
-
-  const suivant = async () => {
-    if (index + 1 >= questionsActives.length) {
-      if (estConnecte && !scoreSaved.current) {
-        scoreSaved.current = true;
-        await saveScore({
-          classe: CLASSE,
-          matiere: MATIERE,
-          theme: THEME,
-          score: scoreRef.current,
-          total: questionsActives.length,
-        });
-        getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
-        getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
-      }
-      setEtape("resultat");
-    } else {
-      setIndex(index + 1);
-      setReponseChoisie(null);
-    }
-  };
-
-  const q = questionsActives[index];
-  const shuffledOptions = useMemo(
-    () => (q ? shuffleArray(q.options) : []),
-    [index, questionsActives],
-  );
-  const total = questionsActives.length;
-  const pourcentage =
-    total > 0 ? Math.round((scoreRef.current / total) * 100) : 0;
-
-  if (etape === "intro")
+  if (chargement)
     return (
-      <div className="cours-page">
-        <div className="cours-header">
-          <button
-            className="cours-back"
-            onClick={() => router.push("/cours/college/6eme/anglais")}
-          >
-            ← Retour
-          </button>
-        </div>
-        <div className="lecon-wrapper">
-          <div className="lecon-badge">🎯 Bilan Final · Anglais 6ème</div>
-          <h1 className="lecon-titre">Bilan Anglais 6ème</h1>
-          <p className="lecon-intro">
-            20 questions sur les 4 thèmes du programme : Se présenter, Famille &
-            animaux, Maison & école, Activités quotidiennes.
-          </p>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "12px",
-              marginBottom: "24px",
-            }}
-          >
-            {THEMES.map((t) => (
-              <div
-                key={t.id}
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: `1px solid ${t.color}44`,
-                  borderRadius: "12px",
-                  padding: "14px",
-                  textAlign: "center",
-                }}
-              >
-                <div
-                  style={{
-                    color: t.color,
-                    fontWeight: 700,
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  {t.label}
-                </div>
-                <div
-                  style={{
-                    color: "#aaa",
-                    fontSize: "0.8rem",
-                    marginTop: "4px",
-                  }}
-                >
-                  5 questions
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {estConnecte && (bestScore || lastScore) && (
-            <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
-              {bestScore && (
-                <div
-                  style={{
-                    flex: 1,
-                    background: "rgba(46,196,182,0.1)",
-                    border: "1px solid rgba(46,196,182,0.3)",
-                    borderRadius: "12px",
-                    padding: "14px",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#aaa",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    🏆 Meilleur
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.3rem",
-                      fontWeight: 800,
-                      color: "#2ec4b6",
-                    }}
-                  >
-                    {bestScore.score}/{bestScore.total}
-                  </div>
-                </div>
-              )}
-              {lastScore && (
-                <div
-                  style={{
-                    flex: 1,
-                    background: "rgba(79,142,247,0.1)",
-                    border: "1px solid rgba(79,142,247,0.3)",
-                    borderRadius: "12px",
-                    padding: "14px",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#aaa",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    🕐 Dernier
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.3rem",
-                      fontWeight: 800,
-                      color: "#4f8ef7",
-                    }}
-                  >
-                    {lastScore.score}/{lastScore.total}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {!estConnecte && (
-            <div
-              style={{
-                background: "rgba(255,107,107,0.1)",
-                border: "1px solid rgba(255,107,107,0.3)",
-                borderRadius: "12px",
-                padding: "16px",
-                marginBottom: "24px",
-                textAlign: "center",
-              }}
-            >
-              <p
-                style={{
-                  color: "#aaa",
-                  fontSize: "0.9rem",
-                  marginBottom: "12px",
-                }}
-              >
-                🔒 Connecte-toi pour sauvegarder ton score !
-              </p>
-              <button
-                onClick={() => router.push("/connexion")}
-                style={{
-                  background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "10px",
-                  padding: "10px 20px",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                Se connecter →
-              </button>
-            </div>
-          )}
-
-          <button className="lecon-btn" onClick={demarrer}>
-            🚀 Commencer le bilan →
-          </button>
-        </div>
+      <div style={{ textAlign: "center", padding: "80px", color: "#aaa" }}>
+        Chargement...
       </div>
     );
 
-  if (etape === "qcm" && q)
+  if (!estConnecte) {
     return (
       <div className="cours-page">
         <div className="cours-header">
-          <button
-            className="cours-back"
-            onClick={() => router.push("/cours/college/6eme/anglais")}
-          >
+          <button className="cours-back" onClick={() => router.back()}>
             ← Retour
           </button>
         </div>
-        <div className="progression-wrapper">
-          <div className="progression-info">
-            <span>
-              Question {index + 1} / {total}
-            </span>
-            <span>
-              {scoreRef.current} bonne{scoreRef.current > 1 ? "s" : ""}
-            </span>
-          </div>
-          <div className="progression-bar">
-            <div
-              className="progression-fill"
-              style={{ width: `${(index / total) * 100}%` }}
-            />
-          </div>
-        </div>
-        <div className="qcm-wrapper">
-          <div
+        <div
+          style={{
+            maxWidth: "500px",
+            margin: "80px auto",
+            textAlign: "center",
+            padding: "0 20px",
+          }}
+        >
+          <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🔒</div>
+          <h2
             style={{
-              fontSize: "0.8rem",
-              color: THEMES.find((t) => t.id === q.theme)?.color || "#aaa",
-              fontWeight: 700,
-              marginBottom: "8px",
-              textTransform: "uppercase",
-            }}
-          >
-            {THEMES.find((t) => t.id === q.theme)?.label}
-          </div>
-          <div className="qcm-question">{q.question}</div>
-          <div className="qcm-options">
-            {shuffledOptions.map((opt) => {
-              let cn = "qcm-option";
-              if (reponseChoisie) {
-                if (opt === q.reponse) cn += " correct";
-                else if (opt === reponseChoisie) cn += " incorrect";
-                else cn += " disabled";
-              }
-              return (
-                <button
-                  key={opt}
-                  className={cn}
-                  onClick={() => choisirReponse(opt)}
-                >
-                  {opt}
-                </button>
-              );
-            })}
-          </div>
-          {reponseChoisie && (
-            <div
-              className={`qcm-feedback ${reponseChoisie === q.reponse ? "feedback-correct" : "feedback-incorrect"}`}
-            >
-              <span className="feedback-icon">
-                {reponseChoisie === q.reponse ? "✅" : "❌"}
-              </span>
-              <div className="feedback-texte">
-                <strong>
-                  {reponseChoisie === q.reponse
-                    ? "Well done! 🎉"
-                    : "Not quite..."}
-                </strong>
-                <p>{q.explication}</p>
-              </div>
-            </div>
-          )}
-          {reponseChoisie && (
-            <button className="lecon-btn" onClick={suivant}>
-              {index + 1 >= total
-                ? "Voir mon résultat →"
-                : "Question suivante →"}
-            </button>
-          )}
-        </div>
-      </div>
-    );
-
-  if (etape === "resultat") {
-    const note = Math.round((scoreRef.current / total) * 20);
-    const emoji = note >= 16 ? "🏆" : note >= 12 ? "👍" : "💪";
-    const message =
-      note >= 16 ? "Excellent!" : note >= 12 ? "Well done!" : "Keep trying!";
-    return (
-      <div className="cours-page">
-        <div className="cours-header">
-          <button
-            className="cours-back"
-            onClick={() => router.push("/cours/college/6eme/anglais")}
-          >
-            ← Retour
-          </button>
-        </div>
-        <div className="resultat-wrapper">
-          <div className="resultat-icon">{emoji}</div>
-          <h2 className="resultat-titre">{message}</h2>
-          <div className="resultat-score">
-            {scoreRef.current} / {total}
-          </div>
-          <div
-            style={{
-              fontSize: "1.1rem",
-              color:
-                note >= 16 ? "#2ec4b6" : note >= 10 ? "#ffd166" : "#ff6b6b",
+              color: "#fff",
+              fontSize: "1.5rem",
               fontWeight: 800,
-              marginBottom: "24px",
+              marginBottom: "12px",
             }}
           >
-            {note} / 20
-          </div>
-
-          <div
-            style={{ width: "100%", maxWidth: "400px", margin: "0 auto 24px" }}
+            Bilan réservé aux inscrits
+          </h2>
+          <p style={{ color: "#aaa", marginBottom: "24px", lineHeight: "1.6" }}>
+            Inscris-toi gratuitement pour accéder au bilan et sauvegarder tes
+            scores !
+          </p>
+          <button
+            onClick={() => router.push("/inscription")}
+            style={{
+              background: "linear-gradient(135deg, #f7974f, #f74f4f)",
+              color: "#fff",
+              border: "none",
+              borderRadius: "14px",
+              padding: "16px 32px",
+              fontWeight: 800,
+              fontSize: "1rem",
+              cursor: "pointer",
+              width: "100%",
+            }}
           >
-            {THEMES.map((t) => {
-              const s = scoresParTheme.current[t.id] || 0;
-              const tot = totauxParTheme.current[t.id] || 5;
-              const pct = Math.round((s / tot) * 100);
-              return (
-                <div key={t.id} style={{ marginBottom: "12px" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    <span style={{ fontSize: "0.85rem", color: "#ddd" }}>
-                      {t.label}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "0.85rem",
-                        color: t.color,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {s}/{tot}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      background: "rgba(255,255,255,0.08)",
-                      borderRadius: "10px",
-                      height: "8px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: `${pct}%`,
-                        height: "100%",
-                        background: t.color,
-                        borderRadius: "10px",
-                        transition: "width 0.5s ease",
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {estConnecte && (bestScore || lastScore) && (
-            <div
-              style={{
-                display: "flex",
-                gap: "12px",
-                marginBottom: "24px",
-                width: "100%",
-                maxWidth: "400px",
-              }}
-            >
-              {bestScore && (
-                <div
-                  style={{
-                    flex: 1,
-                    background: "rgba(46,196,182,0.1)",
-                    border: "1px solid rgba(46,196,182,0.3)",
-                    borderRadius: "12px",
-                    padding: "14px",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#aaa",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    🏆 Meilleur
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.3rem",
-                      fontWeight: 800,
-                      color: "#2ec4b6",
-                    }}
-                  >
-                    {bestScore.score}/{bestScore.total}
-                  </div>
-                </div>
-              )}
-              {lastScore && (
-                <div
-                  style={{
-                    flex: 1,
-                    background: "rgba(79,142,247,0.1)",
-                    border: "1px solid rgba(79,142,247,0.3)",
-                    borderRadius: "12px",
-                    padding: "14px",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#aaa",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    🕐 Dernier
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.3rem",
-                      fontWeight: 800,
-                      color: "#4f8ef7",
-                    }}
-                  >
-                    {lastScore.score}/{lastScore.total}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className="resultat-actions">
-            <button className="lecon-btn" onClick={demarrer}>
-              🔄 Réessayer
-            </button>
-            <button
-              className="lecon-btn-outline"
-              onClick={() => router.push("/cours/college/6eme/anglais")}
-            >
-              ← Retour aux thèmes
-            </button>
-          </div>
+            ✨ S'inscrire gratuitement →
+          </button>
         </div>
       </div>
     );
   }
 
-  return null;
+  return (
+    <div className="cours-page">
+      <div className="cours-header">
+        <button className="cours-back" onClick={() => router.back()}>
+          ← Retour
+        </button>
+        <div className="cours-breadcrumb">
+          <span
+            onClick={() => router.push("/cours/college/6eme/anglais")}
+            style={{ cursor: "pointer" }}
+          >
+            Anglais 6ème
+          </span>
+          <span className="breadcrumb-sep">›</span>
+          <span className="breadcrumb-active">Bilan</span>
+        </div>
+      </div>
+
+      {etape === "intro" && (
+        <div className="lecon-wrapper">
+          <div className="lecon-badge">🎯 Bilan · Anglais 6ème</div>
+          <h1 className="lecon-titre">Bilan — Anglais 6ème</h1>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46,196,182,0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Record
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255,255,255,0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          <p className="lecon-intro">
+            Ce bilan regroupe les 4 thèmes d'Anglais 6ème.
+          </p>
+          <div className="bilan-info-grid">
+            <div className="bilan-info-card" style={{ borderColor: "#4f8ef7" }}>
+              <span>👤</span>
+              <span>5 questions — Se présenter</span>
+            </div>
+            <div className="bilan-info-card" style={{ borderColor: "#2ec4b6" }}>
+              <span>👨‍👩‍👧</span>
+              <span>5 questions — Famille & animaux</span>
+            </div>
+            <div className="bilan-info-card" style={{ borderColor: "#ffd166" }}>
+              <span>🏠</span>
+              <span>5 questions — Maison & école</span>
+            </div>
+            <div className="bilan-info-card" style={{ borderColor: "#ff6b6b" }}>
+              <span>📅</span>
+              <span>5 questions — Activités quotidiennes</span>
+            </div>
+          </div>
+          <div className="bilan-score-info">
+            Score final sur <strong>20</strong>
+          </div>
+          <button className="lecon-btn" onClick={() => setEtape("qcm")}>
+            Commencer le bilan →
+          </button>
+        </div>
+      )}
+
+      {etape === "qcm" && (
+        <>
+          <div className="progression-wrapper">
+            <div className="progression-info">
+              <span>
+                Question {qIndex + 1} / {shuffledQuestions.length}
+              </span>
+              <span
+                style={{ color: themeColors[shuffledQuestions[qIndex].theme] }}
+              >
+                {themeLabels[shuffledQuestions[qIndex].theme]}
+              </span>
+            </div>
+            <div className="progression-bar">
+              <div
+                className="progression-fill"
+                style={{ width: `${progression}%` }}
+              ></div>
+            </div>
+          </div>
+          <div className="qcm-wrapper">
+            <div className="qcm-question">
+              {shuffledQuestions[qIndex].question}
+            </div>
+            <div className="qcm-options">
+              {shuffledOptions.map((opt) => {
+                let className = "qcm-option";
+                if (selected) {
+                  if (opt === shuffledQuestions[qIndex].reponse)
+                    className += " correct";
+                  else if (opt === selected) className += " incorrect";
+                  else className += " disabled";
+                }
+                return (
+                  <button
+                    key={opt}
+                    className={className}
+                    onClick={() => handleReponse(opt)}
+                  >
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+            {selected && (
+              <div
+                className={`qcm-feedback ${selected === shuffledQuestions[qIndex].reponse ? "feedback-correct" : "feedback-incorrect"}`}
+              >
+                <div className="feedback-icon">
+                  {selected === shuffledQuestions[qIndex].reponse ? "✅" : "❌"}
+                </div>
+                <div className="feedback-texte">
+                  <strong>
+                    {selected === shuffledQuestions[qIndex].reponse
+                      ? "Well done! 🎉"
+                      : "Not quite..."}
+                  </strong>
+                  <p>{shuffledQuestions[qIndex].explication}</p>
+                </div>
+              </div>
+            )}
+            {selected && (
+              <button className="lecon-btn" onClick={handleSuivant}>
+                {qIndex + 1 >= shuffledQuestions.length
+                  ? "Voir mon bilan →"
+                  : "Question suivante →"}
+              </button>
+            )}
+          </div>
+        </>
+      )}
+
+      {etape === "fini" && (
+        <div className="resultat-wrapper">
+          <div className="resultat-icon">{mention.icon}</div>
+          <h2 className="resultat-titre" style={{ color: mention.color }}>
+            {mention.label}
+          </h2>
+          <div className="resultat-score" style={{ color: mention.color }}>
+            {totalScore} / 20
+          </div>
+          {(bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(46,196,182,0.1)",
+                    borderRadius: "12px",
+                    border: "1px solid #2ec4b6",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#2ec4b6",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 Meilleur
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {bestScore.score}/20
+                  </div>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    background: "rgba(255,255,255,0.05)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🕒 Dernier
+                  </div>
+                  <div style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                    {lastScore.score}/20
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          <div className="bilan-detail">
+            <h3 className="bilan-detail-titre">Détail par thème</h3>
+            {Object.entries(scores).map(([theme, score]) => (
+              <div key={theme} className="bilan-detail-row">
+                <span className="bilan-detail-label">{themeLabels[theme]}</span>
+                <div className="bilan-detail-bar-wrapper">
+                  <div
+                    className="bilan-detail-bar"
+                    style={{
+                      width: `${(score / 5) * 100}%`,
+                      backgroundColor: themeColors[theme],
+                    }}
+                  ></div>
+                </div>
+                <span className="bilan-detail-score">{score}/5</span>
+              </div>
+            ))}
+          </div>
+          <p className="resultat-desc">
+            {totalScore >= 18
+              ? "Bravo, tu maîtrises l'Anglais 6ème ! 🚀"
+              : totalScore >= 14
+                ? "Très bon niveau, continue !"
+                : totalScore >= 10
+                  ? "Tu progresses bien !"
+                  : "Courage ! Reprends les leçons et réessaie."}
+          </p>
+          <div className="resultat-actions">
+            <button className="lecon-btn-outline" onClick={handleRecommencer}>
+              🔄 Recommencer
+            </button>
+            <button
+              className="lecon-btn"
+              onClick={() => router.push("/cours/college/6eme/anglais")}
+            >
+              Retour aux thèmes →
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
