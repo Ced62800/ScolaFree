@@ -1,6 +1,8 @@
 "use client";
 
+import { supabase } from "@/supabaseClient";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const themesMath2 = [
   {
@@ -9,7 +11,7 @@ const themesMath2 = [
     emoji: "💶",
     color: "#4cc9f0",
     desc: "Utiliser les pièces et les billets en euros",
-    nb: 10,
+    dispo: true,
   },
   {
     id: "mesures",
@@ -17,7 +19,7 @@ const themesMath2 = [
     emoji: "📏",
     color: "#4ade80",
     desc: "Mesurer avec la règle et comparer (cm)",
-    nb: 10,
+    dispo: true,
   },
   {
     id: "temps",
@@ -25,7 +27,7 @@ const themesMath2 = [
     emoji: "🕒",
     color: "#ffd166",
     desc: "Lire l'heure et utiliser le calendrier",
-    nb: 10,
+    dispo: true,
   },
   {
     id: "calcul-mental",
@@ -33,16 +35,125 @@ const themesMath2 = [
     emoji: "🧠",
     color: "#ff6b6b",
     desc: "Les doubles, les moitiés et compléments",
-    nb: 10,
+    dispo: true,
   },
 ];
 
+type StatutTheme = "jamais" | "en-cours" | "valide";
+
+function getStatut(
+  meilleurScore: { score: number; total: number } | null,
+): StatutTheme {
+  if (!meilleurScore) return "jamais";
+  if (meilleurScore.score / meilleurScore.total >= 0.8) return "valide";
+  return "en-cours";
+}
+
+function BadgeStatut({ statut }: { statut: StatutTheme }) {
+  if (statut === "valide")
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          fontSize: "1.2rem",
+        }}
+      >
+        ✅
+      </div>
+    );
+  if (statut === "en-cours")
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          fontSize: "1.2rem",
+        }}
+      >
+        🟡
+      </div>
+    );
+  return null;
+}
+
+function PhraseStatut({ statut }: { statut: StatutTheme }) {
+  if (statut === "valide")
+    return (
+      <div
+        style={{
+          fontSize: "0.78rem",
+          color: "#2ec4b6",
+          fontWeight: 700,
+          marginTop: "4px",
+        }}
+      >
+        ✅ Validé !
+      </div>
+    );
+  if (statut === "en-cours")
+    return (
+      <div
+        style={{
+          fontSize: "0.78rem",
+          color: "#ffd166",
+          fontWeight: 700,
+          marginTop: "4px",
+        }}
+      >
+        🟡 À améliorer !
+      </div>
+    );
+  return null;
+}
+
 export default function MathCPPage2() {
   const router = useRouter();
+  const [estConnecte, setEstConnecte] = useState(false);
+  const [chargement, setChargement] = useState(true);
+  const [statuts, setStatuts] = useState<Record<string, StatutTheme>>({});
+
+  useEffect(() => {
+    const init = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
+      setEstConnecte(!!user);
+
+      if (user) {
+        const { data } = await supabase
+          .from("scores")
+          .select("theme, score, total")
+          .eq("user_id", user.id)
+          .eq("classe", "cp")
+          .eq("matiere", "maths")
+          .order("score", { ascending: false });
+
+        if (data) {
+          const nouveauxStatuts: Record<string, StatutTheme> = {};
+          themesMath2.forEach((t) => {
+            const meilleur = data.find((s) => s.theme === t.id) || null;
+            nouveauxStatuts[t.id] = getStatut(meilleur);
+          });
+          setStatuts(nouveauxStatuts);
+        }
+      }
+      setChargement(false);
+    };
+    init();
+  }, []);
+
+  const handleBilan = () => {
+    if (!estConnecte) {
+      router.push("/inscription");
+      return;
+    }
+    router.push("/cours/primaire/cp/maths/page-2/bilan");
+  };
 
   return (
     <div className="cours-page">
-      {/* HEADER FIL D'ARIANE */}
       <div className="cours-header">
         <button
           className="cours-back"
@@ -59,71 +170,179 @@ export default function MathCPPage2() {
         </div>
       </div>
 
-      {/* HERO SECTION */}
       <div className="cours-hero">
         <div className="cours-hero-icon">🔢</div>
         <h1 className="cours-hero-title">Mathématiques — CP</h1>
-        <p className="cours-hero-desc">Partie 2 · Grandeurs et Mesures</p>
+        <p className="cours-hero-desc">
+          {estConnecte
+            ? "Partie 2 · Grandeurs et Mesures"
+            : "Mode découverte — 5 questions par thème"}
+        </p>
       </div>
 
-      {/* GRILLE DES THEMES (CARTES VERTICALES) */}
-      <div className="themes-grid">
-        {themesMath2.map((t) => (
-          <div
-            key={t.id}
-            className="theme-card"
-            onClick={() => router.push(`/cours/primaire/cp/maths/${t.id}`)}
-            style={{ "--card-color": t.color } as React.CSSProperties}
-          >
-            <div className="theme-emoji">{t.emoji}</div>
-            <div className="theme-label">{t.label}</div>
-            <div className="theme-desc">{t.desc}</div>
-            <div className="theme-nb">{t.nb} exercices</div>
-            <div className="theme-progress">
-              <div className="theme-progress-bar" style={{ width: "0%" }}></div>
-            </div>
-            <div className="theme-arrow">Commencer →</div>
-          </div>
-        ))}
-      </div>
-
-      {/* BOUTON BILAN FINAL */}
-      <div
-        style={{
-          marginTop: "40px",
-          textAlign: "center",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "20px",
-          paddingBottom: "40px",
-        }}
-      >
-        <div>
-          <button
-            onClick={() => router.push("/cours/primaire/cp/maths/page-2/bilan")}
+      {!estConnecte && !chargement && (
+        <div
+          style={{
+            maxWidth: "600px",
+            margin: "0 auto 24px",
+            padding: "14px 20px",
+            background: "rgba(79,142,247,0.1)",
+            border: "1px solid rgba(79,142,247,0.3)",
+            borderRadius: "14px",
+            textAlign: "center",
+            fontSize: "0.95rem",
+            color: "#aaa",
+          }}
+        >
+          👀 Tu explores en mode découverte.{" "}
+          <a
+            href="/inscription"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-              background: "linear-gradient(135deg, #4ade80, #4cc9f0)",
-              color: "#1a1a2e",
-              fontWeight: 800,
-              fontSize: "1.1rem",
-              padding: "16px 32px",
-              borderRadius: "16px",
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 4px 20px rgba(74,222,128,0.3)",
+              color: "#4f8ef7",
+              fontWeight: 700,
+              textDecoration: "none",
             }}
           >
-            🎯 Bilan Mathématiques CP 2 — 20 questions
-          </button>
-          <p style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}>
-            Cédric, es-tu prêt pour le grand défi des mesures ?
-          </p>
+            Inscris-toi gratuitement
+          </a>{" "}
+          pour accéder à tous les exercices !
         </div>
+      )}
+
+      <div
+        className="themes-grid"
+        style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
+      >
+        {themesMath2.map((t) => {
+          const statut = statuts[t.id] || "jamais";
+          return (
+            <div
+              key={t.id}
+              className="theme-card"
+              onClick={() =>
+                t.dispo && router.push(`/cours/primaire/cp/maths/${t.id}`)
+              }
+              style={
+                {
+                  "--card-color": t.dispo ? t.color : "#888",
+                  position: "relative",
+                  cursor: t.dispo ? "pointer" : "not-allowed",
+                  paddingTop: "44px",
+                  opacity: t.dispo ? 1 : 0.5,
+                  border:
+                    statut === "valide"
+                      ? "2px solid rgba(46,196,182,0.4)"
+                      : statut === "en-cours"
+                        ? "2px solid rgba(255,209,102,0.4)"
+                        : "2px solid rgba(255,255,255,0.06)",
+                } as React.CSSProperties
+              }
+            >
+              {!chargement && <BadgeStatut statut={statut} />}
+
+              {!estConnecte && !chargement && t.dispo && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(79,142,247,0.15)",
+                    color: "#4f8ef7",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    padding: "6px 16px",
+                    borderRadius: "20px",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  👀 Découverte
+                </div>
+              )}
+
+              <div className="theme-emoji">{t.emoji}</div>
+              <div className="theme-label">{t.label}</div>
+              <div className="theme-desc">{t.desc}</div>
+
+              {!chargement && <PhraseStatut statut={statut} />}
+
+              {!estConnecte && !chargement && t.dispo && (
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "#aaa",
+                    marginTop: "4px",
+                    marginBottom: "4px",
+                  }}
+                >
+                  5 questions par thème
+                </div>
+              )}
+
+              <div
+                className="theme-arrow"
+                style={{ color: t.dispo ? t.color : "#888" }}
+              >
+                {!t.dispo
+                  ? "🔒 Bientôt"
+                  : statut === "valide"
+                    ? "Refaire →"
+                    : statut === "en-cours"
+                      ? "Améliorer →"
+                      : "Commencer →"}
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+      {!chargement && (
+        <div
+          style={{
+            marginTop: "40px",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "20px",
+            paddingBottom: "40px",
+          }}
+        >
+          <div>
+            <button
+              onClick={handleBilan}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
+                background: estConnecte
+                  ? "linear-gradient(135deg, #4ade80, #4cc9f0)"
+                  : "rgba(255,255,255,0.08)",
+                color: estConnecte ? "#1a1a2e" : "#fff",
+                fontWeight: 800,
+                fontSize: "1.1rem",
+                padding: "16px 32px",
+                borderRadius: "16px",
+                border: "none",
+                cursor: "pointer",
+                boxShadow: estConnecte
+                  ? "0 4px 20px rgba(74,222,128,0.3)"
+                  : "none",
+              }}
+            >
+              🎯 Bilan Mathématiques CP 2 — 20 questions
+            </button>
+            <p
+              style={{ color: "#aaa", fontSize: "0.85rem", marginTop: "10px" }}
+            >
+              {estConnecte
+                ? "Es-tu prêt pour le grand défi des mesures ?"
+                : "🔒 Inscris-toi pour accéder au bilan"}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
