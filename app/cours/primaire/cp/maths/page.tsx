@@ -12,6 +12,7 @@ const themes = [
     color: "#4cc9f0",
     desc: "Compter et comparer jusqu'à 100",
     dispo: true,
+    lien: "numeration",
   },
   {
     id: "addition-soustraction",
@@ -20,6 +21,7 @@ const themes = [
     color: "#4ade80",
     desc: "Calculer des sommes simples",
     dispo: true,
+    lien: "addition",
   },
   {
     id: "soustraction",
@@ -28,6 +30,7 @@ const themes = [
     color: "#ffd166",
     desc: "Enlever une quantité d'une autre",
     dispo: true,
+    lien: "soustraction",
   },
   {
     id: "geometrie",
@@ -36,6 +39,7 @@ const themes = [
     color: "#ff6b6b",
     desc: "Carré, triangle, cercle et rectangle",
     dispo: true,
+    lien: "geometrie",
   },
 ];
 
@@ -220,7 +224,7 @@ export default function MathCP() {
               key={t.id}
               className="theme-card"
               onClick={() =>
-                t.dispo && router.push(`/cours/primaire/cp/maths/${t.id}`)
+                t.dispo && router.push(`/cours/primaire/cp/maths/${t.lien}`)
               }
               style={
                 {
