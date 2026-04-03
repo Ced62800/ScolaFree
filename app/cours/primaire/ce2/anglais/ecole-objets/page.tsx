@@ -2,13 +2,17 @@
 
 import { useDecouverte } from "@/components/DecouverteContext";
 import PopupInscription from "@/components/PopupInscription";
-
+import { getBestScore, getLastScore, saveScore } from "@/lib/scores";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
+
+const CLASSE = "ce2";
+const MATIERE = "anglais";
+const THEME = "ecole-objets";
 
 const lecon = {
   titre: "School & Objects",
@@ -147,14 +151,31 @@ export default function EcoleObjetsCE2() {
   const [bonnes, setBonnes] = useState<boolean[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [session, setSession] = useState(0);
+  const [bestScore, setBestScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const [lastScore, setLastScore] = useState<{
+    score: number;
+    total: number;
+  } | null>(null);
+  const scoreSaved = useRef(false);
 
   const questionsActives = questions.slice(0, maxQuestions);
-
   const shuffledOptions = useMemo(
     () => shuffleArray(questionsActives[qIndex]?.options ?? []),
     [qIndex, session],
   );
-  const progression = Math.round((bonnes.length / questionsActives.length) * 100);
+  const progression = Math.round(
+    (bonnes.length / questionsActives.length) * 100,
+  );
+
+  useEffect(() => {
+    if (estConnecte) {
+      getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
+      getLastScore(CLASSE, MATIERE, THEME).then(setLastScore);
+    }
+  }, [estConnecte]);
 
   const handleReponse = (option: string) => {
     if (selected) return;
@@ -164,11 +185,27 @@ export default function EcoleObjetsCE2() {
     setBonnes((b) => [...b, correct]);
   };
 
-  const handleSuivant = () => {
+  const handleSuivant = async () => {
     if (qIndex + 1 >= questionsActives.length) {
       if (!estConnecte) {
         setShowPopup(true);
         return;
+      }
+      if (!scoreSaved.current) {
+        scoreSaved.current = true;
+        await saveScore({
+          classe: CLASSE,
+          matiere: MATIERE,
+          theme: THEME,
+          score,
+          total: questionsActives.length,
+        });
+        const [best, last] = await Promise.all([
+          getBestScore(CLASSE, MATIERE, THEME),
+          getLastScore(CLASSE, MATIERE, THEME),
+        ]);
+        setBestScore(best);
+        setLastScore(last);
       }
       setEtape("fini");
     } else {
@@ -178,6 +215,7 @@ export default function EcoleObjetsCE2() {
   };
 
   const handleRecommencer = () => {
+    scoreSaved.current = false;
     setShowPopup(false);
     setEtape("lecon");
     setQIndex(0);
@@ -230,6 +268,50 @@ export default function EcoleObjetsCE2() {
           <div className="lecon-badge">🎒 School & Objects · CE2</div>
           <h1 className="lecon-titre">{lecon.titre}</h1>
           <p className="lecon-intro">{lecon.intro}</p>
+          {estConnecte && (bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <div className="lecon-points">
             {lecon.points.map((p, i) => (
               <div key={i} className="lecon-point">
@@ -252,12 +334,15 @@ export default function EcoleObjetsCE2() {
           <div className="niveau-label">
             {niveauLabel(questionsActives[qIndex].niveau)}
           </div>
-          <div className="qcm-question">{questionsActives[qIndex].question}</div>
+          <div className="qcm-question">
+            {questionsActives[qIndex].question}
+          </div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
               let className = "qcm-option";
               if (selected) {
-                if (opt === questionsActives[qIndex].reponse) className += " correct";
+                if (opt === questionsActives[qIndex].reponse)
+                  className += " correct";
                 else if (opt === selected) className += " incorrect";
                 else className += " disabled";
               }
@@ -316,6 +401,50 @@ export default function EcoleObjetsCE2() {
           <div className="resultat-score">
             {score} / {questionsActives.length}
           </div>
+          {estConnecte && (bestScore || lastScore) && (
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+              {bestScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(79,142,247,0.1)",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#4f8ef7",
+                    textAlign: "center",
+                  }}
+                >
+                  🏆 Meilleur
+                  <br />
+                  <strong>
+                    {bestScore.score} / {bestScore.total}
+                  </strong>
+                </div>
+              )}
+              {lastScore && (
+                <div
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "12px",
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    color: "#aaa",
+                    textAlign: "center",
+                  }}
+                >
+                  🕐 Dernier
+                  <br />
+                  <strong style={{ color: "#fff" }}>
+                    {lastScore.score} / {lastScore.total}
+                  </strong>
+                </div>
+              )}
+            </div>
+          )}
           <p className="resultat-desc">
             {score >= 9
               ? "Tu connais parfaitement l'école en anglais !"
