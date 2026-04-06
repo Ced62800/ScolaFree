@@ -260,7 +260,7 @@ export default function AiresPerimetresPage() {
 
   const total = questions.length;
   const est6emeFaute = fautesRef.current === 6;
-  const boutonBloque = est6emeFaute && !ficheObligatoireLue;
+  const boutonBloque = !estCorrecte && est6emeFaute && !ficheObligatoireLue;
 
   if (etape === "intro") {
     return (

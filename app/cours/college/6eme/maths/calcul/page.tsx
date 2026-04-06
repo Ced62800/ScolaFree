@@ -272,8 +272,7 @@ export default function CalculPage() {
 
   const total = questions.length;
   // Bloqué uniquement si 6+ fautes ET fiche pas lue ET réponse incorrecte
-  const boutonBloque =
-    fautesRef.current >= 6 && !ficheObligatoireLue && estCorrecte === false;
+  const boutonBloque = !estCorrecte && est6emeFaute && !ficheObligatoireLue;
 
   if (etape === "intro") {
     return (
