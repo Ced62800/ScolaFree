@@ -168,7 +168,13 @@ export default function AnglaisCM1() {
         </div>
       </div>
       <div className="cours-hero">
-        <div className="cours-hero-icon">🌍</div>
+        <div className="cours-hero-icon">
+          <img
+            src="https://flagcdn.com/w160/gb.png"
+            alt="Drapeau Anglais"
+            style={{ width: "45px", height: "auto", borderRadius: "4px" }}
+          />
+        </div>
         <h1 className="cours-hero-title">Anglais — CM1</h1>
         <p className="cours-hero-desc">
           {estConnecte
