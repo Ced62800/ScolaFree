@@ -271,7 +271,7 @@ export default function CalculPage() {
   };
 
   const total = questions.length;
-  // Bloqué uniquement si 6+ fautes ET fiche pas lue ET réponse incorrecte
+  const est6emeFaute = fautesRef.current >= 6;
   const boutonBloque = !estCorrecte && est6emeFaute && !ficheObligatoireLue;
 
   if (etape === "intro") {
