@@ -117,9 +117,8 @@ export default function Maths6emePage() {
 
   useEffect(() => {
     const init = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
       setEstConnecte(!!user);
 
       if (user) {
@@ -130,7 +129,6 @@ export default function Maths6emePage() {
           .eq("classe", "6eme")
           .eq("matiere", "maths")
           .order("score", { ascending: false });
-
         if (data) {
           const nouveauxStatuts: Record<string, StatutTheme> = {};
           themes.forEach((t) => {
@@ -232,7 +230,7 @@ export default function Maths6emePage() {
         style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
       >
         {themes.map((t) => {
-          const statut = estConnecte ? statuts[t.id] || "jamais" : "jamais";
+          const statut = statuts[t.id] || "jamais";
           return (
             <div
               key={t.id}
@@ -256,10 +254,7 @@ export default function Maths6emePage() {
                 } as React.CSSProperties
               }
             >
-              {/* Badge statut */}
-              {estConnecte && !chargement && <BadgeStatut statut={statut} />}
-
-              {/* Badge découverte */}
+              {!chargement && <BadgeStatut statut={statut} />}
               {!estConnecte && !chargement && t.dispo && (
                 <div
                   style={{
@@ -280,8 +275,6 @@ export default function Maths6emePage() {
                   👀 Découverte
                 </div>
               )}
-
-              {/* Badge bientôt */}
               {!t.dispo && (
                 <div
                   style={{
@@ -302,14 +295,10 @@ export default function Maths6emePage() {
                   🔒 Bientôt
                 </div>
               )}
-
               <div className="theme-emoji">{t.emoji}</div>
               <div className="theme-label">{t.label}</div>
               <div className="theme-desc">{t.desc}</div>
-
-              {/* Phrase statut */}
-              {estConnecte && !chargement && <PhraseStatut statut={statut} />}
-
+              {!chargement && <PhraseStatut statut={statut} />}
               {!estConnecte && !chargement && t.dispo && (
                 <div
                   style={{
@@ -322,7 +311,6 @@ export default function Maths6emePage() {
                   5 questions par thème
                 </div>
               )}
-
               <div
                 className="theme-arrow"
                 style={{ color: t.dispo ? t.color : "#888" }}

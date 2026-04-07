@@ -6,35 +6,35 @@ import { useEffect, useState } from "react";
 
 const themes = [
   {
-    id: "calcul",
-    label: "Le calcul",
-    emoji: "➕",
+    id: "loisirs-sports",
+    label: "Loisirs et sports",
+    emoji: "⚽",
     color: "#4f8ef7",
-    desc: "Priorités opératoires, multiplication, division",
+    desc: "Sports, hobbies, free time activities",
     dispo: true,
   },
   {
-    id: "proportionnalite",
-    label: "La proportionnalité",
-    emoji: "📊",
+    id: "nourriture-shopping",
+    label: "Nourriture et shopping",
+    emoji: "🛒",
     color: "#2ec4b6",
-    desc: "Tableaux de proportionnalité, règle de trois",
+    desc: "Food, drinks, shopping and prices",
     dispo: true,
   },
   {
-    id: "aires-perimetres",
-    label: "Aires et périmètres",
-    emoji: "📏",
+    id: "present-simple",
+    label: "Le présent simple",
+    emoji: "📝",
     color: "#ffd166",
-    desc: "Calculer périmètres et aires de figures",
+    desc: "Present simple — affirmative, negative, questions",
     dispo: true,
   },
   {
-    id: "statistiques",
-    label: "Les statistiques",
-    emoji: "📈",
+    id: "ville-transports",
+    label: "La ville et les transports",
+    emoji: "🏙️",
     color: "#ff6b6b",
-    desc: "Moyenne, mode, médiane, étendue",
+    desc: "Places in town, directions, transport",
     dispo: true,
   },
 ];
@@ -109,7 +109,7 @@ function PhraseStatut({ statut }: { statut: StatutTheme }) {
   return null;
 }
 
-export default function Maths6emePageDeux() {
+export default function Anglais6emePageDeux() {
   const router = useRouter();
   const [estConnecte, setEstConnecte] = useState(false);
   const [chargement, setChargement] = useState(true);
@@ -120,14 +120,13 @@ export default function Maths6emePageDeux() {
       const { data: sessionData } = await supabase.auth.getSession();
       const user = sessionData?.session?.user;
       setEstConnecte(!!user);
-
       if (user) {
         const { data } = await supabase
           .from("scores")
           .select("theme, score, total")
           .eq("user_id", user.id)
           .eq("classe", "6eme")
-          .eq("matiere", "maths")
+          .eq("matiere", "anglais")
           .order("score", { ascending: false });
         if (data) {
           const nouveauxStatuts: Record<string, StatutTheme> = {};
@@ -148,7 +147,7 @@ export default function Maths6emePageDeux() {
       router.push("/inscription");
       return;
     }
-    router.push("/cours/college/6eme/maths/bilan-2");
+    router.push("/cours/college/6eme/anglais/bilan-2");
   };
 
   return (
@@ -156,7 +155,7 @@ export default function Maths6emePageDeux() {
       <div className="cours-header">
         <button
           className="cours-back"
-          onClick={() => router.push("/cours/college/6eme/maths")}
+          onClick={() => router.push("/cours/college/6eme/anglais")}
         >
           ← Retour
         </button>
@@ -183,10 +182,10 @@ export default function Maths6emePageDeux() {
           </span>
           <span className="breadcrumb-sep">›</span>
           <span
-            onClick={() => router.push("/cours/college/6eme/maths")}
+            onClick={() => router.push("/cours/college/6eme/anglais")}
             style={{ cursor: "pointer" }}
           >
-            Maths
+            Anglais
           </span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Partie 2</span>
@@ -194,8 +193,18 @@ export default function Maths6emePageDeux() {
       </div>
 
       <div className="cours-hero">
-        <div className="cours-hero-icon">🔢</div>
-        <h1 className="cours-hero-title">Mathématiques — 6ème</h1>
+        <div className="cours-hero-icon">
+          <img
+            src="https://flagcdn.com/w40/gb.png"
+            alt="UK"
+            style={{
+              width: "40px",
+              verticalAlign: "middle",
+              borderRadius: "4px",
+            }}
+          />
+        </div>
+        <h1 className="cours-hero-title">Anglais — 6ème</h1>
         <p className="cours-hero-desc">
           {estConnecte
             ? "Partie 2 — Choisis un thème !"
@@ -243,7 +252,7 @@ export default function Maths6emePageDeux() {
               key={t.id}
               className="theme-card"
               onClick={() =>
-                t.dispo && router.push(`/cours/college/6eme/maths/${t.id}`)
+                t.dispo && router.push(`/cours/college/6eme/anglais/${t.id}`)
               }
               style={
                 {
@@ -280,26 +289,6 @@ export default function Maths6emePageDeux() {
                   }}
                 >
                   👀 Découverte
-                </div>
-              )}
-              {!t.dispo && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "rgba(255,255,255,0.07)",
-                    color: "#999",
-                    fontSize: "0.85rem",
-                    fontWeight: 700,
-                    padding: "6px 16px",
-                    borderRadius: "20px",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  🔒 Bientôt
                 </div>
               )}
               <div className="theme-emoji">{t.emoji}</div>
@@ -366,7 +355,7 @@ export default function Maths6emePageDeux() {
               gap: "10px",
             }}
           >
-            🎯 Bilan Final Maths 6ème — Partie 2
+            🎯 Bilan Final Anglais 6ème — Partie 2
           </button>
           <p
             style={{
@@ -392,7 +381,7 @@ export default function Maths6emePageDeux() {
         }}
       >
         <button
-          onClick={() => router.push("/cours/college/6eme/maths")}
+          onClick={() => router.push("/cours/college/6eme/anglais")}
           style={{
             background: "rgba(255,255,255,0.06)",
             border: "1px solid rgba(255,255,255,0.15)",

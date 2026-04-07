@@ -117,9 +117,8 @@ export default function Anglais6emePage() {
 
   useEffect(() => {
     const init = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
       setEstConnecte(!!user);
       if (user) {
         const { data } = await supabase
@@ -142,6 +141,14 @@ export default function Anglais6emePage() {
     };
     init();
   }, []);
+
+  const handleBilan = () => {
+    if (!estConnecte) {
+      router.push("/inscription");
+      return;
+    }
+    router.push("/cours/college/6eme/anglais/bilan");
+  };
 
   return (
     <div className="cours-page">
@@ -232,7 +239,7 @@ export default function Anglais6emePage() {
         style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
       >
         {themes.map((t) => {
-          const statut = estConnecte ? statuts[t.id] || "jamais" : "jamais";
+          const statut = statuts[t.id] || "jamais";
           return (
             <div
               key={t.id}
@@ -256,7 +263,7 @@ export default function Anglais6emePage() {
                 } as React.CSSProperties
               }
             >
-              {estConnecte && !chargement && <BadgeStatut statut={statut} />}
+              {!chargement && <BadgeStatut statut={statut} />}
               {!estConnecte && !chargement && t.dispo && (
                 <div
                   style={{
@@ -280,7 +287,19 @@ export default function Anglais6emePage() {
               <div className="theme-emoji">{t.emoji}</div>
               <div className="theme-label">{t.label}</div>
               <div className="theme-desc">{t.desc}</div>
-              {estConnecte && !chargement && <PhraseStatut statut={statut} />}
+              {!chargement && <PhraseStatut statut={statut} />}
+              {!estConnecte && !chargement && t.dispo && (
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "#aaa",
+                    marginTop: "4px",
+                    marginBottom: "4px",
+                  }}
+                >
+                  5 questions par thème
+                </div>
+              )}
               <div
                 className="theme-arrow"
                 style={{ color: t.dispo ? t.color : "#888" }}
@@ -324,46 +343,85 @@ export default function Anglais6emePage() {
         </a>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "8px",
-        }}
-      >
-        <button
-          onClick={() => router.push("/cours/college/6eme/anglais/bilan")}
+      {!chargement && (
+        <div
           style={{
-            background: "linear-gradient(135deg, #f7974f, #f74f4f)",
-            border: "none",
-            borderRadius: "14px",
-            padding: "16px 32px",
-            color: "#fff",
-            fontWeight: 800,
-            fontSize: "1.1rem",
-            cursor: "pointer",
-            width: "100%",
-            maxWidth: "400px",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-          }}
-        >
-          🎯 Bilan Final Anglais 6ème
-        </button>
-        <p
-          style={{
-            color: "#aaa",
-            fontSize: "0.85rem",
             marginTop: "8px",
-            textAlign: "center",
           }}
         >
-          Teste toutes tes connaissances !
-        </p>
-      </div>
+          <button
+            onClick={handleBilan}
+            style={{
+              background: estConnecte
+                ? "linear-gradient(135deg, #f7974f, #f74f4f)"
+                : "rgba(255,255,255,0.08)",
+              border: "none",
+              borderRadius: "14px",
+              padding: "16px 32px",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: "1.1rem",
+              cursor: "pointer",
+              width: "100%",
+              maxWidth: "400px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+            }}
+          >
+            🎯 Bilan Final Anglais 6ème
+          </button>
+          <p
+            style={{
+              color: "#aaa",
+              fontSize: "0.85rem",
+              marginTop: "8px",
+              textAlign: "center",
+            }}
+          >
+            {estConnecte
+              ? "Teste toutes tes connaissances !"
+              : "🔒 Inscris-toi pour accéder au bilan"}
+          </p>
+        </div>
+      )}
+
+      {!chargement && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "16px",
+          }}
+        >
+          <button
+            onClick={() => router.push("/cours/college/6eme/anglais/page-2")}
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "14px",
+              padding: "14px 28px",
+              color: "#fff",
+              fontWeight: 700,
+              fontSize: "1rem",
+              cursor: "pointer",
+              width: "100%",
+              maxWidth: "400px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+            }}
+          >
+            📚 Cours suivants — Partie 2 →
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -39,17 +39,105 @@ const themes = [
   },
 ];
 
+type StatutTheme = "jamais" | "en-cours" | "valide";
+
+function getStatut(
+  meilleurScore: { score: number; total: number } | null,
+): StatutTheme {
+  if (!meilleurScore) return "jamais";
+  if (meilleurScore.score / meilleurScore.total >= 0.8) return "valide";
+  return "en-cours";
+}
+
+function BadgeStatut({ statut }: { statut: StatutTheme }) {
+  if (statut === "valide")
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          fontSize: "1.2rem",
+        }}
+      >
+        ✅
+      </div>
+    );
+  if (statut === "en-cours")
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          fontSize: "1.2rem",
+        }}
+      >
+        🟡
+      </div>
+    );
+  return null;
+}
+
+function PhraseStatut({ statut }: { statut: StatutTheme }) {
+  if (statut === "valide")
+    return (
+      <div
+        style={{
+          fontSize: "0.78rem",
+          color: "#2ec4b6",
+          fontWeight: 700,
+          marginTop: "4px",
+        }}
+      >
+        ✅ Validé !
+      </div>
+    );
+  if (statut === "en-cours")
+    return (
+      <div
+        style={{
+          fontSize: "0.78rem",
+          color: "#ffd166",
+          fontWeight: 700,
+          marginTop: "4px",
+        }}
+      >
+        🟡 À améliorer !
+      </div>
+    );
+  return null;
+}
+
 export default function Francais6emePageDeux() {
   const router = useRouter();
   const [estConnecte, setEstConnecte] = useState(false);
   const [chargement, setChargement] = useState(true);
+  const [statuts, setStatuts] = useState<Record<string, StatutTheme>>({});
 
   useEffect(() => {
     const init = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
       setEstConnecte(!!user);
+
+      if (user) {
+        const { data } = await supabase
+          .from("scores")
+          .select("theme, score, total")
+          .eq("user_id", user.id)
+          .eq("classe", "6eme")
+          .eq("matiere", "francais")
+          .order("score", { ascending: false });
+        if (data) {
+          const nouveauxStatuts: Record<string, StatutTheme> = {};
+          themes.forEach((t) => {
+            const meilleur = data.find((s) => s.theme === t.id) || null;
+            nouveauxStatuts[t.id] = getStatut(meilleur);
+          });
+          setStatuts(nouveauxStatuts);
+        }
+      }
       setChargement(false);
     };
     init();
@@ -148,62 +236,77 @@ export default function Francais6emePageDeux() {
         className="themes-grid"
         style={{ opacity: chargement ? 0.3 : 1, transition: "opacity 0.3s" }}
       >
-        {themes.map((t) => (
-          <div
-            key={t.id}
-            className="theme-card"
-            onClick={() =>
-              t.dispo && router.push(`/cours/college/6eme/francais/${t.id}`)
-            }
-            style={
-              {
-                "--card-color": t.color,
-                position: "relative",
-                cursor: t.dispo ? "pointer" : "not-allowed",
-                paddingTop: "44px",
-              } as React.CSSProperties
-            }
-          >
-            {!estConnecte && !chargement && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "10px",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  background: "rgba(79,142,247,0.15)",
-                  color: "#4f8ef7",
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  padding: "6px 16px",
-                  borderRadius: "20px",
-                  border: "1px solid rgba(79,142,247,0.3)",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                👀 Découverte
+        {themes.map((t) => {
+          const statut = statuts[t.id] || "jamais";
+          return (
+            <div
+              key={t.id}
+              className="theme-card"
+              onClick={() =>
+                t.dispo && router.push(`/cours/college/6eme/francais/${t.id}`)
+              }
+              style={
+                {
+                  "--card-color": t.color,
+                  position: "relative",
+                  cursor: t.dispo ? "pointer" : "not-allowed",
+                  paddingTop: "44px",
+                  border:
+                    statut === "valide"
+                      ? "2px solid rgba(46,196,182,0.4)"
+                      : statut === "en-cours"
+                        ? "2px solid rgba(255,209,102,0.4)"
+                        : "2px solid rgba(255,255,255,0.06)",
+                } as React.CSSProperties
+              }
+            >
+              {!chargement && <BadgeStatut statut={statut} />}
+              {!estConnecte && !chargement && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(79,142,247,0.15)",
+                    color: "#4f8ef7",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    padding: "6px 16px",
+                    borderRadius: "20px",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  👀 Découverte
+                </div>
+              )}
+              <div className="theme-emoji">{t.emoji}</div>
+              <div className="theme-label">{t.label}</div>
+              <div className="theme-desc">{t.desc}</div>
+              {!chargement && <PhraseStatut statut={statut} />}
+              {!estConnecte && !chargement && (
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "#aaa",
+                    marginTop: "4px",
+                    marginBottom: "4px",
+                  }}
+                >
+                  5 questions par thème
+                </div>
+              )}
+              <div className="theme-arrow" style={{ color: t.color }}>
+                {statut === "valide"
+                  ? "Refaire →"
+                  : statut === "en-cours"
+                    ? "Améliorer →"
+                    : "Commencer →"}
               </div>
-            )}
-            <div className="theme-emoji">{t.emoji}</div>
-            <div className="theme-label">{t.label}</div>
-            <div className="theme-desc">{t.desc}</div>
-            {!estConnecte && !chargement && (
-              <div
-                style={{
-                  fontSize: "0.75rem",
-                  color: "#aaa",
-                  marginTop: "4px",
-                  marginBottom: "4px",
-                }}
-              >
-                5 questions par thème
-              </div>
-            )}
-            <div className="theme-arrow" style={{ color: t.color }}>
-              Commencer →
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {!chargement && (
