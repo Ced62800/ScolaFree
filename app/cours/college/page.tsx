@@ -19,7 +19,7 @@ const classes = [
     emoji: "🌿",
     color: "#2ec4b6",
     desc: "Cinquième · 12 ans",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "4eme",
