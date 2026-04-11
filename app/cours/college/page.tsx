@@ -35,7 +35,7 @@ const classes = [
     emoji: "🚀",
     color: "#ff6b6b",
     desc: "Troisième · 14 ans",
-    dispo: false,
+    dispo: true,
   },
 ];
 

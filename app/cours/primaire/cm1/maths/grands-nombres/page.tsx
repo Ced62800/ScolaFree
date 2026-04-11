@@ -110,7 +110,7 @@ const questions = [
     id: 8,
     question:
       "Quel nombre = 3 centaines de milliers + 5 dizaines de milliers + 2 milliers ?",
-    options: ["352 000", "350 200", "352 000", "305 200"],
+    options: ["325 000", "350 200", "352 000", "305 200"],
     reponse: "352 000",
     explication: "300 000 + 50 000 + 2 000 = 352 000.",
     niveau: "moyen",
@@ -168,7 +168,9 @@ export default function GrandsNombresCM1() {
     () => shuffleArray(questionsActives[qIndex]?.options ?? []),
     [qIndex],
   );
-  const progression = Math.round((bonnes.length / questionsActives.length) * 100);
+  const progression = Math.round(
+    (bonnes.length / questionsActives.length) * 100,
+  );
 
   useEffect(() => {
     getBestScore(CLASSE, MATIERE, THEME).then(setBestScore);
@@ -331,12 +333,15 @@ export default function GrandsNombresCM1() {
           <div className="niveau-label">
             {niveauLabel(questionsActives[qIndex].niveau)}
           </div>
-          <div className="qcm-question">{questionsActives[qIndex].question}</div>
+          <div className="qcm-question">
+            {questionsActives[qIndex].question}
+          </div>
           <div className="qcm-options">
             {shuffledOptions.map((opt) => {
               let className = "qcm-option";
               if (selected) {
-                if (opt === questionsActives[qIndex].reponse) className += " correct";
+                if (opt === questionsActives[qIndex].reponse)
+                  className += " correct";
                 else if (opt === selected) className += " incorrect";
                 else className += " disabled";
               }
