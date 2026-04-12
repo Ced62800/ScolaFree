@@ -125,9 +125,6 @@ export default function Navbar() {
           />
         </div>
         <div className="nav-links">
-          <a href="#">Matières</a>
-          <a href="#">Niveaux</a>
-          <a href="#">À propos</a>
           {!loading && !prenom && (
             <a href="/connexion" className="nav-connexion">
               Connexion
@@ -192,15 +189,6 @@ export default function Navbar() {
       </nav>
 
       <div className={`mobile-menu${menuOpen ? " mobile-menu-open" : ""}`}>
-        <a href="#" onClick={() => setMenuOpen(false)}>
-          Matières
-        </a>
-        <a href="#" onClick={() => setMenuOpen(false)}>
-          Niveaux
-        </a>
-        <a href="#" onClick={() => setMenuOpen(false)}>
-          À propos
-        </a>
         <a href="/cours/primaire" onClick={() => setMenuOpen(false)}>
           Découvrir les cours
         </a>

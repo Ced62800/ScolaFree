@@ -33,7 +33,12 @@ export default function CoursPage() {
           ← Retour
         </button>
         <div className="cours-breadcrumb">
-          <span>Accueil</span>
+          <span
+            onClick={() => router.push("/")}
+            style={{ cursor: "pointer", color: "rgba(255,255,255,0.6)" }}
+          >
+            Accueil
+          </span>
           <span className="breadcrumb-sep">›</span>
           <span className="breadcrumb-active">Choisir un établissement</span>
         </div>

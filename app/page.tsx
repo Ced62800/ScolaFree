@@ -455,9 +455,10 @@ export default function Home() {
           />
         </div>
         <div className="footer-links">
-          <a href="#">Mentions légales</a>
-          <a href="#">Politique de confidentialité</a>
-          <a href="#">Contact</a>
+          <a href="/mentions-legales">Mentions légales</a>
+          <a href="/politique-confidentialite">Politique de confidentialité</a>
+          <a href="/a-propos">À propos</a>
+          <a href="mailto:desgardin.cedric@orange.fr">Contact</a>
         </div>
         <div className="footer-copy">
           © 2026 ScolaFree — Tous droits réservés
