@@ -279,25 +279,16 @@ export default function AProposPage() {
           <p style={{ color: "#ccc", lineHeight: "1.8" }}>
             Scolou est l'assistant pédagogique intégré à ScolaFree. Disponible
             sur chaque page de cours via le bouton{" "}
-            <h2
+            <img
+              src={SCOLOU_URL}
+              alt="Scolou"
               style={{
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                color: "#ffd166",
-                margin: 0,
+                width: "24px",
+                verticalAlign: "middle",
+                marginLeft: "4px",
+                marginRight: "4px",
               }}
-            >
-              <img
-                src={SCOLOU_URL}
-                alt="Scolou"
-                style={{
-                  width: "28px",
-                  verticalAlign: "middle",
-                  marginRight: "8px",
-                }}
-              />
-              Scolou, ton assistant IA
-            </h2>
+            />
             , il répond à tes questions sur les leçons en cours, t'explique les
             règles et t'aide à comprendre les exercices. Il s'adapte
             automatiquement à ton niveau de classe.
