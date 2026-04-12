@@ -6,7 +6,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 const CLASSE = "3eme";
 const MATIERE = "maths";
-const THEME = "geometrie-3";
+const THEME = "revision-brevet-maths";
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -26,189 +26,172 @@ type Question = {
 
 const questionsBase: Question[] = [
   {
-    question: "Quelle est la formule du volume d'une sphere de rayon r ?",
+    question: "Combien de points vaut l'epreuve de maths au Brevet ?",
+    options: ["50 points", "75 points", "100 points", "200 points"],
+    answer: "100 points",
+    fiche: {
+      regle:
+        "L'epreuve de maths au Brevet vaut 100 points. Elle dure 2 heures et comprend des exercices de calcul, geometrie, statistiques, probabilites et resolution de problemes.",
+      exemple:
+        "Structure typique : exercice de calcul (20 pts), geometrie (25 pts), statistiques/probabilites (25 pts), probleme (30 pts). Les points varient selon les annees.",
+      piege:
+        "Ne pas confondre avec le francais (3h). Les maths durent 2h. Bien gerer son temps : ne pas rester bloque sur un exercice.",
+      astuce:
+        "Brevet maths = 100 pts, 2h. Commencer par les exercices qu'on maitrise. Toujours montrer sa demarche meme si la reponse est fausse.",
+    },
+  },
+  {
+    question: "Simplifie l'expression : 3(x + 2) - 2(x - 1)",
+    options: ["x + 8", "x + 4", "5x + 8", "x - 4"],
+    answer: "x + 8",
+    fiche: {
+      regle:
+        "Developper et reduire : 3(x+2) - 2(x-1) = 3x + 6 - 2x + 2 = x + 8. Attention au signe lors de la distribution : -2 x (-1) = +2.",
+      exemple:
+        "3(x+2) = 3x + 6. -2(x-1) = -2x + 2. Total : 3x + 6 - 2x + 2 = x + 8.",
+      piege:
+        "-2(x-1) = -2x + 2, pas -2x - 2. Le signe moins distribue change le signe de chaque terme.",
+      astuce:
+        "Distribution : multiplier le facteur par CHAQUE terme. Attention aux signes : -2 x (-1) = +2. Reduire en regroupant les termes semblables.",
+    },
+  },
+  {
+    question:
+      "Dans un triangle ABC rectangle en A, AB = 6 et BC = 10. Calcule sin(C).",
     options: [
-      "V = 4 x pi x r^2",
-      "V = (4/3) x pi x r^3",
-      "V = pi x r^3",
-      "V = 2 x pi x r^3",
+      "sin(C) = 6/10",
+      "sin(C) = 8/10",
+      "sin(C) = 6/8",
+      "sin(C) = 10/6",
     ],
-    answer: "V = (4/3) x pi x r^3",
+    answer: "sin(C) = 6/10",
     fiche: {
       regle:
-        "Volume sphere = (4/3) x pi x r^3. Aire de la sphere = 4 x pi x r^2. A ne pas confondre : r^3 pour le volume, r^2 pour l'aire.",
+        "sin(C) = cote oppose a C / hypotenuse = AB / BC = 6/10 = 3/5. L'hypotenuse est BC (en face de l'angle droit A).",
       exemple:
-        "Sphere de rayon 3 cm : V = (4/3) x pi x 27 = 36 x pi environ 113,1 cm^3. Aire = 4 x pi x 9 = 36 x pi environ 113,1 cm^2.",
+        "Rectangle en A : hypotenuse = BC = 10. Pour angle C : oppose = AB = 6, adjacent = AC. sin(C) = 6/10 = 0,6.",
       piege:
-        "Volume sphere : r^3 (pas r^2). Aire sphere : r^2 (pas r^3). Les deux formules ont le meme coefficient 4 x pi mais les exposants different.",
+        "Rectangle en A = angle droit en A. L'hypotenuse est BC (en face de A). Pour sin(C) : oppose a C = AB (pas AC).",
       astuce:
-        "Sphere : V = (4/3) pi r^3. Retiens : 4/3 et r^3. L'aire = 4 pi r^2 (meme 4, mais r^2). Apprendre les deux ensemble.",
+        "SOH : Sin = Oppose/Hypotenuse. Identifier d'abord l'hypotenuse (en face de l'angle droit), puis l'oppose a l'angle cherche.",
     },
   },
   {
     question:
-      "Quelle est la formule du volume d'un cone de rayon r et de hauteur h ?",
+      "Une sphere a un rayon de 3 cm. Quel est son volume (en cm^3, arrondi a l'unite) ?",
+    options: ["113 cm^3", "36 cm^3", "339 cm^3", "28 cm^3"],
+    answer: "113 cm^3",
+    fiche: {
+      regle:
+        "V sphere = (4/3) x pi x r^3 = (4/3) x pi x 27 = 36 x pi environ 113,1 cm^3.",
+      exemple:
+        "r = 3 cm. r^3 = 27. V = (4/3) x pi x 27 = 36 pi environ 113 cm^3.",
+      piege:
+        "Ne pas confondre aire (4 pi r^2 = 4 pi x 9 = 36 pi aussi !) et volume. Ici les deux valent 36 pi mais avec des unites differentes (cm^2 vs cm^3).",
+      astuce:
+        "Sphere : V = (4/3) pi r^3. Aire = 4 pi r^2. Pour r=3 : les deux valent 36 pi ! Retenir les formules et les unites.",
+    },
+  },
+  {
+    question: "Dans une serie : 4, 7, 9, 12, 15, 18. Quelle est la mediane ?",
+    options: ["9", "10,5", "12", "9,5"],
+    answer: "10,5",
+    fiche: {
+      regle:
+        "Serie de 6 valeurs (nombre pair). Mediane = moyenne des 2 valeurs centrales = (9 + 12) / 2 = 10,5.",
+      exemple:
+        "Positions : 4(1), 7(2), 9(3), 12(4), 15(5), 18(6). Valeurs centrales = 3eme et 4eme = 9 et 12. Mediane = (9+12)/2 = 10,5.",
+      piege:
+        "Avec un nombre pair de valeurs, la mediane est la MOYENNE des deux valeurs du milieu. Ici (9+12)/2 = 10,5, pas 9 ni 12.",
+      astuce:
+        "n pair : mediane = moyenne des valeurs de rang n/2 et n/2+1. Ici n=6 : rang 3 (9) et rang 4 (12). Mediane = 10,5.",
+    },
+  },
+  {
+    question: "Resous l'equation : 2x + 5 = 13",
+    options: ["x = 3", "x = 4", "x = 9", "x = 6"],
+    answer: "x = 4",
+    fiche: {
+      regle:
+        "2x + 5 = 13. Soustraire 5 des deux membres : 2x = 8. Diviser par 2 : x = 4. Verification : 2x4 + 5 = 13. Correct.",
+      exemple:
+        "Etapes : 2x + 5 = 13 → 2x = 13 - 5 = 8 → x = 8/2 = 4. Toujours verifier en remplacant dans l'equation initiale.",
+      piege:
+        "Bien effectuer la meme operation des DEUX cotes de l'egalite. Soustraire 5 des deux cotes, puis diviser par 2 des deux cotes.",
+      astuce:
+        "Equation du 1er degre : isoler x etape par etape. Inverse de +5 = -5. Inverse de x2 = /2. Toujours verifier a la fin.",
+    },
+  },
+  {
+    question:
+      "Un sac contient 5 billes rouges et 3 billes bleues. On tire une bille au hasard. Quelle est la probabilite de tirer une bille bleue ?",
+    options: ["3/5", "3/8", "5/8", "1/3"],
+    answer: "3/8",
+    fiche: {
+      regle: "Total = 5 + 3 = 8 billes. Billes bleues = 3. P(bleue) = 3/8.",
+      exemple:
+        "P(bleue) = 3/8. P(rouge) = 5/8. Verification : 3/8 + 5/8 = 8/8 = 1. Correct.",
+      piege:
+        "Le denominateur = nombre TOTAL de billes (8), pas juste les bleues ou les rouges.",
+      astuce:
+        "P(evenement) = cas favorables / cas totaux. Toujours compter le total de toutes les billes.",
+    },
+  },
+  {
+    question: "Quelle est la racine carree de 169 ?",
+    options: ["11", "12", "13", "14"],
+    answer: "13",
+    fiche: {
+      regle:
+        "racine(169) = 13 car 13^2 = 169. Carres a connaitre : 11^2=121, 12^2=144, 13^2=169, 14^2=196, 15^2=225.",
+      exemple:
+        "13^2 = 169. Donc racine(169) = 13. Utilisation au Brevet : Pythagore, generalrice d'un cone, diagonale.",
+      piege:
+        "Ne pas confondre 169 avec 196 (14^2). Apprendre les carres de 1 a 15 evite les erreurs.",
+      astuce:
+        "Carres parfaits a memoriser jusqu'a 225. Au Brevet, reconnaitre 169 = 13^2 fait gagner du temps.",
+    },
+  },
+  {
+    question:
+      "Un cone a une hauteur de 8 cm et un rayon de 6 cm. Quel est son volume (arrondi a l'unite) ?",
+    options: ["301 cm^3", "904 cm^3", "288 cm^3", "150 cm^3"],
+    answer: "301 cm^3",
+    fiche: {
+      regle:
+        "V cone = (1/3) x pi x r^2 x h = (1/3) x pi x 36 x 8 = (1/3) x 288 x pi = 96 x pi environ 301,6 cm^3.",
+      exemple:
+        "r=6, h=8. r^2=36. V = (1/3) x pi x 36 x 8 = 96 pi environ 301 cm^3.",
+      piege:
+        "Ne pas oublier le (1/3) pour le cone. Sans ce facteur on calcule le volume du cylindre (904 cm^3), pas du cone.",
+      astuce:
+        "Cone = 1/3 cylindre. V = (1/3) pi r^2 h. Le 1/3 est essentiel pour tout solide a pointe.",
+    },
+  },
+  {
+    question:
+      "Un triangle a des cotes 9 cm, 12 cm et 15 cm. Est-il rectangle ?",
     options: [
-      "V = pi x r^2 x h",
-      "V = (1/3) x pi x r^2 x h",
-      "V = (2/3) x pi x r^2 x h",
-      "V = pi x r x h",
+      "Non, car 9^2 + 12^2 est different de 15^2",
+      "Oui, car 9^2 + 12^2 = 15^2",
+      "On ne peut pas savoir",
+      "Oui, car 15 est le plus grand",
     ],
-    answer: "V = (1/3) x pi x r^2 x h",
+    answer: "Oui, car 9^2 + 12^2 = 15^2",
     fiche: {
       regle:
-        "Volume cone = (1/3) x pi x r^2 x h. C'est un tiers du volume du cylindre de meme base et meme hauteur. Volume cylindre = pi x r^2 x h.",
+        "Reciproque de Pythagore : si c^2 = a^2 + b^2 (c = plus grand cote), le triangle est rectangle. 9^2 + 12^2 = 81 + 144 = 225 = 15^2.",
       exemple:
-        "Cone de rayon 4 cm et hauteur 9 cm : V = (1/3) x pi x 16 x 9 = 48 x pi environ 150,8 cm^3.",
+        "9^2 = 81. 12^2 = 144. 81 + 144 = 225. 15^2 = 225. Egalite verifiee : triangle rectangle ! Triplet (9,12,15) = 3 x (3,4,5).",
       piege:
-        "Ne pas oublier le (1/3) ! V cone = (1/3) V cylindre. Sans ce facteur, on calcule le volume du cylindre, pas du cone.",
+        "Toujours verifier avec le PLUS GRAND cote comme hypotenuse presumee. Ici 15 est le plus grand, donc on verifie si 9^2 + 12^2 = 15^2.",
       astuce:
-        "Cone = 1/3 cylindre. Pyramide = 1/3 prisme. Le facteur 1/3 s'applique a toutes les pointes ! Cylindre : pi r^2 h. Cone : (1/3) pi r^2 h.",
-    },
-  },
-  {
-    question:
-      "Un cylindre a un rayon de 5 cm et une hauteur de 10 cm. Quel est son volume (en cm^3, arrondi) ?",
-    options: ["785 cm^3", "1571 cm^3", "314 cm^3", "500 cm^3"],
-    answer: "785 cm^3",
-    fiche: {
-      regle:
-        "Volume cylindre = pi x r^2 x h. Avec r = 5 cm et h = 10 cm : V = pi x 25 x 10 = 250 x pi environ 785,4 cm^3.",
-      exemple: "V = pi x 5^2 x 10 = pi x 25 x 10 = 250 pi environ 785 cm^3.",
-      piege:
-        "Bien utiliser le rayon (5 cm), pas le diametre (10 cm). Si l'enonce donne le diametre, diviser par 2 pour obtenir le rayon.",
-      astuce:
-        "Cylindre : V = pi r^2 h. Retiens : base circulaire (pi r^2) x hauteur. Comme un prisme : aire de la base x hauteur.",
-    },
-  },
-  {
-    question: "Qu'est-ce qu'un patron d'un solide ?",
-    options: [
-      "La vue de dessus du solide",
-      "Le developpement plan du solide obtenu en 'deroulant' ses faces",
-      "La section du solide par un plan",
-      "La projection du solide sur un plan",
-    ],
-    answer: "Le developpement plan du solide obtenu en 'deroulant' ses faces",
-    fiche: {
-      regle:
-        "Le patron (ou developpement) d'un solide est la figure plane obtenue en decoupant et deroulant les faces du solide. En pliant le patron, on retrouve le solide.",
-      exemple:
-        "Patron d'un cube : 6 carres disposes en croix. Patron d'un cone : un secteur circulaire + un disque (la base). Patron d'un cylindre : rectangle + 2 disques.",
-      piege:
-        "Un meme solide peut avoir plusieurs patrons differents. Il n'y a pas un unique patron. Il faut verifier que le patron se referme correctement.",
-      astuce:
-        "Pour verifier un patron : les faces doivent avoir les bonnes dimensions et pouvoir se coller sans chevauchement ni manque.",
-    },
-  },
-  {
-    question:
-      "Quelle est la section d'une sphere par un plan passant par son centre ?",
-    options: ["Une ellipse", "Un disque", "Un cercle", "Un rectangle"],
-    answer: "Un cercle",
-    fiche: {
-      regle:
-        "La section d'une sphere de rayon R par un plan passant par son centre (grand cercle) est un cercle de rayon R. Une section par un plan quelconque donne aussi un cercle, mais de rayon plus petit.",
-      exemple:
-        "Sphere de rayon 5 cm coupee par un plan passant par le centre : cercle de rayon 5 cm. Si le plan est a 3 cm du centre : cercle de rayon 4 cm (Pythagore : 5^2-3^2=16, r=4).",
-      piege:
-        "La section d'une sphere est toujours un CERCLE (pas une ellipse). C'est une propriete specifique de la sphere.",
-      astuce:
-        "Sphere coupee par un plan = cercle. Grand cercle = plan par le centre (rayon = R). Petit cercle = plan pas par le centre (rayon < R).",
-    },
-  },
-  {
-    question:
-      "Quelle est la formule du volume d'une pyramide a base carree de cote a et de hauteur h ?",
-    options: [
-      "V = a^2 x h",
-      "V = (1/3) x a^2 x h",
-      "V = (1/2) x a^2 x h",
-      "V = a x h",
-    ],
-    answer: "V = (1/3) x a^2 x h",
-    fiche: {
-      regle:
-        "Volume pyramide = (1/3) x Aire de la base x hauteur. Pour une base carree de cote a : V = (1/3) x a^2 x h.",
-      exemple:
-        "Pyramide a base carree 6 cm, hauteur 9 cm : V = (1/3) x 36 x 9 = (1/3) x 324 = 108 cm^3.",
-      piege:
-        "Hauteur de la pyramide = hauteur perpendiculaire a la base (apotheme de volume), pas l'arete laterale. Bien distinguer les deux.",
-      astuce:
-        "Pyramide (et cone) = (1/3) x base x hauteur. Le 1/3 s'applique toujours aux solides a pointe. Prisme et cylindre : base x hauteur (sans 1/3).",
-    },
-  },
-  {
-    question: "Qu'est-ce que l'apotheme d'une pyramide reguliere ?",
-    options: [
-      "La hauteur de la pyramide",
-      "La longueur d'une arete laterale",
-      "La hauteur d'une face triangulaire laterale",
-      "Le rayon de la base",
-    ],
-    answer: "La hauteur d'une face triangulaire laterale",
-    fiche: {
-      regle:
-        "L'apotheme d'une pyramide reguliere est la hauteur d'une face triangulaire laterale, mesuree depuis le sommet de la pyramide jusqu'au milieu d'un cote de la base.",
-      exemple:
-        "Pour calculer l'aire laterale d'une pyramide : Aire laterale = (1/2) x perimetre de la base x apotheme. Utile pour calculer l'aire totale.",
-      piege:
-        "Apotheme ≠ hauteur de la pyramide. La hauteur va du sommet au centre de la base. L'apotheme va du sommet au milieu d'un cote de la base.",
-      astuce:
-        "Apotheme = hauteur d'une FACE (triangulaire). Hauteur = hauteur du SOLIDE (perpendiculaire a la base). Deux choses distinctes.",
-    },
-  },
-  {
-    question:
-      "Un cube de 4 cm de cote est plonge dans de l'eau. De combien l'eau monte-t-elle dans un recipient de base 10 cm x 10 cm ?",
-    options: ["6,4 cm", "0,64 cm", "1,6 cm", "4 cm"],
-    answer: "0,64 cm",
-    fiche: {
-      regle:
-        "Volume du cube = 4^3 = 64 cm^3. Ce volume correspond a la montee d'eau dans le recipient. Hauteur de montee = Volume / Aire de la base = 64 / (10 x 10) = 64/100 = 0,64 cm.",
-      exemple:
-        "V cube = 64 cm^3. Aire base recipient = 100 cm^2. Montee = 64/100 = 0,64 cm.",
-      piege:
-        "La montee d'eau depend du volume du solide plonge ET de la base du recipient. Ne pas confondre les deux dimensions.",
-      astuce:
-        "Principe d'Archimede simplifie : volume solide = base recipient x montee d'eau. Montee = V solide / Aire base.",
-    },
-  },
-  {
-    question:
-      "Quelle est l'aire totale d'un cylindre de rayon 3 cm et hauteur 8 cm (en cm^2, arrondie) ?",
-    options: ["188 cm^2", "207 cm^2", "150 cm^2", "226 cm^2"],
-    answer: "207 cm^2",
-    fiche: {
-      regle:
-        "Aire totale cylindre = 2 x pi x r^2 (les 2 bases) + 2 x pi x r x h (la surface laterale). Avec r=3 et h=8 : 2 x pi x 9 + 2 x pi x 3 x 8 = 18pi + 48pi = 66pi environ 207,3 cm^2.",
-      exemple:
-        "2 bases : 2 x pi x 9 = 18pi. Surface laterale : 2 x pi x 3 x 8 = 48pi. Total = 66pi environ 207 cm^2.",
-      piege:
-        "Aire totale = 2 bases + surface laterale. Ne pas oublier les 2 disques (bases). La surface laterale seule = 2 x pi x r x h.",
-      astuce:
-        "Cylindre : 3 parties. 2 disques (bases) = 2 pi r^2. Rectangle enroule (surface laterale) = 2 pi r h. Total = 2 pi r (r + h).",
-    },
-  },
-  {
-    question:
-      "Un cone a une hauteur de 12 cm et un rayon de base de 5 cm. Quelle est la longueur de sa generatrice (arete laterale) ?",
-    options: ["13 cm", "17 cm", "7 cm", "15 cm"],
-    answer: "13 cm",
-    fiche: {
-      regle:
-        "La generatrice du cone, le rayon et la hauteur forment un triangle rectangle. generatrice^2 = r^2 + h^2. Avec r=5 et h=12 : g^2 = 25+144 = 169, g = 13 cm.",
-      exemple:
-        "g^2 = 5^2 + 12^2 = 25 + 144 = 169. g = 13 cm. Triplet (5, 12, 13) !",
-      piege:
-        "La generatrice n'est pas la hauteur. La hauteur est perpendiculaire a la base. La generatrice va du sommet a un point du cercle de base.",
-      astuce:
-        "Generatrice cone = hypotenuse du triangle rectangle forme par r, h et g. g = racine(r^2 + h^2). Triplet (5,12,13) frequemment utilise.",
+        "Reconnaitre (9,12,15) = 3 x (3,4,5). Les multiples de triplets pythagoriciens sont aussi pythagoriciens. Gain de temps au Brevet.",
     },
   },
 ];
 
-export default function Geometrie3Page() {
+export default function RevisionBrevetMathsPage() {
   const router = useRouter();
   const { estConnecte, maxQuestions } = useContext(DecouverteContext);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -303,8 +286,8 @@ export default function Geometrie3Page() {
           </button>
         </div>
         <div className="lecon-wrapper">
-          <div className="lecon-badge">📐 Maths — 3ème</div>
-          <h1 className="lecon-titre">Geometrie dans l'espace</h1>
+          <div className="lecon-badge">🎓 Maths — 3ème</div>
+          <h1 className="lecon-titre">Revision Brevet — Maths</h1>
           {!estConnecte && (
             <div
               style={{
@@ -329,9 +312,8 @@ export default function Geometrie3Page() {
             </div>
           )}
           <div className="lecon-intro">
-            En 3eme, tu calcules des{" "}
-            <strong>volumes et aires de solides</strong> : sphere, cone,
-            cylindre, pyramide, et tu travailles sur les patrons et sections.
+            Prepare le <strong>Brevet de Maths</strong> : calcul, geometrie,
+            statistiques, probabilites, Pythagore, trigonometrie et volumes.
           </div>
           {estConnecte && (bestScore || lastScore) && (
             <div
@@ -408,41 +390,46 @@ export default function Geometrie3Page() {
           )}
           <div className="lecon-points">
             <div className="lecon-point">
-              <div className="lecon-point-titre">📦 Volumes des solides</div>
+              <div className="lecon-point-titre">
+                📋 Structure du Brevet Maths
+              </div>
               <div className="lecon-point-texte">
-                Cylindre : pi r^2 h. Cone : (1/3) pi r^2 h. Sphere : (4/3) pi
-                r^3. Pyramide : (1/3) x base x h. Les solides a pointe ont
-                toujours le facteur 1/3.
+                100 pts, 2 heures. Exercices de calcul, geometrie,
+                statistiques/probabilites et probleme. Toujours montrer sa
+                demarche meme si la reponse est fausse.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> Sphere r=3 : V
-                = (4/3) pi x 27 = 36 pi. Cone r=4, h=9 : V = (1/3) pi x 16 x 9 =
-                48 pi.
+                <span className="exemple-label">Conseil :</span> Commencer par
+                les questions maitrisees. Ne pas rester bloque. Une demarche
+                correcte rapporte des points meme sans le resultat final.
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">📏 Aires des solides</div>
+              <div className="lecon-point-titre">
+                🔑 Points cles a maitriser
+              </div>
               <div className="lecon-point-texte">
-                Sphere : 4 pi r^2. Cylindre : 2 pi r^2 + 2 pi r h = 2 pi r
-                (r+h). Cone : pi r^2 + pi r g (g = generatrice). Generatrice
-                cone : g = racine(r^2 + h^2).
+                Pythagore et reciproque. Trigonometrie (sin/cos/tan). Volumes
+                (sphere, cone, cylindre, pyramide). Statistiques (mediane,
+                quartiles). Probabilites (arbres, tableaux).
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> Cylindre r=3,
-                h=8 : aire = 2 pi x 3 x (3+8) = 6 pi x 11 = 66 pi.
+                <span className="exemple-label">Formules :</span> V sphere =
+                (4/3) pi r^3. V cone = (1/3) pi r^2 h. sin = opp/hyp. cos =
+                adj/hyp. tan = opp/adj.
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">✂️ Patrons et sections</div>
+              <div className="lecon-point-titre">💡 Strategies d'examen</div>
               <div className="lecon-point-texte">
-                Patron = developpement plan du solide. Section par un plan =
-                forme obtenue en coupant le solide. Sphere coupee = cercle.
-                Cylindre coupe parallelement a la base = cercle.
+                Lire tout le sujet avant de commencer. Verifier les calculs.
+                Faire des schemas en geometrie. Montrer toutes les etapes.
+                Relire avant de rendre.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> Patron cylindre
-                = rectangle + 2 disques. Patron cone = secteur circulaire +
-                disque.
+                <span className="exemple-label">Conseil :</span> En geometrie :
+                toujours faire un schema. En probabilites : faire un arbre ou un
+                tableau. En calcul : verifier en remplacant.
               </div>
             </div>
           </div>
@@ -775,10 +762,10 @@ export default function Geometrie3Page() {
     const emoji = pourcentage >= 80 ? "🏆" : pourcentage >= 60 ? "👍" : "💪";
     const message =
       pourcentage >= 80
-        ? "Excellent travail !"
+        ? "Tu es pret(e) pour le Brevet !"
         : pourcentage >= 60
-          ? "Bien joue !"
-          : "Continue a t'entrainer !";
+          ? "Bien joue, continue !"
+          : "Encore un peu de revision !";
     return (
       <div className="cours-page">
         <div className="cours-header">

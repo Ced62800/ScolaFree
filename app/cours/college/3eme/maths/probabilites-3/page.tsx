@@ -6,7 +6,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 const CLASSE = "3eme";
 const MATIERE = "maths";
-const THEME = "geometrie-3";
+const THEME = "probabilites-3";
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -26,189 +26,180 @@ type Question = {
 
 const questionsBase: Question[] = [
   {
-    question: "Quelle est la formule du volume d'une sphere de rayon r ?",
+    question:
+      "On lance un de a 6 faces. Quelle est la probabilite d'obtenir un nombre pair ?",
+    options: ["1/6", "1/3", "1/2", "2/3"],
+    answer: "1/2",
+    fiche: {
+      regle:
+        "Probabilite = nombre de cas favorables / nombre de cas possibles. Nombres pairs sur un de : 2, 4, 6 (3 cas). Total : 6 cas. P(pair) = 3/6 = 1/2.",
+      exemple:
+        "P(pair) = 3/6 = 1/2. P(impair) = 3/6 = 1/2. P(6) = 1/6. P(plus grand que 4) = 2/6 = 1/3.",
+      piege:
+        "La probabilite est toujours entre 0 et 1. P=0 = impossible. P=1 = certain. P=1/2 = aussi probable qu'improbable.",
+      astuce:
+        "P(evenement) = cas favorables / cas totaux. Toujours compter soigneusement les cas favorables et les cas totaux.",
+    },
+  },
+  {
+    question:
+      "Une urne contient 4 boules rouges, 3 bleues et 3 vertes. On tire une boule au hasard. Quelle est la probabilite de tirer une boule rouge ?",
+    options: ["4/10", "3/10", "4/7", "1/4"],
+    answer: "4/10",
+    fiche: {
+      regle:
+        "Total de boules = 4+3+3 = 10. Boules rouges = 4. P(rouge) = 4/10 = 2/5. On peut simplifier la fraction.",
+      exemple:
+        "P(rouge) = 4/10 = 2/5 = 0,4. P(bleue) = 3/10. P(verte) = 3/10. Verification : 4/10 + 3/10 + 3/10 = 10/10 = 1.",
+      piege:
+        "Ne pas oublier de compter le total de toutes les boules. Le denominateur est le nombre TOTAL d'issues possibles.",
+      astuce:
+        "Somme de toutes les probabilites = 1. Toujours verifier : P(rouge) + P(bleue) + P(verte) = 1.",
+    },
+  },
+  {
+    question:
+      "On lance deux pieces de monnaie. Quelle est la probabilite d'obtenir deux faces ?",
+    options: ["1/2", "1/3", "1/4", "1/6"],
+    answer: "1/4",
+    fiche: {
+      regle:
+        "Avec deux pieces, les issues possibles sont : (P,P), (P,F), (F,P), (F,F) - 4 issues equiprobables. Un seul cas favorable : (F,F). P = 1/4.",
+      exemple:
+        "Issues : PP, PF, FP, FF. P(deux faces) = 1/4. P(au moins une face) = 3/4. P(exactement une face) = 2/4 = 1/2.",
+      piege:
+        "Ne pas dire P = 1/3 en confondant les cas (PP, PF, FF). PF et FP sont deux cas DISTINCTS, pas un seul.",
+      astuce:
+        "Avec 2 pieces independantes : 2 x 2 = 4 issues. Avec 3 pieces : 2^3 = 8 issues. Lister toutes les issues evite les erreurs.",
+    },
+  },
+  {
+    question:
+      "Dans un sac : 5 billes rouges et 3 billes bleues. On tire deux billes SANS remise. Quelle est la probabilite que les deux soient rouges ?",
+    options: ["5/8 x 5/8", "5/8 x 4/7", "25/64", "5/14"],
+    answer: "5/8 x 4/7",
+    fiche: {
+      regle:
+        "Sans remise : la 2eme probabilite depend du resultat du 1er tirage. P(R1) = 5/8. Apres avoir tire une rouge, il reste 4 rouges sur 7 billes. P(R2|R1) = 4/7. P(R1 et R2) = 5/8 x 4/7.",
+      exemple: "P(deux rouges) = 5/8 x 4/7 = 20/56 = 5/14 environ 0,357.",
+      piege:
+        "Sans remise : ne pas reutiliser 5/8 pour le 2eme tirage. Apres avoir retire une bille, il en reste 7 et 4 rouges.",
+      astuce:
+        "Avec remise = independance, memes probabilites a chaque tirage. Sans remise = dependance, les probabilites changent a chaque tirage.",
+    },
+  },
+  {
+    question: "Qu'est-ce que la probabilite conditionnelle P(A|B) ?",
     options: [
-      "V = 4 x pi x r^2",
-      "V = (4/3) x pi x r^3",
-      "V = pi x r^3",
-      "V = 2 x pi x r^3",
+      "La probabilite que A et B se produisent simultanement",
+      "La probabilite de A sachant que B s'est produit",
+      "La probabilite de A plus la probabilite de B",
+      "La probabilite que ni A ni B ne se produisent",
     ],
-    answer: "V = (4/3) x pi x r^3",
+    answer: "La probabilite de A sachant que B s'est produit",
     fiche: {
       regle:
-        "Volume sphere = (4/3) x pi x r^3. Aire de la sphere = 4 x pi x r^2. A ne pas confondre : r^3 pour le volume, r^2 pour l'aire.",
+        "P(A|B) = probabilite de A sachant que B est realise = P(A et B) / P(B). La barre | se lit 'sachant que'. On restreint l'univers a B.",
       exemple:
-        "Sphere de rayon 3 cm : V = (4/3) x pi x 27 = 36 x pi environ 113,1 cm^3. Aire = 4 x pi x 9 = 36 x pi environ 113,1 cm^2.",
+        "Dans une classe : 60% ont reussi maths, 40% ont reussi les deux matieres. P(reussi francais | reussi maths) = 0,4/0,6 = 2/3.",
       piege:
-        "Volume sphere : r^3 (pas r^2). Aire sphere : r^2 (pas r^3). Les deux formules ont le meme coefficient 4 x pi mais les exposants different.",
+        "P(A|B) n'est pas egal a P(B|A) en general. Ce sont deux probabilites conditionnelles differentes.",
       astuce:
-        "Sphere : V = (4/3) pi r^3. Retiens : 4/3 et r^3. L'aire = 4 pi r^2 (meme 4, mais r^2). Apprendre les deux ensemble.",
+        "P(A|B) = P(A et B) / P(B). Lire : 'Parmi les cas ou B est realise, quelle fraction verifie aussi A ?'",
     },
   },
   {
     question:
-      "Quelle est la formule du volume d'un cone de rayon r et de hauteur h ?",
+      "Un arbre de probabilites montre que P(A) = 0,3 et P(B|A) = 0,6. Quelle est P(A et B) ?",
+    options: ["0,9", "0,18", "0,3", "0,6"],
+    answer: "0,18",
+    fiche: {
+      regle:
+        "Regle de multiplication : P(A et B) = P(A) x P(B|A) = 0,3 x 0,6 = 0,18. Sur un arbre, on multiplie les probabilites le long des branches.",
+      exemple:
+        "P(A) = 0,3. P(B|A) = 0,6. P(A et B) = 0,3 x 0,6 = 0,18. De meme : P(A) = 0,3 et P(non-B|A) = 0,4 : P(A et non-B) = 0,3 x 0,4 = 0,12.",
+      piege:
+        "Sur un arbre : multiplier le long des branches (ET). Pour obtenir P(B) au total : additionner les branches qui menent a B (OU).",
+      astuce:
+        "Arbre : x le long des branches (ET). + entre les branches paralleles (OU). Verification : somme des feuilles = 1.",
+    },
+  },
+  {
+    question:
+      "On tire une carte dans un jeu de 32 cartes. Quelle est la probabilite de tirer un as OU un roi ?",
+    options: ["1/8", "1/4", "2/32", "1/16"],
+    answer: "1/4",
+    fiche: {
+      regle:
+        "Dans un jeu de 32 cartes : 4 as + 4 rois = 8 cartes favorables. P(as ou roi) = 8/32 = 1/4. Quand les evenements sont incompatibles (mutuellement exclusifs) : P(A ou B) = P(A) + P(B).",
+      exemple:
+        "P(as) = 4/32 = 1/8. P(roi) = 4/32 = 1/8. P(as ou roi) = 4/32 + 4/32 = 8/32 = 1/4. Les evenements 'as' et 'roi' sont incompatibles.",
+      piege:
+        "P(A ou B) = P(A) + P(B) SEULEMENT si A et B sont incompatibles. Si ils peuvent se produire en meme temps : P(A ou B) = P(A) + P(B) - P(A et B).",
+      astuce:
+        "Incompatibles (mutuellement exclusifs) : P(A ou B) = P(A) + P(B). Compatibles : P(A ou B) = P(A) + P(B) - P(A et B).",
+    },
+  },
+  {
+    question:
+      "Dans un tableau de contingence : 200 eleves dont 120 filles. 80 filles aiment les maths et 40 garcons aiment les maths. P(aime maths | fille) = ?",
+    options: ["80/200", "80/120", "80/160", "120/200"],
+    answer: "80/120",
+    fiche: {
+      regle:
+        "P(aime maths | fille) = nombre de filles qui aiment maths / nombre total de filles = 80/120 = 2/3. On restreint l'univers aux filles uniquement.",
+      exemple:
+        "P(aime maths | fille) = 80/120 = 2/3 environ 0,667. P(aime maths | garcon) = 40/80 = 1/2 = 0,5.",
+      piege:
+        "Le denominateur est le nombre de filles (120), pas le nombre total d'eleves (200). La probabilite conditionnelle restreint l'univers.",
+      astuce:
+        "Probabilite conditionnelle sur tableau : regarder uniquement la ligne ou colonne concernee. Denominateur = total de cette ligne/colonne.",
+    },
+  },
+  {
+    question: "Deux evenements A et B sont independants si :",
     options: [
-      "V = pi x r^2 x h",
-      "V = (1/3) x pi x r^2 x h",
-      "V = (2/3) x pi x r^2 x h",
-      "V = pi x r x h",
+      "P(A et B) = P(A) + P(B)",
+      "P(A et B) = P(A) x P(B)",
+      "P(A|B) = P(B)",
+      "P(A) = P(B)",
     ],
-    answer: "V = (1/3) x pi x r^2 x h",
+    answer: "P(A et B) = P(A) x P(B)",
     fiche: {
       regle:
-        "Volume cone = (1/3) x pi x r^2 x h. C'est un tiers du volume du cylindre de meme base et meme hauteur. Volume cylindre = pi x r^2 x h.",
+        "Deux evenements sont independants si la realisation de l'un n'influence pas la probabilite de l'autre. Definition : P(A et B) = P(A) x P(B), ce qui equivaut a P(A|B) = P(A).",
       exemple:
-        "Cone de rayon 4 cm et hauteur 9 cm : V = (1/3) x pi x 16 x 9 = 48 x pi environ 150,8 cm^3.",
+        "Lancer deux des : P(6 sur de 1 ET 6 sur de 2) = 1/6 x 1/6 = 1/36. Les deux des sont independants.",
       piege:
-        "Ne pas oublier le (1/3) ! V cone = (1/3) V cylindre. Sans ce facteur, on calcule le volume du cylindre, pas du cone.",
+        "Independance n'est pas la meme chose qu'incompatibilite. Des evenements incompatibles (P(A et B)=0) sont tres dependants, pas independants !",
       astuce:
-        "Cone = 1/3 cylindre. Pyramide = 1/3 prisme. Le facteur 1/3 s'applique a toutes les pointes ! Cylindre : pi r^2 h. Cone : (1/3) pi r^2 h.",
+        "Independants : P(A et B) = P(A) x P(B). Incompatibles : P(A et B) = 0. Bien distinguer les deux concepts.",
     },
   },
   {
     question:
-      "Un cylindre a un rayon de 5 cm et une hauteur de 10 cm. Quel est son volume (en cm^3, arrondi) ?",
-    options: ["785 cm^3", "1571 cm^3", "314 cm^3", "500 cm^3"],
-    answer: "785 cm^3",
-    fiche: {
-      regle:
-        "Volume cylindre = pi x r^2 x h. Avec r = 5 cm et h = 10 cm : V = pi x 25 x 10 = 250 x pi environ 785,4 cm^3.",
-      exemple: "V = pi x 5^2 x 10 = pi x 25 x 10 = 250 pi environ 785 cm^3.",
-      piege:
-        "Bien utiliser le rayon (5 cm), pas le diametre (10 cm). Si l'enonce donne le diametre, diviser par 2 pour obtenir le rayon.",
-      astuce:
-        "Cylindre : V = pi r^2 h. Retiens : base circulaire (pi r^2) x hauteur. Comme un prisme : aire de la base x hauteur.",
-    },
-  },
-  {
-    question: "Qu'est-ce qu'un patron d'un solide ?",
+      "Loi des grands nombres : si on repete une experience aleatoire un tres grand nombre de fois, la frequence d'un evenement :",
     options: [
-      "La vue de dessus du solide",
-      "Le developpement plan du solide obtenu en 'deroulant' ses faces",
-      "La section du solide par un plan",
-      "La projection du solide sur un plan",
+      "Reste toujours egale a la probabilite theorique",
+      "Se rapproche de la probabilite theorique",
+      "Devient superieure a la probabilite theorique",
+      "Est impossible a predire",
     ],
-    answer: "Le developpement plan du solide obtenu en 'deroulant' ses faces",
+    answer: "Se rapproche de la probabilite theorique",
     fiche: {
       regle:
-        "Le patron (ou developpement) d'un solide est la figure plane obtenue en decoupant et deroulant les faces du solide. En pliant le patron, on retrouve le solide.",
+        "La loi des grands nombres stipule que la frequence observee d'un evenement se rapproche de sa probabilite theorique quand le nombre d'experiences augmente. Elle ne devient jamais egale (a cause du hasard).",
       exemple:
-        "Patron d'un cube : 6 carres disposes en croix. Patron d'un cone : un secteur circulaire + un disque (la base). Patron d'un cylindre : rectangle + 2 disques.",
+        "On lance une piece 10 fois : on peut obtenir 7 faces (frequence 0,7, loin de 0,5). Avec 10 000 lancers, la frequence sera tres proche de 0,5.",
       piege:
-        "Un meme solide peut avoir plusieurs patrons differents. Il n'y a pas un unique patron. Il faut verifier que le patron se referme correctement.",
+        "La frequence se RAPPROCHE de la probabilite mais n'est jamais exactement egale (sauf par hasard). Le hasard subsiste toujours.",
       astuce:
-        "Pour verifier un patron : les faces doivent avoir les bonnes dimensions et pouvoir se coller sans chevauchement ni manque.",
-    },
-  },
-  {
-    question:
-      "Quelle est la section d'une sphere par un plan passant par son centre ?",
-    options: ["Une ellipse", "Un disque", "Un cercle", "Un rectangle"],
-    answer: "Un cercle",
-    fiche: {
-      regle:
-        "La section d'une sphere de rayon R par un plan passant par son centre (grand cercle) est un cercle de rayon R. Une section par un plan quelconque donne aussi un cercle, mais de rayon plus petit.",
-      exemple:
-        "Sphere de rayon 5 cm coupee par un plan passant par le centre : cercle de rayon 5 cm. Si le plan est a 3 cm du centre : cercle de rayon 4 cm (Pythagore : 5^2-3^2=16, r=4).",
-      piege:
-        "La section d'une sphere est toujours un CERCLE (pas une ellipse). C'est une propriete specifique de la sphere.",
-      astuce:
-        "Sphere coupee par un plan = cercle. Grand cercle = plan par le centre (rayon = R). Petit cercle = plan pas par le centre (rayon < R).",
-    },
-  },
-  {
-    question:
-      "Quelle est la formule du volume d'une pyramide a base carree de cote a et de hauteur h ?",
-    options: [
-      "V = a^2 x h",
-      "V = (1/3) x a^2 x h",
-      "V = (1/2) x a^2 x h",
-      "V = a x h",
-    ],
-    answer: "V = (1/3) x a^2 x h",
-    fiche: {
-      regle:
-        "Volume pyramide = (1/3) x Aire de la base x hauteur. Pour une base carree de cote a : V = (1/3) x a^2 x h.",
-      exemple:
-        "Pyramide a base carree 6 cm, hauteur 9 cm : V = (1/3) x 36 x 9 = (1/3) x 324 = 108 cm^3.",
-      piege:
-        "Hauteur de la pyramide = hauteur perpendiculaire a la base (apotheme de volume), pas l'arete laterale. Bien distinguer les deux.",
-      astuce:
-        "Pyramide (et cone) = (1/3) x base x hauteur. Le 1/3 s'applique toujours aux solides a pointe. Prisme et cylindre : base x hauteur (sans 1/3).",
-    },
-  },
-  {
-    question: "Qu'est-ce que l'apotheme d'une pyramide reguliere ?",
-    options: [
-      "La hauteur de la pyramide",
-      "La longueur d'une arete laterale",
-      "La hauteur d'une face triangulaire laterale",
-      "Le rayon de la base",
-    ],
-    answer: "La hauteur d'une face triangulaire laterale",
-    fiche: {
-      regle:
-        "L'apotheme d'une pyramide reguliere est la hauteur d'une face triangulaire laterale, mesuree depuis le sommet de la pyramide jusqu'au milieu d'un cote de la base.",
-      exemple:
-        "Pour calculer l'aire laterale d'une pyramide : Aire laterale = (1/2) x perimetre de la base x apotheme. Utile pour calculer l'aire totale.",
-      piege:
-        "Apotheme ≠ hauteur de la pyramide. La hauteur va du sommet au centre de la base. L'apotheme va du sommet au milieu d'un cote de la base.",
-      astuce:
-        "Apotheme = hauteur d'une FACE (triangulaire). Hauteur = hauteur du SOLIDE (perpendiculaire a la base). Deux choses distinctes.",
-    },
-  },
-  {
-    question:
-      "Un cube de 4 cm de cote est plonge dans de l'eau. De combien l'eau monte-t-elle dans un recipient de base 10 cm x 10 cm ?",
-    options: ["6,4 cm", "0,64 cm", "1,6 cm", "4 cm"],
-    answer: "0,64 cm",
-    fiche: {
-      regle:
-        "Volume du cube = 4^3 = 64 cm^3. Ce volume correspond a la montee d'eau dans le recipient. Hauteur de montee = Volume / Aire de la base = 64 / (10 x 10) = 64/100 = 0,64 cm.",
-      exemple:
-        "V cube = 64 cm^3. Aire base recipient = 100 cm^2. Montee = 64/100 = 0,64 cm.",
-      piege:
-        "La montee d'eau depend du volume du solide plonge ET de la base du recipient. Ne pas confondre les deux dimensions.",
-      astuce:
-        "Principe d'Archimede simplifie : volume solide = base recipient x montee d'eau. Montee = V solide / Aire base.",
-    },
-  },
-  {
-    question:
-      "Quelle est l'aire totale d'un cylindre de rayon 3 cm et hauteur 8 cm (en cm^2, arrondie) ?",
-    options: ["188 cm^2", "207 cm^2", "150 cm^2", "226 cm^2"],
-    answer: "207 cm^2",
-    fiche: {
-      regle:
-        "Aire totale cylindre = 2 x pi x r^2 (les 2 bases) + 2 x pi x r x h (la surface laterale). Avec r=3 et h=8 : 2 x pi x 9 + 2 x pi x 3 x 8 = 18pi + 48pi = 66pi environ 207,3 cm^2.",
-      exemple:
-        "2 bases : 2 x pi x 9 = 18pi. Surface laterale : 2 x pi x 3 x 8 = 48pi. Total = 66pi environ 207 cm^2.",
-      piege:
-        "Aire totale = 2 bases + surface laterale. Ne pas oublier les 2 disques (bases). La surface laterale seule = 2 x pi x r x h.",
-      astuce:
-        "Cylindre : 3 parties. 2 disques (bases) = 2 pi r^2. Rectangle enroule (surface laterale) = 2 pi r h. Total = 2 pi r (r + h).",
-    },
-  },
-  {
-    question:
-      "Un cone a une hauteur de 12 cm et un rayon de base de 5 cm. Quelle est la longueur de sa generatrice (arete laterale) ?",
-    options: ["13 cm", "17 cm", "7 cm", "15 cm"],
-    answer: "13 cm",
-    fiche: {
-      regle:
-        "La generatrice du cone, le rayon et la hauteur forment un triangle rectangle. generatrice^2 = r^2 + h^2. Avec r=5 et h=12 : g^2 = 25+144 = 169, g = 13 cm.",
-      exemple:
-        "g^2 = 5^2 + 12^2 = 25 + 144 = 169. g = 13 cm. Triplet (5, 12, 13) !",
-      piege:
-        "La generatrice n'est pas la hauteur. La hauteur est perpendiculaire a la base. La generatrice va du sommet a un point du cercle de base.",
-      astuce:
-        "Generatrice cone = hypotenuse du triangle rectangle forme par r, h et g. g = racine(r^2 + h^2). Triplet (5,12,13) frequemment utilise.",
+        "Loi des grands nombres = plus on repete, plus la frequence s'approche de la probabilite. Fondement de la simulation et des statistiques.",
     },
   },
 ];
 
-export default function Geometrie3Page() {
+export default function Probabilites3Page() {
   const router = useRouter();
   const { estConnecte, maxQuestions } = useContext(DecouverteContext);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -303,8 +294,8 @@ export default function Geometrie3Page() {
           </button>
         </div>
         <div className="lecon-wrapper">
-          <div className="lecon-badge">📐 Maths — 3ème</div>
-          <h1 className="lecon-titre">Geometrie dans l'espace</h1>
+          <div className="lecon-badge">🎲 Maths — 3ème</div>
+          <h1 className="lecon-titre">Probabilites</h1>
           {!estConnecte && (
             <div
               style={{
@@ -329,9 +320,9 @@ export default function Geometrie3Page() {
             </div>
           )}
           <div className="lecon-intro">
-            En 3eme, tu calcules des{" "}
-            <strong>volumes et aires de solides</strong> : sphere, cone,
-            cylindre, pyramide, et tu travailles sur les patrons et sections.
+            En 3eme, tu approfondis les <strong>probabilites</strong> :
+            probabilite conditionnelle, arbres, tableaux de contingence,
+            independance et loi des grands nombres.
           </div>
           {estConnecte && (bestScore || lastScore) && (
             <div
@@ -408,41 +399,44 @@ export default function Geometrie3Page() {
           )}
           <div className="lecon-points">
             <div className="lecon-point">
-              <div className="lecon-point-titre">📦 Volumes des solides</div>
+              <div className="lecon-point-titre">📊 Probabilite de base</div>
               <div className="lecon-point-texte">
-                Cylindre : pi r^2 h. Cone : (1/3) pi r^2 h. Sphere : (4/3) pi
-                r^3. Pyramide : (1/3) x base x h. Les solides a pointe ont
-                toujours le facteur 1/3.
+                P(A) = cas favorables / cas totaux. Toujours entre 0 et 1. Somme
+                de toutes les probabilites = 1. Avec/sans remise : les
+                probabilites changent sans remise.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> Sphere r=3 : V
-                = (4/3) pi x 27 = 36 pi. Cone r=4, h=9 : V = (1/3) pi x 16 x 9 =
-                48 pi.
+                <span className="exemple-label">Exemple :</span> De a 6 faces :
+                P(pair) = 3/6 = 1/2. P(6) = 1/6. P(pair ou impair) = 1.
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">📏 Aires des solides</div>
+              <div className="lecon-point-titre">
+                🌳 Arbres et probabilite conditionnelle
+              </div>
               <div className="lecon-point-texte">
-                Sphere : 4 pi r^2. Cylindre : 2 pi r^2 + 2 pi r h = 2 pi r
-                (r+h). Cone : pi r^2 + pi r g (g = generatrice). Generatrice
-                cone : g = racine(r^2 + h^2).
+                P(A|B) = probabilite de A sachant B = P(A et B)/P(B). Sur un
+                arbre : multiplier le long des branches (ET), additionner les
+                branches paralleles (OU).
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> Cylindre r=3,
-                h=8 : aire = 2 pi x 3 x (3+8) = 6 pi x 11 = 66 pi.
+                <span className="exemple-label">Exemple :</span> P(A)=0,3 et
+                P(B|A)=0,6. P(A et B) = 0,3 x 0,6 = 0,18.
               </div>
             </div>
             <div className="lecon-point">
-              <div className="lecon-point-titre">✂️ Patrons et sections</div>
+              <div className="lecon-point-titre">
+                🔗 Independance et loi des grands nombres
+              </div>
               <div className="lecon-point-texte">
-                Patron = developpement plan du solide. Section par un plan =
-                forme obtenue en coupant le solide. Sphere coupee = cercle.
-                Cylindre coupe parallelement a la base = cercle.
+                Independants : P(A et B) = P(A) x P(B). Loi des grands nombres :
+                quand n augmente, la frequence se rapproche de la probabilite
+                theorique.
               </div>
               <div className="lecon-point-exemple">
-                <span className="exemple-label">Exemple :</span> Patron cylindre
-                = rectangle + 2 disques. Patron cone = secteur circulaire +
-                disque.
+                <span className="exemple-label">Exemple :</span> Deux des :
+                P(double 6) = 1/6 x 1/6 = 1/36. 10 000 lancers d'une piece :
+                frequence face environ 0,5.
               </div>
             </div>
           </div>
