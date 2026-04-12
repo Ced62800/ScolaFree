@@ -41,12 +41,37 @@ export default function CinquiemePage() {
   const router = useRouter();
   const [estConnecte, setEstConnecte] = useState(false);
   const [chargement, setChargement] = useState(true);
+  const [statutsMatieres, setStatutsMatieres] = useState<Record<string, "valide" | "en-cours">>({});
 
   useEffect(() => {
     const init = async () => {
       const { data: sessionData } = await supabase.auth.getSession();
       const user = sessionData?.session?.user;
       setEstConnecte(!!user);
+      if (user) {
+        const { data } = await supabase
+          .from("scores")
+          .select("matiere, theme, score, total")
+          .eq("user_id", user.id)
+          .eq("classe", "5eme")
+          .in("theme", ["bilan", "bilan-2"])
+          .order("score", { ascending: false });
+        if (data) {
+          const statutsMap: Record<string, "valide" | "en-cours"> = {};
+          const parMatiere: Record<string, { score: number; total: number }[]> = {};
+          for (const s of data) {
+            if (!parMatiere[s.matiere]) parMatiere[s.matiere] = [];
+            parMatiere[s.matiere].push(s);
+          }
+          for (const [matiere, scores] of Object.entries(parMatiere)) {
+            const meilleur = scores.reduce((best, s) =>
+              s.score / s.total > best.score / best.total ? s : best
+            );
+            statutsMap[matiere] = meilleur.score / meilleur.total >= 0.8 ? "valide" : "en-cours";
+          }
+          setStatutsMatieres(statutsMap);
+        }
+      }
       setChargement(false);
     };
     init();
@@ -160,6 +185,16 @@ export default function CinquiemePage() {
                 👀 Découverte
               </div>
             )}
+            {estConnecte && !chargement && statutsMatieres[m.id] && (
+                <div style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  fontSize: "1.2rem",
+                }}>
+                  {statutsMatieres[m.id] === "valide" ? "✅" : "🟡"}
+                </div>
+              )}
             <div className="theme-emoji">{m.emoji}</div>
             <div className="theme-label">{m.label}</div>
             <div className="theme-desc">{m.desc}</div>
