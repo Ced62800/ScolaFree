@@ -18,7 +18,6 @@ type Profile = {
 const CLASSES_PAR_NIVEAU: Record<string, string[]> = {
   primaire: ["cp", "ce1", "ce2", "cm1", "cm2"],
   college: ["6eme", "5eme", "4eme", "3eme"],
-  lycee: ["seconde", "premiere", "terminale"],
 };
 
 const CLASSE_LABELS: Record<string, string> = {
@@ -31,9 +30,6 @@ const CLASSE_LABELS: Record<string, string> = {
   "5eme": "5ème",
   "4eme": "4ème",
   "3eme": "3ème",
-  seconde: "Seconde",
-  premiere: "Première",
-  terminale: "Terminale",
 };
 
 export default function Admin() {
@@ -129,7 +125,6 @@ export default function Admin() {
     total: profiles.length,
     primaire: profiles.filter((p) => p.niveau === "primaire").length,
     college: profiles.filter((p) => p.niveau === "college").length,
-    lycee: profiles.filter((p) => p.niveau === "lycee").length,
   };
 
   return (
@@ -215,10 +210,6 @@ export default function Admin() {
             <div className="admin-stat-num">{stats.college}</div>
             <div className="admin-stat-label">Collège</div>
           </div>
-          <div className="admin-stat-card">
-            <div className="admin-stat-num">{stats.lycee}</div>
-            <div className="admin-stat-label">Lycée</div>
-          </div>
         </div>
 
         <div className="admin-table-wrapper">
@@ -252,7 +243,6 @@ export default function Admin() {
                   >
                     <option value="primaire">Primaire</option>
                     <option value="college">Collège</option>
-                    <option value="lycee">Lycée</option>
                   </select>
                 </div>
                 <div className="admin-user-card-row">
@@ -317,7 +307,6 @@ export default function Admin() {
                     >
                       <option value="primaire">Primaire</option>
                       <option value="college">Collège</option>
-                      <option value="lycee">Lycée</option>
                     </select>
                   </td>
                   <td>
