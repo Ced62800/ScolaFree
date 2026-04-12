@@ -113,8 +113,10 @@ type ClasseBilans = Record<string, MoyenneMatiere>;
 
 export default function Home() {
   const [prenom, setPrenom] = useState("");
+  const [estConnecte, setEstConnecte] = useState(false);
   const [classeEleve, setClasseEleve] = useState<string | null>(null);
   const [bilans, setBilans] = useState<ClasseBilans>({});
+  const [chargement, setChargement] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -123,6 +125,7 @@ export default function Home() {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
+        setEstConnecte(true);
         const { data: profile } = await supabase
           .from("profiles")
           .select("prenom, classe")
@@ -165,6 +168,7 @@ export default function Home() {
           }
         }
       }
+      setChargement(false);
     };
     getUser();
   }, []);
@@ -216,7 +220,7 @@ export default function Home() {
           <p className="desc">
             Une plateforme éducative complète pour{" "}
             <strong>apprendre, réviser et progresser</strong> en Français,
-            Mathématiques et Anglais — du Primaire au Lycée.
+            Mathématiques et Anglais — du Primaire au Collège.
           </p>
           <div className="tags">
             <span className="tag tag-blue">📖 Français</span>
@@ -235,18 +239,34 @@ export default function Home() {
               Anglais
             </span>
           </div>
-          <div className="cta-row">
-            <a
-              href="/inscription"
-              className="btn-primary"
-              style={{ background: "#00b4c8" }}
-            >
-              Inscription →
-            </a>
-            <a href="/cours" className="btn-secondary">
-              Découvrir les cours
-            </a>
-          </div>
+
+          {/* CTA selon l'état de connexion */}
+          {!chargement && (
+            <div className="cta-row">
+              {estConnecte ? (
+                <a
+                  href="/cours"
+                  className="btn-primary"
+                  style={{ background: "#00b4c8" }}
+                >
+                  Commencer →
+                </a>
+              ) : (
+                <>
+                  <a
+                    href="/inscription"
+                    className="btn-primary"
+                    style={{ background: "#00b4c8" }}
+                  >
+                    Inscription →
+                  </a>
+                  <a href="/cours" className="btn-secondary">
+                    Découvrir les cours
+                  </a>
+                </>
+              )}
+            </div>
+          )}
         </div>
         <div className="stats">
           <div className="stat-item">
