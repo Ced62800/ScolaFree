@@ -21,15 +21,6 @@ const niveaux = [
     color: "#2ec4b6",
     dispo: true,
   },
-  {
-    id: "lycee",
-    label: "Lycée",
-    emoji: "🎓",
-    desc: "Seconde · Première · Terminale",
-    age: "15 à 18 ans",
-    color: "#ffd166",
-    dispo: false,
-  },
 ];
 
 export default function CoursPage() {
@@ -123,35 +114,19 @@ export default function CoursPage() {
             >
               {n.age}
             </div>
-            {n.dispo ? (
-              <span
-                style={{
-                  display: "inline-block",
-                  color: "#fff",
-                  background: n.color,
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
-                  padding: "10px 32px",
-                  borderRadius: "14px",
-                }}
-              >
-                Accéder →
-              </span>
-            ) : (
-              <span
-                style={{
-                  display: "inline-block",
-                  background: "rgba(255,255,255,0.08)",
-                  color: "#666",
-                  fontSize: "0.95rem",
-                  fontWeight: 600,
-                  padding: "8px 18px",
-                  borderRadius: "20px",
-                }}
-              >
-                Bientôt disponible
-              </span>
-            )}
+            <span
+              style={{
+                display: "inline-block",
+                color: "#fff",
+                background: n.color,
+                fontWeight: 700,
+                fontSize: "1.1rem",
+                padding: "10px 32px",
+                borderRadius: "14px",
+              }}
+            >
+              Accéder →
+            </span>
           </div>
         ))}
       </div>
