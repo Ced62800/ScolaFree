@@ -44,6 +44,7 @@ export default function CollegePage() {
   const [maClasse, setMaClasse] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [estConnecte, setEstConnecte] = useState(false);
+  const [chargement, setChargement] = useState(true);
 
   useEffect(() => {
     const init = async () => {
@@ -60,6 +61,7 @@ export default function CollegePage() {
         if (profile?.classe) setMaClasse(profile.classe);
         if (profile?.role === "admin") setIsAdmin(true);
       }
+      setChargement(false);
     };
     init();
   }, []);
@@ -95,9 +97,38 @@ export default function CollegePage() {
         <p className="cours-hero-desc">
           {estConnecte
             ? "Choisis ta classe pour commencer !"
-            : "Mode découverte — accès libre aux cours"}
+            : "Mode découverte — 5 questions par thème"}
         </p>
       </div>
+
+      {!estConnecte && !chargement && (
+        <div
+          style={{
+            maxWidth: "600px",
+            margin: "0 auto 24px",
+            padding: "14px 20px",
+            background: "rgba(79,142,247,0.1)",
+            border: "1px solid rgba(79,142,247,0.3)",
+            borderRadius: "14px",
+            textAlign: "center",
+            fontSize: "0.95rem",
+            color: "#aaa",
+          }}
+        >
+          👀 Tu explores en mode découverte.{" "}
+          <a
+            href="/inscription"
+            style={{
+              color: "#4f8ef7",
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            Inscris-toi gratuitement
+          </a>{" "}
+          pour accéder à tous les exercices !
+        </div>
+      )}
 
       <div className="themes-grid" style={{ justifyContent: "center" }}>
         {classes.map((c) => {
@@ -122,6 +153,7 @@ export default function CollegePage() {
                 } as React.CSSProperties
               }
             >
+              {/* Badge Ma classe */}
               {estMaClasse && (
                 <div
                   style={{
@@ -141,7 +173,9 @@ export default function CollegePage() {
                   ⭐ Ma classe
                 </div>
               )}
-              {isAdmin && (
+
+              {/* Badge Admin */}
+              {isAdmin && !estMaClasse && (
                 <div
                   style={{
                     position: "absolute",
@@ -161,9 +195,44 @@ export default function CollegePage() {
                   ⚙️ Admin
                 </div>
               )}
+
+              {/* Badge Découverte si non connecté */}
+              {!estConnecte && !chargement && dispo && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(79,142,247,0.15)",
+                    color: "#4f8ef7",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    padding: "6px 16px",
+                    borderRadius: "20px",
+                    border: "1px solid rgba(79,142,247,0.3)",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  👀 Découverte
+                </div>
+              )}
+
               <div className="theme-emoji">{c.emoji}</div>
               <div className="theme-label">{c.label}</div>
               <div className="theme-desc">{c.desc}</div>
+              {!estConnecte && !chargement && dispo && (
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "#aaa",
+                    marginTop: "4px",
+                    marginBottom: "4px",
+                  }}
+                >
+                  5 questions par thème
+                </div>
+              )}
               <div
                 className="theme-arrow"
                 style={{ color: dispo ? c.color : "#888" }}
