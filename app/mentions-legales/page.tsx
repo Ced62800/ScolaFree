@@ -168,11 +168,8 @@ export default function MentionsLegalesPage() {
           <p style={{ color: "#ccc", lineHeight: "1.8" }}>
             Pour toute question relative au site, vous pouvez contacter
             l'éditeur à l'adresse suivante :<br />
-            <a
-              href="mailto:desgardin.cedric@orange.fr"
-              style={{ color: "#4f8ef7" }}
-            >
-              desgardin.cedric@orange.fr
+            <a href="mailto:scolafree@orange.fr" style={{ color: "#4f8ef7" }}>
+              scolafree@orange.fr
             </a>
           </p>
         </section>

@@ -145,11 +145,8 @@ export default function PolitiqueConfidentialitePage() {
             Vos données sont conservées tant que votre compte est actif. Vous
             pouvez demander la suppression de votre compte et de toutes vos
             données à tout moment en contactant :<br />
-            <a
-              href="mailto:desgardin.cedric@orange.fr"
-              style={{ color: "#2ec4b6" }}
-            >
-              desgardin.cedric@orange.fr
+            <a href="mailto:scolafree@orange.fr" style={{ color: "#2ec4b6" }}>
+              scolafree@orange.fr
             </a>
           </p>
         </section>
@@ -254,11 +251,8 @@ export default function PolitiqueConfidentialitePage() {
           </ul>
           <p style={{ color: "#ccc", lineHeight: "1.8", marginTop: "12px" }}>
             Pour exercer ces droits, contactez-nous à :<br />
-            <a
-              href="mailto:desgardin.cedric@orange.fr"
-              style={{ color: "#2ec4b6" }}
-            >
-              desgardin.cedric@orange.fr
+            <a href="mailto:scolafree@orange.fr" style={{ color: "#2ec4b6" }}>
+              scolafree@orange.fr
             </a>
           </p>
         </section>
@@ -296,11 +290,8 @@ export default function PolitiqueConfidentialitePage() {
           <p style={{ color: "#ccc", lineHeight: "1.8" }}>
             Pour toute question relative à cette politique de confidentialité :
             <br />
-            <a
-              href="mailto:desgardin.cedric@orange.fr"
-              style={{ color: "#2ec4b6" }}
-            >
-              desgardin.cedric@orange.fr
+            <a href="mailto:scolafree@orange.fr" style={{ color: "#2ec4b6" }}>
+              scolafree@orange.fr
             </a>
           </p>
         </section>
