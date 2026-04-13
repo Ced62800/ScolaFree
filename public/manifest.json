@@ -33,5 +33,42 @@
       "type": "image/png",
       "purpose": "maskable any"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/Screenshot_20260413_152105_Chrome.jpg",
+      "sizes": "720x1600",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Page d'accueil ScolaFree"
+    },
+    {
+      "src": "/screenshots/Screenshot_20260413_152138_Chrome.jpg",
+      "sizes": "720x1600",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "École Primaire - Choix de classe"
+    },
+    {
+      "src": "/screenshots/Screenshot_20260413_152154_Chrome.jpg",
+      "sizes": "720x1600",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "CP - Choix de matière"
+    },
+    {
+      "src": "/screenshots/Screenshot_20260413_152207_Chrome.jpg",
+      "sizes": "720x1600",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "CP Français - Liste des thèmes"
+    },
+    {
+      "src": "/screenshots/Screenshot_20260413_152221_Chrome.jpg",
+      "sizes": "720x1600",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Exercice interactif"
+    }
   ]
 }
