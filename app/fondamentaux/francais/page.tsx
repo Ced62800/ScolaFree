@@ -22,7 +22,7 @@ const fiches = [
     titre: "A / As / À",
     emoji: "✏️",
     desc: "Le verbe avoir et la préposition",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "on-ont",
@@ -45,11 +45,147 @@ const fiches = [
     desc: "Pronom démonstratif et pronom réfléchi",
     dispo: false,
   },
+  {
+    id: "ou-ou",
+    titre: "Ou / Où",
+    emoji: "📍",
+    desc: "Conjonction ou adverbe de lieu ?",
+    dispo: false,
+  },
+  {
+    id: "la-la",
+    titre: "La / Là / L'a / L'as",
+    emoji: "📌",
+    desc: "Quatre mots, une seule prononciation",
+    dispo: false,
+  },
+  {
+    id: "ces-ses",
+    titre: "Ces / Ses / C'est / S'est",
+    emoji: "🔄",
+    desc: "Les homophones en -es les plus fréquents",
+    dispo: false,
+  },
+  {
+    id: "peu-peux-peut",
+    titre: "Peu / Peux / Peut",
+    emoji: "🤔",
+    desc: "Adverbe ou verbe pouvoir ?",
+    dispo: false,
+  },
+  {
+    id: "leur-leurs",
+    titre: "Leur / Leurs",
+    emoji: "👨‍👩‍👧",
+    desc: "Pronom ou adjectif possessif ?",
+    dispo: false,
+  },
+  {
+    id: "tout-tous",
+    titre: "Tout / Tous / Toute",
+    emoji: "🌐",
+    desc: "Les différentes formes de 'tout'",
+    dispo: false,
+  },
+  {
+    id: "plutot-plus-tot",
+    titre: "Plutôt / Plus tôt",
+    emoji: "⏱️",
+    desc: "Préférence ou comparaison temporelle ?",
+    dispo: false,
+  },
+  {
+    id: "pres-pret",
+    titre: "Près / Prêt",
+    emoji: "📏",
+    desc: "Proximité ou état de préparation ?",
+    dispo: false,
+  },
+  {
+    id: "sans-sen",
+    titre: "Sans / S'en",
+    emoji: "🚫",
+    desc: "Préposition ou pronom réfléchi ?",
+    dispo: false,
+  },
+  {
+    id: "ni-ny",
+    titre: "Ni / N'y",
+    emoji: "❌",
+    desc: "Conjonction de négation ou pronom ?",
+    dispo: false,
+  },
+  {
+    id: "davantage",
+    titre: "Davantage / D'avantage",
+    emoji: "➕",
+    desc: "Adverbe ou nom précédé de 'de' ?",
+    dispo: false,
+  },
+  {
+    id: "voici-voila",
+    titre: "Voici / Voilà",
+    emoji: "👉",
+    desc: "Présenter ce qui est proche ou lointain",
+    dispo: false,
+  },
+  {
+    id: "si-sy",
+    titre: "Si / S'y",
+    emoji: "💭",
+    desc: "Conjonction ou pronom réfléchi ?",
+    dispo: false,
+  },
+  {
+    id: "quelque",
+    titre: "Quelque / Quelques / Quel que",
+    emoji: "🔢",
+    desc: "Les trois formes de quelque",
+    dispo: false,
+  },
+  {
+    id: "mais-mes",
+    titre: "Mais / Mes / Met / Mets",
+    emoji: "📝",
+    desc: "Quatre homophones à distinguer",
+    dispo: false,
+  },
+  {
+    id: "parce-que",
+    titre: "Parce que / Par ce que",
+    emoji: "💡",
+    desc: "Locution conjonctive ou groupe nominal ?",
+    dispo: false,
+  },
+  {
+    id: "quoique",
+    titre: "Quoique / Quoi que",
+    emoji: "🗣️",
+    desc: "En un mot ou en deux mots ?",
+    dispo: false,
+  },
+  {
+    id: "dans-den",
+    titre: "Dans / D'en",
+    emoji: "📦",
+    desc: "Préposition ou contraction ?",
+    dispo: false,
+  },
+  {
+    id: "quel-quelle",
+    titre: "Quel / Quelle / Qu'elle",
+    emoji: "❓",
+    desc: "Adjectif ou pronom sujet ?",
+    dispo: false,
+  },
 ];
 
 export default function FondamentauxFrancaisPage() {
+  const disponibles = fiches.filter((f) => f.dispo);
+  const bientot = fiches.filter((f) => !f.dispo);
+
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0a1a", padding: "20px" }}>
+    <div style={{ minHeight: "100vh", background: "#0a0a1a", padding: "16px" }}>
       <div style={{ maxWidth: "560px", margin: "0 auto" }}>
         {/* Retour */}
         <Link
@@ -57,35 +193,47 @@ export default function FondamentauxFrancaisPage() {
           style={{
             color: "rgba(255,255,255,0.5)",
             textDecoration: "none",
-            fontSize: "0.9rem",
+            fontSize: "0.85rem",
             display: "inline-block",
-            marginBottom: "32px",
+            marginBottom: "24px",
           }}
         >
           ← Retour
         </Link>
 
         {/* Titre */}
-        <div style={{ marginBottom: "32px" }}>
+        <div style={{ marginBottom: "24px" }}>
           <h1
             style={{
               color: "#fff",
-              fontSize: "1.6rem",
+              fontSize: "1.4rem",
               fontWeight: 800,
-              marginBottom: "6px",
+              marginBottom: "4px",
             }}
           >
             ✍️ Fondamentaux du Français
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.9rem" }}>
-            Les règles qui piègent tout le monde — du CP à la 3ème
+          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.82rem" }}>
+            {fiches.length} règles essentielles — du CP à la 3ème
           </p>
         </div>
 
-        {/* Liste */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {fiches.map((fiche) =>
-            fiche.dispo ? (
+        {/* Disponibles */}
+        <div style={{ marginBottom: "8px" }}>
+          <p
+            style={{
+              color: "#a78bfa",
+              fontSize: "0.78rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              marginBottom: "8px",
+            }}
+          >
+            ✅ Disponibles ({disponibles.length})
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {disponibles.map((fiche) => (
               <Link
                 key={fiche.id}
                 href={`/fondamentaux/francais/${fiche.id}`}
@@ -93,30 +241,30 @@ export default function FondamentauxFrancaisPage() {
               >
                 <div
                   style={{
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(167,139,250,0.3)",
+                    background: "rgba(167,139,250,0.08)",
+                    border: "1px solid rgba(167,139,250,0.35)",
                     borderRadius: "12px",
-                    padding: "16px 20px",
+                    padding: "14px 16px",
                     display: "flex",
                     alignItems: "center",
-                    gap: "14px",
+                    gap: "12px",
                     cursor: "pointer",
                     transition: "background 0.15s, border-color 0.15s",
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLDivElement).style.background =
-                      "rgba(167,139,250,0.1)";
+                      "rgba(167,139,250,0.15)";
                     (e.currentTarget as HTMLDivElement).style.borderColor =
                       "#a78bfa";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLDivElement).style.background =
-                      "rgba(255,255,255,0.05)";
+                      "rgba(167,139,250,0.08)";
                     (e.currentTarget as HTMLDivElement).style.borderColor =
-                      "rgba(167,139,250,0.3)";
+                      "rgba(167,139,250,0.35)";
                   }}
                 >
-                  <span style={{ fontSize: "1.4rem", flexShrink: 0 }}>
+                  <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>
                     {fiche.emoji}
                   </span>
                   <div style={{ flex: 1 }}>
@@ -124,7 +272,7 @@ export default function FondamentauxFrancaisPage() {
                       style={{
                         color: "#a78bfa",
                         fontWeight: 700,
-                        fontSize: "0.95rem",
+                        fontSize: "0.92rem",
                       }}
                     >
                       {fiche.titre}
@@ -132,7 +280,7 @@ export default function FondamentauxFrancaisPage() {
                     <div
                       style={{
                         color: "rgba(255,255,255,0.4)",
-                        fontSize: "0.82rem",
+                        fontSize: "0.78rem",
                       }}
                     >
                       {fiche.desc}
@@ -141,44 +289,72 @@ export default function FondamentauxFrancaisPage() {
                   <span
                     style={{
                       color: "rgba(255,255,255,0.3)",
-                      fontSize: "0.85rem",
+                      fontSize: "0.75rem",
+                      flexShrink: 0,
                     }}
                   >
-                    10 questions →
+                    10 q →
                   </span>
                 </div>
               </Link>
-            ) : (
+            ))}
+          </div>
+        </div>
+
+        {/* Séparateur */}
+        <div
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+            margin: "20px 0 16px",
+          }}
+        />
+
+        {/* Bientôt disponibles */}
+        <div>
+          <p
+            style={{
+              color: "rgba(255,255,255,0.3)",
+              fontSize: "0.78rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              marginBottom: "8px",
+            }}
+          >
+            🔒 Bientôt disponibles ({bientot.length})
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            {bientot.map((fiche) => (
               <div
                 key={fiche.id}
                 style={{
                   background: "rgba(255,255,255,0.02)",
                   border: "1px solid rgba(255,255,255,0.06)",
                   borderRadius: "12px",
-                  padding: "16px 20px",
+                  padding: "12px 16px",
                   display: "flex",
                   alignItems: "center",
-                  gap: "14px",
-                  opacity: 0.45,
+                  gap: "12px",
+                  opacity: 0.5,
                 }}
               >
-                <span style={{ fontSize: "1.4rem", flexShrink: 0 }}>
+                <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>
                   {fiche.emoji}
                 </span>
                 <div style={{ flex: 1 }}>
                   <div
                     style={{
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: "0.95rem",
+                      color: "rgba(255,255,255,0.6)",
+                      fontWeight: 600,
+                      fontSize: "0.9rem",
                     }}
                   >
                     {fiche.titre}
                   </div>
                   <div
                     style={{
-                      color: "rgba(255,255,255,0.4)",
-                      fontSize: "0.82rem",
+                      color: "rgba(255,255,255,0.3)",
+                      fontSize: "0.76rem",
                     }}
                   >
                     {fiche.desc}
@@ -186,15 +362,16 @@ export default function FondamentauxFrancaisPage() {
                 </div>
                 <span
                   style={{
-                    color: "rgba(255,255,255,0.3)",
-                    fontSize: "0.78rem",
+                    color: "rgba(255,255,255,0.2)",
+                    fontSize: "0.72rem",
+                    flexShrink: 0,
                   }}
                 >
-                  🔒 Bientôt
+                  bientôt
                 </span>
               </div>
-            ),
-          )}
+            ))}
+          </div>
         </div>
       </div>
     </div>
