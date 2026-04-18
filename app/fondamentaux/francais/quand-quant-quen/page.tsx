@@ -107,7 +107,6 @@ export default function FicheQuandQuantQuen() {
   const [estConnecte, setEstConnecte] = useState(false);
   const scoreSaved = useRef(false);
 
-  // Récupère l'ancien score au chargement
   useEffect(() => {
     const init = async () => {
       const { data: sessionData } = await supabase.auth.getSession();
@@ -129,7 +128,6 @@ export default function FicheQuandQuantQuen() {
     init();
   }, []);
 
-  // Sauvegarde le score quand terminé
   useEffect(() => {
     if (!termine || scoreSaved.current || !estConnecte) return;
     scoreSaved.current = true;
@@ -137,7 +135,6 @@ export default function FicheQuandQuantQuen() {
       const { data: sessionData } = await supabase.auth.getSession();
       const user = sessionData?.session?.user;
       if (!user) return;
-      // Cherche si un score existe déjà
       const { data: existing } = await supabase
         .from("scores")
         .select("id")
@@ -224,20 +221,18 @@ export default function FicheQuandQuantQuen() {
           style={{
             background: "rgba(255,255,255,0.05)",
             borderRadius: "24px",
-            padding: "48px 36px",
+            padding: "40px 28px",
             maxWidth: "480px",
             width: "100%",
             textAlign: "center",
             border: `2px solid ${couleur}40`,
           }}
         >
-          <div style={{ fontSize: "3.5rem", marginBottom: "16px" }}>
-            {emoji}
-          </div>
+          <div style={{ fontSize: "3rem", marginBottom: "12px" }}>{emoji}</div>
           <h2
             style={{
               color: "#fff",
-              fontSize: "1.6rem",
+              fontSize: "1.5rem",
               fontWeight: 800,
               marginBottom: "8px",
             }}
@@ -246,10 +241,10 @@ export default function FicheQuandQuantQuen() {
           </h2>
           <div
             style={{
-              fontSize: "3rem",
+              fontSize: "2.8rem",
               fontWeight: 900,
               color: couleur,
-              margin: "20px 0",
+              margin: "16px 0",
             }}
           >
             {score}/{NB_QUESTIONS}
@@ -266,7 +261,7 @@ export default function FicheQuandQuantQuen() {
               style={{
                 color: "rgba(255,255,255,0.4)",
                 fontSize: "0.85rem",
-                marginBottom: "24px",
+                marginBottom: "20px",
               }}
             >
               Score précédent : {ancienScore}/{NB_QUESTIONS}
@@ -301,9 +296,9 @@ export default function FicheQuandQuantQuen() {
                 background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
                 border: "none",
                 color: "#fff",
-                padding: "14px 28px",
-                borderRadius: "16px",
-                fontSize: "1rem",
+                padding: "12px 24px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
@@ -316,9 +311,9 @@ export default function FicheQuandQuantQuen() {
                 background: "rgba(255,255,255,0.1)",
                 border: "1px solid rgba(255,255,255,0.2)",
                 color: "#fff",
-                padding: "14px 28px",
-                borderRadius: "16px",
-                fontSize: "1rem",
+                padding: "12px 24px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
                 fontWeight: 600,
                 textDecoration: "none",
                 display: "inline-block",
@@ -338,7 +333,7 @@ export default function FicheQuandQuantQuen() {
       style={{
         minHeight: "100vh",
         background: "#0f0f23",
-        padding: "40px 20px",
+        padding: "16px 20px",
       }}
     >
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
@@ -352,25 +347,25 @@ export default function FicheQuandQuantQuen() {
             display: "inline-flex",
             alignItems: "center",
             gap: "6px",
-            marginBottom: "32px",
+            marginBottom: "16px",
           }}
         >
           ← Retour
         </Link>
 
         {/* En-tête */}
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
           <h1
             style={{
               color: "#4f8ef7",
-              fontSize: "1.6rem",
+              fontSize: "1.4rem",
               fontWeight: 800,
-              marginBottom: "6px",
+              marginBottom: "4px",
             }}
           >
             ⏰ Quand / Quant / Qu&apos;en
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
             Choisis le bon mot pour compléter la phrase
           </p>
         </div>
@@ -380,17 +375,17 @@ export default function FicheQuandQuantQuen() {
           style={{
             background: "rgba(79,142,247,0.1)",
             border: "1px solid rgba(79,142,247,0.3)",
-            borderRadius: "14px",
-            padding: "16px 20px",
-            marginBottom: "28px",
+            borderRadius: "12px",
+            padding: "12px 16px",
+            marginBottom: "16px",
           }}
         >
           <p
             style={{
               color: "#4f8ef7",
               fontWeight: 700,
-              fontSize: "0.9rem",
-              marginBottom: "8px",
+              fontSize: "0.85rem",
+              marginBottom: "6px",
             }}
           >
             💡 L&apos;astuce magique
@@ -398,7 +393,7 @@ export default function FicheQuandQuantQuen() {
           <p
             style={{
               color: "rgba(255,255,255,0.7)",
-              fontSize: "0.85rem",
+              fontSize: "0.82rem",
               lineHeight: 1.6,
               margin: 0,
             }}
@@ -418,13 +413,15 @@ export default function FicheQuandQuantQuen() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "12px",
+            marginBottom: "8px",
           }}
         >
           <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
             Question {indexActuel + 1}/{NB_QUESTIONS}
           </span>
-          <span style={{ color: "#2ec4b6", fontWeight: 700 }}>
+          <span
+            style={{ color: "#2ec4b6", fontWeight: 700, fontSize: "0.85rem" }}
+          >
             Score : {score}
           </span>
         </div>
@@ -435,7 +432,7 @@ export default function FicheQuandQuantQuen() {
             background: "rgba(255,255,255,0.1)",
             borderRadius: "6px",
             height: "6px",
-            marginBottom: "28px",
+            marginBottom: "16px",
             overflow: "hidden",
           }}
         >
@@ -455,18 +452,19 @@ export default function FicheQuandQuantQuen() {
           style={{
             background: "rgba(255,255,255,0.05)",
             border: "2px solid rgba(255,255,255,0.1)",
-            borderRadius: "20px",
-            padding: "36px 28px",
+            borderRadius: "16px",
+            padding: "20px 16px",
             textAlign: "center",
-            marginBottom: "24px",
+            marginBottom: "16px",
           }}
         >
           <p
             style={{
               color: "#fff",
-              fontSize: "1.3rem",
+              fontSize: "1.1rem",
               fontWeight: 600,
-              lineHeight: 1.7,
+              lineHeight: 1.6,
+              margin: 0,
             }}
           >
             {question.phrase}
@@ -477,9 +475,9 @@ export default function FicheQuandQuantQuen() {
         <div
           style={{
             display: "flex",
-            gap: "12px",
+            gap: "10px",
             justifyContent: "center",
-            marginBottom: "20px",
+            marginBottom: "16px",
             flexWrap: "wrap",
           }}
         >
@@ -511,13 +509,13 @@ export default function FicheQuandQuantQuen() {
                   background: bg,
                   border: `2px solid ${border}`,
                   color: couleurTexte,
-                  padding: "14px 32px",
-                  borderRadius: "14px",
-                  fontSize: "1.05rem",
+                  padding: "10px 24px",
+                  borderRadius: "12px",
+                  fontSize: "1rem",
                   fontWeight: 700,
                   cursor: etat === "attente" ? "pointer" : "default",
                   transition: "all 0.2s",
-                  minWidth: "120px",
+                  minWidth: "110px",
                 }}
               >
                 {choix}
@@ -535,9 +533,9 @@ export default function FicheQuandQuantQuen() {
                   ? "rgba(46,196,182,0.1)"
                   : "rgba(255,107,107,0.1)",
               border: `1px solid ${etat === "correct" ? "#2ec4b6" : "#ff6b6b"}40`,
-              borderRadius: "14px",
-              padding: "16px 20px",
-              marginBottom: "20px",
+              borderRadius: "12px",
+              padding: "12px 16px",
+              marginBottom: "14px",
               textAlign: "center",
             }}
           >
@@ -545,7 +543,8 @@ export default function FicheQuandQuantQuen() {
               style={{
                 color: etat === "correct" ? "#2ec4b6" : "#ff6b6b",
                 fontWeight: 700,
-                marginBottom: "6px",
+                marginBottom: "4px",
+                fontSize: "0.95rem",
               }}
             >
               {etat === "correct"
@@ -555,7 +554,7 @@ export default function FicheQuandQuantQuen() {
             <p
               style={{
                 color: "rgba(255,255,255,0.7)",
-                fontSize: "0.88rem",
+                fontSize: "0.85rem",
                 margin: 0,
               }}
             >
@@ -573,9 +572,9 @@ export default function FicheQuandQuantQuen() {
                 background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
                 border: "none",
                 color: "#fff",
-                padding: "14px 36px",
-                borderRadius: "16px",
-                fontSize: "1rem",
+                padding: "12px 32px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
