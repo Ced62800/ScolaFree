@@ -205,6 +205,7 @@ export default function FicheEtEst() {
     scoreSaved.current = false;
   };
 
+  // ===== ÉCRAN RÉSULTAT =====
   if (termine) {
     const pourcentage = Math.round((score / NB_QUESTIONS) * 100);
     const couleur =
@@ -226,20 +227,18 @@ export default function FicheEtEst() {
           style={{
             background: "rgba(255,255,255,0.05)",
             borderRadius: "24px",
-            padding: "48px 36px",
+            padding: "40px 28px",
             maxWidth: "480px",
             width: "100%",
             textAlign: "center",
             border: `2px solid ${couleur}40`,
           }}
         >
-          <div style={{ fontSize: "3.5rem", marginBottom: "16px" }}>
-            {emoji}
-          </div>
+          <div style={{ fontSize: "3rem", marginBottom: "12px" }}>{emoji}</div>
           <h2
             style={{
               color: "#fff",
-              fontSize: "1.6rem",
+              fontSize: "1.5rem",
               fontWeight: 800,
               marginBottom: "8px",
             }}
@@ -248,10 +247,10 @@ export default function FicheEtEst() {
           </h2>
           <div
             style={{
-              fontSize: "3rem",
+              fontSize: "2.8rem",
               fontWeight: 900,
               color: couleur,
-              margin: "20px 0",
+              margin: "16px 0",
             }}
           >
             {score}/{NB_QUESTIONS}
@@ -268,7 +267,7 @@ export default function FicheEtEst() {
               style={{
                 color: "rgba(255,255,255,0.4)",
                 fontSize: "0.85rem",
-                marginBottom: "24px",
+                marginBottom: "20px",
               }}
             >
               Score précédent : {ancienScore}/{NB_QUESTIONS}
@@ -300,12 +299,12 @@ export default function FicheEtEst() {
             <button
               onClick={recommencer}
               style={{
-                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                background: "linear-gradient(135deg, #2ec4b6, #4f8ef7)",
                 border: "none",
                 color: "#fff",
-                padding: "14px 28px",
-                borderRadius: "16px",
-                fontSize: "1rem",
+                padding: "12px 24px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
@@ -318,9 +317,9 @@ export default function FicheEtEst() {
                 background: "rgba(255,255,255,0.1)",
                 border: "1px solid rgba(255,255,255,0.2)",
                 color: "#fff",
-                padding: "14px 28px",
-                borderRadius: "16px",
-                fontSize: "1rem",
+                padding: "12px 24px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
                 fontWeight: 600,
                 textDecoration: "none",
                 display: "inline-block",
@@ -334,15 +333,17 @@ export default function FicheEtEst() {
     );
   }
 
+  // ===== ÉCRAN QUESTION =====
   return (
     <div
       style={{
         minHeight: "100vh",
         background: "#0f0f23",
-        padding: "40px 20px",
+        padding: "16px 20px",
       }}
     >
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        {/* Retour */}
         <Link
           href="/fondamentaux/francais"
           style={{
@@ -352,44 +353,45 @@ export default function FicheEtEst() {
             display: "inline-flex",
             alignItems: "center",
             gap: "6px",
-            marginBottom: "32px",
+            marginBottom: "16px",
           }}
         >
           ← Retour
         </Link>
 
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+        {/* En-tête */}
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
           <h1
             style={{
               color: "#2ec4b6",
-              fontSize: "1.6rem",
+              fontSize: "1.4rem",
               fontWeight: 800,
-              marginBottom: "6px",
+              marginBottom: "4px",
             }}
           >
             🔗 Et / Est
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
             Choisis le bon mot pour compléter la phrase
           </p>
         </div>
 
-        {/* Astuce */}
+        {/* Astuce magique */}
         <div
           style={{
             background: "rgba(46,196,182,0.1)",
             border: "1px solid rgba(46,196,182,0.3)",
-            borderRadius: "14px",
-            padding: "16px 20px",
-            marginBottom: "28px",
+            borderRadius: "12px",
+            padding: "12px 16px",
+            marginBottom: "16px",
           }}
         >
           <p
             style={{
               color: "#2ec4b6",
               fontWeight: 700,
-              fontSize: "0.9rem",
-              marginBottom: "8px",
+              fontSize: "0.85rem",
+              marginBottom: "6px",
             }}
           >
             💡 L&apos;astuce magique
@@ -397,7 +399,7 @@ export default function FicheEtEst() {
           <p
             style={{
               color: "rgba(255,255,255,0.7)",
-              fontSize: "0.85rem",
+              fontSize: "0.82rem",
               lineHeight: 1.6,
               margin: 0,
             }}
@@ -417,23 +419,26 @@ export default function FicheEtEst() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "12px",
+            marginBottom: "8px",
           }}
         >
           <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
             Question {indexActuel + 1}/{NB_QUESTIONS}
           </span>
-          <span style={{ color: "#2ec4b6", fontWeight: 700 }}>
+          <span
+            style={{ color: "#2ec4b6", fontWeight: 700, fontSize: "0.85rem" }}
+          >
             Score : {score}
           </span>
         </div>
 
+        {/* Barre de progression */}
         <div
           style={{
             background: "rgba(255,255,255,0.1)",
             borderRadius: "6px",
             height: "6px",
-            marginBottom: "28px",
+            marginBottom: "16px",
             overflow: "hidden",
           }}
         >
@@ -453,31 +458,32 @@ export default function FicheEtEst() {
           style={{
             background: "rgba(255,255,255,0.05)",
             border: "2px solid rgba(255,255,255,0.1)",
-            borderRadius: "20px",
-            padding: "36px 28px",
+            borderRadius: "16px",
+            padding: "20px 16px",
             textAlign: "center",
-            marginBottom: "24px",
+            marginBottom: "16px",
           }}
         >
           <p
             style={{
               color: "#fff",
-              fontSize: "1.3rem",
+              fontSize: "1.1rem",
               fontWeight: 600,
-              lineHeight: 1.7,
+              lineHeight: 1.6,
+              margin: 0,
             }}
           >
             {question.phrase}
           </p>
         </div>
 
-        {/* Boutons */}
+        {/* Boutons choix */}
         <div
           style={{
             display: "flex",
-            gap: "16px",
+            gap: "12px",
             justifyContent: "center",
-            marginBottom: "20px",
+            marginBottom: "16px",
           }}
         >
           {CHOIX.map((choix) => {
@@ -508,13 +514,13 @@ export default function FicheEtEst() {
                   background: bg,
                   border: `2px solid ${border}`,
                   color: couleurTexte,
-                  padding: "16px 44px",
-                  borderRadius: "14px",
-                  fontSize: "1.2rem",
+                  padding: "10px 24px",
+                  borderRadius: "12px",
+                  fontSize: "1rem",
                   fontWeight: 800,
                   cursor: etat === "attente" ? "pointer" : "default",
                   transition: "all 0.2s",
-                  minWidth: "120px",
+                  minWidth: "110px",
                   textTransform: "lowercase",
                 }}
               >
@@ -533,9 +539,9 @@ export default function FicheEtEst() {
                   ? "rgba(46,196,182,0.1)"
                   : "rgba(255,107,107,0.1)",
               border: `1px solid ${etat === "correct" ? "#2ec4b6" : "#ff6b6b"}40`,
-              borderRadius: "14px",
-              padding: "16px 20px",
-              marginBottom: "20px",
+              borderRadius: "12px",
+              padding: "12px 16px",
+              marginBottom: "14px",
               textAlign: "center",
             }}
           >
@@ -543,7 +549,8 @@ export default function FicheEtEst() {
               style={{
                 color: etat === "correct" ? "#2ec4b6" : "#ff6b6b",
                 fontWeight: 700,
-                marginBottom: "6px",
+                marginBottom: "4px",
+                fontSize: "0.95rem",
               }}
             >
               {etat === "correct"
@@ -553,7 +560,7 @@ export default function FicheEtEst() {
             <p
               style={{
                 color: "rgba(255,255,255,0.7)",
-                fontSize: "0.88rem",
+                fontSize: "0.85rem",
                 margin: 0,
               }}
             >
@@ -562,6 +569,7 @@ export default function FicheEtEst() {
           </div>
         )}
 
+        {/* Bouton suivant */}
         {etat !== "attente" && (
           <div style={{ textAlign: "center" }}>
             <button
@@ -570,9 +578,9 @@ export default function FicheEtEst() {
                 background: "linear-gradient(135deg, #2ec4b6, #4f8ef7)",
                 border: "none",
                 color: "#fff",
-                padding: "14px 36px",
-                borderRadius: "16px",
-                fontSize: "1rem",
+                padding: "12px 32px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
