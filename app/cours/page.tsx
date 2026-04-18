@@ -134,6 +134,120 @@ export default function CoursPage() {
             </span>
           </div>
         ))}
+
+        {/* ===== ENCART FONDAMENTAUX DU FRANÇAIS ===== */}
+        <div
+          onClick={() => router.push("/fondamentaux/francais")}
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(167,139,250,0.12) 0%, rgba(139,92,246,0.06) 100%)",
+            border: "2px solid rgba(167,139,250,0.5)",
+            borderRadius: "20px",
+            padding: "24px 28px",
+            cursor: "pointer",
+            transition: "transform 0.15s, box-shadow 0.15s",
+            position: "relative",
+            overflow: "hidden",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform =
+              "translateY(-2px)";
+            (e.currentTarget as HTMLDivElement).style.boxShadow =
+              "0 8px 30px rgba(167,139,250,0.25)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform =
+              "translateY(0)";
+            (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+          }}
+        >
+          {/* Badge */}
+          <div
+            style={{
+              position: "absolute",
+              top: "14px",
+              right: "16px",
+              background: "linear-gradient(135deg, #a78bfa, #7c3aed)",
+              color: "#fff",
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              padding: "3px 10px",
+              borderRadius: "20px",
+              letterSpacing: "0.05em",
+            }}
+          >
+            NOUVEAU
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div
+              style={{
+                background: "linear-gradient(135deg, #a78bfa, #7c3aed)",
+                borderRadius: "14px",
+                width: "52px",
+                height: "52px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.6rem",
+                flexShrink: 0,
+              }}
+            >
+              ✍️
+            </div>
+            <div>
+              <div
+                style={{
+                  color: "#a78bfa",
+                  fontSize: "1.15rem",
+                  fontWeight: 800,
+                  marginBottom: "4px",
+                }}
+              >
+                Les Fondamentaux du Français
+              </div>
+              <div
+                style={{
+                  color: "rgba(255,255,255,0.5)",
+                  fontSize: "0.85rem",
+                  lineHeight: 1.5,
+                }}
+              >
+                Les règles qui piègent tout le monde — et/est, quand/quant,
+                homophones. Des exercices courts pour ne plus jamais se tromper.
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              marginTop: "16px",
+              flexWrap: "wrap",
+            }}
+          >
+            {[
+              "⏰ Quand / Quant / Qu'en",
+              "🔗 Et / Est",
+              "🔒 Et d'autres à venir",
+            ].map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  background: "rgba(167,139,250,0.15)",
+                  color: "#c4b5fd",
+                  borderRadius: "8px",
+                  padding: "4px 10px",
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

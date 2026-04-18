@@ -1,0 +1,589 @@
+"use client";
+
+import { supabase } from "@/supabaseClient";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+
+const TOUTES_LES_QUESTIONS = [
+  {
+    id: 1,
+    phrase: "Le chat ___ assis sur le canapé.",
+    reponse: "est",
+    explication: "On peut remplacer par 'était' → est (verbe être).",
+  },
+  {
+    id: 2,
+    phrase: "Paul ___ Marie sont frère et sœur.",
+    reponse: "et",
+    explication:
+      "'Et' est une conjonction de coordination qui relie deux noms. On ne peut pas remplacer par 'était'.",
+  },
+  {
+    id: 3,
+    phrase: "Le film ___ long mais passionnant.",
+    reponse: "est",
+    explication: "On peut remplacer par 'était' → est (verbe être).",
+  },
+  {
+    id: 4,
+    phrase: "Il mange une pomme ___ une banane.",
+    reponse: "et",
+    explication:
+      "'Et' relie deux compléments. Impossible de remplacer par 'était'.",
+  },
+  {
+    id: 5,
+    phrase: "Ma sœur ___ très intelligente.",
+    reponse: "est",
+    explication:
+      "'Ma sœur était très intelligente' fonctionne → est (verbe être).",
+  },
+  {
+    id: 6,
+    phrase: "Elle chante ___ danse très bien.",
+    reponse: "et",
+    explication:
+      "'Et' relie deux verbes. On ne peut pas dire 'elle chante était danse'.",
+  },
+  {
+    id: 7,
+    phrase: "Le ciel ___ bleu aujourd'hui.",
+    reponse: "est",
+    explication: "On peut remplacer par 'était' → est (verbe être).",
+  },
+  {
+    id: 8,
+    phrase: "J'aime le chocolat ___ la vanille.",
+    reponse: "et",
+    explication:
+      "'Et' relie deux compléments. Impossible de remplacer par 'était'.",
+  },
+  {
+    id: 9,
+    phrase: "Ce travail ___ vraiment difficile.",
+    reponse: "est",
+    explication:
+      "'Ce travail était vraiment difficile' fonctionne → est (verbe être).",
+  },
+  {
+    id: 10,
+    phrase: "Le chien aboie ___ remue la queue.",
+    reponse: "et",
+    explication:
+      "'Et' relie deux verbes. On ne peut pas dire 'le chien aboie était remue la queue'.",
+  },
+  {
+    id: 11,
+    phrase: "La maison ___ grande et confortable.",
+    reponse: "est",
+    explication: "On peut remplacer par 'était' → est (verbe être).",
+  },
+  {
+    id: 12,
+    phrase: "Il lit ___ écrit toute la journée.",
+    reponse: "et",
+    explication: "'Et' relie deux verbes. Impossible de remplacer par 'était'.",
+  },
+];
+
+function melangerTableau<T>(arr: T[]): T[] {
+  const copie = [...arr];
+  for (let i = copie.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copie[i], copie[j]] = [copie[j], copie[i]];
+  }
+  return copie;
+}
+
+const CHOIX = ["et", "est"];
+const NB_QUESTIONS = 10;
+
+type EtatQuestion = "attente" | "correct" | "incorrect";
+
+export default function FicheEtEst() {
+  const [questions, setQuestions] = useState(() =>
+    melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS),
+  );
+  const [indexActuel, setIndexActuel] = useState(0);
+  const [etat, setEtat] = useState<EtatQuestion>("attente");
+  const [choixFait, setChoixFait] = useState<string | null>(null);
+  const [score, setScore] = useState(0);
+  const [termine, setTermine] = useState(false);
+  const [ancienScore, setAncienScore] = useState<number | null>(null);
+  const [estConnecte, setEstConnecte] = useState(false);
+  const scoreSaved = useRef(false);
+
+  useEffect(() => {
+    const init = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
+      if (!user) return;
+      setEstConnecte(true);
+      const { data } = await supabase
+        .from("scores")
+        .select("score")
+        .eq("user_id", user.id)
+        .eq("classe", "fondamentaux")
+        .eq("matiere", "francais")
+        .eq("theme", "et-est")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+      if (data) setAncienScore(data.score);
+    };
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (!termine || scoreSaved.current || !estConnecte) return;
+    scoreSaved.current = true;
+    const sauvegarder = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
+      if (!user) return;
+      const { data: existing } = await supabase
+        .from("scores")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("classe", "fondamentaux")
+        .eq("matiere", "francais")
+        .eq("theme", "et-est")
+        .single();
+      if (existing?.id) {
+        await supabase
+          .from("scores")
+          .update({
+            score,
+            total: NB_QUESTIONS,
+            created_at: new Date().toISOString(),
+          })
+          .eq("id", existing.id);
+      } else {
+        await supabase.from("scores").insert({
+          user_id: user.id,
+          classe: "fondamentaux",
+          matiere: "francais",
+          theme: "et-est",
+          score,
+          total: NB_QUESTIONS,
+        });
+      }
+    };
+    sauvegarder();
+  }, [termine, score, estConnecte]);
+
+  const question = questions[indexActuel];
+
+  const repondre = (choix: string) => {
+    if (etat !== "attente") return;
+    setChoixFait(choix);
+    if (choix === question.reponse) {
+      setEtat("correct");
+      setScore((s) => s + 1);
+    } else {
+      setEtat("incorrect");
+    }
+  };
+
+  const suivant = () => {
+    if (indexActuel + 1 >= NB_QUESTIONS) {
+      setTermine(true);
+    } else {
+      setIndexActuel((i) => i + 1);
+      setEtat("attente");
+      setChoixFait(null);
+    }
+  };
+
+  const recommencer = () => {
+    setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
+    setIndexActuel(0);
+    setEtat("attente");
+    setChoixFait(null);
+    setScore(0);
+    setTermine(false);
+    scoreSaved.current = false;
+  };
+
+  if (termine) {
+    const pourcentage = Math.round((score / NB_QUESTIONS) * 100);
+    const couleur =
+      pourcentage >= 80 ? "#2ec4b6" : pourcentage >= 50 ? "#ffd166" : "#ff6b6b";
+    const emoji = pourcentage >= 80 ? "🎉" : pourcentage >= 50 ? "💪" : "📖";
+
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#0f0f23",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}
+      >
+        <div
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            borderRadius: "24px",
+            padding: "48px 36px",
+            maxWidth: "480px",
+            width: "100%",
+            textAlign: "center",
+            border: `2px solid ${couleur}40`,
+          }}
+        >
+          <div style={{ fontSize: "3.5rem", marginBottom: "16px" }}>
+            {emoji}
+          </div>
+          <h2
+            style={{
+              color: "#fff",
+              fontSize: "1.6rem",
+              fontWeight: 800,
+              marginBottom: "8px",
+            }}
+          >
+            Exercice terminé !
+          </h2>
+          <div
+            style={{
+              fontSize: "3rem",
+              fontWeight: 900,
+              color: couleur,
+              margin: "20px 0",
+            }}
+          >
+            {score}/{NB_QUESTIONS}
+          </div>
+          <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "8px" }}>
+            {pourcentage >= 80
+              ? "Bravo ! Tu ne confondras plus Et et Est !"
+              : pourcentage >= 50
+                ? "Pas mal ! Rappelle-toi de l'astuce 'était'."
+                : "Continue à t'entraîner, ça va venir !"}
+          </p>
+          {ancienScore !== null && (
+            <p
+              style={{
+                color: "rgba(255,255,255,0.4)",
+                fontSize: "0.85rem",
+                marginBottom: "24px",
+              }}
+            >
+              Score précédent : {ancienScore}/{NB_QUESTIONS}
+            </p>
+          )}
+          {!estConnecte && (
+            <p
+              style={{
+                color: "#ffd166",
+                fontSize: "0.8rem",
+                marginBottom: "16px",
+              }}
+            >
+              💡{" "}
+              <Link href="/connexion" style={{ color: "#ffd166" }}>
+                Connecte-toi
+              </Link>{" "}
+              pour sauvegarder ton score
+            </p>
+          )}
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              onClick={recommencer}
+              style={{
+                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                border: "none",
+                color: "#fff",
+                padding: "14px 28px",
+                borderRadius: "16px",
+                fontSize: "1rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              🔄 Recommencer
+            </button>
+            <Link
+              href="/fondamentaux/francais"
+              style={{
+                background: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "#fff",
+                padding: "14px 28px",
+                borderRadius: "16px",
+                fontSize: "1rem",
+                fontWeight: 600,
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            >
+              ← Retour
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#0f0f23",
+        padding: "40px 20px",
+      }}
+    >
+      <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        <Link
+          href="/fondamentaux/francais"
+          style={{
+            color: "rgba(255,255,255,0.5)",
+            textDecoration: "none",
+            fontSize: "0.9rem",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            marginBottom: "32px",
+          }}
+        >
+          ← Retour
+        </Link>
+
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <h1
+            style={{
+              color: "#2ec4b6",
+              fontSize: "1.6rem",
+              fontWeight: 800,
+              marginBottom: "6px",
+            }}
+          >
+            🔗 Et / Est
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>
+            Choisis le bon mot pour compléter la phrase
+          </p>
+        </div>
+
+        {/* Astuce */}
+        <div
+          style={{
+            background: "rgba(46,196,182,0.1)",
+            border: "1px solid rgba(46,196,182,0.3)",
+            borderRadius: "14px",
+            padding: "16px 20px",
+            marginBottom: "28px",
+          }}
+        >
+          <p
+            style={{
+              color: "#2ec4b6",
+              fontWeight: 700,
+              fontSize: "0.9rem",
+              marginBottom: "8px",
+            }}
+          >
+            💡 L&apos;astuce magique
+          </p>
+          <p
+            style={{
+              color: "rgba(255,255,255,0.7)",
+              fontSize: "0.85rem",
+              lineHeight: 1.6,
+              margin: 0,
+            }}
+          >
+            Essaie de remplacer par{" "}
+            <strong style={{ color: "#ffd166" }}>&quot;était&quot;</strong>. Si
+            ça marche → c&apos;est{" "}
+            <strong style={{ color: "#2ec4b6" }}>EST</strong> (verbe être). Si
+            ça ne marche pas → c&apos;est{" "}
+            <strong style={{ color: "#ff6b6b" }}>ET</strong> (conjonction).
+          </p>
+        </div>
+
+        {/* Progression */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "12px",
+          }}
+        >
+          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
+            Question {indexActuel + 1}/{NB_QUESTIONS}
+          </span>
+          <span style={{ color: "#2ec4b6", fontWeight: 700 }}>
+            Score : {score}
+          </span>
+        </div>
+
+        <div
+          style={{
+            background: "rgba(255,255,255,0.1)",
+            borderRadius: "6px",
+            height: "6px",
+            marginBottom: "28px",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              background: "linear-gradient(90deg, #2ec4b6, #4f8ef7)",
+              height: "100%",
+              width: `${(indexActuel / NB_QUESTIONS) * 100}%`,
+              transition: "width 0.3s",
+              borderRadius: "6px",
+            }}
+          />
+        </div>
+
+        {/* Carte question */}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            border: "2px solid rgba(255,255,255,0.1)",
+            borderRadius: "20px",
+            padding: "36px 28px",
+            textAlign: "center",
+            marginBottom: "24px",
+          }}
+        >
+          <p
+            style={{
+              color: "#fff",
+              fontSize: "1.3rem",
+              fontWeight: 600,
+              lineHeight: 1.7,
+            }}
+          >
+            {question.phrase}
+          </p>
+        </div>
+
+        {/* Boutons */}
+        <div
+          style={{
+            display: "flex",
+            gap: "16px",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
+          {CHOIX.map((choix) => {
+            let bg = "rgba(255,255,255,0.07)";
+            let border = "rgba(255,255,255,0.15)";
+            let couleurTexte = "#fff";
+
+            if (etat !== "attente" && choix === question.reponse) {
+              bg = "rgba(46,196,182,0.2)";
+              border = "#2ec4b6";
+              couleurTexte = "#2ec4b6";
+            } else if (
+              etat !== "attente" &&
+              choix === choixFait &&
+              choix !== question.reponse
+            ) {
+              bg = "rgba(255,107,107,0.2)";
+              border = "#ff6b6b";
+              couleurTexte = "#ff6b6b";
+            }
+
+            return (
+              <button
+                key={choix}
+                onClick={() => repondre(choix)}
+                disabled={etat !== "attente"}
+                style={{
+                  background: bg,
+                  border: `2px solid ${border}`,
+                  color: couleurTexte,
+                  padding: "16px 44px",
+                  borderRadius: "14px",
+                  fontSize: "1.2rem",
+                  fontWeight: 800,
+                  cursor: etat === "attente" ? "pointer" : "default",
+                  transition: "all 0.2s",
+                  minWidth: "120px",
+                  textTransform: "lowercase",
+                }}
+              >
+                {choix}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Feedback */}
+        {etat !== "attente" && (
+          <div
+            style={{
+              background:
+                etat === "correct"
+                  ? "rgba(46,196,182,0.1)"
+                  : "rgba(255,107,107,0.1)",
+              border: `1px solid ${etat === "correct" ? "#2ec4b6" : "#ff6b6b"}40`,
+              borderRadius: "14px",
+              padding: "16px 20px",
+              marginBottom: "20px",
+              textAlign: "center",
+            }}
+          >
+            <p
+              style={{
+                color: etat === "correct" ? "#2ec4b6" : "#ff6b6b",
+                fontWeight: 700,
+                marginBottom: "6px",
+              }}
+            >
+              {etat === "correct"
+                ? "✅ Bonne réponse !"
+                : "❌ Pas tout à fait..."}
+            </p>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.7)",
+                fontSize: "0.88rem",
+                margin: 0,
+              }}
+            >
+              {question.explication}
+            </p>
+          </div>
+        )}
+
+        {etat !== "attente" && (
+          <div style={{ textAlign: "center" }}>
+            <button
+              onClick={suivant}
+              style={{
+                background: "linear-gradient(135deg, #2ec4b6, #4f8ef7)",
+                border: "none",
+                color: "#fff",
+                padding: "14px 36px",
+                borderRadius: "16px",
+                fontSize: "1rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {indexActuel + 1 >= NB_QUESTIONS
+                ? "Voir mon score"
+                : "Question suivante →"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
