@@ -7,83 +7,77 @@ import { useEffect, useRef, useState } from "react";
 const TOUTES_LES_QUESTIONS = [
   {
     id: 1,
-    phrase: "Il ___ mangé toute la pizza.",
-    reponse: "a",
-    explication: "On peut remplacer par 'avait' → a (verbe avoir).",
+    phrase: "___ mange des crêpes le dimanche.",
+    reponse: "On",
+    explication: "On peut remplacer par 'il' → On (pronom indéfini).",
   },
   {
     id: 2,
-    phrase: "Elle habite ___ Paris.",
-    reponse: "à",
-    explication:
-      "'À' est une préposition de lieu. On ne peut pas remplacer par 'avait'.",
+    phrase: "Ils ___ gagné le match.",
+    reponse: "ont",
+    explication: "On peut remplacer par 'avaient' → ont (verbe avoir).",
   },
   {
     id: 3,
-    phrase: "Tu ___ oublié ton cartable !",
-    reponse: "as",
-    explication:
-      "On peut remplacer par 'avais' → as (verbe avoir, 2e personne).",
+    phrase: "___ sonne à la porte.",
+    reponse: "On",
+    explication: "On peut remplacer par 'il' → On (pronom indéfini).",
   },
   {
     id: 4,
-    phrase: "Le train part ___ midi.",
-    reponse: "à",
-    explication: "'À' indique le moment. Impossible de remplacer par 'avait'.",
+    phrase: "Les élèves ___ rendu leurs copies.",
+    reponse: "ont",
+    explication:
+      "'Les élèves avaient rendu leurs copies' fonctionne → ont (verbe avoir).",
   },
   {
     id: 5,
-    phrase: "Mon père ___ acheté une voiture.",
-    reponse: "a",
-    explication:
-      "'Mon père avait acheté une voiture' fonctionne → a (verbe avoir).",
+    phrase: "___ dit que demain il neige.",
+    reponse: "On",
+    explication: "On peut remplacer par 'il' → On (pronom indéfini).",
   },
   {
     id: 6,
-    phrase: "Tu ___ raison, c'est magnifique.",
-    reponse: "as",
-    explication:
-      "On peut remplacer par 'avais' → as (verbe avoir, 2e personne).",
+    phrase: "Mes parents ___ acheté un nouveau canapé.",
+    reponse: "ont",
+    explication: "On peut remplacer par 'avaient' → ont (verbe avoir).",
   },
   {
     id: 7,
-    phrase: "Ce gâteau ___ un goût délicieux.",
-    reponse: "a",
-    explication: "On peut remplacer par 'avait' → a (verbe avoir).",
+    phrase: "___ peut tout apprendre si on le veut.",
+    reponse: "On",
+    explication: "On peut remplacer par 'il' → On (pronom indéfini).",
   },
   {
     id: 8,
-    phrase: "Il va ___ l'école à pied.",
-    reponse: "à",
-    explication:
-      "'À' est une préposition de lieu. Impossible de remplacer par 'avait'.",
+    phrase: "Les voisins ___ fait du bruit toute la nuit.",
+    reponse: "ont",
+    explication: "On peut remplacer par 'avaient' → ont (verbe avoir).",
   },
   {
     id: 9,
-    phrase: "Est-ce que tu ___ vu ce film ?",
-    reponse: "as",
-    explication:
-      "On peut remplacer par 'avais' → as (verbe avoir, 2e personne).",
+    phrase: "___ a retrouvé le chien perdu.",
+    reponse: "On",
+    explication: "On peut remplacer par 'il' → On (pronom indéfini).",
   },
   {
     id: 10,
-    phrase: "La boulangerie est ___ côté de la mairie.",
-    reponse: "à",
+    phrase: "Elles ___ visité le musée hier.",
+    reponse: "ont",
     explication:
-      "'À côté de' est une locution prépositionnelle. Impossible de remplacer par 'avait'.",
+      "'Elles avaient visité le musée' fonctionne → ont (verbe avoir).",
   },
   {
     id: 11,
-    phrase: "Elle ___ peur du noir.",
-    reponse: "a",
-    explication: "On peut remplacer par 'avait' → a (verbe avoir).",
+    phrase: "___ ne sait jamais ce qui peut arriver.",
+    reponse: "On",
+    explication: "On peut remplacer par 'il' → On (pronom indéfini).",
   },
   {
     id: 12,
-    phrase: "Tu ___ bien travaillé aujourd'hui.",
-    reponse: "as",
-    explication:
-      "On peut remplacer par 'avais' → as (verbe avoir, 2e personne).",
+    phrase: "Les pompiers ___ éteint l'incendie rapidement.",
+    reponse: "ont",
+    explication: "On peut remplacer par 'avaient' → ont (verbe avoir).",
   },
 ];
 
@@ -96,11 +90,11 @@ function melangerTableau<T>(arr: T[]): T[] {
   return copie;
 }
 
-const CHOIX = ["a", "as", "à"];
+const CHOIX = ["On", "ont"];
 const NB_QUESTIONS = 10;
 type EtatQuestion = "attente" | "correct" | "incorrect";
 
-export default function FicheAAsA() {
+export default function FicheOnOnt() {
   const [questions, setQuestions] = useState(() =>
     melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS),
   );
@@ -125,7 +119,7 @@ export default function FicheAAsA() {
         .eq("user_id", user.id)
         .eq("classe", "fondamentaux")
         .eq("matiere", "francais")
-        .eq("theme", "a-as-a")
+        .eq("theme", "on-ont")
         .order("created_at", { ascending: false })
         .limit(1)
         .single();
@@ -147,7 +141,7 @@ export default function FicheAAsA() {
         .eq("user_id", user.id)
         .eq("classe", "fondamentaux")
         .eq("matiere", "francais")
-        .eq("theme", "a-as-a")
+        .eq("theme", "on-ont")
         .single();
       if (existing?.id) {
         await supabase
@@ -165,7 +159,7 @@ export default function FicheAAsA() {
             user_id: user.id,
             classe: "fondamentaux",
             matiere: "francais",
-            theme: "a-as-a",
+            theme: "on-ont",
             score,
             total: NB_QUESTIONS,
           });
@@ -254,9 +248,9 @@ export default function FicheAAsA() {
           </div>
           <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "8px" }}>
             {pourcentage >= 80
-              ? "Bravo ! Tu maîtrises A / As / À !"
+              ? "Bravo ! Tu maîtrises On / Ont !"
               : pourcentage >= 50
-                ? "Pas mal ! Rappelle-toi de l'astuce 'avait'."
+                ? "Pas mal ! Rappelle-toi de l'astuce 'avaient'."
                 : "Continue à t'entraîner, ça va venir !"}
           </p>
           {ancienScore !== null && (
@@ -357,13 +351,13 @@ export default function FicheAAsA() {
         <div style={{ textAlign: "center", marginBottom: "16px" }}>
           <h1
             style={{
-              color: "#ffd166",
+              color: "#4f8ef7",
               fontSize: "1.4rem",
               fontWeight: 800,
               marginBottom: "4px",
             }}
           >
-            ✏️ A / As / À
+            👥 On / Ont
           </h1>
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
             Choisis le bon mot pour compléter la phrase
@@ -372,8 +366,8 @@ export default function FicheAAsA() {
 
         <div
           style={{
-            background: "rgba(255,209,102,0.1)",
-            border: "1px solid rgba(255,209,102,0.3)",
+            background: "rgba(79,142,247,0.1)",
+            border: "1px solid rgba(79,142,247,0.3)",
             borderRadius: "12px",
             padding: "12px 16px",
             marginBottom: "16px",
@@ -381,7 +375,7 @@ export default function FicheAAsA() {
         >
           <p
             style={{
-              color: "#ffd166",
+              color: "#4f8ef7",
               fontWeight: 700,
               fontSize: "0.85rem",
               marginBottom: "6px",
@@ -398,13 +392,12 @@ export default function FicheAAsA() {
             }}
           >
             Essaie de remplacer par{" "}
-            <strong style={{ color: "#ffd166" }}>&quot;avait&quot;</strong> ou{" "}
-            <strong style={{ color: "#ffd166" }}>&quot;avais&quot;</strong>. Si
-            ça marche → c&apos;est{" "}
-            <strong style={{ color: "#2ec4b6" }}>A</strong> ou{" "}
-            <strong style={{ color: "#2ec4b6" }}>AS</strong> (verbe avoir). Si
+            <strong style={{ color: "#ffd166" }}>&quot;avaient&quot;</strong>.
+            Si ça marche → c&apos;est{" "}
+            <strong style={{ color: "#2ec4b6" }}>ONT</strong> (verbe avoir). Si
             ça ne marche pas → c&apos;est{" "}
-            <strong style={{ color: "#ff6b6b" }}>À</strong> (préposition).
+            <strong style={{ color: "#4f8ef7" }}>ON</strong> (pronom indéfini,
+            remplaçable par &quot;il&quot;).
           </p>
         </div>
 
@@ -420,7 +413,7 @@ export default function FicheAAsA() {
             Question {indexActuel + 1}/{NB_QUESTIONS}
           </span>
           <span
-            style={{ color: "#ffd166", fontWeight: 700, fontSize: "0.85rem" }}
+            style={{ color: "#4f8ef7", fontWeight: 700, fontSize: "0.85rem" }}
           >
             Score : {score}
           </span>
@@ -437,7 +430,7 @@ export default function FicheAAsA() {
         >
           <div
             style={{
-              background: "linear-gradient(90deg, #ffd166, #2ec4b6)",
+              background: "linear-gradient(90deg, #4f8ef7, #2ec4b6)",
               height: "100%",
               width: `${(indexActuel / NB_QUESTIONS) * 100}%`,
               transition: "width 0.3s",
@@ -562,7 +555,7 @@ export default function FicheAAsA() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #ffd166, #2ec4b6)",
+                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",

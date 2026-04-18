@@ -97,7 +97,6 @@ function melangerTableau<T>(arr: T[]): T[] {
 
 const CHOIX = ["et", "est"];
 const NB_QUESTIONS = 10;
-
 type EtatQuestion = "attente" | "correct" | "incorrect";
 
 export default function FicheEtEst() {
@@ -159,21 +158,22 @@ export default function FicheEtEst() {
           })
           .eq("id", existing.id);
       } else {
-        await supabase.from("scores").insert({
-          user_id: user.id,
-          classe: "fondamentaux",
-          matiere: "francais",
-          theme: "et-est",
-          score,
-          total: NB_QUESTIONS,
-        });
+        await supabase
+          .from("scores")
+          .insert({
+            user_id: user.id,
+            classe: "fondamentaux",
+            matiere: "francais",
+            theme: "et-est",
+            score,
+            total: NB_QUESTIONS,
+          });
       }
     };
     sauvegarder();
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
-
   const repondre = (choix: string) => {
     if (etat !== "attente") return;
     setChoixFait(choix);
@@ -184,7 +184,6 @@ export default function FicheEtEst() {
       setEtat("incorrect");
     }
   };
-
   const suivant = () => {
     if (indexActuel + 1 >= NB_QUESTIONS) {
       setTermine(true);
@@ -194,7 +193,6 @@ export default function FicheEtEst() {
       setChoixFait(null);
     }
   };
-
   const recommencer = () => {
     setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
     setIndexActuel(0);
@@ -205,13 +203,11 @@ export default function FicheEtEst() {
     scoreSaved.current = false;
   };
 
-  // ===== ÉCRAN RÉSULTAT =====
   if (termine) {
     const pourcentage = Math.round((score / NB_QUESTIONS) * 100);
     const couleur =
       pourcentage >= 80 ? "#2ec4b6" : pourcentage >= 50 ? "#ffd166" : "#ff6b6b";
     const emoji = pourcentage >= 80 ? "🎉" : pourcentage >= 50 ? "💪" : "📖";
-
     return (
       <div
         style={{
@@ -333,17 +329,15 @@ export default function FicheEtEst() {
     );
   }
 
-  // ===== ÉCRAN QUESTION =====
   return (
     <div
       style={{
         minHeight: "100vh",
         background: "#0f0f23",
-        padding: "16px 20px",
+        padding: "80px 20px 16px 20px",
       }}
     >
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-        {/* Retour */}
         <Link
           href="/fondamentaux/francais"
           style={{
@@ -359,7 +353,6 @@ export default function FicheEtEst() {
           ← Retour
         </Link>
 
-        {/* En-tête */}
         <div style={{ textAlign: "center", marginBottom: "16px" }}>
           <h1
             style={{
@@ -376,7 +369,6 @@ export default function FicheEtEst() {
           </p>
         </div>
 
-        {/* Astuce magique */}
         <div
           style={{
             background: "rgba(46,196,182,0.1)",
@@ -413,7 +405,6 @@ export default function FicheEtEst() {
           </p>
         </div>
 
-        {/* Progression */}
         <div
           style={{
             display: "flex",
@@ -432,7 +423,6 @@ export default function FicheEtEst() {
           </span>
         </div>
 
-        {/* Barre de progression */}
         <div
           style={{
             background: "rgba(255,255,255,0.1)",
@@ -453,7 +443,6 @@ export default function FicheEtEst() {
           />
         </div>
 
-        {/* Carte question */}
         <div
           style={{
             background: "rgba(255,255,255,0.05)",
@@ -477,7 +466,6 @@ export default function FicheEtEst() {
           </p>
         </div>
 
-        {/* Boutons choix */}
         <div
           style={{
             display: "flex",
@@ -490,7 +478,6 @@ export default function FicheEtEst() {
             let bg = "rgba(255,255,255,0.07)";
             let border = "rgba(255,255,255,0.15)";
             let couleurTexte = "#fff";
-
             if (etat !== "attente" && choix === question.reponse) {
               bg = "rgba(46,196,182,0.2)";
               border = "#2ec4b6";
@@ -504,7 +491,6 @@ export default function FicheEtEst() {
               border = "#ff6b6b";
               couleurTexte = "#ff6b6b";
             }
-
             return (
               <button
                 key={choix}
@@ -530,7 +516,6 @@ export default function FicheEtEst() {
           })}
         </div>
 
-        {/* Feedback */}
         {etat !== "attente" && (
           <div
             style={{
@@ -569,7 +554,6 @@ export default function FicheEtEst() {
           </div>
         )}
 
-        {/* Bouton suivant */}
         {etat !== "attente" && (
           <div style={{ textAlign: "center" }}>
             <button

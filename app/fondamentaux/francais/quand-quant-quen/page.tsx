@@ -4,7 +4,6 @@ import { supabase } from "@/supabaseClient";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-// ============ QUESTIONS ============
 const TOUTES_LES_QUESTIONS = [
   {
     id: 1,
@@ -199,7 +198,6 @@ export default function FicheQuandQuantQuen() {
     scoreSaved.current = false;
   };
 
-  // ===== ÉCRAN RÉSULTAT =====
   if (termine) {
     const pourcentage = Math.round((score / NB_QUESTIONS) * 100);
     const couleur =
@@ -327,17 +325,15 @@ export default function FicheQuandQuantQuen() {
     );
   }
 
-  // ===== ÉCRAN QUESTION =====
   return (
     <div
       style={{
         minHeight: "100vh",
         background: "#0f0f23",
-        padding: "16px 20px",
+        padding: "80px 20px 16px 20px",
       }}
     >
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-        {/* Retour */}
         <Link
           href="/fondamentaux/francais"
           style={{
@@ -353,7 +349,6 @@ export default function FicheQuandQuantQuen() {
           ← Retour
         </Link>
 
-        {/* En-tête */}
         <div style={{ textAlign: "center", marginBottom: "16px" }}>
           <h1
             style={{
@@ -370,7 +365,6 @@ export default function FicheQuandQuantQuen() {
           </p>
         </div>
 
-        {/* Astuce magique */}
         <div
           style={{
             background: "rgba(79,142,247,0.1)",
@@ -407,7 +401,6 @@ export default function FicheQuandQuantQuen() {
           </p>
         </div>
 
-        {/* Progression */}
         <div
           style={{
             display: "flex",
@@ -426,7 +419,6 @@ export default function FicheQuandQuantQuen() {
           </span>
         </div>
 
-        {/* Barre de progression */}
         <div
           style={{
             background: "rgba(255,255,255,0.1)",
@@ -447,7 +439,6 @@ export default function FicheQuandQuantQuen() {
           />
         </div>
 
-        {/* Carte question */}
         <div
           style={{
             background: "rgba(255,255,255,0.05)",
@@ -471,7 +462,6 @@ export default function FicheQuandQuantQuen() {
           </p>
         </div>
 
-        {/* Boutons choix */}
         <div
           style={{
             display: "flex",
@@ -485,7 +475,6 @@ export default function FicheQuandQuantQuen() {
             let bg = "rgba(255,255,255,0.07)";
             let border = "rgba(255,255,255,0.15)";
             let couleurTexte = "#fff";
-
             if (etat !== "attente" && choix === question.reponse) {
               bg = "rgba(46,196,182,0.2)";
               border = "#2ec4b6";
@@ -499,7 +488,6 @@ export default function FicheQuandQuantQuen() {
               border = "#ff6b6b";
               couleurTexte = "#ff6b6b";
             }
-
             return (
               <button
                 key={choix}
@@ -524,7 +512,6 @@ export default function FicheQuandQuantQuen() {
           })}
         </div>
 
-        {/* Feedback */}
         {etat !== "attente" && (
           <div
             style={{
@@ -563,7 +550,6 @@ export default function FicheQuandQuantQuen() {
           </div>
         )}
 
-        {/* Bouton suivant */}
         {etat !== "attente" && (
           <div style={{ textAlign: "center" }}>
             <button

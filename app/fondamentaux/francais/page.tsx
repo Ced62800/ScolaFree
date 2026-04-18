@@ -29,7 +29,7 @@ const fiches = [
     titre: "On / Ont",
     emoji: "👥",
     desc: "Pronom indéfini ou verbe avoir ?",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "son-sont",
@@ -185,7 +185,13 @@ export default function FondamentauxFrancaisPage() {
   const bientot = fiches.filter((f) => !f.dispo);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0a1a", padding: "16px" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#0a0a1a",
+        padding: "80px 16px 16px 16px",
+      }}
+    >
       <div style={{ maxWidth: "560px", margin: "0 auto" }}>
         {/* Retour */}
         <Link
