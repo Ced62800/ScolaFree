@@ -161,24 +161,6 @@ export default function CoursPage() {
             (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
           }}
         >
-          {/* Badge */}
-          <div
-            style={{
-              position: "absolute",
-              top: "14px",
-              right: "16px",
-              background: "linear-gradient(135deg, #a78bfa, #7c3aed)",
-              color: "#fff",
-              fontSize: "0.7rem",
-              fontWeight: 700,
-              padding: "3px 10px",
-              borderRadius: "20px",
-              letterSpacing: "0.05em",
-            }}
-          >
-            NOUVEAU
-          </div>
-
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <div
               style={{
