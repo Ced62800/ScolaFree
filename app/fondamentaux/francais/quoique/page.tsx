@@ -1,5 +1,8 @@
 "use client";
 
+import { useDecouverte } from "@/components/DecouverteContext";
+import PopupInscription from "@/components/PopupInscription";
+
 import { supabase } from "@/supabaseClient";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -114,15 +117,16 @@ export default function FicheQuoique() {
   const [score, setScore] = useState(0);
   const [termine, setTermine] = useState(false);
   const [ancienScore, setAncienScore] = useState<number | null>(null);
-  const [estConnecte, setEstConnecte] = useState(false);
   const scoreSaved = useRef(false);
+  const { estConnecte, maxQuestions } = useDecouverte();
+  const [showPopup, setShowPopup] = useState(false);
+  const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
 
   useEffect(() => {
     const init = async () => {
       const { data: sessionData } = await supabase.auth.getSession();
       const user = sessionData?.session?.user;
       if (!user) return;
-      setEstConnecte(true);
       const { data } = await supabase
         .from("scores")
         .select("score")
@@ -435,7 +439,7 @@ export default function FicheQuoique() {
           }}
         >
           <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
-            Question {indexActuel + 1}/{NB_QUESTIONS}
+            Question {indexActuel + 1}/{nbQuestions}
           </span>
           <span
             style={{ color: "#a78bfa", fontWeight: 700, fontSize: "0.85rem" }}
@@ -457,7 +461,7 @@ export default function FicheQuoique() {
             style={{
               background: "linear-gradient(90deg, #a78bfa, #ff6b6b)",
               height: "100%",
-              width: `${(indexActuel / NB_QUESTIONS) * 100}%`,
+              width: `${(indexActuel / nbQuestions) * 100}%`,
               transition: "width 0.3s",
               borderRadius: "6px",
             }}
