@@ -146,8 +146,6 @@ export default function CoursPage() {
             padding: "24px 28px",
             cursor: "pointer",
             transition: "transform 0.15s, box-shadow 0.15s",
-            position: "relative",
-            overflow: "hidden",
           }}
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLDivElement).style.transform =
@@ -200,7 +198,6 @@ export default function CoursPage() {
               </div>
             </div>
           </div>
-
           <div
             style={{
               display: "flex",
@@ -212,7 +209,7 @@ export default function CoursPage() {
             {[
               "⏰ Quand / Quant / Qu'en",
               "🔗 Et / Est",
-              "🔒 Et d'autres à venir",
+              "✔️ 30 fiches disponibles",
             ].map((tag) => (
               <span
                 key={tag}
@@ -228,6 +225,97 @@ export default function CoursPage() {
                 {tag}
               </span>
             ))}
+          </div>
+        </div>
+
+        {/* ===== ENCART FONDAMENTAUX DES MATHS ===== */}
+        <div
+          onClick={() => router.push("/fondamentaux/maths")}
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(46,196,182,0.12) 0%, rgba(16,185,129,0.06) 100%)",
+            border: "2px solid rgba(46,196,182,0.5)",
+            borderRadius: "20px",
+            padding: "24px 28px",
+            cursor: "pointer",
+            transition: "transform 0.15s, box-shadow 0.15s",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform =
+              "translateY(-2px)";
+            (e.currentTarget as HTMLDivElement).style.boxShadow =
+              "0 8px 30px rgba(46,196,182,0.25)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform =
+              "translateY(0)";
+            (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div
+              style={{
+                background: "linear-gradient(135deg, #2ec4b6, #059669)",
+                borderRadius: "14px",
+                width: "52px",
+                height: "52px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.6rem",
+                flexShrink: 0,
+              }}
+            >
+              🧮
+            </div>
+            <div>
+              <div
+                style={{
+                  color: "#2ec4b6",
+                  fontSize: "1.15rem",
+                  fontWeight: 800,
+                  marginBottom: "4px",
+                }}
+              >
+                Les Fondamentaux des Maths
+              </div>
+              <div
+                style={{
+                  color: "rgba(255,255,255,0.5)",
+                  fontSize: "0.85rem",
+                  lineHeight: 1.5,
+                }}
+              >
+                Calcul mental, pourcentages, fractions, géométrie. Des astuces
+                pratiques pour calculer vite et bien au quotidien.
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              marginTop: "16px",
+              flexWrap: "wrap",
+            }}
+          >
+            {["✖️ ×10, ×100, ×1000", "💯 Pourcentages", "🍕 Fractions"].map(
+              (tag) => (
+                <span
+                  key={tag}
+                  style={{
+                    background: "rgba(46,196,182,0.15)",
+                    color: "#5eead4",
+                    borderRadius: "8px",
+                    padding: "4px 10px",
+                    fontSize: "0.75rem",
+                    fontWeight: 600,
+                  }}
+                >
+                  {tag}
+                </span>
+              ),
+            )}
           </div>
         </div>
       </div>
