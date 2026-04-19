@@ -178,6 +178,27 @@ const fiches = [
     desc: "Adjectif ou pronom sujet ?",
     dispo: true,
   },
+  {
+    id: "soi-soit",
+    titre: "Soi / Soit",
+    emoji: "🪞",
+    desc: "Pronom réfléchi ou verbe être ?",
+    dispo: true,
+  },
+  {
+    id: "meme-memes",
+    titre: "Même / Mêmes",
+    emoji: "🔁",
+    desc: "Adverbe invariable ou adjectif ?",
+    dispo: true,
+  },
+  {
+    id: "participe-passe",
+    titre: "Accord du participe passé",
+    emoji: "✔️",
+    desc: "Il a mangé / Elle est partie",
+    dispo: true,
+  },
 ];
 
 export default function FondamentauxFrancaisPage() {
