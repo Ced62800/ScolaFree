@@ -2,7 +2,6 @@
 
 import { useDecouverte } from "@/components/DecouverteContext";
 import PopupInscription from "@/components/PopupInscription";
-
 import { supabase } from "@/supabaseClient";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -93,10 +92,12 @@ function melangerTableau<T>(arr: T[]): T[] {
 
 const CHOIX = ["Quand", "Quant", "Qu'en"];
 const NB_QUESTIONS = 10;
-
 type EtatQuestion = "attente" | "correct" | "incorrect";
 
 export default function FicheQuandQuantQuen() {
+  const { estConnecte, maxQuestions } = useDecouverte();
+  const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
+
   const [questions, setQuestions] = useState(() =>
     melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS),
   );
@@ -106,10 +107,8 @@ export default function FicheQuandQuantQuen() {
   const [score, setScore] = useState(0);
   const [termine, setTermine] = useState(false);
   const [ancienScore, setAncienScore] = useState<number | null>(null);
-  const scoreSaved = useRef(false);
-  const { estConnecte, maxQuestions } = useDecouverte();
   const [showPopup, setShowPopup] = useState(false);
-  const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
+  const scoreSaved = useRef(false);
 
   useEffect(() => {
     const init = async () => {
@@ -183,7 +182,11 @@ export default function FicheQuandQuantQuen() {
   };
 
   const suivant = () => {
-    if (indexActuel + 1 >= NB_QUESTIONS) {
+    if (indexActuel + 1 >= nbQuestions) {
+      if (!estConnecte) {
+        setShowPopup(true);
+        return;
+      }
       setTermine(true);
     } else {
       setIndexActuel((i) => i + 1);
@@ -200,6 +203,7 @@ export default function FicheQuandQuantQuen() {
     setScore(0);
     setTermine(false);
     scoreSaved.current = false;
+    setShowPopup(false);
   };
 
   if (termine) {
@@ -207,7 +211,6 @@ export default function FicheQuandQuantQuen() {
     const couleur =
       pourcentage >= 80 ? "#2ec4b6" : pourcentage >= 50 ? "#ffd166" : "#ff6b6b";
     const emoji = pourcentage >= 80 ? "🎉" : pourcentage >= 50 ? "💪" : "📖";
-
     return (
       <div
         style={{
@@ -337,7 +340,9 @@ export default function FicheQuandQuantQuen() {
         padding: "80px 20px 16px 20px",
       }}
     >
+      {showPopup && <PopupInscription onRecommencer={recommencer} />}
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        {showPopup && <PopupInscription onRecommencer={recommencer} />}
         <Link
           href="/fondamentaux/francais"
           style={{
@@ -569,7 +574,7 @@ export default function FicheQuandQuantQuen() {
                 cursor: "pointer",
               }}
             >
-              {indexActuel + 1 >= NB_QUESTIONS
+              {indexActuel + 1 >= nbQuestions
                 ? "Voir mon score"
                 : "Question suivante →"}
             </button>

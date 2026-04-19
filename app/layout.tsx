@@ -1,3 +1,4 @@
+import { DecouverteProvider } from "@/components/DecouverteContext";
 import Navbar from "@/components/Navbar";
 import RegisterSW from "@/components/RegisterSW";
 import ScolouChat from "@/components/ScolouChat";
@@ -45,7 +46,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Navbar />
-        {children}
+        <DecouverteProvider>{children}</DecouverteProvider>
         <ScolouChat />
         <RegisterSW />
       </body>

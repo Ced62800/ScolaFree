@@ -164,16 +164,14 @@ export default function FicheMeme() {
           })
           .eq("id", existing.id);
       } else {
-        await supabase
-          .from("scores")
-          .insert({
-            user_id: user.id,
-            classe: "fondamentaux",
-            matiere: "francais",
-            theme: "meme-memes",
-            score,
-            total: NB_QUESTIONS,
-          });
+        await supabase.from("scores").insert({
+          user_id: user.id,
+          classe: "fondamentaux",
+          matiere: "francais",
+          theme: "meme-memes",
+          score,
+          total: NB_QUESTIONS,
+        });
       }
     };
     sauvegarder();
@@ -191,7 +189,11 @@ export default function FicheMeme() {
     }
   };
   const suivant = () => {
-    if (indexActuel + 1 >= NB_QUESTIONS) {
+    if (indexActuel + 1 >= nbQuestions) {
+      if (!estConnecte) {
+        setShowPopup(true);
+        return;
+      }
       setTermine(true);
     } else {
       setIndexActuel((i) => i + 1);
@@ -207,6 +209,7 @@ export default function FicheMeme() {
     setScore(0);
     setTermine(false);
     scoreSaved.current = false;
+    setShowPopup(false);
   };
 
   if (termine) {
@@ -344,6 +347,7 @@ export default function FicheMeme() {
       }}
     >
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        {showPopup && <PopupInscription onRecommencer={recommencer} />}
         <Link
           href="/fondamentaux/francais"
           style={{
@@ -579,7 +583,7 @@ export default function FicheMeme() {
                 cursor: "pointer",
               }}
             >
-              {indexActuel + 1 >= NB_QUESTIONS
+              {indexActuel + 1 >= nbQuestions
                 ? "Voir mon score"
                 : "Question suivante →"}
             </button>

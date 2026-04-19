@@ -2,7 +2,6 @@
 
 import { useDecouverte } from "@/components/DecouverteContext";
 import PopupInscription from "@/components/PopupInscription";
-
 import { supabase } from "@/supabaseClient";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -10,81 +9,84 @@ import { useEffect, useRef, useState } from "react";
 const TOUTES_LES_QUESTIONS = [
   {
     id: 1,
-    phrase: "Demain, j'___ au cinéma.",
-    reponse: "irai",
-    explication: "'Irai' = futur. Demain = certitude → j'irai ✅.",
+    phrase: "___ va très bien aujourd'hui !",
+    reponse: "ça",
+    explication: "'Ça' = cela. Remplace par 'cela' → Ça va = cela va ✅.",
   },
   {
     id: 2,
-    phrase: "Si j'avais le temps, j'___ te voir.",
-    reponse: "irais",
+    phrase: "C'est ___ faute, pas la mienne.",
+    reponse: "sa",
     explication:
-      "'Irais' = conditionnel. 'Si j'avais' → condition → j'irais ✅.",
+      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa faute = son erreur ✅.",
   },
   {
     id: 3,
-    phrase: "Elle ___ à la fête ce soir.",
-    reponse: "ira",
-    explication: "'Ira' = futur. Ce soir = certitude → elle ira ✅.",
+    phrase: "___ m'énerve quand il fait ça !",
+    reponse: "ça",
+    explication:
+      "'Ça' = cela. Remplace par 'cela' → Ça m'énerve = cela m'énerve ✅.",
   },
   {
     id: 4,
-    phrase: "Si tu m'invitais, j'___ volontiers.",
-    reponse: "irais",
+    phrase: "Elle range ___ chambre tous les matins.",
+    reponse: "sa",
     explication:
-      "'Irais' = conditionnel. 'Si tu m'invitais' → condition → j'irais ✅.",
+      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa chambre = ma chambre ✅.",
   },
   {
     id: 5,
-    phrase: "Nous ___ en vacances en août.",
-    reponse: "irons",
-    explication: "'Irons' = futur. En août = certitude → nous irons ✅.",
+    phrase: "___ fait longtemps qu'on ne s'est pas vus.",
+    reponse: "ça",
+    explication:
+      "'Ça' = cela. Remplace par 'cela' → Ça fait longtemps = cela fait longtemps ✅.",
   },
   {
     id: 6,
-    phrase: "Il ___ bien, mais il est trop fatigué.",
-    reponse: "irait",
+    phrase: "Il a perdu ___ clé de voiture.",
+    reponse: "sa",
     explication:
-      "'Irait' = conditionnel. 'Mais il est trop fatigué' → condition non remplie → irait ✅.",
+      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa clé = ma clé ✅.",
   },
   {
     id: 7,
-    phrase: "Tu ___ le chercher à la gare demain ?",
-    reponse: "iras",
-    explication: "'Iras' = futur. Demain = certitude planifiée → tu iras ✅.",
+    phrase: "Comment ___ s'appelle ?",
+    reponse: "ça",
+    explication:
+      "'Ça' = cela. Remplace par 'cela' → comment cela s'appelle ✅.",
   },
   {
     id: 8,
-    phrase: "Si elle pouvait, elle ___ partout.",
-    reponse: "irait",
+    phrase: "Elle aime beaucoup ___ nouvelle coiffure.",
+    reponse: "sa",
     explication:
-      "'Irait' = conditionnel. 'Si elle pouvait' → condition → elle irait ✅.",
+      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa coiffure = ma coiffure ✅.",
   },
   {
     id: 9,
-    phrase: "On ___ au restaurant ce week-end.",
-    reponse: "ira",
-    explication: "'Ira' = futur. Ce week-end = certitude → on ira ✅.",
+    phrase: "___ ne sert à rien de s'énerver.",
+    reponse: "ça",
+    explication: "'Ça' = cela. Remplace par 'cela' → cela ne sert à rien ✅.",
   },
   {
     id: 10,
-    phrase: "J'___ bien en Italie un jour !",
-    reponse: "irais",
-    explication: "'Irais' = conditionnel. Un souhait, un rêve → j'irais ✅.",
+    phrase: "Il a oublié ___ veste au restaurant.",
+    reponse: "sa",
+    explication:
+      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa veste = ma veste ✅.",
   },
   {
     id: 11,
-    phrase: "Ils ___ voir leurs parents la semaine prochaine.",
-    reponse: "iront",
-    explication:
-      "'Iront' = futur. La semaine prochaine = certitude → ils iront ✅.",
+    phrase: "___ ne m'étonne pas du tout.",
+    reponse: "ça",
+    explication: "'Ça' = cela. Remplace par 'cela' → cela ne m'étonne pas ✅.",
   },
   {
     id: 12,
-    phrase: "Tu ___ plus vite si tu prenais le train.",
-    reponse: "irais",
+    phrase: "Elle a retrouvé ___ chat après trois jours.",
+    reponse: "sa",
     explication:
-      "'Irais' = conditionnel. 'Si tu prenais le train' → condition → tu irais ✅.",
+      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa chat = mon chat ✅.",
   },
 ];
 
@@ -97,25 +99,14 @@ function melangerTableau<T>(arr: T[]): T[] {
   return copie;
 }
 
-// Choix adaptés à chaque question
-const getChoix = (reponse: string): string[] => {
-  const choixMap: Record<string, string[]> = {
-    irai: ["irai", "irais"],
-    irais: ["irai", "irais"],
-    ira: ["ira", "irait"],
-    irait: ["ira", "irait"],
-    irons: ["irons", "irions"],
-    irions: ["irons", "irions"],
-    iras: ["iras", "irais"],
-    iront: ["iront", "iraient"],
-  };
-  return choixMap[reponse] ?? ["irai", "irais"];
-};
-
+const CHOIX = ["ça", "sa"];
 const NB_QUESTIONS = 10;
 type EtatQuestion = "attente" | "correct" | "incorrect";
 
-export default function FicheIraiIrais() {
+export default function FicheCaSa() {
+  const { estConnecte, maxQuestions } = useDecouverte();
+  const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
+
   const [questions, setQuestions] = useState(() =>
     melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS),
   );
@@ -125,10 +116,8 @@ export default function FicheIraiIrais() {
   const [score, setScore] = useState(0);
   const [termine, setTermine] = useState(false);
   const [ancienScore, setAncienScore] = useState<number | null>(null);
-  const scoreSaved = useRef(false);
-  const { estConnecte, maxQuestions } = useDecouverte();
   const [showPopup, setShowPopup] = useState(false);
-  const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
+  const scoreSaved = useRef(false);
 
   useEffect(() => {
     const init = async () => {
@@ -141,7 +130,7 @@ export default function FicheIraiIrais() {
         .eq("user_id", user.id)
         .eq("classe", "fondamentaux")
         .eq("matiere", "francais")
-        .eq("theme", "ai-ais")
+        .eq("theme", "ca-sa")
         .order("created_at", { ascending: false })
         .limit(1)
         .single();
@@ -163,7 +152,7 @@ export default function FicheIraiIrais() {
         .eq("user_id", user.id)
         .eq("classe", "fondamentaux")
         .eq("matiere", "francais")
-        .eq("theme", "ai-ais")
+        .eq("theme", "ca-sa")
         .single();
       if (existing?.id) {
         await supabase
@@ -175,21 +164,22 @@ export default function FicheIraiIrais() {
           })
           .eq("id", existing.id);
       } else {
-        await supabase.from("scores").insert({
-          user_id: user.id,
-          classe: "fondamentaux",
-          matiere: "francais",
-          theme: "ai-ais",
-          score,
-          total: NB_QUESTIONS,
-        });
+        await supabase
+          .from("scores")
+          .insert({
+            user_id: user.id,
+            classe: "fondamentaux",
+            matiere: "francais",
+            theme: "ca-sa",
+            score,
+            total: NB_QUESTIONS,
+          });
       }
     };
     sauvegarder();
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
-  const choixActuels = getChoix(question.reponse);
 
   const repondre = (choix: string) => {
     if (etat !== "attente") return;
@@ -201,6 +191,7 @@ export default function FicheIraiIrais() {
       setEtat("incorrect");
     }
   };
+
   const suivant = () => {
     if (indexActuel + 1 >= nbQuestions) {
       if (!estConnecte) {
@@ -214,6 +205,7 @@ export default function FicheIraiIrais() {
       setChoixFait(null);
     }
   };
+
   const recommencer = () => {
     setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
     setIndexActuel(0);
@@ -275,9 +267,9 @@ export default function FicheIraiIrais() {
           </div>
           <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "8px" }}>
             {pourcentage >= 80
-              ? "Bravo ! Tu ne confondras plus futur et conditionnel !"
+              ? "Bravo ! Tu maîtrises Ça / Sa !"
               : pourcentage >= 50
-                ? "Pas mal ! Rappelle-toi : si + imparfait → conditionnel."
+                ? "Pas mal ! Rappelle-toi : ça = cela, sa = mon/ma."
                 : "Continue à t'entraîner, ça va venir !"}
           </p>
           {ancienScore !== null && (
@@ -317,7 +309,7 @@ export default function FicheIraiIrais() {
             <button
               onClick={recommencer}
               style={{
-                background: "linear-gradient(135deg, #4f8ef7, #a78bfa)",
+                background: "linear-gradient(135deg, #ff6b6b, #ffd166)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 24px",
@@ -359,8 +351,8 @@ export default function FicheIraiIrais() {
         padding: "80px 20px 16px 20px",
       }}
     >
+      {showPopup && <PopupInscription onRecommencer={recommencer} />}
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-        {showPopup && <PopupInscription onRecommencer={recommencer} />}
         <Link
           href="/fondamentaux/francais"
           style={{
@@ -379,23 +371,23 @@ export default function FicheIraiIrais() {
         <div style={{ textAlign: "center", marginBottom: "16px" }}>
           <h1
             style={{
-              color: "#4f8ef7",
+              color: "#ff6b6b",
               fontSize: "1.4rem",
               fontWeight: 800,
               marginBottom: "4px",
             }}
           >
-            🖊️ J&apos;irai / J&apos;irais
+            🔀 Ça / Sa
           </h1>
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
-            Futur ou conditionnel ? Choisis la bonne forme
+            Choisis le bon mot pour compléter la phrase
           </p>
         </div>
 
         <div
           style={{
-            background: "rgba(79,142,247,0.1)",
-            border: "1px solid rgba(79,142,247,0.3)",
+            background: "rgba(255,107,107,0.1)",
+            border: "1px solid rgba(255,107,107,0.3)",
             borderRadius: "12px",
             padding: "12px 16px",
             marginBottom: "16px",
@@ -403,7 +395,7 @@ export default function FicheIraiIrais() {
         >
           <p
             style={{
-              color: "#4f8ef7",
+              color: "#ff6b6b",
               fontWeight: 700,
               fontSize: "0.85rem",
               marginBottom: "8px",
@@ -419,25 +411,17 @@ export default function FicheIraiIrais() {
               margin: 0,
             }}
           >
-            <strong style={{ color: "#4f8ef7" }}>FUTUR</strong> (j&apos;irai, tu
-            iras, il ira...) = quelque chose de certain, prévu. Exemple : demain
-            j&apos;<em>irai</em> au cinéma = c&apos;est prévu ✅<br />
-            <strong style={{ color: "#a78bfa" }}>CONDITIONNEL</strong>{" "}
-            (j&apos;irais, tu irais, il irait...) = un souhait ou une condition.
-            Regarde s&apos;il y a{" "}
-            <strong style={{ color: "#a78bfa" }}>&quot;si&quot;</strong> dans la
-            phrase. Exemple : <em>si</em> j&apos;avais le temps, j&apos;
-            <em>irais</em> → condition ✅<br />
-            <strong style={{ color: "rgba(255,255,255,0.4)" }}>
-              Astuce rapide :
-            </strong>{" "}
-            tu vois{" "}
-            <strong style={{ color: "#a78bfa" }}>
-              &quot;si&quot; + imparfait
-            </strong>{" "}
-            → c&apos;est le{" "}
-            <strong style={{ color: "#a78bfa" }}>CONDITIONNEL</strong>. Sinon →
-            c&apos;est le <strong style={{ color: "#4f8ef7" }}>FUTUR</strong>.
+            <strong style={{ color: "#ff6b6b" }}>ÇA</strong> = cela. Remplace
+            par <strong style={{ color: "#ff6b6b" }}>&quot;cela&quot;</strong>.
+            Si ça marche → c&apos;est ÇA. Exemple : <em>ça</em> va →{" "}
+            <em>cela</em> va ✅<br />
+            <strong style={{ color: "#ffd166" }}>SA</strong> = son / ma.
+            Remplace par{" "}
+            <strong style={{ color: "#ffd166" }}>
+              &quot;mon&quot; ou &quot;ma&quot;
+            </strong>
+            . Si ça marche → c&apos;est SA. Exemple : <em>sa</em> chambre →{" "}
+            <em>ma</em> chambre ✅
           </p>
         </div>
 
@@ -453,7 +437,7 @@ export default function FicheIraiIrais() {
             Question {indexActuel + 1}/{nbQuestions}
           </span>
           <span
-            style={{ color: "#4f8ef7", fontWeight: 700, fontSize: "0.85rem" }}
+            style={{ color: "#ff6b6b", fontWeight: 700, fontSize: "0.85rem" }}
           >
             Score : {score}
           </span>
@@ -470,7 +454,7 @@ export default function FicheIraiIrais() {
         >
           <div
             style={{
-              background: "linear-gradient(90deg, #4f8ef7, #a78bfa)",
+              background: "linear-gradient(90deg, #ff6b6b, #ffd166)",
               height: "100%",
               width: `${(indexActuel / nbQuestions) * 100}%`,
               transition: "width 0.3s",
@@ -511,7 +495,7 @@ export default function FicheIraiIrais() {
             flexWrap: "wrap",
           }}
         >
-          {choixActuels.map((choix) => {
+          {CHOIX.map((choix) => {
             let bg = "rgba(255,255,255,0.07)";
             let border = "rgba(255,255,255,0.15)";
             let couleurTexte = "#fff";
@@ -595,7 +579,7 @@ export default function FicheIraiIrais() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #4f8ef7, #a78bfa)",
+                background: "linear-gradient(135deg, #ff6b6b, #ffd166)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",

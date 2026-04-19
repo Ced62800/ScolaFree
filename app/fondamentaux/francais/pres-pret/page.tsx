@@ -162,16 +162,14 @@ export default function FichePresPret() {
           })
           .eq("id", existing.id);
       } else {
-        await supabase
-          .from("scores")
-          .insert({
-            user_id: user.id,
-            classe: "fondamentaux",
-            matiere: "francais",
-            theme: "pres-pret",
-            score,
-            total: NB_QUESTIONS,
-          });
+        await supabase.from("scores").insert({
+          user_id: user.id,
+          classe: "fondamentaux",
+          matiere: "francais",
+          theme: "pres-pret",
+          score,
+          total: NB_QUESTIONS,
+        });
       }
     };
     sauvegarder();
@@ -189,7 +187,11 @@ export default function FichePresPret() {
     }
   };
   const suivant = () => {
-    if (indexActuel + 1 >= NB_QUESTIONS) {
+    if (indexActuel + 1 >= nbQuestions) {
+      if (!estConnecte) {
+        setShowPopup(true);
+        return;
+      }
       setTermine(true);
     } else {
       setIndexActuel((i) => i + 1);
@@ -205,6 +207,7 @@ export default function FichePresPret() {
     setScore(0);
     setTermine(false);
     scoreSaved.current = false;
+    setShowPopup(false);
   };
 
   if (termine) {
@@ -342,6 +345,7 @@ export default function FichePresPret() {
       }}
     >
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        {showPopup && <PopupInscription onRecommencer={recommencer} />}
         <Link
           href="/fondamentaux/francais"
           style={{
@@ -581,7 +585,7 @@ export default function FichePresPret() {
                 cursor: "pointer",
               }}
             >
-              {indexActuel + 1 >= NB_QUESTIONS
+              {indexActuel + 1 >= nbQuestions
                 ? "Voir mon score"
                 : "Question suivante →"}
             </button>
