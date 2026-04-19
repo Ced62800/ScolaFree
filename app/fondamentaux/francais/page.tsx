@@ -199,6 +199,13 @@ const fiches = [
     desc: "Il a mangé / Elle est partie",
     dispo: true,
   },
+  {
+    id: "ai-ais",
+    titre: "Ai / Ais",
+    emoji: "🖊️",
+    desc: "J'ai ou j'ais, tu as ou tu ais ?",
+    dispo: true,
+  },
 ];
 
 export default function FondamentauxFrancaisPage() {
