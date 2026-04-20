@@ -10,120 +10,89 @@ const TOUTES_LES_QUESTIONS = [
   {
     id: 1,
     phrase: "Le gar_on court vite.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Garçon → C devant O → on met une cédille : garÇon ✅",
+    reponse: "garçon",
+    mauvais: "garcon",
+    explication: "Garçon → C devant O → on met une cédille ✅",
   },
   {
     id: 2,
     phrase: "Il a re_u un cadeau.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Reçu → C devant U → on met une cédille : reÇu ✅",
+    reponse: "reçu",
+    mauvais: "recu",
+    explication: "Reçu → C devant U → on met une cédille ✅",
   },
   {
     id: 3,
     phrase: "La le_on de maths était difficile.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Leçon → C devant O → on met une cédille : leÇon ✅",
+    reponse: "leçon",
+    mauvais: "lecon",
+    explication: "Leçon → C devant O → on met une cédille ✅",
   },
   {
     id: 4,
     phrase: "Elle a une belle fa_on de parler.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Façon → C devant O → on met une cédille : faÇon ✅",
+    reponse: "façon",
+    mauvais: "facon",
+    explication: "Façon → C devant O → on met une cédille ✅",
   },
   {
     id: 5,
-    phrase: "Il a com_encé à pleuvoir.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Commençé → C devant A → on met une cédille : commenÇa ✅",
+    phrase: "Il com_a à pleuvoir tout à coup.",
+    reponse: "commença",
+    mauvais: "commenca",
+    explication: "Commença → C devant A → on met une cédille ✅",
   },
   {
     id: 6,
-    phrase: "On a re_u sa réponse.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Reçu → C devant U → on met une cédille : reÇu ✅",
+    phrase: "On a re_u sa réponse hier.",
+    reponse: "reçu",
+    mauvais: "recu",
+    explication: "Reçu → C devant U → on met une cédille ✅",
   },
   {
     id: 7,
     phrase: "Le fran_ais est ma matière préférée.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Français → C devant A → on met une cédille : franÇais ✅",
+    reponse: "français",
+    mauvais: "francais",
+    explication: "Français → C devant A → on met une cédille ✅",
   },
   {
     id: 8,
     phrase: "Il lan_a la balle très loin.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Lança → C devant A → on met une cédille : lanÇa ✅",
+    reponse: "lança",
+    mauvais: "lanca",
+    explication: "Lança → C devant A → on met une cédille ✅",
   },
   {
     id: 9,
     phrase: "La ma_on est pleine de fleurs.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Maçon → C devant O → on met une cédille : maÇon ✅",
+    reponse: "maçon",
+    mauvais: "macon",
+    explication: "Maçon → C devant O → on met une cédille ✅",
   },
   {
     id: 10,
     phrase: "Nous avan_ons doucement.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Avançons → C devant O → on met une cédille : avanÇons ✅",
+    reponse: "avançons",
+    mauvais: "avancons",
+    explication: "Avançons → C devant O → on met une cédille ✅",
   },
   {
     id: 11,
-    phrase: "Il a aperçu un oiseau rare.",
-    lettre: "ç",
-    reponse: "ç",
-    explication: "Aperçu → C devant U → on met une cédille : aperÇu ✅",
+    phrase: "Il a aper_u un oiseau rare.",
+    reponse: "aperçu",
+    mauvais: "apercu",
+    explication: "Aperçu → C devant U → on met une cédille ✅",
   },
   {
     id: 12,
-    phrase: "La pi_ine est froide aujourd'hui.",
-    lettre: "ç",
-    reponse: "ç",
+    phrase: "Le _iel est bleu aujourd'hui.",
+    reponse: "ciel",
+    mauvais: "çiel",
     explication:
-      "Piscine → C devant I → pas de cédille, le C fait déjà le son S ✅",
+      "Ciel → C devant I → pas de cédille, le C fait déjà le son S ✅",
   },
 ];
-
-// Questions avec choix : ç ou c ?
-const getChoix = (
-  id: number,
-): { mot: string; reponse: string; mauvais: string }[] => {
-  const choixMap: Record<
-    number,
-    { mot: string; reponse: string; mauvais: string }
-  > = {
-    1: { mot: "garçon / garcon", reponse: "garçon", mauvais: "garcon" },
-    2: { mot: "reçu / recu", reponse: "reçu", mauvais: "recu" },
-    3: { mot: "leçon / lecon", reponse: "leçon", mauvais: "lecon" },
-    4: { mot: "façon / facon", reponse: "façon", mauvais: "facon" },
-    5: { mot: "commença / commenca", reponse: "commença", mauvais: "commenca" },
-    6: { mot: "reçu / recu", reponse: "reçu", mauvais: "recu" },
-    7: { mot: "français / francais", reponse: "français", mauvais: "francais" },
-    8: { mot: "lança / lanca", reponse: "lança", mauvais: "lanca" },
-    9: { mot: "maçon / macon", reponse: "maçon", mauvais: "macon" },
-    10: {
-      mot: "avançons / avancons",
-      reponse: "avançons",
-      mauvais: "avancons",
-    },
-    11: { mot: "aperçu / apercu", reponse: "aperçu", mauvais: "apercu" },
-    12: { mot: "piscine / piscine", reponse: "piscine", mauvais: "piscene" },
-  };
-  return [
-    { mot: choixMap[id].reponse, reponse: choixMap[id].reponse, mauvais: "" },
-    { mot: choixMap[id].mauvais, reponse: choixMap[id].reponse, mauvais: "" },
-  ].sort(() => Math.random() - 0.5);
-};
 
 function melangerTableau<T>(arr: T[]): T[] {
   const copie = [...arr];
@@ -214,41 +183,14 @@ export default function FicheCedille() {
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
-  const choixActuels = getChoix(question.id);
+  const choixActuels = [question.reponse, question.mauvais].sort(
+    () => Math.random() - 0.5,
+  );
 
   const repondre = (choix: string) => {
     if (etat !== "attente") return;
     setChoixFait(choix);
-    if (
-      choix === choixActuels[0].reponse ||
-      choix === choixActuels[1]?.reponse
-    ) {
-      const bonneReponse = choixActuels.find(
-        (c) =>
-          c.mot === choixActuels[0].reponse || c.mot !== choixActuels[1]?.mot,
-      );
-      if (
-        choix ===
-        choixActuels.find(
-          (c) =>
-            c.mot.includes("ç") || (question.id === 12 && c.mot === "piscine"),
-        )?.mot
-      ) {
-        setEtat("correct");
-        setScore((s) => s + 1);
-      } else {
-        setEtat("incorrect");
-      }
-    }
-  };
-
-  const repondreSimple = (choix: string) => {
-    if (etat !== "attente") return;
-    setChoixFait(choix);
-    const bonne = choixActuels.find(
-      (c) => c.mot.includes("ç") || (question.id === 12 && c.mot === "piscine"),
-    )?.mot;
-    if (choix === bonne) {
+    if (choix === question.reponse) {
       setEtat("correct");
       setScore((s) => s + 1);
     } else {
@@ -467,7 +409,6 @@ export default function FicheCedille() {
           >
             💡 L&apos;astuce magique
           </p>
-
           <div
             style={{
               background: "rgba(0,0,0,0.3)",
@@ -554,7 +495,7 @@ export default function FicheCedille() {
                 fait déjà le son S →{" "}
                 <strong style={{ color: "#a78bfa" }}>pas de cédille !</strong>
                 <br />
-                Exemples : <em>ciel, cerise, cycle</em> → pas de ç
+                Exemples : <em>ciel, cerise, cycle</em>
               </p>
             </div>
           </div>
@@ -640,23 +581,18 @@ export default function FicheCedille() {
             flexWrap: "wrap",
           }}
         >
-          {choixActuels.map((c) => {
-            const bonne = choixActuels.find(
-              (x) =>
-                x.mot.includes("ç") ||
-                (question.id === 12 && x.mot === "piscine"),
-            )?.mot;
+          {choixActuels.map((choix) => {
             let bg = "rgba(255,255,255,0.07)";
             let border = "rgba(255,255,255,0.15)";
             let couleurTexte = "#fff";
-            if (etat !== "attente" && c.mot === bonne) {
+            if (etat !== "attente" && choix === question.reponse) {
               bg = "rgba(46,196,182,0.2)";
               border = "#2ec4b6";
               couleurTexte = "#2ec4b6";
             } else if (
               etat !== "attente" &&
-              c.mot === choixFait &&
-              c.mot !== bonne
+              choix === choixFait &&
+              choix !== question.reponse
             ) {
               bg = "rgba(255,107,107,0.2)";
               border = "#ff6b6b";
@@ -664,8 +600,8 @@ export default function FicheCedille() {
             }
             return (
               <button
-                key={c.mot}
-                onClick={() => repondreSimple(c.mot)}
+                key={choix}
+                onClick={() => repondre(choix)}
                 disabled={etat !== "attente"}
                 style={{
                   background: bg,
@@ -680,7 +616,7 @@ export default function FicheCedille() {
                   minWidth: "130px",
                 }}
               >
-                {c.mot}
+                {choix}
               </button>
             );
           })}
