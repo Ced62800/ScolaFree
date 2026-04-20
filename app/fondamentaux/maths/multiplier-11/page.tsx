@@ -179,6 +179,7 @@ export default function FicheMultiplier11() {
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
+  if (!question) return null;
   const choixActuels = getChoix(question.reponse);
 
   const repondre = (choix: string) => {

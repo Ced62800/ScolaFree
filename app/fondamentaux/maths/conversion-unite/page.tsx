@@ -288,6 +288,7 @@ export default function FicheConversionUnite() {
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
+  if (!question) return null;
   const choixActuels = getChoix(question.id, question.reponse);
 
   const repondre = (choix: string) => {

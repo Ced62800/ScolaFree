@@ -190,6 +190,7 @@ export default function FicheFractionSoustraction() {
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
+  if (!question) return null;
   const choixActuels = getChoix(question.id);
 
   const repondre = (choix: string) => {

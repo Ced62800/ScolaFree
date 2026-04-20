@@ -190,6 +190,7 @@ export default function FicheMultiplier9() {
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
+  if (!question) return null;
   const choixActuels = getChoix(question.reponse);
 
   const repondre = (choix: string) => {

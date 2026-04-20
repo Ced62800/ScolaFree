@@ -240,6 +240,7 @@ export default function FicheFractionAddition() {
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
+  if (!question) return null;
   const choixActuels = getChoix(question.id);
 
   const repondre = (choix: string) => {
