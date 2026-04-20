@@ -9,75 +9,75 @@ import { useEffect, useRef, useState } from "react";
 const TOUTES_LES_QUESTIONS = [
   {
     id: 1,
-    phrase: "97 + 48 = ?",
-    reponse: "145",
-    explication: "97 → arrondi à 100 (+3) → 100 + 48 = 148 → 148 - 3 = 145 ✅",
+    phrase: "Carré de côté 5 cm. Périmètre = ?",
+    reponse: "20 cm",
+    explication: "Carré : P = 4 × côté = 4 × 5 = 20 cm ✅",
   },
   {
     id: 2,
-    phrase: "68 + 35 = ?",
-    reponse: "103",
-    explication: "68 → arrondi à 70 (+2) → 70 + 35 = 105 → 105 - 2 = 103 ✅",
+    phrase: "Rectangle 8 cm × 3 cm. Périmètre = ?",
+    reponse: "22 cm",
+    explication: "Rectangle : P = 2 × (8+3) = 2 × 11 = 22 cm ✅",
   },
   {
     id: 3,
-    phrase: "49 + 76 = ?",
-    reponse: "125",
-    explication: "49 → arrondi à 50 (+1) → 50 + 76 = 126 → 126 - 1 = 125 ✅",
+    phrase: "Carré de côté 7 cm. Périmètre = ?",
+    reponse: "28 cm",
+    explication: "Carré : P = 4 × côté = 4 × 7 = 28 cm ✅",
   },
   {
     id: 4,
-    phrase: "88 + 45 = ?",
-    reponse: "133",
-    explication: "88 → arrondi à 90 (+2) → 90 + 45 = 135 → 135 - 2 = 133 ✅",
+    phrase: "Rectangle 10 cm × 4 cm. Périmètre = ?",
+    reponse: "28 cm",
+    explication: "Rectangle : P = 2 × (10+4) = 2 × 14 = 28 cm ✅",
   },
   {
     id: 5,
-    phrase: "57 + 64 = ?",
-    reponse: "121",
-    explication: "57 → arrondi à 60 (+3) → 60 + 64 = 124 → 124 - 3 = 121 ✅",
+    phrase: "Triangle équilatéral de côté 6 cm. Périmètre = ?",
+    reponse: "18 cm",
+    explication: "Triangle équilatéral : P = 3 × côté = 3 × 6 = 18 cm ✅",
   },
   {
     id: 6,
-    phrase: "79 + 53 = ?",
-    reponse: "132",
-    explication: "79 → arrondi à 80 (+1) → 80 + 53 = 133 → 133 - 1 = 132 ✅",
+    phrase: "Carré de côté 9 cm. Périmètre = ?",
+    reponse: "36 cm",
+    explication: "Carré : P = 4 × côté = 4 × 9 = 36 cm ✅",
   },
   {
     id: 7,
-    phrase: "96 + 37 = ?",
-    reponse: "133",
-    explication: "96 → arrondi à 100 (+4) → 100 + 37 = 137 → 137 - 4 = 133 ✅",
+    phrase: "Rectangle 12 cm × 5 cm. Périmètre = ?",
+    reponse: "34 cm",
+    explication: "Rectangle : P = 2 × (12+5) = 2 × 17 = 34 cm ✅",
   },
   {
     id: 8,
-    phrase: "38 + 55 = ?",
-    reponse: "93",
-    explication: "38 → arrondi à 40 (+2) → 40 + 55 = 95 → 95 - 2 = 93 ✅",
+    phrase: "Triangle de côtés 3, 4 et 5 cm. Périmètre = ?",
+    reponse: "12 cm",
+    explication: "Triangle : P = somme des côtés = 3+4+5 = 12 cm ✅",
   },
   {
     id: 9,
-    phrase: "67 + 48 = ?",
-    reponse: "115",
-    explication: "67 → arrondi à 70 (+3) → 70 + 48 = 118 → 118 - 3 = 115 ✅",
+    phrase: "Carré de côté 11 cm. Périmètre = ?",
+    reponse: "44 cm",
+    explication: "Carré : P = 4 × côté = 4 × 11 = 44 cm ✅",
   },
   {
     id: 10,
-    phrase: "58 + 74 = ?",
-    reponse: "132",
-    explication: "58 → arrondi à 60 (+2) → 60 + 74 = 134 → 134 - 2 = 132 ✅",
+    phrase: "Rectangle 15 cm × 6 cm. Périmètre = ?",
+    reponse: "42 cm",
+    explication: "Rectangle : P = 2 × (15+6) = 2 × 21 = 42 cm ✅",
   },
   {
     id: 11,
-    phrase: "89 + 43 = ?",
-    reponse: "132",
-    explication: "89 → arrondi à 90 (+1) → 90 + 43 = 133 → 133 - 1 = 132 ✅",
+    phrase: "Triangle équilatéral de côté 8 cm. Périmètre = ?",
+    reponse: "24 cm",
+    explication: "Triangle équilatéral : P = 3 × côté = 3 × 8 = 24 cm ✅",
   },
   {
     id: 12,
-    phrase: "47 + 66 = ?",
-    reponse: "113",
-    explication: "47 → arrondi à 50 (+3) → 50 + 66 = 116 → 116 - 3 = 113 ✅",
+    phrase: "Rectangle 20 cm × 7 cm. Périmètre = ?",
+    reponse: "54 cm",
+    explication: "Rectangle : P = 2 × (20+7) = 2 × 27 = 54 cm ✅",
   },
 ];
 
@@ -90,9 +90,9 @@ function melangerTableau<T>(arr: T[]): T[] {
   return copie;
 }
 
-const getChoix = (reponse: string): string[] => {
+const getChoix = (id: number, reponse: string): string[] => {
   const n = parseInt(reponse);
-  return [String(n - 10), reponse, String(n + 10)].sort(
+  return [String(n - 6) + " cm", reponse, String(n + 6) + " cm"].sort(
     () => Math.random() - 0.5,
   );
 };
@@ -100,15 +100,11 @@ const getChoix = (reponse: string): string[] => {
 const NB_QUESTIONS = 10;
 type EtatQuestion = "attente" | "correct" | "incorrect";
 
-export default function FicheAdditionRapide() {
+export default function FichePerimetre() {
   const { estConnecte, maxQuestions } = useDecouverte();
   const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
 
   const [questions, setQuestions] = useState<typeof TOUTES_LES_QUESTIONS>([]);
-
-  useEffect(() => {
-    setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
-  }, []);
   const [indexActuel, setIndexActuel] = useState(0);
   const [etat, setEtat] = useState<EtatQuestion>("attente");
   const [choixFait, setChoixFait] = useState<string | null>(null);
@@ -117,6 +113,10 @@ export default function FicheAdditionRapide() {
   const [ancienScore, setAncienScore] = useState<number | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const scoreSaved = useRef(false);
+
+  useEffect(() => {
+    setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
+  }, []);
 
   useEffect(() => {
     const init = async () => {
@@ -129,7 +129,7 @@ export default function FicheAdditionRapide() {
         .eq("user_id", user.id)
         .eq("classe", "fondamentaux")
         .eq("matiere", "maths")
-        .eq("theme", "addition-rapide")
+        .eq("theme", "perimetre")
         .order("created_at", { ascending: false })
         .limit(1)
         .single();
@@ -151,7 +151,7 @@ export default function FicheAdditionRapide() {
         .eq("user_id", user.id)
         .eq("classe", "fondamentaux")
         .eq("matiere", "maths")
-        .eq("theme", "addition-rapide")
+        .eq("theme", "perimetre")
         .single();
       if (existing?.id) {
         await supabase
@@ -163,23 +163,22 @@ export default function FicheAdditionRapide() {
           })
           .eq("id", existing.id);
       } else {
-        await supabase
-          .from("scores")
-          .insert({
-            user_id: user.id,
-            classe: "fondamentaux",
-            matiere: "maths",
-            theme: "addition-rapide",
-            score,
-            total: NB_QUESTIONS,
-          });
+        await supabase.from("scores").insert({
+          user_id: user.id,
+          classe: "fondamentaux",
+          matiere: "maths",
+          theme: "perimetre",
+          score,
+          total: NB_QUESTIONS,
+        });
       }
     };
     sauvegarder();
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
-  const choixActuels = getChoix(question.reponse);
+  if (!question) return null;
+  const choixActuels = getChoix(question.id, question.reponse);
 
   const repondre = (choix: string) => {
     if (etat !== "attente") return;
@@ -267,10 +266,10 @@ export default function FicheAdditionRapide() {
           </div>
           <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "8px" }}>
             {pourcentage >= 80
-              ? "Bravo ! Tu additionnes comme un pro !"
+              ? "Bravo ! Tu calcules les périmètres !"
               : pourcentage >= 50
-                ? "Pas mal ! Rappelle-toi : arrondi puis ajuste."
-                : "Continue à t'entraîner, ça va venir !"}
+                ? "Pas mal ! Rappelle-toi les formules."
+                : "Relis les formules et réessaie !"}
           </p>
           {ancienScore !== null && (
             <p
@@ -377,13 +376,14 @@ export default function FicheAdditionRapide() {
               marginBottom: "4px",
             }}
           >
-            ➕ Additionner rapidement
+            📐 Périmètre des formes
           </h1>
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
-            Arrondir puis ajuster
+            Le tour complet d&apos;une forme
           </p>
         </div>
 
+        {/* Astuce */}
         <div
           style={{
             background: "rgba(79,142,247,0.1)",
@@ -398,155 +398,331 @@ export default function FicheAdditionRapide() {
               color: "#4f8ef7",
               fontWeight: 700,
               fontSize: "0.85rem",
-              marginBottom: "10px",
+              marginBottom: "12px",
             }}
           >
-            💡 L&apos;astuce magique — exemple : 97 + 48
+            💡 Les formules à retenir
           </p>
 
-          {/* Schéma visuel */}
           <div
             style={{
-              background: "rgba(0,0,0,0.3)",
-              borderRadius: "10px",
-              padding: "14px",
-              marginBottom: "10px",
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+              justifyContent: "center",
             }}
           >
+            {/* CARRÉ */}
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "6px",
-                flexWrap: "wrap",
+                background: "rgba(0,0,0,0.3)",
+                borderRadius: "10px",
+                padding: "14px 12px",
+                flex: 1,
+                minWidth: "140px",
+                textAlign: "center",
               }}
             >
-              {/* Étape 1 */}
-              <div style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    background: "rgba(79,142,247,0.2)",
-                    border: "2px solid #4f8ef7",
-                    borderRadius: "10px",
-                    padding: "8px 12px",
-                  }}
-                >
-                  <div
-                    style={{
-                      color: "#4f8ef7",
-                      fontSize: "1.2rem",
-                      fontWeight: 900,
-                    }}
-                  >
-                    97 + 48
-                  </div>
-                </div>
+              <div
+                style={{
+                  color: "#ffd166",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  marginBottom: "8px",
+                }}
+              >
+                côté
               </div>
               <div
-                style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
               >
-                →
-              </div>
-              {/* Étape 2 */}
-              <div style={{ textAlign: "center" }}>
-                <div
+                <span
                   style={{
-                    background: "rgba(255,209,102,0.2)",
-                    border: "2px solid #ffd166",
-                    borderRadius: "10px",
-                    padding: "8px 12px",
+                    color: "#ffd166",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
                   }}
                 >
-                  <div
-                    style={{
-                      color: "#ffd166",
-                      fontSize: "1.1rem",
-                      fontWeight: 900,
-                    }}
-                  >
-                    100 + 48
-                  </div>
-                  <div style={{ color: "#ffd166", fontSize: "0.7rem" }}>
-                    97 arrondi à 100
-                  </div>
-                </div>
+                  c
+                </span>
+                <div
+                  style={{
+                    width: "64px",
+                    height: "64px",
+                    border: "3px solid #4f8ef7",
+                    borderRadius: "2px",
+                  }}
+                />
+                <span
+                  style={{
+                    color: "#ffd166",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  c
+                </span>
               </div>
               <div
-                style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}
+                style={{
+                  color: "#ffd166",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  marginTop: "20px",
+                  marginBottom: "10px",
+                }}
               >
-                →
-              </div>
-              {/* Étape 3 */}
-              <div style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    background: "rgba(255,107,107,0.2)",
-                    border: "2px solid #ff6b6b",
-                    borderRadius: "10px",
-                    padding: "8px 12px",
-                  }}
-                >
-                  <div
-                    style={{
-                      color: "#ff6b6b",
-                      fontSize: "1.1rem",
-                      fontWeight: 900,
-                    }}
-                  >
-                    148 - 3
-                  </div>
-                  <div style={{ color: "#ff6b6b", fontSize: "0.7rem" }}>
-                    on enlève les 3 ajoutés
-                  </div>
-                </div>
+                côté
               </div>
               <div
-                style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}
+                style={{
+                  color: "#4f8ef7",
+                  fontWeight: 800,
+                  fontSize: "0.82rem",
+                }}
               >
-                →
+                CARRÉ
               </div>
-              {/* Résultat */}
-              <div style={{ textAlign: "center" }}>
-                <div
+              <div
+                style={{
+                  color: "#fff",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  marginTop: "4px",
+                }}
+              >
+                P = <span style={{ color: "#ffd166" }}>4 × côté</span>
+              </div>
+              <div
+                style={{
+                  color: "rgba(255,255,255,0.4)",
+                  fontSize: "0.72rem",
+                  marginTop: "3px",
+                }}
+              >
+                ex: 4 × 5 = 20 cm
+              </div>
+            </div>
+
+            {/* RECTANGLE */}
+            <div
+              style={{
+                background: "rgba(0,0,0,0.3)",
+                borderRadius: "10px",
+                padding: "14px 12px",
+                flex: 1,
+                minWidth: "140px",
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  color: "#ffd166",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  marginBottom: "8px",
+                }}
+              >
+                Longueur (L)
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <span
                   style={{
-                    background: "rgba(46,196,182,0.3)",
-                    border: "2px solid #2ec4b6",
-                    borderRadius: "10px",
-                    padding: "8px 12px",
+                    color: "#2ec4b6",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
                   }}
                 >
-                  <div
-                    style={{
-                      color: "#fff",
-                      fontSize: "1.2rem",
-                      fontWeight: 900,
-                    }}
-                  >
-                    145 ✅
-                  </div>
-                </div>
+                  l
+                </span>
+                <div
+                  style={{
+                    width: "80px",
+                    height: "48px",
+                    border: "3px solid #2ec4b6",
+                    borderRadius: "2px",
+                  }}
+                />
+                <span
+                  style={{
+                    color: "#2ec4b6",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  l
+                </span>
+              </div>
+              <div
+                style={{
+                  color: "#ffd166",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  marginTop: "8px",
+                  marginBottom: "10px",
+                }}
+              >
+                Longueur (L)
+              </div>
+              <div
+                style={{
+                  color: "#2ec4b6",
+                  fontWeight: 800,
+                  fontSize: "0.82rem",
+                }}
+              >
+                RECTANGLE
+              </div>
+              <div
+                style={{
+                  color: "#fff",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  marginTop: "4px",
+                }}
+              >
+                P = <span style={{ color: "#ffd166" }}>2 × (L + l)</span>
+              </div>
+              <div
+                style={{
+                  color: "rgba(255,255,255,0.4)",
+                  fontSize: "0.72rem",
+                  marginTop: "3px",
+                }}
+              >
+                ex: 2 × (8+3) = 22 cm
+              </div>
+            </div>
+
+            {/* TRIANGLE */}
+            <div
+              style={{
+                background: "rgba(0,0,0,0.3)",
+                borderRadius: "10px",
+                padding: "14px 12px",
+                flex: 1,
+                minWidth: "140px",
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  color: "rgba(0,0,0,0)",
+                  fontSize: "0.85rem",
+                  marginBottom: "8px",
+                }}
+              >
+                —
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "6px",
+                }}
+              >
+                <span
+                  style={{
+                    color: "#ffd166",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  a
+                </span>
+                <svg width="80" height="64" viewBox="0 0 80 64">
+                  <polygon
+                    points="40,4 76,60 4,60"
+                    fill="none"
+                    stroke="#a78bfa"
+                    strokeWidth="3"
+                  />
+                </svg>
+                <span
+                  style={{
+                    color: "#ffd166",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  b
+                </span>
+              </div>
+              <div
+                style={{
+                  color: "#ffd166",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  marginTop: "8px",
+                  marginBottom: "10px",
+                }}
+              >
+                c
+              </div>
+              <div
+                style={{
+                  color: "#a78bfa",
+                  fontWeight: 800,
+                  fontSize: "0.82rem",
+                }}
+              >
+                TRIANGLE
+              </div>
+              <div
+                style={{
+                  color: "#fff",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  marginTop: "4px",
+                }}
+              >
+                P = <span style={{ color: "#ffd166" }}>a + b + c</span>
+              </div>
+              <div
+                style={{
+                  color: "rgba(255,255,255,0.4)",
+                  fontSize: "0.72rem",
+                  marginTop: "3px",
+                }}
+              >
+                ex: 3+4+5 = 12 cm
               </div>
             </div>
           </div>
 
-          <p
+          <div
             style={{
-              color: "rgba(255,255,255,0.7)",
-              fontSize: "0.82rem",
-              lineHeight: 1.8,
-              margin: 0,
+              marginTop: "10px",
+              background: "rgba(255,255,255,0.05)",
+              borderRadius: "8px",
+              padding: "8px 12px",
+              textAlign: "center",
             }}
           >
-            <strong style={{ color: "#ffd166" }}>Étape 1 :</strong> arrondis le
-            1er nombre au multiple de 10 le plus proche
-            <br />
-            <strong style={{ color: "#4f8ef7" }}>Étape 2 :</strong> additionne
-            normalement
-            <br />
-            <strong style={{ color: "#ff6b6b" }}>Étape 3 :</strong> retire ce
-            que tu as ajouté pour arrondir
-          </p>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.5)",
+                fontSize: "0.78rem",
+                margin: 0,
+              }}
+            >
+              🐜 Périmètre = distance parcourue par une fourmi qui fait{" "}
+              <strong style={{ color: "#4f8ef7" }}>le tour complet</strong> !
+            </p>
+          </div>
         </div>
 
         <div
@@ -600,8 +776,8 @@ export default function FicheAdditionRapide() {
           <p
             style={{
               color: "#fff",
-              fontSize: "1.4rem",
-              fontWeight: 800,
+              fontSize: "1.1rem",
+              fontWeight: 700,
               lineHeight: 1.6,
               margin: 0,
             }}
@@ -651,7 +827,7 @@ export default function FicheAdditionRapide() {
                   fontWeight: 800,
                   cursor: etat === "attente" ? "pointer" : "default",
                   transition: "all 0.2s",
-                  minWidth: "100px",
+                  minWidth: "110px",
                 }}
               >
                 {choix}

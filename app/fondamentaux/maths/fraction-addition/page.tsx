@@ -167,9 +167,11 @@ export default function FicheFractionAddition() {
   const { estConnecte, maxQuestions } = useDecouverte();
   const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
 
-  const [questions, setQuestions] = useState(() =>
-    melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS),
-  );
+  const [questions, setQuestions] = useState<typeof TOUTES_LES_QUESTIONS>([]);
+
+  useEffect(() => {
+    setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
+  }, []);
   const [indexActuel, setIndexActuel] = useState(0);
   const [etat, setEtat] = useState<EtatQuestion>("attente");
   const [choixFait, setChoixFait] = useState<string | null>(null);

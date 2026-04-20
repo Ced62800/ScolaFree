@@ -16,7 +16,7 @@ const fiches = [
     titre: "Aire des formes",
     emoji: "📐",
     desc: "Carré, rectangle, triangle, cercle",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "conversion-unite",
@@ -58,7 +58,7 @@ const fiches = [
     titre: "Simplifier une fraction",
     emoji: "✂️",
     desc: "Trouver le plus grand diviseur commun",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "fraction-soustraction",
@@ -103,18 +103,11 @@ const fiches = [
     dispo: true,
   },
   {
-    id: "partager-addition",
-    titre: "Partager une addition",
-    emoji: "🍽️",
-    desc: "Diviser une note au restaurant",
-    dispo: false,
-  },
-  {
     id: "perimetre",
     titre: "Périmètre des formes",
     emoji: "📐",
     desc: "Carré, rectangle, triangle, cercle",
-    dispo: false,
+    dispo: true,
   },
   {
     id: "pourcentage-inverse",

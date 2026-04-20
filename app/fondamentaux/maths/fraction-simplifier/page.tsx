@@ -9,75 +9,75 @@ import { useEffect, useRef, useState } from "react";
 const TOUTES_LES_QUESTIONS = [
   {
     id: 1,
-    phrase: "97 + 48 = ?",
-    reponse: "145",
-    explication: "97 → arrondi à 100 (+3) → 100 + 48 = 148 → 148 - 3 = 145 ✅",
+    phrase: "Simplifie : 2/4",
+    reponse: "1/2",
+    explication: "2 et 4 sont divisibles par 2 → 2÷2=1, 4÷2=2 → 1/2 ✅",
   },
   {
     id: 2,
-    phrase: "68 + 35 = ?",
-    reponse: "103",
-    explication: "68 → arrondi à 70 (+2) → 70 + 35 = 105 → 105 - 2 = 103 ✅",
+    phrase: "Simplifie : 3/9",
+    reponse: "1/3",
+    explication: "3 et 9 sont divisibles par 3 → 3÷3=1, 9÷3=3 → 1/3 ✅",
   },
   {
     id: 3,
-    phrase: "49 + 76 = ?",
-    reponse: "125",
-    explication: "49 → arrondi à 50 (+1) → 50 + 76 = 126 → 126 - 1 = 125 ✅",
+    phrase: "Simplifie : 4/8",
+    reponse: "1/2",
+    explication: "4 et 8 sont divisibles par 4 → 4÷4=1, 8÷4=2 → 1/2 ✅",
   },
   {
     id: 4,
-    phrase: "88 + 45 = ?",
-    reponse: "133",
-    explication: "88 → arrondi à 90 (+2) → 90 + 45 = 135 → 135 - 2 = 133 ✅",
+    phrase: "Simplifie : 6/9",
+    reponse: "2/3",
+    explication: "6 et 9 sont divisibles par 3 → 6÷3=2, 9÷3=3 → 2/3 ✅",
   },
   {
     id: 5,
-    phrase: "57 + 64 = ?",
-    reponse: "121",
-    explication: "57 → arrondi à 60 (+3) → 60 + 64 = 124 → 124 - 3 = 121 ✅",
+    phrase: "Simplifie : 4/6",
+    reponse: "2/3",
+    explication: "4 et 6 sont divisibles par 2 → 4÷2=2, 6÷2=3 → 2/3 ✅",
   },
   {
     id: 6,
-    phrase: "79 + 53 = ?",
-    reponse: "132",
-    explication: "79 → arrondi à 80 (+1) → 80 + 53 = 133 → 133 - 1 = 132 ✅",
+    phrase: "Simplifie : 6/12",
+    reponse: "1/2",
+    explication: "6 et 12 sont divisibles par 6 → 6÷6=1, 12÷6=2 → 1/2 ✅",
   },
   {
     id: 7,
-    phrase: "96 + 37 = ?",
-    reponse: "133",
-    explication: "96 → arrondi à 100 (+4) → 100 + 37 = 137 → 137 - 4 = 133 ✅",
+    phrase: "Simplifie : 8/12",
+    reponse: "2/3",
+    explication: "8 et 12 sont divisibles par 4 → 8÷4=2, 12÷4=3 → 2/3 ✅",
   },
   {
     id: 8,
-    phrase: "38 + 55 = ?",
-    reponse: "93",
-    explication: "38 → arrondi à 40 (+2) → 40 + 55 = 95 → 95 - 2 = 93 ✅",
+    phrase: "Simplifie : 5/10",
+    reponse: "1/2",
+    explication: "5 et 10 sont divisibles par 5 → 5÷5=1, 10÷5=2 → 1/2 ✅",
   },
   {
     id: 9,
-    phrase: "67 + 48 = ?",
-    reponse: "115",
-    explication: "67 → arrondi à 70 (+3) → 70 + 48 = 118 → 118 - 3 = 115 ✅",
+    phrase: "Simplifie : 4/10",
+    reponse: "2/5",
+    explication: "4 et 10 sont divisibles par 2 → 4÷2=2, 10÷2=5 → 2/5 ✅",
   },
   {
     id: 10,
-    phrase: "58 + 74 = ?",
-    reponse: "132",
-    explication: "58 → arrondi à 60 (+2) → 60 + 74 = 134 → 134 - 2 = 132 ✅",
+    phrase: "Simplifie : 9/12",
+    reponse: "3/4",
+    explication: "9 et 12 sont divisibles par 3 → 9÷3=3, 12÷3=4 → 3/4 ✅",
   },
   {
     id: 11,
-    phrase: "89 + 43 = ?",
-    reponse: "132",
-    explication: "89 → arrondi à 90 (+1) → 90 + 43 = 133 → 133 - 1 = 132 ✅",
+    phrase: "Simplifie : 6/8",
+    reponse: "3/4",
+    explication: "6 et 8 sont divisibles par 2 → 6÷2=3, 8÷2=4 → 3/4 ✅",
   },
   {
     id: 12,
-    phrase: "47 + 66 = ?",
-    reponse: "113",
-    explication: "47 → arrondi à 50 (+3) → 50 + 66 = 116 → 116 - 3 = 113 ✅",
+    phrase: "Simplifie : 10/15",
+    reponse: "2/3",
+    explication: "10 et 15 sont divisibles par 5 → 10÷5=2, 15÷5=3 → 2/3 ✅",
   },
 ];
 
@@ -90,17 +90,28 @@ function melangerTableau<T>(arr: T[]): T[] {
   return copie;
 }
 
-const getChoix = (reponse: string): string[] => {
-  const n = parseInt(reponse);
-  return [String(n - 10), reponse, String(n + 10)].sort(
-    () => Math.random() - 0.5,
-  );
+const getChoix = (id: number): string[] => {
+  const choixMap: Record<number, string[]> = {
+    1: ["1/4", "1/2", "2/3"],
+    2: ["1/2", "1/3", "2/3"],
+    3: ["1/4", "1/2", "2/4"],
+    4: ["1/3", "2/3", "3/4"],
+    5: ["1/3", "2/3", "3/4"],
+    6: ["1/3", "1/2", "2/3"],
+    7: ["1/2", "2/3", "3/4"],
+    8: ["1/5", "1/2", "2/5"],
+    9: ["1/5", "2/5", "3/5"],
+    10: ["2/3", "3/4", "4/5"],
+    11: ["2/3", "3/4", "4/5"],
+    12: ["1/3", "2/3", "3/5"],
+  };
+  return (choixMap[id] ?? []).sort(() => Math.random() - 0.5);
 };
 
 const NB_QUESTIONS = 10;
 type EtatQuestion = "attente" | "correct" | "incorrect";
 
-export default function FicheAdditionRapide() {
+export default function FicheFractionSimplifier() {
   const { estConnecte, maxQuestions } = useDecouverte();
   const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
 
@@ -129,7 +140,7 @@ export default function FicheAdditionRapide() {
         .eq("user_id", user.id)
         .eq("classe", "fondamentaux")
         .eq("matiere", "maths")
-        .eq("theme", "addition-rapide")
+        .eq("theme", "fraction-simplifier")
         .order("created_at", { ascending: false })
         .limit(1)
         .single();
@@ -151,7 +162,7 @@ export default function FicheAdditionRapide() {
         .eq("user_id", user.id)
         .eq("classe", "fondamentaux")
         .eq("matiere", "maths")
-        .eq("theme", "addition-rapide")
+        .eq("theme", "fraction-simplifier")
         .single();
       if (existing?.id) {
         await supabase
@@ -169,7 +180,7 @@ export default function FicheAdditionRapide() {
             user_id: user.id,
             classe: "fondamentaux",
             matiere: "maths",
-            theme: "addition-rapide",
+            theme: "fraction-simplifier",
             score,
             total: NB_QUESTIONS,
           });
@@ -179,7 +190,7 @@ export default function FicheAdditionRapide() {
   }, [termine, score, estConnecte]);
 
   const question = questions[indexActuel];
-  const choixActuels = getChoix(question.reponse);
+  const choixActuels = getChoix(question.id);
 
   const repondre = (choix: string) => {
     if (etat !== "attente") return;
@@ -267,9 +278,9 @@ export default function FicheAdditionRapide() {
           </div>
           <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "8px" }}>
             {pourcentage >= 80
-              ? "Bravo ! Tu additionnes comme un pro !"
+              ? "Bravo ! Tu simplifies les fractions !"
               : pourcentage >= 50
-                ? "Pas mal ! Rappelle-toi : arrondi puis ajuste."
+                ? "Pas mal ! Cherche le nombre qui divise les deux."
                 : "Continue à t'entraîner, ça va venir !"}
           </p>
           {ancienScore !== null && (
@@ -309,7 +320,7 @@ export default function FicheAdditionRapide() {
             <button
               onClick={recommencer}
               style={{
-                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                background: "linear-gradient(135deg, #2ec4b6, #a78bfa)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 24px",
@@ -371,23 +382,23 @@ export default function FicheAdditionRapide() {
         <div style={{ textAlign: "center", marginBottom: "16px" }}>
           <h1
             style={{
-              color: "#4f8ef7",
+              color: "#2ec4b6",
               fontSize: "1.4rem",
               fontWeight: 800,
               marginBottom: "4px",
             }}
           >
-            ➕ Additionner rapidement
+            ✂️ Simplifier une fraction
           </h1>
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
-            Arrondir puis ajuster
+            Divise le haut et le bas par le même nombre !
           </p>
         </div>
 
         <div
           style={{
-            background: "rgba(79,142,247,0.1)",
-            border: "1px solid rgba(79,142,247,0.3)",
+            background: "rgba(46,196,182,0.1)",
+            border: "1px solid rgba(46,196,182,0.3)",
             borderRadius: "12px",
             padding: "12px 16px",
             marginBottom: "16px",
@@ -395,138 +406,186 @@ export default function FicheAdditionRapide() {
         >
           <p
             style={{
-              color: "#4f8ef7",
+              color: "#2ec4b6",
               fontWeight: 700,
               fontSize: "0.85rem",
               marginBottom: "10px",
             }}
           >
-            💡 L&apos;astuce magique — exemple : 97 + 48
+            💡 L&apos;astuce magique
           </p>
 
-          {/* Schéma visuel */}
           <div
             style={{
               background: "rgba(0,0,0,0.3)",
               borderRadius: "10px",
               padding: "14px",
-              marginBottom: "10px",
+              marginBottom: "8px",
             }}
           >
+            <p
+              style={{
+                color: "rgba(255,255,255,0.6)",
+                fontSize: "0.78rem",
+                textAlign: "center",
+                margin: "0 0 10px 0",
+              }}
+            >
+              Exemple : simplifier 6/9
+            </p>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "6px",
+                gap: "10px",
                 flexWrap: "wrap",
               }}
             >
-              {/* Étape 1 */}
-              <div style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    background: "rgba(79,142,247,0.2)",
-                    border: "2px solid #4f8ef7",
-                    borderRadius: "10px",
-                    padding: "8px 12px",
-                  }}
-                >
-                  <div
-                    style={{
-                      color: "#4f8ef7",
-                      fontSize: "1.2rem",
-                      fontWeight: 900,
-                    }}
-                  >
-                    97 + 48
-                  </div>
-                </div>
-              </div>
+              {/* Fraction de départ */}
               <div
-                style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}
+                style={{
+                  background: "rgba(46,196,182,0.2)",
+                  border: "2px solid #2ec4b6",
+                  borderRadius: "10px",
+                  padding: "10px 16px",
+                  textAlign: "center",
+                }}
               >
-                →
+                <div
+                  style={{
+                    color: "#2ec4b6",
+                    fontWeight: 900,
+                    fontSize: "1.6rem",
+                    lineHeight: 1,
+                  }}
+                >
+                  6
+                </div>
+                <div
+                  style={{
+                    height: "2px",
+                    background: "#2ec4b6",
+                    margin: "4px 0",
+                  }}
+                />
+                <div
+                  style={{
+                    color: "#2ec4b6",
+                    fontWeight: 900,
+                    fontSize: "1.6rem",
+                    lineHeight: 1,
+                  }}
+                >
+                  9
+                </div>
               </div>
-              {/* Étape 2 */}
+              {/* Diviseur */}
               <div style={{ textAlign: "center" }}>
                 <div
                   style={{
-                    background: "rgba(255,209,102,0.2)",
-                    border: "2px solid #ffd166",
-                    borderRadius: "10px",
-                    padding: "8px 12px",
+                    color: "#ffd166",
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    marginBottom: "4px",
                   }}
                 >
-                  <div
-                    style={{
-                      color: "#ffd166",
-                      fontSize: "1.1rem",
-                      fontWeight: 900,
-                    }}
-                  >
-                    100 + 48
-                  </div>
-                  <div style={{ color: "#ffd166", fontSize: "0.7rem" }}>
-                    97 arrondi à 100
-                  </div>
+                  ÷ 3 en haut
+                </div>
+                <div style={{ color: "#ffd166", fontSize: "1.5rem" }}>→</div>
+                <div
+                  style={{
+                    color: "#ffd166",
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    marginTop: "4px",
+                  }}
+                >
+                  ÷ 3 en bas
                 </div>
               </div>
+              {/* Fraction résultat */}
               <div
-                style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}
+                style={{
+                  background: "rgba(255,209,102,0.2)",
+                  border: "2px solid #ffd166",
+                  borderRadius: "10px",
+                  padding: "10px 16px",
+                  textAlign: "center",
+                }}
               >
-                →
-              </div>
-              {/* Étape 3 */}
-              <div style={{ textAlign: "center" }}>
                 <div
                   style={{
-                    background: "rgba(255,107,107,0.2)",
-                    border: "2px solid #ff6b6b",
-                    borderRadius: "10px",
-                    padding: "8px 12px",
+                    color: "#ffd166",
+                    fontWeight: 900,
+                    fontSize: "1.6rem",
+                    lineHeight: 1,
                   }}
                 >
-                  <div
-                    style={{
-                      color: "#ff6b6b",
-                      fontSize: "1.1rem",
-                      fontWeight: 900,
-                    }}
-                  >
-                    148 - 3
-                  </div>
-                  <div style={{ color: "#ff6b6b", fontSize: "0.7rem" }}>
-                    on enlève les 3 ajoutés
-                  </div>
+                  6÷3
+                </div>
+                <div
+                  style={{
+                    height: "2px",
+                    background: "#ffd166",
+                    margin: "4px 0",
+                  }}
+                />
+                <div
+                  style={{
+                    color: "#ffd166",
+                    fontWeight: 900,
+                    fontSize: "1.6rem",
+                    lineHeight: 1,
+                  }}
+                >
+                  9÷3
                 </div>
               </div>
+              <span
+                style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.5rem" }}
+              >
+                =
+              </span>
+              {/* Résultat final */}
               <div
-                style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}
+                style={{
+                  background: "rgba(46,196,182,0.3)",
+                  border: "2px solid #2ec4b6",
+                  borderRadius: "10px",
+                  padding: "10px 16px",
+                  textAlign: "center",
+                }}
               >
-                →
-              </div>
-              {/* Résultat */}
-              <div style={{ textAlign: "center" }}>
                 <div
                   style={{
-                    background: "rgba(46,196,182,0.3)",
-                    border: "2px solid #2ec4b6",
-                    borderRadius: "10px",
-                    padding: "8px 12px",
+                    color: "#fff",
+                    fontWeight: 900,
+                    fontSize: "1.6rem",
+                    lineHeight: 1,
                   }}
                 >
-                  <div
-                    style={{
-                      color: "#fff",
-                      fontSize: "1.2rem",
-                      fontWeight: 900,
-                    }}
-                  >
-                    145 ✅
-                  </div>
+                  2
+                </div>
+                <div
+                  style={{
+                    height: "2px",
+                    background: "#2ec4b6",
+                    margin: "4px 0",
+                  }}
+                />
+                <div
+                  style={{
+                    color: "#fff",
+                    fontWeight: 900,
+                    fontSize: "1.6rem",
+                    lineHeight: 1,
+                  }}
+                >
+                  3
                 </div>
               </div>
+              <span style={{ color: "#2ec4b6", fontSize: "1.2rem" }}>✅</span>
             </div>
           </div>
 
@@ -538,14 +597,16 @@ export default function FicheAdditionRapide() {
               margin: 0,
             }}
           >
-            <strong style={{ color: "#ffd166" }}>Étape 1 :</strong> arrondis le
-            1er nombre au multiple de 10 le plus proche
+            <strong style={{ color: "#2ec4b6" }}>La règle :</strong> trouve un
+            nombre qui divise <em>exactement</em> le haut ET le bas
             <br />
-            <strong style={{ color: "#4f8ef7" }}>Étape 2 :</strong> additionne
-            normalement
+            <strong style={{ color: "#ffd166" }}>Astuce :</strong> commence par
+            essayer 2, puis 3, puis 5...
             <br />
-            <strong style={{ color: "#ff6b6b" }}>Étape 3 :</strong> retire ce
-            que tu as ajouté pour arrondir
+            <strong style={{ color: "rgba(255,255,255,0.4)" }}>
+              C&apos;est simplifié quand
+            </strong>{" "}
+            haut et bas n&apos;ont plus de diviseur commun
           </p>
         </div>
 
@@ -561,7 +622,7 @@ export default function FicheAdditionRapide() {
             Question {indexActuel + 1}/{nbQuestions}
           </span>
           <span
-            style={{ color: "#4f8ef7", fontWeight: 700, fontSize: "0.85rem" }}
+            style={{ color: "#2ec4b6", fontWeight: 700, fontSize: "0.85rem" }}
           >
             Score : {score}
           </span>
@@ -578,7 +639,7 @@ export default function FicheAdditionRapide() {
         >
           <div
             style={{
-              background: "linear-gradient(90deg, #4f8ef7, #2ec4b6)",
+              background: "linear-gradient(90deg, #2ec4b6, #a78bfa)",
               height: "100%",
               width: `${(indexActuel / nbQuestions) * 100}%`,
               transition: "width 0.3s",
@@ -703,7 +764,7 @@ export default function FicheAdditionRapide() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                background: "linear-gradient(135deg, #2ec4b6, #a78bfa)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",
