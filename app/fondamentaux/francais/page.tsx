@@ -33,6 +33,20 @@ const fiches = [
     dispo: true,
   },
   {
+    id: "ca-ca-ca",
+    titre: "Ça / Ç'a",
+    emoji: "✍️",
+    desc: "Pronom démonstratif ou verbe avoir ?",
+    dispo: true,
+  },
+  {
+    id: "cedille",
+    titre: "La cédille — Ç",
+    emoji: "✍️",
+    desc: "Quand mettre ç devant A, O, U ?",
+    dispo: true,
+  },
+  {
     id: "ces-ses",
     titre: "Ces / Ses / C'est / S'est",
     emoji: "🔄",
@@ -107,6 +121,13 @@ const fiches = [
     titre: "On / Ont",
     emoji: "👥",
     desc: "Pronom indéfini ou verbe avoir ?",
+    dispo: true,
+  },
+  {
+    id: "on-a-on-na",
+    titre: "On a / On n'a",
+    emoji: "✍️",
+    desc: "Avec ou sans négation ?",
     dispo: true,
   },
   {

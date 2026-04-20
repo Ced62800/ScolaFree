@@ -1,0 +1,751 @@
+"use client";
+
+import { useDecouverte } from "@/components/DecouverteContext";
+import PopupInscription from "@/components/PopupInscription";
+import { supabase } from "@/supabaseClient";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+
+const TOUTES_LES_QUESTIONS = [
+  {
+    id: 1,
+    phrase: "Le gar_on court vite.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Garçon → C devant O → on met une cédille : garÇon ✅",
+  },
+  {
+    id: 2,
+    phrase: "Il a re_u un cadeau.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Reçu → C devant U → on met une cédille : reÇu ✅",
+  },
+  {
+    id: 3,
+    phrase: "La le_on de maths était difficile.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Leçon → C devant O → on met une cédille : leÇon ✅",
+  },
+  {
+    id: 4,
+    phrase: "Elle a une belle fa_on de parler.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Façon → C devant O → on met une cédille : faÇon ✅",
+  },
+  {
+    id: 5,
+    phrase: "Il a com_encé à pleuvoir.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Commençé → C devant A → on met une cédille : commenÇa ✅",
+  },
+  {
+    id: 6,
+    phrase: "On a re_u sa réponse.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Reçu → C devant U → on met une cédille : reÇu ✅",
+  },
+  {
+    id: 7,
+    phrase: "Le fran_ais est ma matière préférée.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Français → C devant A → on met une cédille : franÇais ✅",
+  },
+  {
+    id: 8,
+    phrase: "Il lan_a la balle très loin.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Lança → C devant A → on met une cédille : lanÇa ✅",
+  },
+  {
+    id: 9,
+    phrase: "La ma_on est pleine de fleurs.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Maçon → C devant O → on met une cédille : maÇon ✅",
+  },
+  {
+    id: 10,
+    phrase: "Nous avan_ons doucement.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Avançons → C devant O → on met une cédille : avanÇons ✅",
+  },
+  {
+    id: 11,
+    phrase: "Il a aperçu un oiseau rare.",
+    lettre: "ç",
+    reponse: "ç",
+    explication: "Aperçu → C devant U → on met une cédille : aperÇu ✅",
+  },
+  {
+    id: 12,
+    phrase: "La pi_ine est froide aujourd'hui.",
+    lettre: "ç",
+    reponse: "ç",
+    explication:
+      "Piscine → C devant I → pas de cédille, le C fait déjà le son S ✅",
+  },
+];
+
+// Questions avec choix : ç ou c ?
+const getChoix = (
+  id: number,
+): { mot: string; reponse: string; mauvais: string }[] => {
+  const choixMap: Record<
+    number,
+    { mot: string; reponse: string; mauvais: string }
+  > = {
+    1: { mot: "garçon / garcon", reponse: "garçon", mauvais: "garcon" },
+    2: { mot: "reçu / recu", reponse: "reçu", mauvais: "recu" },
+    3: { mot: "leçon / lecon", reponse: "leçon", mauvais: "lecon" },
+    4: { mot: "façon / facon", reponse: "façon", mauvais: "facon" },
+    5: { mot: "commença / commenca", reponse: "commença", mauvais: "commenca" },
+    6: { mot: "reçu / recu", reponse: "reçu", mauvais: "recu" },
+    7: { mot: "français / francais", reponse: "français", mauvais: "francais" },
+    8: { mot: "lança / lanca", reponse: "lança", mauvais: "lanca" },
+    9: { mot: "maçon / macon", reponse: "maçon", mauvais: "macon" },
+    10: {
+      mot: "avançons / avancons",
+      reponse: "avançons",
+      mauvais: "avancons",
+    },
+    11: { mot: "aperçu / apercu", reponse: "aperçu", mauvais: "apercu" },
+    12: { mot: "piscine / piscine", reponse: "piscine", mauvais: "piscene" },
+  };
+  return [
+    { mot: choixMap[id].reponse, reponse: choixMap[id].reponse, mauvais: "" },
+    { mot: choixMap[id].mauvais, reponse: choixMap[id].reponse, mauvais: "" },
+  ].sort(() => Math.random() - 0.5);
+};
+
+function melangerTableau<T>(arr: T[]): T[] {
+  const copie = [...arr];
+  for (let i = copie.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copie[i], copie[j]] = [copie[j], copie[i]];
+  }
+  return copie;
+}
+
+const NB_QUESTIONS = 10;
+type EtatQuestion = "attente" | "correct" | "incorrect";
+
+export default function FicheCedille() {
+  const { estConnecte, maxQuestions } = useDecouverte();
+  const nbQuestions = Math.min(NB_QUESTIONS, maxQuestions);
+
+  const [questions, setQuestions] = useState(() =>
+    melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS),
+  );
+  const [indexActuel, setIndexActuel] = useState(0);
+  const [etat, setEtat] = useState<EtatQuestion>("attente");
+  const [choixFait, setChoixFait] = useState<string | null>(null);
+  const [score, setScore] = useState(0);
+  const [termine, setTermine] = useState(false);
+  const [ancienScore, setAncienScore] = useState<number | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const scoreSaved = useRef(false);
+
+  useEffect(() => {
+    const init = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
+      if (!user) return;
+      const { data } = await supabase
+        .from("scores")
+        .select("score")
+        .eq("user_id", user.id)
+        .eq("classe", "fondamentaux")
+        .eq("matiere", "francais")
+        .eq("theme", "cedille")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+      if (data) setAncienScore(data.score);
+    };
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (!termine || scoreSaved.current || !estConnecte) return;
+    scoreSaved.current = true;
+    const sauvegarder = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData?.session?.user;
+      if (!user) return;
+      const { data: existing } = await supabase
+        .from("scores")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("classe", "fondamentaux")
+        .eq("matiere", "francais")
+        .eq("theme", "cedille")
+        .single();
+      if (existing?.id) {
+        await supabase
+          .from("scores")
+          .update({
+            score,
+            total: NB_QUESTIONS,
+            created_at: new Date().toISOString(),
+          })
+          .eq("id", existing.id);
+      } else {
+        await supabase
+          .from("scores")
+          .insert({
+            user_id: user.id,
+            classe: "fondamentaux",
+            matiere: "francais",
+            theme: "cedille",
+            score,
+            total: NB_QUESTIONS,
+          });
+      }
+    };
+    sauvegarder();
+  }, [termine, score, estConnecte]);
+
+  const question = questions[indexActuel];
+  const choixActuels = getChoix(question.id);
+
+  const repondre = (choix: string) => {
+    if (etat !== "attente") return;
+    setChoixFait(choix);
+    if (
+      choix === choixActuels[0].reponse ||
+      choix === choixActuels[1]?.reponse
+    ) {
+      const bonneReponse = choixActuels.find(
+        (c) =>
+          c.mot === choixActuels[0].reponse || c.mot !== choixActuels[1]?.mot,
+      );
+      if (
+        choix ===
+        choixActuels.find(
+          (c) =>
+            c.mot.includes("ç") || (question.id === 12 && c.mot === "piscine"),
+        )?.mot
+      ) {
+        setEtat("correct");
+        setScore((s) => s + 1);
+      } else {
+        setEtat("incorrect");
+      }
+    }
+  };
+
+  const repondreSimple = (choix: string) => {
+    if (etat !== "attente") return;
+    setChoixFait(choix);
+    const bonne = choixActuels.find(
+      (c) => c.mot.includes("ç") || (question.id === 12 && c.mot === "piscine"),
+    )?.mot;
+    if (choix === bonne) {
+      setEtat("correct");
+      setScore((s) => s + 1);
+    } else {
+      setEtat("incorrect");
+    }
+  };
+
+  const suivant = () => {
+    if (indexActuel + 1 >= nbQuestions) {
+      if (!estConnecte) {
+        setShowPopup(true);
+        return;
+      }
+      setTermine(true);
+    } else {
+      setIndexActuel((i) => i + 1);
+      setEtat("attente");
+      setChoixFait(null);
+    }
+  };
+
+  const recommencer = () => {
+    setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
+    setIndexActuel(0);
+    setEtat("attente");
+    setChoixFait(null);
+    setScore(0);
+    setTermine(false);
+    scoreSaved.current = false;
+    setShowPopup(false);
+  };
+
+  if (termine) {
+    const pourcentage = Math.round((score / NB_QUESTIONS) * 100);
+    const couleur =
+      pourcentage >= 80 ? "#2ec4b6" : pourcentage >= 50 ? "#ffd166" : "#ff6b6b";
+    const emoji = pourcentage >= 80 ? "🎉" : pourcentage >= 50 ? "💪" : "📖";
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#0f0f23",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}
+      >
+        <div
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            borderRadius: "24px",
+            padding: "40px 28px",
+            maxWidth: "480px",
+            width: "100%",
+            textAlign: "center",
+            border: `2px solid ${couleur}40`,
+          }}
+        >
+          <div style={{ fontSize: "3rem", marginBottom: "12px" }}>{emoji}</div>
+          <h2
+            style={{
+              color: "#fff",
+              fontSize: "1.5rem",
+              fontWeight: 800,
+              marginBottom: "8px",
+            }}
+          >
+            Exercice terminé !
+          </h2>
+          <div
+            style={{
+              fontSize: "2.8rem",
+              fontWeight: 900,
+              color: couleur,
+              margin: "16px 0",
+            }}
+          >
+            {score}/{NB_QUESTIONS}
+          </div>
+          <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "8px" }}>
+            {pourcentage >= 80
+              ? "Bravo ! Tu maîtrises la cédille !"
+              : pourcentage >= 50
+                ? "Pas mal ! Rappelle-toi : ç devant A, O, U."
+                : "Continue à t'entraîner, ça va venir !"}
+          </p>
+          {ancienScore !== null && (
+            <p
+              style={{
+                color: "rgba(255,255,255,0.4)",
+                fontSize: "0.85rem",
+                marginBottom: "20px",
+              }}
+            >
+              Score précédent : {ancienScore}/{NB_QUESTIONS}
+            </p>
+          )}
+          {!estConnecte && (
+            <p
+              style={{
+                color: "#ffd166",
+                fontSize: "0.8rem",
+                marginBottom: "16px",
+              }}
+            >
+              💡{" "}
+              <Link href="/connexion" style={{ color: "#ffd166" }}>
+                Connecte-toi
+              </Link>{" "}
+              pour sauvegarder ton score
+            </p>
+          )}
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              onClick={recommencer}
+              style={{
+                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                border: "none",
+                color: "#fff",
+                padding: "12px 24px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              🔄 Recommencer
+            </button>
+            <Link
+              href="/fondamentaux/francais"
+              style={{
+                background: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "#fff",
+                padding: "12px 24px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
+                fontWeight: 600,
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            >
+              ← Retour
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#0f0f23",
+        padding: "80px 20px 16px 20px",
+      }}
+    >
+      {showPopup && <PopupInscription onRecommencer={recommencer} />}
+      <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        <Link
+          href="/fondamentaux/francais"
+          style={{
+            color: "rgba(255,255,255,0.5)",
+            textDecoration: "none",
+            fontSize: "0.9rem",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            marginBottom: "16px",
+          }}
+        >
+          ← Retour
+        </Link>
+
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
+          <h1
+            style={{
+              color: "#4f8ef7",
+              fontSize: "1.4rem",
+              fontWeight: 800,
+              marginBottom: "4px",
+            }}
+          >
+            ✍️ La cédille — Ç
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
+            Quand mettre une cédille sous le C ?
+          </p>
+        </div>
+
+        <div
+          style={{
+            background: "rgba(79,142,247,0.1)",
+            border: "1px solid rgba(79,142,247,0.3)",
+            borderRadius: "12px",
+            padding: "12px 16px",
+            marginBottom: "16px",
+          }}
+        >
+          <p
+            style={{
+              color: "#4f8ef7",
+              fontWeight: 700,
+              fontSize: "0.85rem",
+              marginBottom: "8px",
+            }}
+          >
+            💡 L&apos;astuce magique
+          </p>
+
+          <div
+            style={{
+              background: "rgba(0,0,0,0.3)",
+              borderRadius: "10px",
+              padding: "12px",
+              marginBottom: "8px",
+            }}
+          >
+            <p
+              style={{
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.95rem",
+                textAlign: "center",
+                margin: "0 0 12px 0",
+              }}
+            >
+              On met <strong style={{ color: "#ffd166" }}>Ç</strong> quand le C
+              est devant <strong style={{ color: "#ffd166" }}>A · O · U</strong>
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              {[
+                { lettre: "A", exemple: "gar\u00e7on", couleur: "#ff6b6b" },
+                { lettre: "O", exemple: "le\u00e7on", couleur: "#ffd166" },
+                { lettre: "U", exemple: "re\u00e7u", couleur: "#2ec4b6" },
+              ].map(({ lettre, exemple, couleur }) => (
+                <div
+                  key={lettre}
+                  style={{
+                    background: `${couleur}20`,
+                    border: `2px solid ${couleur}`,
+                    borderRadius: "10px",
+                    padding: "10px 16px",
+                    textAlign: "center",
+                    minWidth: "90px",
+                  }}
+                >
+                  <div
+                    style={{
+                      color: couleur,
+                      fontSize: "1.5rem",
+                      fontWeight: 900,
+                    }}
+                  >
+                    Ç + {lettre}
+                  </div>
+                  <div
+                    style={{
+                      color: "rgba(255,255,255,0.6)",
+                      fontSize: "0.78rem",
+                      marginTop: "4px",
+                    }}
+                  >
+                    {exemple}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                marginTop: "12px",
+                padding: "8px 12px",
+                background: "rgba(255,255,255,0.05)",
+                borderRadius: "8px",
+                textAlign: "center",
+              }}
+            >
+              <p
+                style={{
+                  color: "rgba(255,255,255,0.5)",
+                  fontSize: "0.78rem",
+                  margin: 0,
+                }}
+              >
+                ✋ Devant{" "}
+                <strong style={{ color: "#a78bfa" }}>E · I · Y</strong> → le C
+                fait déjà le son S →{" "}
+                <strong style={{ color: "#a78bfa" }}>pas de cédille !</strong>
+                <br />
+                Exemples : <em>ciel, cerise, cycle</em> → pas de ç
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "8px",
+          }}
+        >
+          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>
+            Question {indexActuel + 1}/{nbQuestions}
+          </span>
+          <span
+            style={{ color: "#4f8ef7", fontWeight: 700, fontSize: "0.85rem" }}
+          >
+            Score : {score}
+          </span>
+        </div>
+
+        <div
+          style={{
+            background: "rgba(255,255,255,0.1)",
+            borderRadius: "6px",
+            height: "6px",
+            marginBottom: "16px",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              background: "linear-gradient(90deg, #4f8ef7, #2ec4b6)",
+              height: "100%",
+              width: `${(indexActuel / nbQuestions) * 100}%`,
+              transition: "width 0.3s",
+              borderRadius: "6px",
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            border: "2px solid rgba(255,255,255,0.1)",
+            borderRadius: "16px",
+            padding: "20px 16px",
+            textAlign: "center",
+            marginBottom: "16px",
+          }}
+        >
+          <p
+            style={{
+              color: "#fff",
+              fontSize: "1.1rem",
+              fontWeight: 600,
+              lineHeight: 1.6,
+              margin: 0,
+            }}
+          >
+            {question.phrase}
+          </p>
+          <p
+            style={{
+              color: "rgba(255,255,255,0.4)",
+              fontSize: "0.8rem",
+              marginTop: "8px",
+              marginBottom: 0,
+            }}
+          >
+            Choisis la bonne orthographe :
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            justifyContent: "center",
+            marginBottom: "16px",
+            flexWrap: "wrap",
+          }}
+        >
+          {choixActuels.map((c) => {
+            const bonne = choixActuels.find(
+              (x) =>
+                x.mot.includes("ç") ||
+                (question.id === 12 && x.mot === "piscine"),
+            )?.mot;
+            let bg = "rgba(255,255,255,0.07)";
+            let border = "rgba(255,255,255,0.15)";
+            let couleurTexte = "#fff";
+            if (etat !== "attente" && c.mot === bonne) {
+              bg = "rgba(46,196,182,0.2)";
+              border = "#2ec4b6";
+              couleurTexte = "#2ec4b6";
+            } else if (
+              etat !== "attente" &&
+              c.mot === choixFait &&
+              c.mot !== bonne
+            ) {
+              bg = "rgba(255,107,107,0.2)";
+              border = "#ff6b6b";
+              couleurTexte = "#ff6b6b";
+            }
+            return (
+              <button
+                key={c.mot}
+                onClick={() => repondreSimple(c.mot)}
+                disabled={etat !== "attente"}
+                style={{
+                  background: bg,
+                  border: `2px solid ${border}`,
+                  color: couleurTexte,
+                  padding: "10px 24px",
+                  borderRadius: "12px",
+                  fontSize: "1.05rem",
+                  fontWeight: 800,
+                  cursor: etat === "attente" ? "pointer" : "default",
+                  transition: "all 0.2s",
+                  minWidth: "130px",
+                }}
+              >
+                {c.mot}
+              </button>
+            );
+          })}
+        </div>
+
+        {etat !== "attente" && (
+          <div
+            style={{
+              background:
+                etat === "correct"
+                  ? "rgba(46,196,182,0.1)"
+                  : "rgba(255,107,107,0.1)",
+              border: `1px solid ${etat === "correct" ? "#2ec4b6" : "#ff6b6b"}40`,
+              borderRadius: "12px",
+              padding: "12px 16px",
+              marginBottom: "14px",
+              textAlign: "center",
+            }}
+          >
+            <p
+              style={{
+                color: etat === "correct" ? "#2ec4b6" : "#ff6b6b",
+                fontWeight: 700,
+                marginBottom: "4px",
+                fontSize: "0.95rem",
+              }}
+            >
+              {etat === "correct"
+                ? "✅ Bonne réponse !"
+                : "❌ Pas tout à fait..."}
+            </p>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.7)",
+                fontSize: "0.85rem",
+                margin: 0,
+              }}
+            >
+              {question.explication}
+            </p>
+          </div>
+        )}
+
+        {etat !== "attente" && (
+          <div style={{ textAlign: "center" }}>
+            <button
+              onClick={suivant}
+              style={{
+                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
+                border: "none",
+                color: "#fff",
+                padding: "12px 32px",
+                borderRadius: "14px",
+                fontSize: "0.95rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {indexActuel + 1 >= nbQuestions
+                ? "Voir mon score"
+                : "Question suivante →"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
