@@ -156,7 +156,7 @@ const fiches = [
     titre: "Volume des solides",
     emoji: "📦",
     desc: "Cube, rectangle, cylindre",
-    dispo: false,
+    dispo: true,
   },
 ];
 
