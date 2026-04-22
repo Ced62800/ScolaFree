@@ -1,4 +1,6 @@
-import Link from "next/link";
+"use client";
+
+import { useRouter } from "next/navigation";
 
 const modules = [
   {
@@ -28,16 +30,17 @@ const modules = [
 ];
 
 export default function AtelierIA3emePage() {
+  const router = useRouter();
+
   return (
     <div className="cours-page">
       <div className="cours-header">
-        <Link
-          href="/atelier-ia/3eme"
+        <button
           className="cours-back"
-          style={{ textDecoration: "none" }}
+          onClick={() => router.push("/cours/college/3eme")}
         >
           ← Retour
-        </Link>
+        </button>
         <div className="cours-breadcrumb">
           <span>Atelier IA</span>
           <span className="breadcrumb-sep">›</span>
@@ -55,50 +58,46 @@ export default function AtelierIA3emePage() {
 
       <div className="themes-grid">
         {modules.map((m) => (
-          <Link
+          <div
             key={m.slug}
-            href={`/atelier-ia/3eme/${m.slug}`}
-            style={{ textDecoration: "none" }}
+            className="theme-card"
+            onClick={() => router.push(`/atelier-ia/3eme/${m.slug}`)}
+            style={
+              {
+                "--card-color": m.color,
+                position: "relative",
+                cursor: "pointer",
+                paddingTop: "44px",
+              } as React.CSSProperties
+            }
           >
             <div
-              className="theme-card"
-              style={
-                {
-                  "--card-color": m.color,
-                  position: "relative",
-                  border: "2px solid rgba(255,255,255,0.06)",
-                  cursor: "pointer",
-                } as React.CSSProperties
-              }
+              style={{
+                position: "absolute",
+                top: "10px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "rgba(255,255,255,0.08)",
+                color: "#aaa",
+                fontSize: "0.72rem",
+                fontWeight: 700,
+                padding: "3px 12px",
+                borderRadius: "20px",
+                whiteSpace: "nowrap",
+              }}
             >
-              <div
-                style={{
-                  position: "absolute",
-                  top: "10px",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  background: "rgba(255,255,255,0.08)",
-                  color: "#aaa",
-                  fontSize: "0.72rem",
-                  fontWeight: 700,
-                  padding: "3px 12px",
-                  borderRadius: "20px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                MODULE {m.num}
-              </div>
-              <div className="theme-emoji">{m.emoji}</div>
-              <div className="theme-label">{m.label}</div>
-              <div className="theme-desc">{m.desc}</div>
-              <div
-                className="theme-arrow"
-                style={{ color: m.color, marginTop: 8 }}
-              >
-                Commencer →
-              </div>
+              MODULE {m.num}
             </div>
-          </Link>
+            <div className="theme-emoji">{m.emoji}</div>
+            <div className="theme-label">{m.label}</div>
+            <div className="theme-desc">{m.desc}</div>
+            <div
+              className="theme-arrow"
+              style={{ color: m.color, marginTop: 8 }}
+            >
+              Commencer →
+            </div>
+          </div>
         ))}
       </div>
     </div>
