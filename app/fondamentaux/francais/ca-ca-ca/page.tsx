@@ -155,16 +155,14 @@ export default function FicheCaCa() {
           })
           .eq("id", existing.id);
       } else {
-        await supabase
-          .from("scores")
-          .insert({
-            user_id: user.id,
-            classe: "fondamentaux",
-            matiere: "maths",
-            theme: "ca-ca-ca",
-            score,
-            total: NB_QUESTIONS,
-          });
+        await supabase.from("scores").insert({
+          user_id: user.id,
+          classe: "fondamentaux",
+          matiere: "maths",
+          theme: "ca-ca-ca",
+          score,
+          total: NB_QUESTIONS,
+        });
       }
     };
     sauvegarder();
@@ -445,8 +443,8 @@ export default function FicheCaCa() {
                     = <strong style={{ color: "#2ec4b6" }}>cela</strong> —
                     remplace par &quot;cela&quot;
                     <br />
-                    Ex : <em>Ça</em> m&apos;énerve → <em>Cela</em> m&apos;énerve
-                    ✅<br />
+                    Ex : <em>Ça</em> m&apos;énerve &rarr; <em>Cela</em>{" "}
+                    m&apos;énerve ✅<br />
                     <span
                       style={{
                         color: "rgba(255,255,255,0.4)",
