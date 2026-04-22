@@ -3,7 +3,7 @@ import Link from "next/link";
 const niveaux = [
   { slug: "cm2", label: "CM2", emoji: "🌱", color: "#22c55e", dispo: true },
   { slug: "6eme", label: "6ème", emoji: "🔍", color: "#4f8ef7", dispo: true },
-  { slug: "5eme", label: "5ème", emoji: "🎨", color: "#a855f7", dispo: false },
+  { slug: "5eme", label: "5ème", emoji: "🎨", color: "#a855f7", dispo: true },
   { slug: "4eme", label: "4ème", emoji: "🕵️", color: "#f59e0b", dispo: false },
   { slug: "3eme", label: "3ème", emoji: "🏆", color: "#ff6b6b", dispo: false },
 ];

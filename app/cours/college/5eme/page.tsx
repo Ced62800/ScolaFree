@@ -41,7 +41,9 @@ export default function CinquiemePage() {
   const router = useRouter();
   const [estConnecte, setEstConnecte] = useState(false);
   const [chargement, setChargement] = useState(true);
-  const [statutsMatieres, setStatutsMatieres] = useState<Record<string, "valide" | "en-cours">>({});
+  const [statutsMatieres, setStatutsMatieres] = useState<
+    Record<string, "valide" | "en-cours">
+  >({});
 
   useEffect(() => {
     const init = async () => {
@@ -58,16 +60,18 @@ export default function CinquiemePage() {
           .order("score", { ascending: false });
         if (data) {
           const statutsMap: Record<string, "valide" | "en-cours"> = {};
-          const parMatiere: Record<string, { score: number; total: number }[]> = {};
+          const parMatiere: Record<string, { score: number; total: number }[]> =
+            {};
           for (const s of data) {
             if (!parMatiere[s.matiere]) parMatiere[s.matiere] = [];
             parMatiere[s.matiere].push(s);
           }
           for (const [matiere, scores] of Object.entries(parMatiere)) {
             const meilleur = scores.reduce((best, s) =>
-              s.score / s.total > best.score / best.total ? s : best
+              s.score / s.total > best.score / best.total ? s : best,
             );
-            statutsMap[matiere] = meilleur.score / meilleur.total >= 0.8 ? "valide" : "en-cours";
+            statutsMap[matiere] =
+              meilleur.score / meilleur.total >= 0.8 ? "valide" : "en-cours";
           }
           setStatutsMatieres(statutsMap);
         }
@@ -186,15 +190,17 @@ export default function CinquiemePage() {
               </div>
             )}
             {estConnecte && !chargement && statutsMatieres[m.id] && (
-                <div style={{
+              <div
+                style={{
                   position: "absolute",
                   top: "10px",
                   right: "10px",
                   fontSize: "1.2rem",
-                }}>
-                  {statutsMatieres[m.id] === "valide" ? "✅" : "🟡"}
-                </div>
-              )}
+                }}
+              >
+                {statutsMatieres[m.id] === "valide" ? "✅" : "🟡"}
+              </div>
+            )}
             <div className="theme-emoji">{m.emoji}</div>
             <div className="theme-label">{m.label}</div>
             <div className="theme-desc">{m.desc}</div>
@@ -215,6 +221,46 @@ export default function CinquiemePage() {
             </div>
           </div>
         ))}
+
+        {/* Carte Atelier IA — même paddingTop que les autres cartes */}
+        <div
+          className="theme-card"
+          onClick={() => router.push("/atelier-ia/5eme")}
+          style={
+            {
+              "--card-color": "#a855f7",
+              position: "relative",
+              cursor: "pointer",
+              paddingTop: "44px",
+            } as React.CSSProperties
+          }
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              background: "rgba(168,85,247,0.2)",
+              border: "1px solid rgba(168,85,247,0.4)",
+              borderRadius: 20,
+              padding: "2px 8px",
+              fontSize: "0.65rem",
+              color: "#d8b4fe",
+              fontWeight: 700,
+              letterSpacing: 0.5,
+            }}
+          >
+            NOUVEAU
+          </div>
+          <div className="theme-emoji">🤖</div>
+          <div className="theme-label">Atelier IA</div>
+          <div className="theme-desc">
+            Découvre l&apos;IA et génère des images impossibles !
+          </div>
+          <div className="theme-arrow" style={{ color: "#a855f7" }}>
+            Commencer →
+          </div>
+        </div>
       </div>
     </div>
   );
