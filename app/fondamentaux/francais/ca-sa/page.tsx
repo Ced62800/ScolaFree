@@ -11,42 +11,42 @@ const TOUTES_LES_QUESTIONS = [
     id: 1,
     phrase: "___ va très bien aujourd'hui !",
     reponse: "ça",
-    explication: "'Ça' = cela. Remplace par 'cela' → Ça va = cela va ✅.",
+    explication: "'Ça' = cela. Remplace par 'cela' → ça va = cela va ✅.",
   },
   {
     id: 2,
     phrase: "C'est ___ faute, pas la mienne.",
     reponse: "sa",
     explication:
-      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa faute = son erreur ✅.",
+      "'Sa' est un adjectif possessif. Remplace par 'ma' → sa faute = ma faute ✅. Ce n'est pas 'ça' qui signifie 'cela'.",
   },
   {
     id: 3,
     phrase: "___ m'énerve quand il fait ça !",
     reponse: "ça",
     explication:
-      "'Ça' = cela. Remplace par 'cela' → Ça m'énerve = cela m'énerve ✅.",
+      "'Ça' = cela. Remplace par 'cela' → ça m'énerve = cela m'énerve ✅.",
   },
   {
     id: 4,
     phrase: "Elle range ___ chambre tous les matins.",
     reponse: "sa",
     explication:
-      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa chambre = ma chambre ✅.",
+      "'Sa' est un adjectif possessif. Remplace par 'ma' → sa chambre = ma chambre ✅. Ce n'est pas 'ça' qui signifie 'cela'.",
   },
   {
     id: 5,
     phrase: "___ fait longtemps qu'on ne s'est pas vus.",
     reponse: "ça",
     explication:
-      "'Ça' = cela. Remplace par 'cela' → Ça fait longtemps = cela fait longtemps ✅.",
+      "'Ça' = cela. Remplace par 'cela' → ça fait longtemps = cela fait longtemps ✅.",
   },
   {
     id: 6,
     phrase: "Il a perdu ___ clé de voiture.",
     reponse: "sa",
     explication:
-      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa clé = ma clé ✅.",
+      "'Sa' est un adjectif possessif. Remplace par 'ma' → sa clé = ma clé ✅. Ce n'est pas 'ça' qui signifie 'cela'.",
   },
   {
     id: 7,
@@ -60,7 +60,7 @@ const TOUTES_LES_QUESTIONS = [
     phrase: "Elle aime beaucoup ___ nouvelle coiffure.",
     reponse: "sa",
     explication:
-      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa coiffure = ma coiffure ✅.",
+      "'Sa' est un adjectif possessif. Remplace par 'ma' → sa coiffure = ma coiffure ✅. Ce n'est pas 'ça' qui signifie 'cela'.",
   },
   {
     id: 9,
@@ -73,7 +73,7 @@ const TOUTES_LES_QUESTIONS = [
     phrase: "Il a oublié ___ veste au restaurant.",
     reponse: "sa",
     explication:
-      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa veste = ma veste ✅.",
+      "'Sa' est un adjectif possessif. Remplace par 'ma' → sa veste = ma veste ✅. Ce n'est pas 'ça' qui signifie 'cela'.",
   },
   {
     id: 11,
@@ -83,10 +83,10 @@ const TOUTES_LES_QUESTIONS = [
   },
   {
     id: 12,
-    phrase: "Elle a retrouvé ___ chat après trois jours.",
+    phrase: "Elle a retrouvé ___ veste après trois jours.",
     reponse: "sa",
     explication:
-      "'Sa' = son, sa (possessif). Remplace par 'mon' → sa chat = mon chat ✅.",
+      "'Sa' est un adjectif possessif. Remplace par 'ma' → sa veste = ma veste ✅. Ce n'est pas 'ça' qui signifie 'cela'.",
   },
 ];
 
@@ -164,16 +164,14 @@ export default function FicheCaSa() {
           })
           .eq("id", existing.id);
       } else {
-        await supabase
-          .from("scores")
-          .insert({
-            user_id: user.id,
-            classe: "fondamentaux",
-            matiere: "francais",
-            theme: "ca-sa",
-            score,
-            total: NB_QUESTIONS,
-          });
+        await supabase.from("scores").insert({
+          user_id: user.id,
+          classe: "fondamentaux",
+          matiere: "francais",
+          theme: "ca-sa",
+          score,
+          total: NB_QUESTIONS,
+        });
       }
     };
     sauvegarder();
@@ -415,7 +413,7 @@ export default function FicheCaSa() {
             par <strong style={{ color: "#ff6b6b" }}>&quot;cela&quot;</strong>.
             Si ça marche → c&apos;est ÇA. Exemple : <em>ça</em> va →{" "}
             <em>cela</em> va ✅<br />
-            <strong style={{ color: "#ffd166" }}>SA</strong> = son / ma.
+            <strong style={{ color: "#ffd166" }}>SA</strong> = mon / ma.
             Remplace par{" "}
             <strong style={{ color: "#ffd166" }}>
               &quot;mon&quot; ou &quot;ma&quot;
