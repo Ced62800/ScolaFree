@@ -18,11 +18,6 @@ const CLASSES_PAR_NIVEAU: Record<string, { value: string; label: string }[]> = {
     { value: "4eme", label: "4ème" },
     { value: "3eme", label: "3ème" },
   ],
-  lycee: [
-    { value: "seconde", label: "Seconde" },
-    { value: "premiere", label: "Première" },
-    { value: "terminale", label: "Terminale" },
-  ],
 };
 
 const BASE_URL =
@@ -247,7 +242,6 @@ export default function Inscription() {
               <option value="">-- Choisir un niveau --</option>
               <option value="primaire">Primaire</option>
               <option value="college">Collège</option>
-              <option value="lycee">Lycée</option>
             </select>
           </div>
 
