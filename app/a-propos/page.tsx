@@ -236,6 +236,105 @@ export default function AProposPage() {
           </div>
         </section>
 
+        {/* Fondamentaux */}
+        <section
+          style={{
+            marginBottom: "36px",
+            background: "rgba(79,142,247,0.06)",
+            border: "1px solid rgba(79,142,247,0.2)",
+            borderRadius: "16px",
+            padding: "24px",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              color: "#4f8ef7",
+              marginBottom: "12px",
+            }}
+          >
+            📝 Les Fondamentaux
+          </h2>
+          <p style={{ color: "#ccc", lineHeight: "1.8" }}>
+            Les Fondamentaux sont des exercices ciblés sur les règles
+            essentielles de <strong>Français</strong> et de{" "}
+            <strong>Mathématiques</strong> : homophones, conjugaison, calcul
+            mental, géométrie...
+          </p>
+          <p style={{ color: "#ccc", lineHeight: "1.8", marginTop: "12px" }}>
+            En <strong>mode découverte</strong> (sans inscription) : 3 questions
+            gratuites par exercice.
+            <br />
+            Avec un <strong>compte gratuit</strong> : accès à 10 questions par
+            exercice et sauvegarde de tes scores.
+          </p>
+        </section>
+
+        {/* Atelier IA */}
+        <section
+          style={{
+            marginBottom: "36px",
+            background: "rgba(168,85,247,0.06)",
+            border: "1px solid rgba(168,85,247,0.2)",
+            borderRadius: "16px",
+            padding: "24px",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              color: "#a855f7",
+              marginBottom: "12px",
+            }}
+          >
+            🤖 Atelier IA
+          </h2>
+          <p style={{ color: "#ccc", lineHeight: "1.8" }}>
+            L'Atelier IA est une section ludique et éducative pour découvrir
+            l'intelligence artificielle, disponible du{" "}
+            <strong>CM2 à la 3ème</strong>. Chaque niveau propose 3 modules
+            adaptés à l'âge : explications, exemples concrets et une mission
+            pratique avec de vraies IA.
+          </p>
+          <p style={{ color: "#ccc", lineHeight: "1.8", marginTop: "12px" }}>
+            <strong>Accès entièrement libre</strong> — aucune inscription
+            requise.
+          </p>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "8px",
+              marginTop: "16px",
+            }}
+          >
+            {[
+              { label: "CM2 — Ma première conversation", color: "#22c55e" },
+              { label: "6ème — Piège l'IA", color: "#4f8ef7" },
+              { label: "5ème — Génère l'incroyable", color: "#a855f7" },
+              { label: "4ème — Détective de biais", color: "#f59e0b" },
+              { label: "3ème — Le défi du prompt parfait", color: "#ff6b6b" },
+            ].map((m) => (
+              <div
+                key={m.label}
+                style={{
+                  background: `${m.color}18`,
+                  border: `1px solid ${m.color}44`,
+                  borderRadius: "20px",
+                  padding: "4px 14px",
+                  fontSize: "0.8rem",
+                  color: m.color,
+                  fontWeight: 600,
+                }}
+              >
+                {m.label}
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Scolou */}
         <section
           style={{
