@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.scolafree.twa",
+      "sha256_cert_fingerprints": [
+        "1D:D3:09:19:36:3F:51:0E:40:4C:AB:6D:5C:16:83:27:96:D8:94:40:4E:1F:F5:20:07:F9:2C:E2:4A:61:52:1B"
+      ]
+    }
+  }
+]
