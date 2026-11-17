@@ -3,8 +3,23 @@
 import { useDecouverte } from "@/components/DecouverteContext";
 import PopupInscription from "@/components/PopupInscription";
 
+import { getSeriesPourNotion } from "@/lib/entrainement/series";
 import { supabase } from "@/supabaseClient";
 import Link from "next/link";
+
+// Série d'Entraînement liée par l'identifiant de notion commun
+const SERIE_ENTRAINEMENT = getSeriesPourNotion("et-est")[0];
+const STYLE_BOUTON_ENTRAINEMENT = {
+  background: "rgba(244,162,97,0.12)",
+  border: "1px solid rgba(244,162,97,0.5)",
+  color: "#f4a261",
+  padding: "12px 24px",
+  borderRadius: "14px",
+  fontSize: "0.95rem",
+  fontWeight: 700,
+  textDecoration: "none",
+  display: "inline-block",
+};
 import { useEffect, useRef, useState } from "react";
 
 const TOUTES_LES_QUESTIONS = [
@@ -314,6 +329,14 @@ export default function FicheEtEst() {
             >
               🔄 Recommencer
             </button>
+            {SERIE_ENTRAINEMENT && (
+              <Link
+                href={`/entrainement/series/${SERIE_ENTRAINEMENT.id}`}
+                style={STYLE_BOUTON_ENTRAINEMENT}
+              >
+                🏋️ S&apos;entraîner davantage
+              </Link>
+            )}
             <Link
               href="/fondamentaux/francais"
               style={{
@@ -412,6 +435,21 @@ export default function FicheEtEst() {
             <strong style={{ color: "#ff6b6b" }}>ET</strong> (conjonction).
           </p>
         </div>
+
+        {SERIE_ENTRAINEMENT && (
+          <div style={{ textAlign: "center", marginBottom: "16px" }}>
+            <Link
+              href={`/entrainement/series/${SERIE_ENTRAINEMENT.id}`}
+              style={{
+                ...STYLE_BOUTON_ENTRAINEMENT,
+                padding: "8px 18px",
+                fontSize: "0.85rem",
+              }}
+            >
+              🏋️ S&apos;entraîner davantage
+            </Link>
+          </div>
+        )}
 
         <div
           style={{
