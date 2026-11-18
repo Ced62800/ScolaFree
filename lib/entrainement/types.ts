@@ -40,6 +40,9 @@ export type QuestionChoix = {
   choix: string[];
   reponse: string;
   explication: string;
+  // Pourquoi un mauvais choix ne marche pas, affiché seulement en cas d'erreur.
+  // Clé = le choix fait par l'élève. Le composant ajoute « Tu as mis « x » ? » devant.
+  erreurs?: Record<string, string>;
 };
 
 export type Serie = {
@@ -50,6 +53,12 @@ export type Serie = {
   microRegle: string; // rappel court, la règle complète reste dans la fiche
   nbQuestions: number; // nombre de questions tirées à chaque partie
   questions: QuestionChoix[];
+};
+
+// Contenu d'un fichier lib/entrainement/series/<notion>.ts
+export type DonneesNotion = {
+  notion: Notion;
+  series: Serie[];
 };
 
 export type PhraseDictee = {

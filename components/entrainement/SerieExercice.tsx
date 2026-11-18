@@ -259,6 +259,11 @@ export default function SerieExercice({ serie }: { serie: Serie }) {
               >
                 {etat === "correct" ? "✅ Bonne réponse !" : "❌ Pas tout à fait..."}
               </p>
+              {etat === "incorrect" && choixFait && question.erreurs?.[choixFait] && (
+                <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.85rem", margin: "0 0 6px 0" }}>
+                  Tu as mis « {choixFait} » ? {question.erreurs[choixFait]}
+                </p>
+              )}
               <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.85rem", margin: 0 }}>
                 {question.explication}
               </p>
