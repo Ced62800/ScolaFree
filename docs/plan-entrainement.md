@@ -114,6 +114,7 @@ Audio : rendre le script générique (`scripts/dictees/generer-dictee.bat <id>`)
 | Exercices avec audio (écouter puis choisir) | avant la vague 6 |
 | Script de dictée générique | avant la 2e dictée |
 | Page /offline manquante | tâche séparée, dès que possible |
-| Réglage eslint à retirer de next.config.js | avec /offline |
+| Réglage eslint à retirer de next.config.js | fait |
 | getUser() à remplacer par getSession() | tâche séparée |
 | Mélange des questions dans les fiches Fondamentaux (Math.random dans useState) | quand on touche aux fiches |
+| Bouton Scolou qui cache le bas des cartes et des boutons sur téléphone | à planifier |
