@@ -2,7 +2,7 @@
 // Trois catégories d'erreurs, comptées séparément :
 // - orthographe : mot différent (en ignorant majuscules et ponctuation), mot oublié ou mot en trop
 // - majuscule   : seule la casse diffère
-// - ponctuation : seule la ponctuation collée au mot diffère ou manque
+// - ponctuation : la ponctuation collée au mot diffère ou manque
 
 export type TypeErreur = "orthographe" | "majuscule" | "ponctuation";
 
@@ -10,6 +10,8 @@ export type MotCorrige = {
   attendu: string | null; // null = mot en trop
   saisi: string | null; // null = mot oublié
   erreurs: TypeErreur[];
+  position: number | null; // rang du mot attendu dans la phrase (0 = premier)
+  ligature: boolean; // « oe » écrit à la place de « œ » (accepté, pas une faute)
 };
 
 export type ResultatCorrection = {
@@ -22,7 +24,8 @@ export type ResultatCorrection = {
 };
 
 const PONCTUATION = ".,;:!?«»\"()…[]";
-const RE_BORDS = /^[.,;:!?«»"()…[\]]+|[.,;:!?«»"()…[\]]+$/g;
+const RE_DEBUT = /^[.,;:!?«»"()…[\]]+/;
+const RE_FIN = /[.,;:!?«»"()…[\]]+$/;
 
 function estPonctuationSeule(token: string): boolean {
   return [...token].every((c) => PONCTUATION.includes(c));
@@ -56,19 +59,28 @@ export function decouperMots(texte: string): string[] {
   return mots;
 }
 
-function coeur(mot: string): string {
-  return mot.replace(RE_BORDS, "");
+// Le mot sans la ponctuation collée autour
+export function coeur(mot: string): string {
+  return mot.replace(RE_DEBUT, "").replace(RE_FIN, "");
 }
 
 function ponctuationDe(mot: string): string {
-  const debut = mot.match(/^[.,;:!?«»"()…[\]]+/)?.[0] ?? "";
-  const fin = mot.match(/[.,;:!?«»"()…[\]]+$/)?.[0] ?? "";
+  const debut = mot.match(RE_DEBUT)?.[0] ?? "";
+  const fin = mot.match(RE_FIN)?.[0] ?? "";
   return debut + "|" + fin;
 }
 
 // « oe » est accepté pour « œ » (difficile à taper au clavier)
 function sansLigature(mot: string): string {
-  return mot.replace(/œ/g, "oe").replace(/Œ/g, "Oe").replace(/æ/g, "ae").replace(/Æ/g, "Ae");
+  return mot
+    .replace(/œ/g, "oe")
+    .replace(/Œ/g, "Oe")
+    .replace(/æ/g, "ae")
+    .replace(/Æ/g, "Ae");
+}
+
+function sansAccent(mot: string): string {
+  return mot.normalize("NFD").replace(/[̀-ͯ]/g, "");
 }
 
 function memeMot(a: string, b: string): boolean {
@@ -112,17 +124,29 @@ export function corrigerTexte(
     if (i > 0 && j > 0) {
       const cout = memeMot(attendus[i - 1], saisis[j - 1]) ? 0 : 1;
       if (d[i][j] === d[i - 1][j - 1] + cout) {
-        mots.push(comparerMot(attendus[i - 1], saisis[j - 1]));
+        mots.push(comparerMot(attendus[i - 1], saisis[j - 1], i - 1));
         i--;
         j--;
         continue;
       }
     }
     if (i > 0 && d[i][j] === d[i - 1][j] + 1) {
-      mots.push({ attendu: attendus[i - 1], saisi: null, erreurs: ["orthographe"] });
+      mots.push({
+        attendu: attendus[i - 1],
+        saisi: null,
+        erreurs: ["orthographe"],
+        position: i - 1,
+        ligature: false,
+      });
       i--;
     } else {
-      mots.push({ attendu: null, saisi: saisis[j - 1], erreurs: ["orthographe"] });
+      mots.push({
+        attendu: null,
+        saisi: saisis[j - 1],
+        erreurs: ["orthographe"],
+        position: null,
+        ligature: false,
+      });
       j--;
     }
   }
@@ -152,20 +176,119 @@ export function corrigerTexte(
   };
 }
 
-function comparerMot(attendu: string, saisi: string): MotCorrige {
+function comparerMot(attendu: string, saisi: string, position: number): MotCorrige {
   const erreurs: TypeErreur[] = [];
   if (!memeMot(attendu, saisi)) {
     erreurs.push("orthographe");
-  } else {
-    if (sansLigature(coeur(attendu)) !== sansLigature(coeur(saisi)))
-      erreurs.push("majuscule");
-    if (ponctuationDe(attendu) !== ponctuationDe(saisi))
-      erreurs.push("ponctuation");
+  } else if (sansLigature(coeur(attendu)) !== sansLigature(coeur(saisi))) {
+    erreurs.push("majuscule");
   }
-  return { attendu, saisi, erreurs };
+  if (ponctuationDe(attendu) !== ponctuationDe(saisi)) erreurs.push("ponctuation");
+  const ligature =
+    !erreurs.includes("orthographe") && /[œŒæÆ]/.test(attendu) &&
+    !/[œŒæÆ]/.test(saisi);
+  return { attendu, saisi, erreurs, position, ligature };
 }
 
-// "2 fautes d'orthographe", "1 erreur de majuscule", "0 erreur de ponctuation"
+// ============================================================
+// EXPLICATIONS (pour un enfant de CE2 : tutoiement, phrases courtes)
+// ============================================================
+
+export type Explication = {
+  ton: "erreur" | "bravo" | "note";
+  texte: string;
+};
+
+// Aide écrite à la main pour un mot (clé = mot attendu sans ponctuation)
+function aideDe(attendu: string, aides?: Record<string, string>): string | undefined {
+  if (!aides) return undefined;
+  const c = coeur(attendu);
+  return aides[c] ?? aides[c.toLowerCase()];
+}
+
+// Renvoie les explications d'un mot corrigé.
+// - Les aides écrites à la main sont prioritaires pour les fautes d'orthographe.
+// - Majuscules et ponctuation ont toujours leur explication automatique.
+// - Un mot de la notion écrit juste reçoit « Bravo ! » + son aide.
+export function expliquerMot(
+  mot: MotCorrige,
+  options: { aides?: Record<string, string>; motsNotion?: string[] } = {},
+): Explication[] {
+  const { aides, motsNotion = [] } = options;
+  const resultat: Explication[] = [];
+
+  // Mot en trop
+  if (mot.attendu === null) {
+    return [{ ton: "erreur", texte: "Ce mot n'est pas dans la phrase." }];
+  }
+  // Mot oublié
+  if (mot.saisi === null) {
+    return [{ ton: "erreur", texte: "Tu as oublié ce mot. Réécoute la phrase." }];
+  }
+
+  const attendu = coeur(mot.attendu);
+  const saisi = coeur(mot.saisi);
+  const aide = aideDe(mot.attendu, aides);
+
+  // Mot juste
+  if (mot.erreurs.length === 0) {
+    if (aide && motsNotion.includes(attendu.toLowerCase())) {
+      resultat.push({ ton: "bravo", texte: `Bravo ! ${aide}` });
+    }
+    if (mot.ligature) {
+      resultat.push({
+        ton: "note",
+        texte: "Bien ! On peut aussi l'écrire avec le o et le e collés : œ.",
+      });
+    }
+    return resultat;
+  }
+
+  if (mot.erreurs.includes("orthographe")) {
+    if (aide) {
+      resultat.push({ ton: "erreur", texte: aide });
+    } else if (
+      sansAccent(sansLigature(attendu)).toLowerCase() ===
+      sansAccent(sansLigature(saisi)).toLowerCase()
+    ) {
+      resultat.push({ ton: "erreur", texte: `Attention à l'accent : on écrit ${attendu}.` });
+    } else {
+      resultat.push({
+        ton: "erreur",
+        texte: `On écrit ${attendu}. Regarde-le bien lettre par lettre.`,
+      });
+    }
+  }
+
+  if (mot.erreurs.includes("majuscule")) {
+    const majusculeAttendue = attendu[0] !== attendu[0].toLowerCase();
+    if (majusculeAttendue && mot.position === 0) {
+      resultat.push({ ton: "erreur", texte: "Une phrase commence toujours par une majuscule." });
+    } else if (majusculeAttendue) {
+      resultat.push({ ton: "erreur", texte: "Un prénom commence toujours par une majuscule." });
+    } else {
+      resultat.push({
+        ton: "erreur",
+        texte: `Pas de majuscule ici : on écrit ${attendu}.`,
+      });
+    }
+  }
+
+  if (mot.erreurs.includes("ponctuation")) {
+    if (mot.attendu.endsWith(".") && !mot.saisi.endsWith(".")) {
+      resultat.push({ ton: "erreur", texte: "Une phrase se termine toujours par un point." });
+    } else {
+      resultat.push({
+        ton: "erreur",
+        texte: `Attention à la ponctuation : on écrit « ${mot.attendu} ».`,
+      });
+    }
+  }
+
+  return resultat;
+}
+
+// "2 fautes d'orthographe, 1 erreur de majuscule, 0 erreur de ponctuation"
 export function resumeErreurs(r: {
   nbOrthographe: number;
   nbMajuscule: number;

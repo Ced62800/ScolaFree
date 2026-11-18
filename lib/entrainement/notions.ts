@@ -8,6 +8,7 @@ export const NOTIONS: Record<string, Notion> = {
     titre: "Et / Est",
     emoji: "🔗",
     fiche: "/fondamentaux/francais/et-est",
+    mots: ["et", "est"],
   },
 };
 

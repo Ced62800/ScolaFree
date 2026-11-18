@@ -32,6 +32,7 @@ export type Notion = {
   titre: string;
   emoji: string;
   fiche: string; // lien vers la règle complète
+  mots: string[]; // mots travaillés par la notion, ex. ["et", "est"]
 };
 
 export type QuestionChoix = {
@@ -54,6 +55,9 @@ export type Serie = {
 export type PhraseDictee = {
   texte: string;
   audio: string; // chemin dans public/, ex. "/audio/dictees/ce2-1/01.mp3"
+  // Explications écrites à la main, prioritaires sur les explications automatiques.
+  // Clé = le mot attendu sans ponctuation, ex. { est: "Tu peux dire..." }
+  aides?: Record<string, string>;
 };
 
 export type Dictee = {
