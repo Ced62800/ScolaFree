@@ -1,5 +1,8 @@
 import type { DonneesNotion, Serie } from "../types";
 import aAsA from "./a-as-a";
+import accordGroupeNominal from "./accord-groupe-nominal";
+import lettresMuettes from "./lettres-muettes";
+import plurielNoms from "./pluriel-noms";
 import caSa from "./ca-sa";
 import cesSes from "./ces-ses";
 import etEst from "./et-est";
@@ -20,6 +23,9 @@ export const DONNEES: DonneesNotion[] = [
   caSa,
   leurLeurs,
   toutTous,
+  plurielNoms,
+  accordGroupeNominal,
+  lettresMuettes,
 ];
 
 export const SERIES: Serie[] = DONNEES.flatMap((d) => d.series);

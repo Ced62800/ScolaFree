@@ -19,6 +19,13 @@ const fiches = [
     dispo: true,
   },
   {
+    id: "accord-groupe-nominal",
+    titre: "L'accord dans le groupe nominal",
+    emoji: "🤝",
+    desc: "Une petite souris, des jupes vertes",
+    dispo: true,
+  },
+  {
     id: "ca-sa",
     titre: "Ça / Sa",
     emoji: "🔀",
@@ -96,6 +103,13 @@ const fiches = [
     dispo: true,
   },
   {
+    id: "lettres-muettes",
+    titre: "Les lettres muettes",
+    emoji: "🤫",
+    desc: "Grand ou grant ? Fais parler la lettre !",
+    dispo: true,
+  },
+  {
     id: "mais-mes",
     titre: "Mais / Mes / Met / Mets",
     emoji: "📝",
@@ -149,6 +163,13 @@ const fiches = [
     titre: "Peu / Peux / Peut",
     emoji: "🤔",
     desc: "Adverbe ou verbe pouvoir ?",
+    dispo: true,
+  },
+  {
+    id: "pluriel-noms",
+    titre: "Le pluriel des noms",
+    emoji: "📚",
+    desc: "Des chats, des bateaux, des chevaux",
     dispo: true,
   },
   {
