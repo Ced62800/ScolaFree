@@ -7,6 +7,7 @@ const donnees: DonneesNotion = {
   notion: {
     id: "ces-ses",
     titre: "Ces / Ses / C'est / S'est",
+    famille: "homophones",
     emoji: "🔄",
     fiche: "/fondamentaux/francais/ces-ses",
     mots: ["ces", "ses", "c'est", "s'est"],

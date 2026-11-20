@@ -3,9 +3,24 @@
 import { useDecouverte } from "@/components/DecouverteContext";
 import PopupInscription from "@/components/PopupInscription";
 
+import { getSeriesPourNotion } from "@/lib/entrainement/series";
 import { supabase } from "@/supabaseClient";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+
+// Série d'Entraînement liée par l'identifiant de notion commun
+const SERIE_ENTRAINEMENT = getSeriesPourNotion("leur-leurs")[0];
+const STYLE_BOUTON_ENTRAINEMENT = {
+  background: "rgba(244,162,97,0.12)",
+  border: "1px solid rgba(244,162,97,0.5)",
+  color: "#f4a261",
+  padding: "12px 24px",
+  borderRadius: "14px",
+  fontSize: "0.95rem",
+  fontWeight: 700,
+  textDecoration: "none",
+  display: "inline-block",
+};
 
 const TOUTES_LES_QUESTIONS = [
   {
@@ -105,11 +120,14 @@ function melangerTableau<T>(arr: T[]): T[] {
 const CHOIX = ["leur", "leurs"];
 const NB_QUESTIONS = 10;
 type EtatQuestion = "attente" | "correct" | "incorrect";
+type Question = (typeof TOUTES_LES_QUESTIONS)[number];
 
 export default function FicheLeurLeurs() {
-  const [questions, setQuestions] = useState(() =>
-    melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS),
-  );
+  const [questions, setQuestions] = useState<Question[]>([]);
+  // Mélange dans un useEffect (jamais dans l'initialiseur : ça casse l'hydratation)
+  useEffect(() => {
+    setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
+  }, []);
   const [indexActuel, setIndexActuel] = useState(0);
   const [etat, setEtat] = useState<EtatQuestion>("attente");
   const [choixFait, setChoixFait] = useState<string | null>(null);
@@ -213,6 +231,8 @@ export default function FicheLeurLeurs() {
     scoreSaved.current = false;
     setShowPopup(false);
   };
+
+  if (!question) return null;
 
   if (termine) {
     const pourcentage = Math.round((score / NB_QUESTIONS) * 100);
@@ -318,6 +338,14 @@ export default function FicheLeurLeurs() {
             >
               🔄 Recommencer
             </button>
+            {SERIE_ENTRAINEMENT && (
+              <Link
+                href={`/entrainement/series/${SERIE_ENTRAINEMENT.id}`}
+                style={STYLE_BOUTON_ENTRAINEMENT}
+              >
+                🏋️ S&apos;entraîner davantage
+              </Link>
+            )}
             <Link
               href="/fondamentaux/francais"
               style={{
@@ -427,6 +455,21 @@ export default function FicheLeurLeurs() {
             <u>chiens</u> (plusieurs chiens) ✅
           </p>
         </div>
+
+        {SERIE_ENTRAINEMENT && (
+          <div style={{ textAlign: "center", marginBottom: "16px" }}>
+            <Link
+              href={`/entrainement/series/${SERIE_ENTRAINEMENT.id}`}
+              style={{
+                ...STYLE_BOUTON_ENTRAINEMENT,
+                padding: "8px 18px",
+                fontSize: "0.85rem",
+              }}
+            >
+              🏋️ S&apos;entraîner davantage
+            </Link>
+          </div>
+        )}
 
         <div
           style={{

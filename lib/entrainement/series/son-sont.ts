@@ -5,6 +5,7 @@ const donnees: DonneesNotion = {
   notion: {
     id: "son-sont",
     titre: "Son / Sont",
+    famille: "homophones",
     emoji: "🔊",
     fiche: "/fondamentaux/francais/son-sont",
     mots: ["son", "sont"],

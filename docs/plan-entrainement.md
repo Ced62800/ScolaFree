@@ -4,7 +4,7 @@ Version du 18 novembre 2026. Document de référence pour Claude Code : on suit 
 
 ## Où on en est
 
-En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'est/s'est (CE2-CM1) et la dictée CE2 « Au parc » (`ce2-1`). Vague 1, lot 1 fait. Le moteur accepte n'importe quelle notion : ajouter une série revient à écrire des données.
+En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'est/s'est, ça/sa (CE2-CM1), leur/leurs, tout/tous/toute/toutes (CE2-CM2) et la dictée CE2 « Au parc » (`ce2-1`). Vague 1 terminée (lots 1 et 2). Filtres par classe et par famille sur l'accueil. Le moteur accepte n'importe quelle notion : ajouter une série revient à écrire des données.
 
 - 33 fiches Fondamentaux français existent dans `app/fondamentaux/francais/`.
 - Cours de primaire (CP au CM2) : 8 thèmes par classe (orthographe, grammaire, conjugaison, vocabulaire, deux leçons chacun).
@@ -33,9 +33,9 @@ En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'es
 | Homophones | on / ont | CE1-CE2 | on-ont | fait |
 | Homophones | son / sont | CE2-CM1 | son-sont | fait |
 | Homophones | ces / ses / c'est / s'est | CE2-CM1 | ces-ses | fait |
-| Homophones | ça / sa | CE2-CM1 | ca-sa | 1 |
-| Homophones | leur / leurs | CE2-CM2 | leur-leurs | 1 |
-| Homophones | tout / tous / toute / toutes | CE2-CM2 | tout-tous | 1 |
+| Homophones | ça / sa | CE2-CM1 | ca-sa | fait |
+| Homophones | leur / leurs | CE2-CM2 | leur-leurs | fait |
+| Homophones | tout / tous / toute / toutes | CE2-CM2 | tout-tous | fait |
 | Homophones | ou / où | CM1 | ou-ou | 4 |
 | Homophones | ce / se | CM1-CM2 | ce-se | 4 |
 | Homophones | la / là / l'a | CM1-CM2 | la-la | 4 |
@@ -109,12 +109,12 @@ Audio : rendre le script générique (`scripts/dictees/generer-dictee.bat <id>`)
 | Chantier | Quand |
 | --- | --- |
 | Un fichier de données par notion (`lib/entrainement/series/<notion>.ts`) | fait |
-| Filtres par classe et par famille sur l'accueil Entraînement | pendant la vague 1 |
+| Filtres par classe et par famille sur l'accueil Entraînement (famille déclarée dans chaque fichier de notion) | fait |
 | Exercice « écris la bonne forme » (saisie) | avant la vague 3 |
 | Exercices avec audio (écouter puis choisir) | avant la vague 6 |
 | Script de dictée générique | avant la 2e dictée |
 | Page /offline manquante | tâche séparée, dès que possible |
 | Réglage eslint à retirer de next.config.js | fait |
 | getUser() à remplacer par getSession() | tâche séparée |
-| Mélange des questions dans les fiches Fondamentaux (Math.random dans useState) | quand on touche aux fiches |
+| Mélange des questions dans les fiches Fondamentaux (Math.random dans useState) | fait pour et-est, a-as-a, on-ont, son-sont, ces-ses, ca-sa, leur-leurs, tout-tous ; les autres quand on y touche |
 | Bouton Scolou qui cache le bas des cartes et des boutons sur téléphone | à planifier |

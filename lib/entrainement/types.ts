@@ -26,10 +26,21 @@ export const LIBELLES_CLASSES: Record<Classe, string> = {
   "3eme": "3e",
 };
 
+// Familles de notions, pour les filtres de l'accueil Entraînement.
+export type Famille = "sons" | "homophones" | "accords" | "conjugaison";
+
+export const LIBELLES_FAMILLES: Record<Famille, string> = {
+  sons: "Sons et lettres",
+  homophones: "Homophones",
+  accords: "Accords",
+  conjugaison: "Conjugaison",
+};
+
 // Une notion = un identifiant commun avec la fiche Fondamentaux.
 export type Notion = {
   id: string; // ex. "et-est", identique au dossier de la fiche
   titre: string;
+  famille: Famille;
   emoji: string;
   fiche: string; // lien vers la règle complète
   mots: string[]; // mots travaillés par la notion, ex. ["et", "est"]

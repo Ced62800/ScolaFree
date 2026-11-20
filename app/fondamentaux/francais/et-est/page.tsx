@@ -116,11 +116,14 @@ function melangerTableau<T>(arr: T[]): T[] {
 const CHOIX = ["et", "est"];
 const NB_QUESTIONS = 10;
 type EtatQuestion = "attente" | "correct" | "incorrect";
+type Question = (typeof TOUTES_LES_QUESTIONS)[number];
 
 export default function FicheEtEst() {
-  const [questions, setQuestions] = useState(() =>
-    melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS),
-  );
+  const [questions, setQuestions] = useState<Question[]>([]);
+  // Mélange dans un useEffect (jamais dans l'initialiseur : ça casse l'hydratation)
+  useEffect(() => {
+    setQuestions(melangerTableau(TOUTES_LES_QUESTIONS).slice(0, NB_QUESTIONS));
+  }, []);
   const [indexActuel, setIndexActuel] = useState(0);
   const [etat, setEtat] = useState<EtatQuestion>("attente");
   const [choixFait, setChoixFait] = useState<string | null>(null);
@@ -224,6 +227,8 @@ export default function FicheEtEst() {
     scoreSaved.current = false;
     setShowPopup(false);
   };
+
+  if (!question) return null;
 
   if (termine) {
     const pourcentage = Math.round((score / NB_QUESTIONS) * 100);

@@ -5,6 +5,7 @@ const donnees: DonneesNotion = {
   notion: {
     id: "on-ont",
     titre: "On / Ont",
+    famille: "homophones",
     emoji: "👥",
     fiche: "/fondamentaux/francais/on-ont",
     mots: ["on", "ont"],

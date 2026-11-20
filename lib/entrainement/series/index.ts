@@ -1,14 +1,26 @@
 import type { DonneesNotion, Serie } from "../types";
 import aAsA from "./a-as-a";
+import caSa from "./ca-sa";
 import cesSes from "./ces-ses";
 import etEst from "./et-est";
+import leurLeurs from "./leur-leurs";
 import onOnt from "./on-ont";
 import sonSont from "./son-sont";
+import toutTous from "./tout-tous";
 
 // Un fichier par notion. Pour ajouter une notion :
 // 1. créer series/<notion>.ts sur le modèle de et-est.ts ;
 // 2. l'importer ici et l'ajouter à DONNEES.
-export const DONNEES: DonneesNotion[] = [etEst, aAsA, onOnt, sonSont, cesSes];
+export const DONNEES: DonneesNotion[] = [
+  etEst,
+  aAsA,
+  onOnt,
+  sonSont,
+  cesSes,
+  caSa,
+  leurLeurs,
+  toutTous,
+];
 
 export const SERIES: Serie[] = DONNEES.flatMap((d) => d.series);
 
