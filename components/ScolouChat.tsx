@@ -97,8 +97,13 @@ export default function ScolouChat() {
 
   return (
     <>
-      {/* Bouton flottant */}
+      {/* Espace vide en bas de page : sur téléphone, il permet de faire défiler
+          le dernier bouton de la page au-dessus de Scolou (voir globals.css) */}
+      <div className="scolou-espace" aria-hidden="true" />
+
+      {/* Bouton flottant (taille et position réduites sur téléphone, voir globals.css) */}
       <div
+        className="scolou-bouton"
         style={{
           position: "fixed",
           bottom: "40px",
@@ -144,7 +149,10 @@ export default function ScolouChat() {
             />
           )}
         </button>
-        <div style={{ fontSize: "0.72rem", color: "#aaa", marginTop: "4px" }}>
+        <div
+          className="scolou-etiquette"
+          style={{ fontSize: "0.72rem", color: "#aaa", marginTop: "4px" }}
+        >
           Demande à Scolou
         </div>
       </div>
@@ -152,6 +160,7 @@ export default function ScolouChat() {
       {/* Fenêtre de chat */}
       {ouvert && (
         <div
+          className="scolou-fenetre"
           style={{
             position: "fixed",
             bottom: "96px",

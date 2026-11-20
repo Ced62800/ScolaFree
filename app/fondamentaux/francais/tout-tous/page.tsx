@@ -26,9 +26,9 @@ const TOUTES_LES_QUESTIONS = [
   {
     id: 1,
     phrase: "___ le monde était présent.",
-    reponse: "Tout",
+    reponse: "tout",
     explication:
-      "'Tout le monde' est une expression figée au masculin singulier → Tout.",
+      "'Tout le monde' est une expression figée au masculin singulier → tout.",
   },
   {
     id: 2,
@@ -52,10 +52,10 @@ const TOUTES_LES_QUESTIONS = [
   },
   {
     id: 5,
-    phrase: "___ les élèves ont réussi.",
-    reponse: "Tous",
+    phrase: "___ les garçons ont réussi.",
+    reponse: "tous",
     explication:
-      "'Tous' s'accorde avec 'les élèves' (masculin pluriel) → Tous.",
+      "'Tous' s'accorde avec 'les garçons' (masculin pluriel : un garçon) → tous.",
   },
   {
     id: 6,
@@ -66,17 +66,17 @@ const TOUTES_LES_QUESTIONS = [
   },
   {
     id: 7,
-    phrase: "Elle est ___ heureuse aujourd'hui.",
+    phrase: "Elle est ___ contente de son cadeau.",
     reponse: "toute",
     explication:
-      "'Toute heureuse' = complètement heureuse. Devant un adjectif féminin → toute.",
+      "'Toute contente' = complètement contente. Devant un adjectif féminin qui commence par une consonne (c, p, t…) → toute.",
   },
   {
     id: 8,
     phrase: "___ les filles ont chanté.",
-    reponse: "Toutes",
+    reponse: "toutes",
     explication:
-      "'Toutes' s'accorde avec 'les filles' (féminin pluriel) → Toutes.",
+      "'Toutes' s'accorde avec 'les filles' (féminin pluriel) → toutes.",
   },
   {
     id: 9,
@@ -101,8 +101,8 @@ const TOUTES_LES_QUESTIONS = [
   {
     id: 12,
     phrase: "___ à coup, il s'est arrêté.",
-    reponse: "Tout",
-    explication: "'Tout à coup' est une expression figée → Tout.",
+    reponse: "tout",
+    explication: "'Tout à coup' est une expression figée → tout.",
   },
 ];
 
@@ -324,7 +324,7 @@ export default function FicheToutTous() {
             <button
               onClick={recommencer}
               style={{
-                background: "linear-gradient(135deg, #2ec4b6, #ffd166)",
+                background: "linear-gradient(135deg, #2ec4b6, #4f8ef7)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 24px",
@@ -434,20 +434,24 @@ export default function FicheToutTous() {
               margin: 0,
             }}
           >
-            Regarde le mot qui suit et accorde comme &quot;mon&quot; /
-            &quot;ma&quot; / &quot;mes&quot; :<br />
-            <strong style={{ color: "#2ec4b6" }}>TOUT</strong> → masculin
-            singulier. Exemple : <em>tout</em> le livre (= <em>mon</em> livre)
-            ✅<br />
-            <strong style={{ color: "#ffd166" }}>TOUTE</strong> → féminin
-            singulier. Exemple : <em>toute</em> la nuit (= <em>ma</em> nuit) ✅
+            Regarde le petit mot qui suit :<br />
+            <strong style={{ color: "#2ec4b6" }}>TOUT</strong> → devant
+            &quot;le&quot;. Exemple : <em>tout</em> le livre ✅<br />
+            <strong style={{ color: "#ffd166" }}>TOUTE</strong> → devant
+            &quot;la&quot;. Exemple : <em>toute</em> la nuit ✅
             <br />
-            <strong style={{ color: "#4f8ef7" }}>TOUS</strong> → masculin
-            pluriel. Exemple : <em>tous</em> les garçons (= <em>mes</em>{" "}
-            garçons) ✅<br />
-            <strong style={{ color: "#a78bfa" }}>TOUTES</strong> → féminin
-            pluriel. Exemple : <em>toutes</em> les filles (= <em>mes</em>{" "}
-            filles) ✅
+            <strong style={{ color: "#4f8ef7" }}>TOUS</strong> → devant
+            &quot;les&quot; + nom masculin (<em>un</em> garçon). Exemple :{" "}
+            <em>tous</em> les garçons ✅<br />
+            <strong style={{ color: "#a78bfa" }}>TOUTES</strong> → devant
+            &quot;les&quot; + nom féminin (<em>une</em> fille). Exemple :{" "}
+            <em>toutes</em> les filles ✅<br />
+            <strong style={{ color: "rgba(255,255,255,0.5)" }}>
+              Astuce bonus :
+            </strong>{" "}
+            &quot;mes&quot;, &quot;tes&quot;, &quot;ses&quot;, &quot;ces&quot;
+            marchent comme &quot;les&quot;. Exemple : <em>toutes</em> ses
+            affaires ✅
           </p>
         </div>
 
@@ -620,7 +624,7 @@ export default function FicheToutTous() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #2ec4b6, #ffd166)",
+                background: "linear-gradient(135deg, #2ec4b6, #4f8ef7)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",

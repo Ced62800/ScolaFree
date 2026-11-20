@@ -306,7 +306,7 @@ export default function FicheDansDen() {
             <button
               onClick={recommencer}
               style={{
-                background: "linear-gradient(135deg, #2ec4b6, #ffd166)",
+                background: "linear-gradient(135deg, #2ec4b6, #4f8ef7)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 24px",
@@ -583,7 +583,7 @@ export default function FicheDansDen() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #2ec4b6, #ffd166)",
+                background: "linear-gradient(135deg, #2ec4b6, #4f8ef7)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",

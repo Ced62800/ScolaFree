@@ -1785,3 +1785,39 @@ body:has(.admin-page) footer {
     font-size: 0.82rem;
   }
 }
+
+/* ── BOUTON SCOLOU SUR TÉLÉPHONE ──
+   Les styles du bouton sont écrits dans ScolouChat.tsx (inline) :
+   les !important sont nécessaires pour les remplacer ici. */
+.scolou-espace {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  /* Hauteur de Scolou : 16 (bas) + 44 (bouton) + 2 + ~13 (étiquette) = ~75 px,
+     plus une marge pour que rien ne soit recouvert */
+  .scolou-espace {
+    display: block;
+    height: 96px;
+  }
+  .scolou-bouton {
+    bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+    right: 12px !important;
+  }
+  .scolou-bouton button,
+  .scolou-bouton img {
+    width: 44px !important;
+    height: 44px !important;
+  }
+  .scolou-etiquette {
+    font-size: 11px !important;
+    line-height: 1.2;
+    margin-top: 2px !important;
+    white-space: nowrap;
+  }
+  .scolou-fenetre {
+    bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    right: 12px !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+}

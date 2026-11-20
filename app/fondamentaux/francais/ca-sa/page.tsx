@@ -327,7 +327,7 @@ export default function FicheCaSa() {
             <button
               onClick={recommencer}
               style={{
-                background: "linear-gradient(135deg, #ff6b6b, #ffd166)",
+                background: "linear-gradient(135deg, #ff6b6b, #c0392b)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 24px",
@@ -620,7 +620,7 @@ export default function FicheCaSa() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #ff6b6b, #ffd166)",
+                background: "linear-gradient(135deg, #ff6b6b, #c0392b)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",

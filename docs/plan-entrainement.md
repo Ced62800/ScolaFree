@@ -117,4 +117,4 @@ Audio : rendre le script générique (`scripts/dictees/generer-dictee.bat <id>`)
 | Réglage eslint à retirer de next.config.js | fait |
 | getUser() à remplacer par getSession() | tâche séparée |
 | Mélange des questions dans les fiches Fondamentaux (Math.random dans useState) | fait pour et-est, a-as-a, on-ont, son-sont, ces-ses, ca-sa, leur-leurs, tout-tous ; les autres quand on y touche |
-| Bouton Scolou qui cache le bas des cartes et des boutons sur téléphone | à planifier |
+| Bouton Scolou qui cache le bas des cartes et des boutons sur téléphone | fait (bouton compact et espace en bas de page sur téléphone) |

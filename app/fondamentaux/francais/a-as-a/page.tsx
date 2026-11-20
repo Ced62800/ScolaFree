@@ -613,7 +613,7 @@ export default function FicheAAsA() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #ffd166, #2ec4b6)",
+                background: "linear-gradient(135deg, #4f8ef7, #2ec4b6)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",

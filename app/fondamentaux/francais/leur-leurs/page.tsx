@@ -88,10 +88,10 @@ const TOUTES_LES_QUESTIONS = [
   },
   {
     id: 10,
-    phrase: "Les parents aiment ___ enfants.",
+    phrase: "Les parents embrassent ___ trois enfants.",
     reponse: "leurs",
     explication:
-      "'Leurs enfants' = les enfants des parents. Plusieurs enfants → leurs.",
+      "'Leurs trois enfants' = les enfants des parents. Trois enfants, donc plusieurs → leurs.",
   },
   {
     id: 11,

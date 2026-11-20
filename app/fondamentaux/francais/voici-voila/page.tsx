@@ -306,7 +306,7 @@ export default function FicheVoiciVoila() {
             <button
               onClick={recommencer}
               style={{
-                background: "linear-gradient(135deg, #ffd166, #4f8ef7)",
+                background: "linear-gradient(135deg, #2b5bb8, #4f8ef7)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 24px",
@@ -584,7 +584,7 @@ export default function FicheVoiciVoila() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #ffd166, #4f8ef7)",
+                background: "linear-gradient(135deg, #2b5bb8, #4f8ef7)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",

@@ -319,7 +319,7 @@ export default function FicheDixPourcent() {
             <button
               onClick={recommencer}
               style={{
-                background: "linear-gradient(135deg, #ffd166, #ff6b6b)",
+                background: "linear-gradient(135deg, #c0392b, #ff6b6b)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 24px",
@@ -675,7 +675,7 @@ export default function FicheDixPourcent() {
             <button
               onClick={suivant}
               style={{
-                background: "linear-gradient(135deg, #ffd166, #ff6b6b)",
+                background: "linear-gradient(135deg, #c0392b, #ff6b6b)",
                 border: "none",
                 color: "#fff",
                 padding: "12px 32px",
