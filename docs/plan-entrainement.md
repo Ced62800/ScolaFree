@@ -4,9 +4,9 @@ Version du 18 novembre 2026. Document de référence pour Claude Code : on suit 
 
 ## Où on en est
 
-En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'est/s'est, ça/sa (CE2-CM1), leur/leurs, tout/tous/toute/toutes (CE2-CM2) et la dictée CE2 « Au parc » (`ce2-1`). Vague 1 terminée (lots 1 et 2). Filtres par classe et par famille sur l'accueil. Vague 2, lot 1 : pluriel des noms, accord dans le groupe nominal (CE1-CM1), lettres muettes (CE1-CE2), avec leurs fiches. Le moteur accepte n'importe quelle notion : ajouter une série revient à écrire des données.
+En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'est/s'est, ça/sa (CE2-CM1), leur/leurs, tout/tous/toute/toutes (CE2-CM2) et la dictée CE2 « Au parc » (`ce2-1`). Vague 1 terminée (lots 1 et 2). Filtres par classe et par famille sur l'accueil. Vague 2, lot 1 : pluriel des noms, accord dans le groupe nominal (CE1-CM1), lettres muettes (CE1-CE2), avec leurs fiches. Vague 2, lot 2 : accord sujet-verbe (série CE2-CM1, sujets simples puis éloignés ; le sujet inversé reste un cas bonus dans la fiche) et finale en [é] (CE2-6e), avec leurs fiches. Vague 2 terminée côté séries ; reste la dictée CE1 et le script de dictée générique, dans un lot à part. Le moteur accepte n'importe quelle notion : ajouter une série revient à écrire des données.
 
-- 36 fiches Fondamentaux français existent dans `app/fondamentaux/francais/`. Les nouvelles fiches acceptent des boutons propres à chaque question (champ `choix`).
+- 38 fiches Fondamentaux français existent dans `app/fondamentaux/francais/`. Les nouvelles fiches acceptent des boutons propres à chaque question (champ `choix`).
 - Cours de primaire (CP au CM2) : 8 thèmes par classe (orthographe, grammaire, conjugaison, vocabulaire, deux leçons chacun).
 - Cours de collège : accords, homophones, présent, imparfait, passé simple, conditionnel, subjonctif, plus des thèmes de littérature.
 - Nouveaux programmes de français depuis la rentrée 2025 (cycle 2, CM1, 6e), CM2 à la rentrée 2026.
@@ -60,8 +60,8 @@ En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'es
 | Homophones | voici / voilà | 5e-4e | voici-voila | 5 |
 | Accords | Pluriel des noms (-s, -x, -aux) | CE1-CE2 | pluriel-noms | fait |
 | Accords | Accord dans le groupe nominal | CE1-CM1 | accord-groupe-nominal | fait |
-| Accords | Accord sujet-verbe (sujet éloigné ou inversé) | CE2-6e | à créer | 2 |
-| Accords | Finale en [é] : é, er, ez, ait | CE2-6e | à créer | 2 |
+| Accords | Accord sujet-verbe (sujet éloigné ou inversé) | CE2-6e | accord-sujet-verbe | fait |
+| Accords | Finale en [é] : é, er, ez, ait | CE2-6e | finale-e | fait |
 | Accords | Participe passé avec être et avec avoir | CM1-4e | participe-passe | 4 |
 | Conjugaison | Être et avoir au présent | CP-CE1 | à créer | 3 |
 | Conjugaison | Présent des verbes en -er | CE1-CE2 | à créer | 3 |

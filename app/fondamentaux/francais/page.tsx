@@ -26,6 +26,13 @@ const fiches = [
     dispo: true,
   },
   {
+    id: "accord-sujet-verbe",
+    titre: "L'accord sujet-verbe",
+    emoji: "🎯",
+    desc: "Les chats dorment, le chat dort",
+    dispo: true,
+  },
+  {
     id: "ca-sa",
     titre: "Ça / Sa",
     emoji: "🔀",
@@ -79,6 +86,13 @@ const fiches = [
     titre: "Et / Est",
     emoji: "🔗",
     desc: "La conjonction vs le verbe être",
+    dispo: true,
+  },
+  {
+    id: "finale-e",
+    titre: "La finale en [é]",
+    emoji: "🔚",
+    desc: "Jouer, joué, jouez, jouait ?",
     dispo: true,
   },
   {
