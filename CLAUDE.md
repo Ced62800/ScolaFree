@@ -20,7 +20,7 @@ Windows, VS Code, PowerShell. Explique-moi les étapes simplement, en français,
 - Ne modifie jamais un fichier ou un template existant au-delà de ce que je demande. Si tu vois autre chose à corriger, signale-le sans y toucher.
 - Enregistre tous les fichiers en UTF-8. Les textes sont en français avec accents, ils doivent rester intacts.
 - Git : demande-moi mon accord avant chaque commit et chaque push. Quand tu me proposes des commandes, donne-les une par une, en syntaxe PowerShell, jamais enchaînées avec `&&`.
-- Ne travaille jamais directement sur `main`. Chaque lot se fait sur sa propre branche créée depuis `main` (ex. `entrainement-vague1-lot1`). La fusion dans `main` se fait seulement après mon test sur la version de test Vercel.
+- Ne travaille jamais directement sur `main`. Chaque lot se fait sur sa propre branche créée depuis `main` (ex. `entrainement-vague1-lot1`). La fusion dans `main` se fait seulement après mon test. La version de test Vercel est obligatoire quand le lot touche à l'affichage, aux composants ou au fonctionnement. Pour un lot qui n'ajoute que du contenu (fiches, séries, dictées sur les composants existants), mon test en local suffit.
 - Après chaque série de modifications, lance `npx tsc --noEmit`. L'erreur sur `globals.css` est un faux positif connu, ignore-la. Toute autre erreur doit être corrigée avant de me rendre la main.
 - Termine en me disant quoi tester : la page à ouvrir, ce qu'il faut cliquer, le résultat attendu.
 
