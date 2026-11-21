@@ -1,6 +1,7 @@
 "use client";
 
 import { useDecouverte } from "@/components/DecouverteContext";
+import NoteParentsClavier from "@/components/entrainement/NoteParentsClavier";
 import {
   corrigerTexte,
   expliquerMot,
@@ -341,7 +342,7 @@ export default function DicteeExercice({ dictee }: { dictee: Dictee }) {
           placeholder="Écris la phrase ici..."
           rows={3}
           autoCorrect="off"
-          autoCapitalize="off"
+          autoCapitalize="none"
           autoComplete="off"
           spellCheck={false}
           style={{
@@ -352,6 +353,7 @@ export default function DicteeExercice({ dictee }: { dictee: Dictee }) {
 
         {!correction && (
           <>
+            <NoteParentsClavier />
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", textAlign: "center", margin: "12px 0" }}>
               👀 Relis bien ta phrase avant de vérifier.
             </p>

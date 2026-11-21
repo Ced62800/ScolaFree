@@ -1,6 +1,7 @@
 "use client";
 
 import { useDecouverte } from "@/components/DecouverteContext";
+import NoteParentsClavier from "@/components/entrainement/NoteParentsClavier";
 import { getNotion } from "@/lib/entrainement/notions";
 import { verifierSaisie } from "@/lib/entrainement/saisie";
 import type { Question, QuestionSaisie, Serie } from "@/lib/entrainement/types";
@@ -359,6 +360,7 @@ export default function SerieExercice({ serie }: { serie: Serie }) {
                       Je ne sais pas
                     </button>
                   </div>
+                  <NoteParentsClavier />
                 </>
               )}
             </div>
