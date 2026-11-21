@@ -89,6 +89,13 @@ const fiches = [
     dispo: true,
   },
   {
+    id: "etre-avoir",
+    titre: "Être et avoir au présent",
+    emoji: "🎭",
+    desc: "Je suis, tu es, j'ai, tu as...",
+    dispo: true,
+  },
+  {
     id: "finale-e",
     titre: "La finale en [é]",
     emoji: "🔚",
@@ -191,6 +198,20 @@ const fiches = [
     titre: "Plutôt / Plus tôt",
     emoji: "⏱️",
     desc: "Préférence ou comparaison temporelle ?",
+    dispo: true,
+  },
+  {
+    id: "present-courants",
+    titre: "Le présent des verbes courants",
+    emoji: "🚶",
+    desc: "Je vais, tu fais, vous dites...",
+    dispo: true,
+  },
+  {
+    id: "present-er",
+    titre: "Le présent des verbes en -er",
+    emoji: "🎵",
+    desc: "Je chante, nous mangeons, ils jouent",
     dispo: true,
   },
   {

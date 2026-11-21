@@ -1,4 +1,4 @@
-const CACHE_NAME = "scolafree-v10";
+const CACHE_NAME = "scolafree-v11";
 const STATIC_ASSETS = ["/", "/cours", "/connexion", "/inscription", "/offline"];
 
 self.addEventListener("install", (event) => {

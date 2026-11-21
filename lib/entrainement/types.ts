@@ -56,6 +56,31 @@ export type QuestionChoix = {
   erreurs?: Record<string, string>;
 };
 
+// Question où l'élève écrit lui-même la forme (conjugaison surtout).
+// Règle de rédaction : UNE seule réponse possible. Soit la série ne travaille qu'un temps
+// et son titre le dit, soit le temps est écrit entre parenthèses avec le verbe (champ `temps`).
+// Au passé composé, l'auxiliaire est déjà dans la phrase : l'élève écrit seulement le participe.
+export type QuestionSaisie = {
+  type: "saisie";
+  phrase: string; // la phrase avec "___" à la place de la forme à écrire
+  verbe: string; // l'infinitif, affiché entre parenthèses après le trou
+  temps?: string; // ex. "au présent", affiché avec le verbe : (manger, au présent)
+  reponse: string;
+  acceptees?: string[]; // autres formes justes, à n'utiliser que très rarement
+  explication: string;
+  // Pourquoi une forme fautive ne marche pas, affiché seulement en cas d'erreur.
+  // Clé = la forme fautive (sans tenir compte des majuscules ni des espaces).
+  // Le composant ajoute « Tu as écrit « x » ? » devant, sauf si le message commence déjà par « Tu as ».
+  erreurs?: Record<string, string>;
+};
+
+// Une question de série : boutons ou saisie.
+export type Question = QuestionChoix | QuestionSaisie;
+
+export function estSaisie(question: Question): question is QuestionSaisie {
+  return "type" in question && question.type === "saisie";
+}
+
 export type Serie = {
   id: string; // ex. "et-est-1"
   notion: string; // identifiant de notion
@@ -63,7 +88,7 @@ export type Serie = {
   classes: Classe[]; // étiquette de niveau, sert à la mise en avant
   microRegle: string; // rappel court, la règle complète reste dans la fiche
   nbQuestions: number; // nombre de questions tirées à chaque partie
-  questions: QuestionChoix[];
+  questions: Question[];
 };
 
 // Contenu d'un fichier lib/entrainement/series/<notion>.ts

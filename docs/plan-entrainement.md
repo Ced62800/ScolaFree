@@ -4,9 +4,9 @@ Version du 18 novembre 2026. Document de référence pour Claude Code : on suit 
 
 ## Où on en est
 
-En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'est/s'est, ça/sa (CE2-CM1), leur/leurs, tout/tous/toute/toutes (CE2-CM2) et les dictées CE2 « Au parc » (`ce2-1`) et CE1 « Les petits mots » (`ce1-1`, a/à, on/ont, pluriel des noms). Vague 1 terminée (lots 1 et 2). Filtres par classe et par famille sur l'accueil. Vague 2, lot 1 : pluriel des noms, accord dans le groupe nominal (CE1-CM1), lettres muettes (CE1-CE2), avec leurs fiches. Vague 2, lot 2 : accord sujet-verbe (série CE2-CM1, sujets simples puis éloignés ; le sujet inversé reste un cas bonus dans la fiche) et finale en [é] (CE2-6e), avec leurs fiches. Vague 2 terminée côté séries ; reste la dictée CE1 et le script de dictée générique, dans un lot à part. Le moteur accepte n'importe quelle notion : ajouter une série revient à écrire des données.
+En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'est/s'est, ça/sa (CE2-CM1), leur/leurs, tout/tous/toute/toutes (CE2-CM2) et les dictées CE2 « Au parc » (`ce2-1`) et CE1 « Les petits mots » (`ce1-1`, a/à, on/ont, pluriel des noms). Vague 1 terminée (lots 1 et 2). Filtres par classe et par famille sur l'accueil. Vague 2, lot 1 : pluriel des noms, accord dans le groupe nominal (CE1-CM1), lettres muettes (CE1-CE2), avec leurs fiches. Vague 2, lot 2 : accord sujet-verbe (série CE2-CM1, sujets simples puis éloignés ; le sujet inversé reste un cas bonus dans la fiche) et finale en [é] (CE2-6e), avec leurs fiches. Vague 2 terminée. La dictée CE1 « Les petits mots » (`ce1-1`) et le script de dictée générique sont faits. Exercice de saisie (« écris la bonne forme ») en ligne : une série peut mélanger boutons et saisie. Vague 3, lot 1 : être et avoir au présent (CP-CE1), présent des verbes en -er (CE1-CE2), présent des verbes courants (CE2-6e : aller, faire, dire, venir, prendre, pouvoir ; vouloir et voir restent à faire dans une 2e série), avec leurs fiches à boutons et leurs séries de saisie. Reste pour la vague 3 : imparfait, futur simple, passé composé. Le moteur accepte n'importe quelle notion : ajouter une série revient à écrire des données.
 
-- 38 fiches Fondamentaux français existent dans `app/fondamentaux/francais/`. Les nouvelles fiches acceptent des boutons propres à chaque question (champ `choix`).
+- 41 fiches Fondamentaux français existent dans `app/fondamentaux/francais/`. Les nouvelles fiches acceptent des boutons propres à chaque question (champ `choix`).
 - Cours de primaire (CP au CM2) : 8 thèmes par classe (orthographe, grammaire, conjugaison, vocabulaire, deux leçons chacun).
 - Cours de collège : accords, homophones, présent, imparfait, passé simple, conditionnel, subjonctif, plus des thèmes de littérature.
 - Nouveaux programmes de français depuis la rentrée 2025 (cycle 2, CM1, 6e), CM2 à la rentrée 2026.
@@ -63,9 +63,9 @@ En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'es
 | Accords | Accord sujet-verbe (sujet éloigné ou inversé) | CE2-6e | accord-sujet-verbe | fait |
 | Accords | Finale en [é] : é, er, ez, ait | CE2-6e | finale-e | fait |
 | Accords | Participe passé avec être et avec avoir | CM1-4e | participe-passe | 4 |
-| Conjugaison | Être et avoir au présent | CP-CE1 | à créer | 3 |
-| Conjugaison | Présent des verbes en -er | CE1-CE2 | à créer | 3 |
-| Conjugaison | Présent des verbes courants (aller, faire, venir, prendre…) | CE2-6e | à créer | 3 |
+| Conjugaison | Être et avoir au présent | CP-CE1 | etre-avoir | fait |
+| Conjugaison | Présent des verbes en -er | CE1-CE2 | present-er | fait |
+| Conjugaison | Présent des verbes courants (aller, faire, venir, prendre…) | CE2-6e | present-courants | fait (6 verbes ; vouloir et voir à venir) |
 | Conjugaison | Imparfait | CE2-CM1 | à créer | 3 |
 | Conjugaison | Futur simple | CE2-CM1 | à créer | 3 |
 | Conjugaison | Passé composé | CE2-CM1 | à créer | 3 |
@@ -110,7 +110,7 @@ Audio : le script est générique. Une seule commande, `.\scripts\dictees\genere
 | --- | --- |
 | Un fichier de données par notion (`lib/entrainement/series/<notion>.ts`) | fait |
 | Filtres par classe et par famille sur l'accueil Entraînement (famille déclarée dans chaque fichier de notion) | fait |
-| Exercice « écris la bonne forme » (saisie) | avant la vague 3 |
+| Exercice « écris la bonne forme » (saisie) | fait |
 | Exercices avec audio (écouter puis choisir) | avant la vague 6 |
 | Script de dictée générique | fait |
 | Page /offline manquante | tâche séparée, dès que possible |
