@@ -4,7 +4,7 @@ Version du 18 novembre 2026. Document de référence pour Claude Code : on suit 
 
 ## Où on en est
 
-En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'est/s'est, ça/sa (CE2-CM1), leur/leurs, tout/tous/toute/toutes (CE2-CM2) et la dictée CE2 « Au parc » (`ce2-1`). Vague 1 terminée (lots 1 et 2). Filtres par classe et par famille sur l'accueil. Vague 2, lot 1 : pluriel des noms, accord dans le groupe nominal (CE1-CM1), lettres muettes (CE1-CE2), avec leurs fiches. Vague 2, lot 2 : accord sujet-verbe (série CE2-CM1, sujets simples puis éloignés ; le sujet inversé reste un cas bonus dans la fiche) et finale en [é] (CE2-6e), avec leurs fiches. Vague 2 terminée côté séries ; reste la dictée CE1 et le script de dictée générique, dans un lot à part. Le moteur accepte n'importe quelle notion : ajouter une série revient à écrire des données.
+En ligne : les séries et/est, a/as/à, on/ont (CE1-CE2), son/sont, ces/ses/c'est/s'est, ça/sa (CE2-CM1), leur/leurs, tout/tous/toute/toutes (CE2-CM2) et les dictées CE2 « Au parc » (`ce2-1`) et CE1 « Les petits mots » (`ce1-1`, a/à, on/ont, pluriel des noms). Vague 1 terminée (lots 1 et 2). Filtres par classe et par famille sur l'accueil. Vague 2, lot 1 : pluriel des noms, accord dans le groupe nominal (CE1-CM1), lettres muettes (CE1-CE2), avec leurs fiches. Vague 2, lot 2 : accord sujet-verbe (série CE2-CM1, sujets simples puis éloignés ; le sujet inversé reste un cas bonus dans la fiche) et finale en [é] (CE2-6e), avec leurs fiches. Vague 2 terminée côté séries ; reste la dictée CE1 et le script de dictée générique, dans un lot à part. Le moteur accepte n'importe quelle notion : ajouter une série revient à écrire des données.
 
 - 38 fiches Fondamentaux français existent dans `app/fondamentaux/francais/`. Les nouvelles fiches acceptent des boutons propres à chaque question (champ `choix`).
 - Cours de primaire (CP au CM2) : 8 thèmes par classe (orthographe, grammaire, conjugaison, vocabulaire, deux leçons chacun).
@@ -93,7 +93,7 @@ Objectif : deux dictées par classe (18 au total), qui reprennent les notions d�
 | Classe | Format | Notions | Quand |
 | --- | --- | --- | --- |
 | CP | 3 phrases très courtes | sons simples, être et avoir | après la vague 6 |
-| CE1 | 4 phrases courtes | a/à, on/ont, pluriel des noms | avec la vague 2 |
+| CE1 | 4 phrases courtes | a/à, on/ont, pluriel des noms | faite (`ce1-1`), 1 à faire |
 | CE2 | 5 phrases | et/est, accords du GN | 1 faite, 1 à faire |
 | CM1 | 5 à 6 phrases | son/sont, ces/ses, imparfait | avec la vague 3 |
 | CM2 | 6 à 8 phrases | participe passé, finale en [é] | avec la vague 4 |
@@ -102,7 +102,7 @@ Objectif : deux dictées par classe (18 au total), qui reprennent les notions d�
 | 4e | texte d'environ 120 mots | participe passé, conditionnel | avec la vague 5 |
 | 3e | texte façon brevet | subjonctif, tous les accords | avec la vague 5 |
 
-Audio : rendre le script générique (`scripts/dictees/generer-dictee.bat <id>`). Piper est installé dans `C:\Users\cedri\Desktop\Projets dev\ScolaFree\piper` (son fichier `.onnx.json` a été nettoyé des phonèmes à plusieurs caractères). Attention aux liaisons fautives de la voix (ex. « grand et » lu « grant et ») : éviter adjectif en -d ou -t suivi de « et », et réécouter.
+Audio : le script est générique. Une seule commande, `.\scripts\dictees\generer-dictee.bat <id>` (ex. `ce1-1`), lit les phrases dans `lib/entrainement/dictees.ts` et génère les MP3 ; il refuse d'écraser des MP3 existants sans `--ecraser` et avertit si un mot en -d ou -t précède « et ». L'ancien `generer-ce2-1.bat` et ses `.txt` ne servent plus. Piper est installé dans `C:\Users\cedri\Desktop\Projets dev\ScolaFree\piper` (son fichier `.onnx.json` a été nettoyé des phonèmes à plusieurs caractères). Attention aux liaisons fautives de la voix (ex. « grand et » lu « grant et ») : éviter adjectif en -d ou -t suivi de « et », et réécouter.
 
 ## Chantiers techniques
 
@@ -112,7 +112,7 @@ Audio : rendre le script générique (`scripts/dictees/generer-dictee.bat <id>`)
 | Filtres par classe et par famille sur l'accueil Entraînement (famille déclarée dans chaque fichier de notion) | fait |
 | Exercice « écris la bonne forme » (saisie) | avant la vague 3 |
 | Exercices avec audio (écouter puis choisir) | avant la vague 6 |
-| Script de dictée générique | avant la 2e dictée |
+| Script de dictée générique | fait |
 | Page /offline manquante | tâche séparée, dès que possible |
 | Réglage eslint à retirer de next.config.js | fait |
 | getUser() à remplacer par getSession() | tâche séparée |
